@@ -1,0 +1,45 @@
+.thing-form {
+    margin: 20px 0;
+}
+
+#banner {
+    border-bottom: none;
+    margin-top: -20px;
+}
+
+#banner h1 {
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -1px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+}
+
+.hero-unit {
+    position: relative;
+    padding: 30px 15px;
+    color: #333;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    background: white;
+
+    p {
+        font-size: 21px;
+        font-weight: 200;
+    }
+}
+
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 70px;
+    border-top: 1px solid #E5E5E5;
+    background-color: deepskyblue;
+    color: #2386b6;
+    font-weight: 600;
+
+    p {
+        float: right;
+        margin: 0;
+    }
+}

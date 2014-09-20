@@ -1,0 +1,76 @@
+.navbar {
+    border-bottom: 1px solid #e5e5e5;
+    background-color: deepskyblue;
+    color: white;
+    padding: 10px 30px;
+
+    .container {
+        .navbar-header {
+            .logo-portrait {
+                margin: 0 20px;
+            }
+        }
+        .navbar-collapse {
+            .nav {
+                a {
+                    margin: 0 5px;
+                    &:hover {
+                        background-color: #22a8e6;
+                    }
+                }
+                .active a {
+                    background-color: #428bca;
+                }
+            }
+        }
+    }
+}
+
+/* Custom page header */
+.header {
+    .header-content {
+        width: 100%;
+        padding: 0 20px;
+        max-width: 1243px;
+        margin: 0 auto;
+    }
+
+    .header-content:before, .header-content:after {
+        content: "";
+        display: table;
+    }
+    .header-content:after {
+        clear: both;
+    }
+
+    .logo-portrait {
+//        float: left;
+        margin: 0 auto;
+        padding: 5px 0;
+        clear: both;
+        width: 3rem;
+    }
+
+    .nav {
+        float: none !important;
+        margin: 0 auto;
+        clear: both;
+        width: 275px;
+        font-size: .5em;
+
+        a {
+            padding: 5px 10px;
+        }
+        a:hover {
+            background-color: #22a8e6;
+        }
+    }
+
+    /* Make the masthead heading the same height as the navigation */
+    h3 {
+        margin-top: 0;
+        margin-bottom: 0;
+        line-height: 40px;
+        padding-bottom: 19px;
+    }
+}
