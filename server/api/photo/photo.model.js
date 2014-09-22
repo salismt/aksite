@@ -6,7 +6,9 @@ var mongoose = require('mongoose'),
 var PhotoSchema = new Schema({
 	name: String,
 	info: String,
-	active: Boolean
+	hidden: Boolean,
+    sourceUri: String,
+    dateAdded: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Photo', PhotoSchema);
