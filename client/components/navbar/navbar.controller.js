@@ -17,7 +17,7 @@ angular.module('aksiteApp')
 			},
 			{
 				'title': 'Photography',
-				'link': '/photography'
+				'link': '/photos'
 			},
 			{
 				'title': 'Blog',
