@@ -7,6 +7,19 @@
         </div>
 
         <div class="col-sm-12">
+            <div class="input-group">
+                <input type="text" class="form-control file-input-value" readonly data-bind="value: fileName">
+                <span class="input-group-btn">
+                    <span class="btn btn-primary btn-file">
+                        Browse<input type="file" id="choose" name="files" data-bind="fileInputSelection: fileSelectionChanged" multiple>
+                    </span>
+                </span>
+            </div>
+
+            <div id="images"><!-- previews --></div>
+        </div>
+
+        <div class="col-sm-12">
             <form class="form" name="form" ng-submit="addPhoto(form)" novalidate>
 
                 <div class="form-group">
