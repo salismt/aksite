@@ -6,6 +6,7 @@ angular.module('aksiteApp')
             hidden: false
         };
         $scope.errors = {};
+        $scope.dropSupported = true;
 
         // Use the User $resource to fetch all users
         $scope.photos = Photo.query();

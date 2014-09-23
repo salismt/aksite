@@ -8,15 +8,16 @@
 
         <div class="col-sm-12">
             <div class="input-group">
-                <input type="text" class="form-control file-input-value" readonly data-bind="value: fileName">
+                <input type="text" class="form-control file-input-value" ng-model="photo.fileName" readonly>
                 <span class="input-group-btn">
                     <span class="btn btn-primary btn-file">
-                        Browse<input type="file" id="choose" name="files" data-bind="fileInputSelection: fileSelectionChanged" multiple>
+                        Browse<input type="file" accept="images/*" ng-file-select="onFileSelect($files)" multiple>
                     </span>
                 </span>
+                <div ng-file-drop="onFileSelect($files)" ng-file-drag-over-class="optional-css-class-name-or-function"
+                     ng-show="dropSupported">drop files here</div>
+                <button ng-click="upload.abort()">Cancel Upload</button>
             </div>
-
-            <div id="images"><!-- previews --></div>
         </div>
 
         <div class="col-sm-12">
