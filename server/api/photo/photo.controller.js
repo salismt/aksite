@@ -2,6 +2,11 @@
 
 var _ = require('lodash');
 var Photo = require('./photo.model');
+var fs = require('fs');
+var path = require('path');
+var config = require('../../config/environment');
+
+var rootDir = config.root;
 
 // Get list of photos
 exports.index = function (req, res) {
@@ -19,10 +24,24 @@ exports.show = function (req, res) {
 		if (err) {
 			return handleError(res, err);
 		}
-		if (!photo) {
+		else if (!photo) {
 			return res.send(404);
-		}
-		return res.json(photo);
+		} else {
+            fs.readFile(path.join(rootDir, photo.sourceUri), function(err, data) {
+//                console.log(err);
+                console.log(data);
+                res.send({
+                    title: photo.name,
+                    src: data.toString('base64')
+                });
+//                res.render('index', {
+//                    title: photo.name,
+//                    src: data.toString('base64')
+//                })
+            });
+
+//            return res.json(photo);
+        }
 	});
 };
 
