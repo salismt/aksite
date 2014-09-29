@@ -5,12 +5,13 @@
 'use strict';
 
 var errors = require('./components/errors');
-var path = require('path');
+//var path = require('path');
 var config = require('./config/environment');
 
 module.exports = function (app) {
 
     // Insert routes below
+    app.use('/data', require('./api/data'));
     app.use('/api/upload', require('./api/upload'));
     app.use('/api/projects', require('./api/project'));
     app.use('/api/blog/posts', require('./api/post'));
@@ -32,7 +33,6 @@ module.exports = function (app) {
     // All other routes should redirect to the index.html
     app.route('/*')
         .get(function (req, res) {
-            console.log('/*');
             res.sendfile(app.get('appPath') + '/index.html');
         });
 };

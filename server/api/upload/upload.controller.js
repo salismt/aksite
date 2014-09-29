@@ -2,6 +2,20 @@
 
 var _ = require('lodash');
 var Upload = require('./upload.model');
+var mongoose = require('mongoose')
+//var mongo = require('mongodb');
+var GridStore = mongoose.mongo.GridStore;
+var Grid = mongoose.mongo.Grid;
+var ObjectID = mongoose.mongo.BSONPure.ObjectID;
+var GridStream = require('gridfs-stream');
+GridStream.mongo = mongoose.mongo;
+
+var conn = mongoose.createConnection();
+var gfs;
+conn.once('open', function() {
+    gfs = GridStream(conn.db);
+});
+
 
 // Get list of uploads
 exports.index = function(req, res) {
@@ -20,20 +34,59 @@ exports.show = function(req, res) {
   });
 };
 
+exports.putFile = function(path, name, options, fn) {
+    var db = mongoose.connection.db;
+    options = parse(options);
+    options.metadata.filename = name;
+    var gs = new GridStore(db, name, "w", options);
+    gs.open = function(err, file) {
+        if(err) return fn(err);
+        else return file.writeFile(path, fn);
+    }
+};
+
 // Creates a new upload in the DB.
 exports.create = function(req, res) {
-    var data = _.pick(req.body, 'type')
-        , uploadPath = path.normalize(config.uploadDir + '/uploads')
-        , file = req.files.file;
+    Upload.create(req.body, function(err, upload) {
+        if(err) { return handleError(res, err); }
+        return res.json(201, upload);
+    });
 
-    console.log(file.name); //original name (ie: sunset.png)
-    console.log(file.path); //tmp path (ie: /tmp/12345-xyaz.png)
-    console.log(uploadPath); //uploads directory: (ie: /home/user/data/uploads)
 
-  Upload.create(req.body, function(err, upload) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, upload);
-  });
+
+//    req.pipe(GridStream.createWriteStream({
+//        filename: 'test'
+//    }));
+//    res.send('success!');
+
+//    var gs = new GridStore(this.db, filename, "w", {
+//        "chunk_size": 1024*4,
+//        metadata: {
+//            hashpath: gridfs_name,
+//            hash: hash,
+//            name: name
+//        }
+//    });
+//
+//    gs.open(function(err,store) {
+//        // Write data and automatically close on finished write
+//        gs.writeBuffer(data, true, function(err,chunk) {
+//            // Each file has an md5 in the file structure
+//            cb(err,hash,chunk);
+//            gs.close();
+//        });
+//    });
+//
+//
+//
+//    var data = _.pick(req.body, 'type')
+//        , uploadPath = path.normalize(config.uploadDir + '/uploads')
+//        , file = req.files.file;
+//
+//    console.log(file.name); //original name (ie: sunset.png)
+//    console.log(file.path); //tmp path (ie: /tmp/12345-xyaz.png)
+//    console.log(uploadPath); //uploads directory: (ie: /home/user/data/uploads)
+//
 };
 
 // Updates an existing upload in the DB.
