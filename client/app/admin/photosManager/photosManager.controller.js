@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('PhotosManagerCtrl', function ($scope, $upload, Photo) {
+    .controller('PhotosManagerCtrl', function ($scope, $upload, Photo, Upload) {
         $scope.photo = {
             hidden: false
         };
@@ -10,6 +10,8 @@ angular.module('aksiteApp')
 
         // Use the User $resource to fetch all users
         $scope.photos = Photo.query();
+
+		$scope.uploads = Upload.query();
 
         $scope.addPhoto = function(form) {
             console.log(Photo);

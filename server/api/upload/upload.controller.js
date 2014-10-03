@@ -2,22 +2,43 @@
 
 var _ = require('lodash');
 var Upload = require('./upload.model');
+var mongoose = require('mongoose')
+//var mongo = require('mongodb');
+var fs = require('fs');
+var GridStore = mongoose.mongo.GridStore;
+var Grid = mongoose.mongo.Grid;
+var ObjectID = mongoose.mongo.BSONPure.ObjectID;
+var GridStream = require('gridfs-stream');
+var GridFS = GridStream(mongoose.connection.db, mongoose.mongo);
+GridStream.mongo = mongoose.mongo;
+
+var conn = mongoose.createConnection();
+var gfs;
+conn.once('open', function () {
+	gfs = GridStream(conn.db);
+});
 
 // Get list of uploads
-exports.index = function(req, res) {
-  Upload.find(function (err, uploads) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, uploads);
-  });
+exports.index = function (req, res) {
+	Upload.find(function (err, uploads) {
+		if (err) {
+			return handleError(res, err);
+		}
+		return res.json(200, uploads);
+	});
 };
 
 // Get a single upload
-exports.show = function(req, res) {
-  Upload.findById(req.params.id, function (err, upload) {
-    if(err) { return handleError(res, err); }
-    if(!upload) { return res.send(404); }
-    return res.json(upload);
-  });
+exports.show = function (req, res) {
+	Upload.findById(req.params.id, function (err, upload) {
+		if (err) {
+			return handleError(res, err);
+		}
+		if (!upload) {
+			return res.send(404);
+		}
+		return res.json(upload);
+	});
 };
 
 // Creates a new upload in the DB.
@@ -37,31 +58,45 @@ exports.create = function(req, res) {
 };
 
 // Updates an existing upload in the DB.
-exports.update = function(req, res) {
-  if(req.body._id) { delete req.body._id; }
-  Upload.findById(req.params.id, function (err, upload) {
-    if (err) { return handleError(res, err); }
-    if(!upload) { return res.send(404); }
-    var updated = _.merge(upload, req.body);
-    updated.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.json(200, upload);
-    });
-  });
+exports.update = function (req, res) {
+	if (req.body._id) {
+		delete req.body._id;
+	}
+	Upload.findById(req.params.id, function (err, upload) {
+		if (err) {
+			return handleError(res, err);
+		}
+		if (!upload) {
+			return res.send(404);
+		}
+		var updated = _.merge(upload, req.body);
+		updated.save(function (err) {
+			if (err) {
+				return handleError(res, err);
+			}
+			return res.json(200, upload);
+		});
+	});
 };
 
 // Deletes a upload from the DB.
-exports.destroy = function(req, res) {
-  Upload.findById(req.params.id, function (err, upload) {
-    if(err) { return handleError(res, err); }
-    if(!upload) { return res.send(404); }
-    upload.remove(function(err) {
-      if(err) { return handleError(res, err); }
-      return res.send(204);
-    });
-  });
+exports.destroy = function (req, res) {
+	Upload.findById(req.params.id, function (err, upload) {
+		if (err) {
+			return handleError(res, err);
+		}
+		if (!upload) {
+			return res.send(404);
+		}
+		upload.remove(function (err) {
+			if (err) {
+				return handleError(res, err);
+			}
+			return res.send(204);
+		});
+	});
 };
 
 function handleError(res, err) {
-  return res.send(500, err);
+	return res.send(500, err);
 }

@@ -74,5 +74,14 @@
                 </li>
             </ul>
         </div>
+        <div class="col-sm-12">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="upload in uploads">
+                    <strong>{{upload.name}}</strong><br>
+                    <span class="text-muted">{{upload.info}}</span>
+                    <a ng-click="deletePhoto(upload)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
