@@ -19,6 +19,33 @@
 
     <div class="row">
         <div class="col-lg-12">
+            <h1 class="page-header">Featured Photos:</h1>
+            <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="photo in photos">
+                <li>
+                    {{photo.name}}
+                    <div style="height: 100px; width: 100px; overflow: hidden;">
+                        <img style="height: 100px;" ng-src="{{photo.sourceUri}}">
+                    </div>
+                </li>
+                <!--<li><a href="#" tooltip="{{photo.info}}">{{photo.name}}-->
+                    <!--<button type="button" class="close" ng-click="deleteThing(thing)">&times;</button>-->
+                <!--</a></li>-->
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div id="featured-photos">
+        <div id="featured-photos-deep">
+
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
             <h1 class="page-header">Cool Things:</h1>
             <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
                 <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}

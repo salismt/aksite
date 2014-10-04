@@ -51,6 +51,17 @@ exports.show = function (req, res) {
 //    });
 };
 
+exports.putFile = function(path, name, options, fn) {
+    var db = mongoose.connection.db;
+    options = parse(options);
+    options.metadata.filename = name;
+    var gs = new GridStore(db, name, "w", options);
+    gs.open = function(err, file) {
+        if(err) return fn(err);
+        else return file.writeFile(path, fn);
+    }
+};
+
 // Creates a new upload in the DB.
 exports.create = function (req, res) {
     var writestream = gfs.createWriteStream({

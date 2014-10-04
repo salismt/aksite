@@ -64,7 +64,7 @@ angular.module('aksiteApp')
             //$files: an array of files selected, each file has name, size, and type.
             _.each($files, function(file) {
                 $scope.upload = $upload.upload({
-                    url: 'server/upload/url', //upload.php script, node.js route, or servlet url
+                    url: 'server/upload/uri', //upload.php script, node.js route, or servlet url
                     //method: 'POST' or 'PUT',
                     //headers: {'header-key': 'header-value'},
                     //withCredentials: true,
@@ -90,5 +90,9 @@ angular.module('aksiteApp')
              Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed.
              It could also be used to monitor the progress of a normal http post/put request with large data*/
             // $scope.upload = $upload.http({...})  see 88#issuecomment-31366487 for sample code.
+        };
+
+        $scope.onSubmit = function() {
+
         };
     });
