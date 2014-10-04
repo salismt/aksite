@@ -268,8 +268,12 @@ angular.module('aksiteApp')
 
 		function moved() {
 			if (idle) d3.timer(function() {
-				if (idle = Math.abs(desiredFocus[0] - currentFocus[0]) < .5 && Math.abs(desiredFocus[1] - currentFocus[1]) < .5) currentFocus = desiredFocus;
-				else currentFocus[0] += (desiredFocus[0] - currentFocus[0]) * .14, currentFocus[1] += (desiredFocus[1] - currentFocus[1]) * .14;
+				if (idle = Math.abs(desiredFocus[0] - currentFocus[0]) < .5 && Math.abs(desiredFocus[1] - currentFocus[1]) < .5)
+                    currentFocus = desiredFocus;
+				else {
+                    currentFocus[0] += (desiredFocus[0] - currentFocus[0]) * .14;
+                    currentFocus[1] += (desiredFocus[1] - currentFocus[1]) * .14;
+                }
 				deep.style(transform, "translate(" + (innerWidth / 2 - currentFocus[0]) / depth + "px," + (height / 2 - currentFocus[1]) / depth + "px)");
 				return idle;
 			});
