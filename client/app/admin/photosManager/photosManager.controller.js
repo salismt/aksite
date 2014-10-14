@@ -63,7 +63,8 @@ angular.module('aksiteApp')
         $scope.onFileSelect = function($files) {
             //$files: an array of files selected, each file has name, size, and type.
             _.each($files, function(file) {
-                $scope.upload = $upload.upload({
+                console.log(file);
+                /*$scope.upload = $upload.upload({
                     url: 'server/upload/uri', //upload.php script, node.js route, or servlet url
                     //method: 'POST' or 'PUT',
                     //headers: {'header-key': 'header-value'},
@@ -80,7 +81,7 @@ angular.module('aksiteApp')
                 }).success(function(data, status, headers, config) {
                     // file is uploaded successfully
                     console.log(data);
-                });
+                });*/
                 //.error(...)
                 //.then(success, error, progress);
                 // access or attach event listeners to the underlying XMLHttpRequest.

@@ -2,9 +2,14 @@
 
 var _ = require('lodash');
 var Upload = require('./upload.model');
+var Photo = require('../photo/photo.model');
 var config = require('../../config/environment');
 var mongoose = require('mongoose');
 var fs = require('fs');
+
+var gridform = require('gridform');
+gridform.mongo = mongoose.mongo;
+var formidable = require('formidable');
 
 var Schema = mongoose.Schema;
 var Grid = require('gridfs-stream');
@@ -19,6 +24,7 @@ conn.once('open', function (err) {
         return;
     }
     gfs = Grid(conn.db);
+    gridform.db = conn.db;
     model = conn.model('Upload', Schema);
 });
 
@@ -51,26 +57,45 @@ exports.show = function (req, res) {
 //    });
 };
 
-exports.putFile = function(path, name, options, fn) {
-    var db = mongoose.connection.db;
-    options = parse(options);
-    options.metadata.filename = name;
-    var gs = new GridStore(db, name, "w", options);
-    gs.open = function(err, file) {
-        if(err) return fn(err);
-        else return file.writeFile(path, fn);
-    }
-};
-
 // Creates a new upload in the DB.
 exports.create = function (req, res) {
+    var form = gridform();
+    assert(form instanceof formidable.IncomingForm);
+
+    // optionally store per-file metadata
+    form.on('fileBegin', function (name, file) {
+        file.metadata = 'test meta';
+    });
+
+    form.parse(req, function (err, fields, files) {
+
+        // use files and fields as you do today
+        var file = files.upload;
+
+        file.name // the uploaded file name
+        file.type // file type per [mime](https://github.com/bentomas/node-mime)
+        file.size // uploaded file size (file length in GridFS) named "size" for compatibility
+        file.path // same as file.name. included for compatibility
+        file.lastModified // included for compatibility
+
+        // files contain additional gridfs info
+        file.root // the root of the files collection used in MongoDB ('fs' here means the full collection in mongo is named 'fs.files')
+        file.id   // the ObjectId for this file
+
+    });
+
+    if(!_.isNull(req.filename) && !_.isUndefined(req.filename)) {
+        res.send(400);
+        return;
+    }
+
     var writestream = gfs.createWriteStream({
         filename: 'yeoman.png'
     });
-    fs.createReadStream('/Users/andrew.koroluk/aksite/data/yeoman.png').pipe(writestream);
+    fs.createReadStream(req.body.filename).pipe(writestream);
     writestream.on('close', function (file) {
 
-//        console.log(req.params.filename);
+        console.log(req.body);
 //        console.log(file);
 //        console.log(file.filename);
 
