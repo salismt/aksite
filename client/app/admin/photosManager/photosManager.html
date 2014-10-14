@@ -13,10 +13,9 @@
                     <span class="btn btn-primary btn-file">
                         Browse<input type="file" accept="images/*" ng-file-select="onFileSelect($files)" multiple>
                     </span>
+                    <button class="btn btn-default" ng-click="upload.abort()">Cancel Upload</button>
                 </span>
-                <div ng-file-drop="onFileSelect($files)" ng-file-drag-over-class="optional-css-class-name-or-function"
-                     ng-show="dropSupported">drop files here</div>
-                <button ng-click="upload.abort()">Cancel Upload</button>
+                <!--<div ng-file-drop="onFileSelect($files)" ng-file-drag-over-class="optional-css-class-name-or-function" ng-show="dropSupported">drop files here</div>-->
             </div>
         </div>
 
@@ -69,6 +68,7 @@
             <ul class="list-group">
                 <li class="list-group-item" ng-repeat="photo in photos">
                     <strong>{{photo.name}}</strong><br>
+                    <img style="max-width: 200px; max-height: 200px;" ng-src="{{photo.sourceUri}}">
                     <span class="text-muted">{{photo.info}}</span>
                     <a ng-click="deletePhoto(photo)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
                 </li>
@@ -78,8 +78,9 @@
             <ul class="list-group">
                 <li class="list-group-item" ng-repeat="upload in uploads">
                     <strong>{{upload.name}}</strong><br>
+                    <img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{upload._id}}">
                     <span class="text-muted">{{upload.info}}</span>
-                    <a ng-click="deletePhoto(upload)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
+                    <a ng-click="deleteUpload(upload)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
                 </li>
             </ul>
         </div>

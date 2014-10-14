@@ -13,13 +13,4 @@ var UploadSchema = new Schema({
 	}
 });
 
-UploadSchema.methods.addFile = function(file, options, fn) {
-	return gridfs.putFile(file.path, file.filename, options, (function(_this) {
-		return function(err, result) {
-			_this.files.push(result);
-			return _this.save(fn);
-		};
-	})(this));
-};
-
 module.exports = mongoose.model('Upload', UploadSchema);

@@ -2,101 +2,154 @@
 
 var _ = require('lodash');
 var Upload = require('./upload.model');
-var mongoose = require('mongoose')
-//var mongo = require('mongodb');
+var Photo = require('../photo/photo.model');
+var config = require('../../config/environment');
+var mongoose = require('mongoose');
 var fs = require('fs');
-var GridStore = mongoose.mongo.GridStore;
-var Grid = mongoose.mongo.Grid;
-var ObjectID = mongoose.mongo.BSONPure.ObjectID;
-var GridStream = require('gridfs-stream');
-var GridFS = GridStream(mongoose.connection.db, mongoose.mongo);
-GridStream.mongo = mongoose.mongo;
 
-var conn = mongoose.createConnection();
-var gfs;
-conn.once('open', function () {
-	gfs = GridStream(conn.db);
+var gridform = require('gridform');
+gridform.mongo = mongoose.mongo;
+var formidable = require('formidable');
+
+var Schema = mongoose.Schema;
+var Grid = require('gridfs-stream');
+Grid.mongo = mongoose.mongo;
+
+var gfs, model;
+
+var conn = mongoose.createConnection(config.mongo.uri);
+conn.once('open', function (err) {
+    if (err) {
+        handleError(err);
+        return;
+    }
+    gfs = Grid(conn.db);
+    gridform.db = conn.db;
+    model = conn.model('Upload', Schema);
 });
 
 // Get list of uploads
 exports.index = function (req, res) {
-	Upload.find(function (err, uploads) {
-		if (err) {
-			return handleError(res, err);
-		}
-		return res.json(200, uploads);
-	});
+    Upload.find(function (err, uploads) {
+        if (err) {
+            return handleError(res, err);
+        }
+        return res.json(200, uploads);
+    });
 };
 
 // Get a single upload
 exports.show = function (req, res) {
-	Upload.findById(req.params.id, function (err, upload) {
-		if (err) {
-			return handleError(res, err);
-		}
-		if (!upload) {
-			return res.send(404);
-		}
-		return res.json(upload);
-	});
+    var readstream = gfs.createReadStream({
+        _id: req.params.id
+    });
+
+    readstream.pipe(res);
+
+//    Upload.findById(req.params.id, function (err, upload) {
+//        if (err) {
+//            return handleError(res, err);
+//        } else if (!upload) {
+//            return res.send(404);
+//        } else {
+//            return res.json(upload);
+//        }
+//    });
 };
 
 // Creates a new upload in the DB.
-exports.create = function(req, res) {
-    var data = _.pick(req.body, 'type')
-        , uploadPath = path.normalize(config.uploadDir + '/uploads')
-        , file = req.files.file;
+exports.create = function (req, res) {
+    var form = gridform();
+    assert(form instanceof formidable.IncomingForm);
 
-    console.log(file.name); //original name (ie: sunset.png)
-    console.log(file.path); //tmp path (ie: /tmp/12345-xyaz.png)
-    console.log(uploadPath); //uploads directory: (ie: /home/user/data/uploads)
+    // optionally store per-file metadata
+    form.on('fileBegin', function (name, file) {
+        file.metadata = 'test meta';
+    });
 
-  Upload.create(req.body, function(err, upload) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, upload);
-  });
+    form.parse(req, function (err, fields, files) {
+
+        // use files and fields as you do today
+        var file = files.upload;
+
+        file.name // the uploaded file name
+        file.type // file type per [mime](https://github.com/bentomas/node-mime)
+        file.size // uploaded file size (file length in GridFS) named "size" for compatibility
+        file.path // same as file.name. included for compatibility
+        file.lastModified // included for compatibility
+
+        // files contain additional gridfs info
+        file.root // the root of the files collection used in MongoDB ('fs' here means the full collection in mongo is named 'fs.files')
+        file.id   // the ObjectId for this file
+
+    });
+
+    if(!_.isNull(req.filename) && !_.isUndefined(req.filename)) {
+        res.send(400);
+        return;
+    }
+
+    var writestream = gfs.createWriteStream({
+        filename: 'yeoman.png'
+    });
+    fs.createReadStream(req.body.filename).pipe(writestream);
+    writestream.on('close', function (file) {
+
+        console.log(req.body);
+//        console.log(file);
+//        console.log(file.filename);
+
+        Upload.create(file, function (err, upload) {
+            if (err) {
+                return handleError(res, err);
+            }
+            return res.json(201, upload);
+        });
+    });
+
+//    return res.json(201);
 };
 
 // Updates an existing upload in the DB.
 exports.update = function (req, res) {
-	if (req.body._id) {
-		delete req.body._id;
-	}
-	Upload.findById(req.params.id, function (err, upload) {
-		if (err) {
-			return handleError(res, err);
-		}
-		if (!upload) {
-			return res.send(404);
-		}
-		var updated = _.merge(upload, req.body);
-		updated.save(function (err) {
-			if (err) {
-				return handleError(res, err);
-			}
-			return res.json(200, upload);
-		});
-	});
+    if (req.body._id) {
+        delete req.body._id;
+    }
+    Upload.findById(req.params.id, function (err, upload) {
+        if (err) {
+            return handleError(res, err);
+        } else if (!upload) {
+            return res.send(404);
+        } else {
+            var updated = _.merge(upload, req.body);
+            updated.save(function (err) {
+                if (err) {
+                    return handleError(res, err);
+                }
+                return res.json(200, upload);
+            });
+        }
+    });
 };
 
 // Deletes a upload from the DB.
 exports.destroy = function (req, res) {
-	Upload.findById(req.params.id, function (err, upload) {
-		if (err) {
-			return handleError(res, err);
-		}
-		if (!upload) {
-			return res.send(404);
-		}
-		upload.remove(function (err) {
-			if (err) {
-				return handleError(res, err);
-			}
-			return res.send(204);
-		});
-	});
+    Upload.findById(req.params.id, function (err, upload) {
+        if (err) {
+            return handleError(res, err);
+        }
+        if (!upload) {
+            return res.send(404);
+        }
+        upload.remove(function (err) {
+            if (err) {
+                return handleError(res, err);
+            }
+            return res.send(204);
+        });
+    });
 };
 
 function handleError(res, err) {
-	return res.send(500, err);
+    return res.send(500, err);
 }
