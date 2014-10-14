@@ -546,7 +546,21 @@ module.exports = function (grunt) {
 					]
 				}
 			}
-		}
+		},
+        mongod: {
+            windows: {
+                command: 'C:/Program\\ Files/MongoDB\\ 2.6\\ Standard/bin/mongod --dbpath D:/mongodb/db',
+                options: {
+                    async: true,
+                    stdout: true,
+                    stderr: true,
+                    failOnError: true,
+                    execOptions: {
+                        cwd: '.'
+                    }
+                }
+            }
+        }
 	});
 
 	// Used for delaying livereload until after server has restarted
@@ -664,4 +678,12 @@ module.exports = function (grunt) {
 		'test',
 		'build'
 	]);
+
+    grunt.registerTask('mongod', function(target) {
+        if(target === 'windows') {
+            return grunt.task.run([
+                'mongod'
+            ]);
+        }
+    });
 };
