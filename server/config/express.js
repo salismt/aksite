@@ -4,26 +4,34 @@
 
 'use strict';
 
-var express               = require('express');
-var favicon               = require('static-favicon');
-var morgan                = require('morgan');
-var compression           = require('compression');
-var bodyParser            = require('body-parser');
-var methodOverride        = require('method-override');
-var cookieParser          = require('cookie-parser');
-var errorHandler          = require('errorhandler');
-var path                  = require('path');
-var config                = require('./environment');
-var passport              = require('passport');
-var session               = require('express-session');
-var mongoStore            = require('connect-mongo')(session);
-var mongoose              = require('mongoose');
-var multipart             = require('connect-multiparty');
-var formidable            = require('formidable');
-var qt                    = require('quickthumb');
+var express               = require('express'),
+    favicon               = require('static-favicon'),
+    morgan                = require('morgan'),
+    compression           = require('compression'),
+    bodyParser            = require('body-parser'),
+    methodOverride        = require('method-override'),
+    cookieParser          = require('cookie-parser'),
+    errorHandler          = require('errorhandler'),
+    path                  = require('path'),
+    config                = require('./environment'),
+    passport              = require('passport'),
+    session               = require('express-session'),
+    mongoStore            = require('connect-mongo')(session),
+    mongoose              = require('mongoose'),
+    multipart             = require('connect-multipart-gridform'),
+    qt                    = require('quickthumb');
 
 module.exports = function (app) {
     var env = app.get('env');
+
+    var conn = mongoose.createConnection(config.mongo.uri);
+    conn.once('open', function (err) {
+        if (err) {
+            handleError(err);
+            return;
+        }
+        app.use(multipart({ db: conn.db, mongo: mongoose.mongo }));
+    });
 
     app.set('views', config.root + '/server/views');
     app.engine('html', require('ejs').renderFile);
@@ -34,7 +42,6 @@ module.exports = function (app) {
     app.use(methodOverride());
     app.use(cookieParser());
     app.use(passport.initialize());
-    app.use(multipart({ uploadDir: config.uploadDir }));
     app.use(qt.static(__dirname + '/'));
 
     // Persist sessions with mongoStore

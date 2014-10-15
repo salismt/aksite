@@ -59,8 +59,10 @@ exports.show = function (req, res) {
 
 // Creates a new upload in the DB.
 exports.create = function (req, res) {
-    var form = gridform();
-    assert(form instanceof formidable.IncomingForm);
+    var form = gridform({ db: conn.db, mongo: mongoose.mongo });
+//    console.log(form);
+//    if(!(form instanceof formidable.IncomingForm)) return res.send('error');
+
 
     // optionally store per-file metadata
     form.on('fileBegin', function (name, file) {
@@ -72,19 +74,25 @@ exports.create = function (req, res) {
         // use files and fields as you do today
         var file = files.upload;
 
-        file.name // the uploaded file name
-        file.type // file type per [mime](https://github.com/bentomas/node-mime)
-        file.size // uploaded file size (file length in GridFS) named "size" for compatibility
-        file.path // same as file.name. included for compatibility
-        file.lastModified // included for compatibility
+        console.log(err);
+        console.log(files);
+        console.log(fields);
+
+
+//        file.name // the uploaded file name
+//        file.type // file type per [mime](https://github.com/bentomas/node-mime)
+//        file.size // uploaded file size (file length in GridFS) named "size" for compatibility
+//        file.path // same as file.name. included for compatibility
+//        file.lastModified // included for compatibility
 
         // files contain additional gridfs info
-        file.root // the root of the files collection used in MongoDB ('fs' here means the full collection in mongo is named 'fs.files')
-        file.id   // the ObjectId for this file
+//        file.root // the root of the files collection used in MongoDB ('fs' here means the full collection in mongo is named 'fs.files')
+//        file.id   // the ObjectId for this file
 
+        return res.json(201);
     });
 
-    if(!_.isNull(req.filename) && !_.isUndefined(req.filename)) {
+    /*if(!_.isNull(req.filename) && !_.isUndefined(req.filename)) {
         res.send(400);
         return;
     }
@@ -105,7 +113,7 @@ exports.create = function (req, res) {
             }
             return res.json(201, upload);
         });
-    });
+    });*/
 
 //    return res.json(201);
 };
