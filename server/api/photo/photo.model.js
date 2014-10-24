@@ -7,8 +7,7 @@ var PhotoSchema = new Schema({
 	name: String,
 	info: String,
 	hidden: Boolean,
-    sourceUri: String,
-    dateAdded: { type: Date, default: Date.now }
+    fileId: String
 });
 
 module.exports = mongoose.model('Photo', PhotoSchema);

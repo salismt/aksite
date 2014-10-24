@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('PhotosManagerCtrl', function ($scope, $upload, Photo, Upload) {
-        var getUploadUrl = "api/upload/";
-
+    .controller('PhotosManagerCtrl', function($scope, $http, $upload, Photo) {
         $scope.photo = {
             hidden: false
         };
@@ -13,75 +11,108 @@ angular.module('aksiteApp')
         // Use the User $resource to fetch all users
         $scope.photos = Photo.query();
 
-		$scope.uploads = Upload.query();
-
-        $scope.testPhoto = getUploadUrl + "54306a4c33558bed27208507";
+        $scope.files = [];
+        $http.get('/api/upload').success(function (files) {
+            $scope.files = files;
+        });
 
         $scope.addPhoto = function(form) {
-            console.log(Photo);
+            console.log(form);
 
             $scope.submitted = true;
 
-            if (form.$valid) {
-                Photo.save({
-                    name: $scope.photo.name,
-                    info: $scope.photo.info || '',
-                    active: true
-                })
-                .catch(function (err) {
-                    err = err.data;
-                    $scope.errors.other = err.message;
+            if(form.$valid) {
 
-                    // Update validity of form fields that match the mongoose errors
-                    angular.forEach(err.errors, function(error, field) {
-                        form[field].$setValidity('mongoose', false);
-                        $scope.errors[field] = error.message;
+                $upload.upload({
+                    url: 'api/upload',
+                    method: 'POST',
+                    file: $scope.fileToUpload,
+                    data: {
+                        name: $scope.photo.name,
+                        info: $scope.photo.info,
+                        purpose: 'photo'
+                    }
+                })
+                    .progress(function(evt) {
+                        console.log(evt);
+                    })
+                    .success(function(data) {
+                        console.log(data);
                     });
-                });
-                $scope.photos = Photo.query();
+
+                //Photo.save({
+                //    name: $scope.photo.name,
+                //    info: $scope.photo.info || '',
+                //    active: true
+                //})
+                //    .catch(function(err) {
+                //        err = err.data;
+                //        $scope.errors.other = err.message;
+                //
+                //        // Update validity of form fields that match the mongoose errors
+                //        angular.forEach(err.errors, function(error, field) {
+                //            form[field].$setValidity('mongoose', false);
+                //            $scope.errors[field] = error.message;
+                //        });
+                //    });
+                //$scope.photos = Photo.query();
             }
         };
 
-        $scope.deletePhoto = function (photo) {
-            Photo.remove({ id: photo._id });
-            angular.forEach($scope.photos, function (u, i) {
-                if (u === photo) {
+        $scope.deletePhoto = function(photo) {
+            Photo.remove({id: photo._id});
+            angular.forEach($scope.photos, function(u, i) {
+                if(u === photo) {
                     $scope.photos.splice(i, 1);
                 }
             });
         };
 
-        $scope.deleteUpload = function (upload) {
-            Upload.remove({ id: upload._id });
-            angular.forEach($scope.uploads, function (u, i) {
-                if (u === upload) {
-                    $scope.uploads.splice(i, 1);
-                }
-            });
+        $scope.deleteFile = function(fileId) {
+            $http.delete('/api/upload/'+fileId)
+                .success(function () {
+                    angular.forEach($scope.files, function(u, i) {
+                        if(u._id === fileId) {
+                            $scope.files.splice(i, 1);
+                        }
+                    });
+                })
+                .error(function() {
+                    console.log('deleteFile error');
+                });
+
         };
 
         $scope.onFileSelect = function($files) {
             //$files: an array of files selected, each file has name, size, and type.
+
+            var file = $files[0];
+
+            $scope.filename = file.name;
+            $scope.fileToUpload = file;
+
             _.each($files, function(file) {
-                console.log(file);
+                //console.log(file);
+                //$scope.filename = file.name;
+                //$scope.fileToUpload = file;
                 /*$scope.upload = $upload.upload({
-                    url: 'server/upload/uri', //upload.php script, node.js route, or servlet url
-                    //method: 'POST' or 'PUT',
-                    //headers: {'header-key': 'header-value'},
-                    //withCredentials: true,
-                    data: {myObj: $scope.photo},
-                    file: file // or list of files ($files) for html5 only
-                    //fileName: 'doc.jpg' or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s)
-                    // customize file formData name ('Content-Disposition'), server side file variable name.
-                    //fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file'
-                    // customize how data is added to formData. See #40#issuecomment-28612000 for sample code
-                    //formDataAppender: function(formData, key, val){}
-                }).progress(function(evt) {
-                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-                }).success(function(data, status, headers, config) {
-                    // file is uploaded successfully
-                    console.log(data);
-                });*/
+                 url: 'server/upload/uri', //upload.php script, node.js route, or servlet url
+                 //method: 'POST' or 'PUT',
+                 //headers: {'header-key': 'header-value'},
+                 //withCredentials: true,
+                 data: {myObj: $scope.photo},
+                 file: file // or list of files ($files) for html5 only
+                 //fileName: 'doc.jpg' or ['1.jpg', '2.jpg', ...] // to modify the name of the file(s)
+                 // customize file formData name ('Content-Disposition'), server side file variable name.
+                 //fileFormDataName: myFile, //or a list of names for multiple files (html5). Default is 'file'
+                 // customize how data is added to formData. See #40#issuecomment-28612000 for sample code
+                 //formDataAppender: function(formData, key, val){}
+                 }).progress(function(evt) {
+                 console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                 }).success(function(data, status, headers, config) {
+                 // file is uploaded successfully
+                 console.log(data);
+                 });*/
                 //.error(...)
                 //.then(success, error, progress);
                 // access or attach event listeners to the underlying XMLHttpRequest.
@@ -95,5 +126,10 @@ angular.module('aksiteApp')
 
         $scope.onSubmit = function() {
 
+        };
+
+        $scope.dropzoneConfig = {
+            parallelUploads: 3,
+            maxFileSize: 30
         };
     });

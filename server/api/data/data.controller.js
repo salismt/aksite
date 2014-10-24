@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Data = require('./data.model');
 var config = require('../../config/environment');
+var path = require('path');
 
 // Get list of datas
 exports.index = function (req, res) {
@@ -16,7 +17,7 @@ exports.index = function (req, res) {
 
 // Get a single data
 exports.show = function (req, res) {
-    res.sendfile(config.root + '/data' + req.url);
+    res.sendFile(path.resolve(config.root + '/' + '/data' + req.url));
 //    Data.findById(req.params.id, function (err, data) {
 //        if (err) {
 //            return handleError(res, err);

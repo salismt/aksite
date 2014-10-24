@@ -5,6 +5,7 @@
 
 'use strict';
 
+var _ = require('lodash');
 var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
 var Photo = require('../api/photo/photo.model');
@@ -53,69 +54,107 @@ User.find({}).remove(function () {
     );
 });
 
+
+
 Photo.find({}).remove(function () {
-    Photo.create({
-            name: 'test',
-            info: 'testInfo',
-            hidden: false,
-            sourceUri: rootDir + '/data/IMG_4149.JPG'
-        }, {
-            name: 'test',
-            info: 'testInfo',
-            hidden: false,
-            sourceUri: rootDir + '/data/IMG_4150.JPG'
-        }, {
-            name: 'test',
-            info: 'testInfo',
-            hidden: false,
-            sourceUri: rootDir + '/data/IMG_4151.JPG'
-        }, {
-            name: 'test',
-            info: 'testInfo',
-            hidden: false,
-            sourceUri: rootDir + '/data/IMG_4152.JPG'
-        }, {
-            name: 'test',
-            info: 'testInfo',
-            hidden: false,
-            sourceUri: rootDir + '/data/IMG_4153.JPG'
-        }, {
-            name: 'test',
-            info: 'testInfo',
-            hidden: false,
-            sourceUri: rootDir + '/data/IMG_4154.JPG'
-        }, {
-            name: 'test',
-            info: 'testInfo',
-            hidden: false,
-            sourceUri: rootDir + '/data/IMG_4155.JPG'
-        }, {
-            name: 'test',
-            info: 'testInfo',
-            hidden: false,
-            sourceUri: rootDir + '/data/IMG_4156.JPG'
-        }, {
-            name: 'test',
-            info: 'testInfo',
-            hidden: false,
-            sourceUri: rootDir + '/data/IMG_4157.JPG'
-        }, {
-            name: 'test',
-            info: 'testInfo',
-            hidden: false,
-            sourceUri: rootDir + '/data/IMG_4158.JPG'
-        }, {
-            name: 'test',
-            info: 'testInfo',
-            hidden: false,
-            sourceUri: rootDir + '/data/IMG_4159.JPG'
-        }, {
-            name: 'test',
-            info: 'testInfo',
-            hidden: false,
-            sourceUri: rootDir + '/data/IMG_4161.JPG'
-        }, function () {
-            console.log('finished populating photos');
+    var mongoose = require('mongoose'),
+        fs = require('fs'),
+        Grid = require('gridfs-stream'),
+        Schema = mongoose.Schema,
+        gridSchema = new Schema({}, {strict: false}),
+        gridModel1 = mongoose.model("gridModel1", gridSchema, "fs.files");
+    Grid.mongo = mongoose.mongo;
+
+    var gfs,
+        conn = mongoose.createConnection(config.mongo.uri);
+    conn.once('open', function(err) {
+        if(err) {
+            console.log(err);
+            return;
         }
-    );
+        gfs = Grid(conn.db);
+
+        gridModel1.find({}, function(err, gridfiles) {
+            if(err) console.log(err);
+            else {
+                _.forEach(gridfiles, function(file) {
+                    gfs.remove({_id: file._id}, function(err) {
+                        if(err) return console.log(err);
+                        else return console.log('deleted ' + file._id);
+                    });
+                });
+            }
+        });
+
+        var photos = [{
+                name: 'test00',
+                info: 'testInfo',
+                sourceUri: rootDir + 'data/IMG_4149.JPG'
+            }, {
+                name: 'test01',
+                info: 'testInfo',
+                sourceUri: rootDir + 'data/IMG_4150.JPG'
+            }, {
+                name: 'test02',
+                info: 'testInfo',
+                sourceUri: rootDir + 'data/IMG_4151.JPG'
+            }, {
+                name: 'test03',
+                info: 'testInfo',
+                sourceUri: rootDir + 'data/IMG_4152.JPG'
+            }, {
+                name: 'test04',
+                info: 'testInfo',
+                sourceUri: rootDir + 'data/IMG_4153.JPG'
+            }, {
+                name: 'test05',
+                info: 'testInfo',
+                sourceUri: rootDir + 'data/IMG_4154.JPG'
+            }, {
+                name: 'test06',
+                info: 'testInfo',
+                sourceUri: rootDir + 'data/IMG_4155.JPG'
+            }, {
+                name: 'test07',
+                info: 'testInfo',
+                sourceUri: rootDir + 'data/IMG_4156.JPG'
+            }, {
+                name: 'test08',
+                info: 'testInfo',
+                sourceUri: rootDir + 'data/IMG_4157.JPG'
+            }, {
+                name: 'test09',
+                info: 'testInfo',
+                sourceUri: rootDir + 'data/IMG_4158.JPG'
+            }, {
+                name: 'test10',
+                info: 'testInfo',
+                sourceUri: rootDir + 'data/IMG_4159.JPG'
+            }, {
+                name: 'test11',
+                info: 'testInfo',
+                sourceUri: rootDir + 'data/IMG_4161.JPG'
+            }];
+
+        _.each(photos, function(photo) {
+            var photoModel = {
+                name: photo.name,
+                info: photo.info
+            };
+
+            var writestream = gfs.createWriteStream([]);
+            fs.createReadStream(photo.sourceUri).pipe(writestream);
+
+            writestream.on('close', function(file) {
+                photoModel.fileId = file._id;
+                Photo.create(photoModel, function (err, photo1) {
+                    if (err) return console.log(err);
+                    else return photo1;
+                });
+            });
+        });
+
+        console.log('finished populating photos');
+    });
 });
+

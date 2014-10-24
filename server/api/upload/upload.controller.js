@@ -1,137 +1,135 @@
 'use strict';
 
-var _ = require('lodash');
-var Upload = require('./upload.model');
-var Photo = require('../photo/photo.model');
-var config = require('../../config/environment');
-var mongoose = require('mongoose');
-var fs = require('fs');
+var _ = require('lodash'),
+    Photo = require('../photo/photo.model'),
+    config = require('../../config/environment'),
+    mongoose = require('mongoose'),
+    fs = require('fs'),
+    gridform = require('gridform'),
+    Schema = mongoose.Schema,
+    Grid = require('gridfs-stream'),
+    gridSchema = new Schema({}, {strict: false}),
+    gridModel = mongoose.model("gridModel", gridSchema, "fs.files");
 
-var gridform = require('gridform');
 gridform.mongo = mongoose.mongo;
-var formidable = require('formidable');
-
-var Schema = mongoose.Schema;
-var Grid = require('gridfs-stream');
 Grid.mongo = mongoose.mongo;
 
-var gfs, model;
-
-var conn = mongoose.createConnection(config.mongo.uri);
-conn.once('open', function (err) {
-    if (err) {
+var gfs,
+    conn = mongoose.createConnection(config.mongo.uri);
+conn.once('open', function(err) {
+    if(err) {
         handleError(err);
         return;
     }
     gfs = Grid(conn.db);
     gridform.db = conn.db;
-    model = conn.model('Upload', Schema);
 });
 
-// Get list of uploads
-exports.index = function (req, res) {
-    Upload.find(function (err, uploads) {
-        if (err) {
-            return handleError(res, err);
-        }
-        return res.json(200, uploads);
+// Get list of files
+exports.index = function(req, res) {
+    gridModel.find({}, function(err, gridfiles) {
+        if(err) handleError(res, err);
+        else res.json(gridfiles);
     });
 };
 
-// Get a single upload
-exports.show = function (req, res) {
-    var readstream = gfs.createReadStream({
+// Get a single file
+exports.show = function(req, res) {
+    gfs.exist({_id: req.params.id}, function(err, found) {
+        if(err) return handleError(err);
+        //found ? console.log('File exists') : console.log('File does not exist');
+    });
+
+    var readStream = gfs.createReadStream({
         _id: req.params.id
     });
 
-    readstream.pipe(res);
-
-//    Upload.findById(req.params.id, function (err, upload) {
-//        if (err) {
-//            return handleError(res, err);
-//        } else if (!upload) {
-//            return res.send(404);
-//        } else {
-//            return res.json(upload);
-//        }
-//    });
+    readStream.pipe(res);
 };
 
-// Creates a new upload in the DB.
-exports.create = function (req, res) {
-    var form = gridform({ db: conn.db, mongo: mongoose.mongo });
-//    console.log(form);
-//    if(!(form instanceof formidable.IncomingForm)) return res.send('error');
+// Creates a new file in the DB.
+exports.create = function(req, res) {
+    var form = gridform({db: conn.db, mongo: mongoose.mongo});
+    //if(!(form instanceof formidable.IncomingForm)) return res.status(400).end();
 
+    //console.log(form);
 
     // optionally store per-file metadata
-    form.on('fileBegin', function (name, file) {
-        file.metadata = 'test meta';
+    form.on('fileBegin', function(name, file) {
+        file.metadata = {
+
+        };
+
+        console.log(name);
+        console.log(file);
     });
 
-    form.parse(req, function (err, fields, files) {
+    form.parse(req, function(err, fields, files) {
 
-        // use files and fields as you do today
-        var file = files.upload;
+        if(err) return handleError(res, err);
 
-        console.log(err);
-        console.log(files);
+        /**
+         * file.name            - the uploaded file name
+         * file.type            - file type per [mime](https://github.com/bentomas/node-mime)
+         * file.size            - uploaded file size (file length in GridFS) named "size" for compatibility
+         * file.path            - same as file.name. included for compatibility
+         * file.lastModified    - included for compatibility
+         * file.root            - the root of the files collection used in MongoDB ('fs' here means the full collection in mongo is named 'fs.files')
+         * file.id              - the ObjectId for this file
+         * @type {file}
+         */
+        var file = files.file;
+
+        if(_.isNull(file))
+            return res.status(400).send(new Error('No file'));
+
+        console.log(file);
+
+        //console.log(files);
         console.log(fields);
 
-
-//        file.name // the uploaded file name
-//        file.type // file type per [mime](https://github.com/bentomas/node-mime)
-//        file.size // uploaded file size (file length in GridFS) named "size" for compatibility
-//        file.path // same as file.name. included for compatibility
-//        file.lastModified // included for compatibility
-
-        // files contain additional gridfs info
-//        file.root // the root of the files collection used in MongoDB ('fs' here means the full collection in mongo is named 'fs.files')
-//        file.id   // the ObjectId for this file
-
-        return res.json(201);
-    });
-
-    /*if(!_.isNull(req.filename) && !_.isUndefined(req.filename)) {
-        res.send(400);
-        return;
-    }
-
-    var writestream = gfs.createWriteStream({
-        filename: 'yeoman.png'
-    });
-    fs.createReadStream(req.body.filename).pipe(writestream);
-    writestream.on('close', function (file) {
-
-        console.log(req.body);
-//        console.log(file);
-//        console.log(file.filename);
-
-        Upload.create(file, function (err, upload) {
-            if (err) {
-                return handleError(res, err);
+        if(!_.isEmpty(fields)) {
+            if(fields.name && typeof fields.name == 'string') {
+                file.name = fields.name;
             }
-            return res.json(201, upload);
-        });
-    });*/
+            if(fields.purpose && typeof fields.purpose == 'string') {
+                file.purpose = fields.purpose;
 
-//    return res.json(201);
+                if(fields.purpose.toLowerCase() === 'photo') {
+                    var photoModel = {
+                        name: file.name,
+                        fileId: file.id
+                    };
+                    if(fields.info && typeof fields.purpose == 'string')
+                        photoModel.info = fields.info;
+                    Photo.create(photoModel, function (err, photo) {
+                        if (err) return handleError(res, err);
+                        else return res.status(201).json(photo);
+                    });
+                }
+            }
+        } else {
+            return res.status(201).end();
+        }
+
+        //console.log(file.id);
+    });
 };
 
-// Updates an existing upload in the DB.
-exports.update = function (req, res) {
-    if (req.body._id) {
+// Updates an existing file in the DB.
+exports.update = function(req, res) {
+    if(req.body._id) {
         delete req.body._id;
     }
-    Upload.findById(req.params.id, function (err, upload) {
-        if (err) {
+    Upload.findById(req.params.id, function(err, upload) {
+        if(err) {
             return handleError(res, err);
-        } else if (!upload) {
+        } else if(!upload) {
             return res.send(404);
         } else {
             var updated = _.merge(upload, req.body);
-            updated.save(function (err) {
-                if (err) {
+            updated.save(function(err) {
+                if(err) {
                     return handleError(res, err);
                 }
                 return res.json(200, upload);
@@ -140,24 +138,18 @@ exports.update = function (req, res) {
     });
 };
 
-// Deletes a upload from the DB.
-exports.destroy = function (req, res) {
-    Upload.findById(req.params.id, function (err, upload) {
-        if (err) {
-            return handleError(res, err);
-        }
-        if (!upload) {
-            return res.send(404);
-        }
-        upload.remove(function (err) {
-            if (err) {
-                return handleError(res, err);
-            }
-            return res.send(204);
+// Deletes a file from the DB.
+exports.destroy = function(req, res) {
+    if(!req.params.id)
+        res.status(404).send(new ReferenceError('File not found.'));
+    else {
+        gfs.remove({_id: req.params.id}, function(err) {
+            if(err) return handleError(err);
+            res.status(200).end();
         });
-    });
+    }
 };
 
 function handleError(res, err) {
-    return res.send(500, err);
+    return res.status(500).send(err);
 }

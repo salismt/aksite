@@ -7,47 +7,49 @@
         </div>
 
         <div class="col-sm-12">
-            <div class="input-group">
-                <input type="text" class="form-control file-input-value" ng-model="photo.fileName" readonly>
-                <span class="input-group-btn">
-                    <span class="btn btn-primary btn-file">
-                        Browse<input type="file" accept="images/*" ng-file-select="onFileSelect($files)" multiple>
-                    </span>
-                    <button class="btn btn-default" ng-click="upload.abort()">Cancel Upload</button>
-                </span>
-                <!--<div ng-file-drop="onFileSelect($files)" ng-file-drag-over-class="optional-css-class-name-or-function" ng-show="dropSupported">drop files here</div>-->
-            </div>
-        </div>
-
-        <div class="col-sm-12">
             <form class="form" name="form" ng-submit="addPhoto(form)" novalidate>
 
                 <div class="form-group">
-                    <label>Name</label>
+                    <label for="name">Name</label>
 
-                    <input type="text" name="name" class="form-control" ng-model="photo.name" required>
+                    <input type="text" name="name" id="name" class="form-control" ng-model="photo.name" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Info</label>
+                    <label for="info">Info</label>
 
-                    <input type="text" name="info" class="form-control" ng-model="photo.info">
+                    <input type="text" name="info" id="info" class="form-control" ng-model="photo.info">
                 </div>
 
                 <div class="form-group">
-                    <label>Hidden</label>
+                    <label for="file">File</label>
 
-                    <button type="button" class="btn btn-primary" ng-model="photo.hidden" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">{{photo.hidden}}</button>
+                    <div class="input-group" id="file">
+                        <input type="text" class="form-control file-input-value" ng-model="filename" readonly>
+                        <span class="input-group-btn">
+                            <span class="btn btn-primary btn-file">
+                                Browse
+                                <input type="file" accept="images/*" id="fileInput" name="myFiles[]" ng-file-select="onFileSelect($files)">
+                            </span>
+                            <!--<button class="btn btn-default" ng-click="upload.abort()">Cancel Upload</button>-->
+                        </span>
+                        <!--<div ng-file-drop="onFileSelect($files)" ng-file-drag-over-class="optional-css-class-name-or-function" ng-show="dropSupported">drop files here</div>-->
+                    </div>
                 </div>
+
+                <!--<div class="form-group">-->
+                    <!--<label>Hidden</label>-->
+
+                    <!--<button type="button" class="btn btn-primary" ng-model="photo.hidden" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">{{photo.hidden}}</button>-->
+                <!--</div>-->
 
                 <div class="form-group has-error">
-                    <p class="help-block"
-                    ng-show="form.name.$error.required && form.info.$error.required && submitted">
-                    Please enter your email and password.
+                    <p class="help-block" ng-show="form.name.$error.required && form.info.$error.required && submitted">
+                        Please enter your email and password.
                     </p>
 
                     <p class="help-block" ng-show="form.email.$error.email && submitted">
-                    Please enter a valid email.
+                        Please enter a valid email.
                     </p>
 
                     <p class="help-block">{{ errors.other }}</p>
@@ -68,21 +70,23 @@
             <ul class="list-group">
                 <li class="list-group-item" ng-repeat="photo in photos">
                     <strong>{{photo.name}}</strong><br>
-                    <img style="max-width: 200px; max-height: 200px;" ng-src="{{photo.sourceUri}}">
+                    <img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.fileId}}">
                     <span class="text-muted">{{photo.info}}</span>
                     <a ng-click="deletePhoto(photo)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
                 </li>
             </ul>
         </div>
-        <div class="col-sm-12">
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="upload in uploads">
-                    <strong>{{upload.name}}</strong><br>
-                    <img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{upload._id}}">
-                    <span class="text-muted">{{upload.info}}</span>
-                    <a ng-click="deleteUpload(upload)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
-                </li>
-            </ul>
-        </div>
+        <!--<div class="col-sm-12">-->
+            <!--<ul class="list-group">-->
+                <!--<li class="list-group-item" ng-repeat="file in files">-->
+                    <!--<strong>{{file.filename}}</strong><br>-->
+                    <!--<img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{file._id}}">-->
+                    <!--<span class="text-muted">{{file.length}} Bytes</span>-->
+                    <!--<a ng-click="deleteFile(file._id)" class="trash">-->
+                        <!--<span class="glyphicon glyphicon-trash pull-right"></span>-->
+                    <!--</a>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
     </div>
 </div>
