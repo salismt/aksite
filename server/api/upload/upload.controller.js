@@ -50,7 +50,6 @@ exports.show = function(req, res) {
 // Creates a new file in the DB.
 exports.create = function(req, res) {
     var form = gridform({db: conn.db, mongo: mongoose.mongo});
-    //if(!(form instanceof formidable.IncomingForm)) return res.status(400).end();
 
     //console.log(form);
 

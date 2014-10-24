@@ -80,7 +80,7 @@ Photo.find({}).remove(function () {
                 _.forEach(gridfiles, function(file) {
                     gfs.remove({_id: file._id}, function(err) {
                         if(err) return console.log(err);
-                        else return console.log('deleted ' + file._id);
+                        //else return console.log('deleted ' + file._id);
                     });
                 });
             }

@@ -18,20 +18,10 @@ var express               = require('express'),
     session               = require('express-session'),
     mongoStore            = require('connect-mongo')(session),
     mongoose              = require('mongoose'),
-    multipart             = require('connect-multipart-gridform'),
     qt                    = require('quickthumb');
 
 module.exports = function (app) {
     var env = app.get('env');
-
-    var conn = mongoose.createConnection(config.mongo.uri);
-    conn.once('open', function (err) {
-        if (err) {
-            handleError(err);
-            return;
-        }
-        app.use(multipart({ db: conn.db, mongo: mongoose.mongo }));
-    });
 
     app.set('views', config.root + '/server/views');
     app.engine('html', require('ejs').renderFile);

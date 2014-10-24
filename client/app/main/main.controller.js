@@ -14,8 +14,15 @@ angular.module('aksiteApp')
             socket.syncUpdates('thing', $scope.awesomeThings);
         });
 
-        $scope.addThing = function () {
-            if ($scope.newThing === '') {
+        $scope.getFeatured = function() {
+            $http.get('/api/photo/featured')
+                .success(function (res) {
+                    console.log(res);
+                });
+        };
+
+        $scope.addThing = function() {
+            if ($scope.newThing === '' || $scope.newThing === ' ') {
                 return;
             }
             $http.post('/api/things', { name: $scope.newThing });
