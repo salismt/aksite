@@ -46,7 +46,7 @@ exports.newFeatured = function(req, res) {
             while(items.length < 100) {
                 items.push(items[index]);
                 index++;
-                if(index == initLen) index = 0;
+                if(index === initLen) index = 0;
             }
 
             // Setup read streams for each image
@@ -63,7 +63,7 @@ exports.newFeatured = function(req, res) {
 
             Q.all(tmpPromises)
                 .then(function(results) {
-                    if(results.length != 100) return res.status(500).end();
+                    if(results.length !== 100) return res.status(500).end();
                     var row0 = gm(results[0]);
 
                     for(var x = 1; x < 10; x++) {
@@ -71,7 +71,7 @@ exports.newFeatured = function(req, res) {
                         row0.append(results[x], true);
                     }
 
-                    var writestream = fs.createWriteStream(path.resolve(config.root + '/.tmp/tmp_row0.jpg'));
+                    var writestream = fs.createWriteStream(path.resolve(config.root + '/.gmtmp/tmp_row0.jpg'));
                     row0.stream(function(err, stdout/*, stderr, cmd*/) {
                         if(err) return err;
                         else stdout.pipe(writestream);
@@ -87,7 +87,7 @@ exports.newFeatured = function(req, res) {
                             //console.log(i + ', ' + (j + (10 * i) - 1));
                             row.append(results[j + (10 * i) - 1], true);
                         }
-                        var writestream = fs.createWriteStream(path.resolve(config.root + '/.tmp/tmp_row' + i + '.jpg'));
+                        var writestream = fs.createWriteStream(path.resolve(config.root + '/.gmtmp/tmp_row' + i + '.jpg'));
                         row.stream(function(err, stdout/*, stderr, cmd*/) {
                             if(err) return err;
                             else stdout.pipe(writestream);
@@ -100,7 +100,7 @@ exports.newFeatured = function(req, res) {
                     Q.fcall(function() {
                         var range = _.range(10);
                         _.forEach(range, function(row) {
-                            rows.push(path.resolve(config.root + '/.tmp/tmp_row' + row + '.jpg'));
+                            rows.push(path.resolve(config.root + '/.gmtmp/tmp_row' + row + '.jpg'));
                         });
                     })
                         .then(function() {
@@ -134,6 +134,7 @@ exports.newFeatured = function(req, res) {
         }
     });
 };
+
 
 // Add an Item to the DB
 exports.add = function(req, res) {
@@ -223,7 +224,7 @@ function handleGridStreamErr (res) {
         // may have written data already
         res.status(500).end();
         console.error(err.stack);
-    }
+    };
 }
 
 function writeToGridFS(readStream, data) {
@@ -241,11 +242,14 @@ function writeToTmp(readStream, name) {
     var deferred = Q.defer();
 
     (function next() {
-        var filename = path.resolve(config.root + '/.tmp/tmp_'+(name || '')+'.jpg');
-        var writestream = fs.createWriteStream(filename);
-        readStream.pipe(writestream).on('close', function() {
-            deferred.resolve(filename);
-        });
+        if(_.isNull(name) || _.isUndefined(name) || name === '') return new Error('No name given to tmp file');
+        else {
+            var filename = path.resolve(config.root + '/.gmtmp/tmp_'+name+'.jpg')
+            var writestream = fs.createWriteStream(filename);
+            readStream.pipe(writestream).on('close', function() {
+                deferred.resolve(filename);
+            });
+        }
     })();
 
     return deferred.promise;
