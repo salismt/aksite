@@ -9,7 +9,7 @@ exports.index = function (req, res) {
 		if (err) {
 			return handleError(res, err);
 		}
-		return res.json(200, projects);
+		return res.status(200).json(projects);
 	});
 };
 
@@ -32,7 +32,7 @@ exports.create = function (req, res) {
 		if (err) {
 			return handleError(res, err);
 		}
-		return res.json(201, project);
+		return res.status(201).json(project);
 	});
 };
 
@@ -53,7 +53,7 @@ exports.update = function (req, res) {
 			if (err) {
 				return handleError(res, err);
 			}
-			return res.json(200, project);
+			return res.status(200).json(project);
 		});
 	});
 };

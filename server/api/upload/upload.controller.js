@@ -37,14 +37,15 @@ exports.index = function(req, res) {
 exports.show = function(req, res) {
     gfs.exist({_id: req.params.id}, function(err, found) {
         if(err) return handleError(err);
-        //found ? console.log('File exists') : console.log('File does not exist');
-    });
+        else if(!found) return res.status(404).end();
+        else {
+            var readStream = gfs.createReadStream({
+                _id: req.params.id
+            });
 
-    var readStream = gfs.createReadStream({
-        _id: req.params.id
+            readStream.pipe(res);
+        }
     });
-
-    readStream.pipe(res);
 };
 
 // Creates a new file in the DB.

@@ -7,7 +7,8 @@ var PhotoSchema = new Schema({
 	name: String,
 	info: String,
 	hidden: Boolean,
-    fileId: String
+    fileId: String,
+    sourceUri: String
 });
 
 module.exports = mongoose.model('Photo', PhotoSchema);

@@ -17,7 +17,7 @@ exports.index = function (req, res) {
 
 // Get a single data
 exports.show = function (req, res) {
-    res.sendFile(path.resolve(config.root + '/' + '/data' + req.url));
+    res.sendfile(path.resolve(config.root + '/' + '/data' + req.url));
 //    Data.findById(req.params.id, function (err, data) {
 //        if (err) {
 //            return handleError(res, err);

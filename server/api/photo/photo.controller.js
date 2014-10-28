@@ -6,8 +6,6 @@ var Photo = require('./photo.model');
 //var path = require('path');
 var config = require('../../config/environment');
 
-//var rootDir = config.root;
-
 function handleError(res, err) {
     return res.send(500, err);
 }
@@ -15,10 +13,8 @@ function handleError(res, err) {
 // Get list of photos
 exports.index = function (req, res) {
     Photo.find(function (err, photos) {
-        if (err) {
-            return handleError(res, err);
-        }
-        return res.status(200).json(photos);
+        if (err) return handleError(res, err);
+        else return res.status(200).json(photos);
     });
 };
 

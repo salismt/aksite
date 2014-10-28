@@ -4,13 +4,13 @@
 
 'use strict';
 
-var Featured = require('./featured.model.js');
+var FeaturedItem = require('./featuredItem.model.js');
 
 exports.register = function(socket) {
-  Featured.schema.post('save', function (doc) {
+  FeaturedItem.schema.post('save', function (doc) {
     onSave(socket, doc);
   });
-  Featured.schema.post('remove', function (doc) {
+  FeaturedItem.schema.post('remove', function (doc) {
     onRemove(socket, doc);
   });
 }
