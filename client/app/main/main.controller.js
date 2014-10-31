@@ -160,8 +160,8 @@ angular.module('aksiteApp')
             d3.shuffle(data);
 
             var height = 460,
-                imageWidth = 450,
-                imageHeight = 300,
+                imageWidth = 200,
+                imageHeight = 200,
                 radius = 100,
                 depth = 4;
 

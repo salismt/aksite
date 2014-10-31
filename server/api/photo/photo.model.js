@@ -8,6 +8,7 @@ var PhotoSchema = new Schema({
 	info: String,
 	hidden: Boolean,
     fileId: String,
+    thumbnailId: String,
     sourceUri: String
 });
 

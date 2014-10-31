@@ -11,4 +11,11 @@
     </ul>
 
     <a class="btn btn-primary" href="admin/photos">Manage Photos</a>
+
+    <div class="form-group">
+        <label for="name">Image Viewer</label>
+
+        <input type="text" name="name" id="name" class="form-control" ng-model="fileId" required>
+    </div>
+    <img style="height: 200px;" ng-src="/api/upload/{{fileId}}">
 </div>

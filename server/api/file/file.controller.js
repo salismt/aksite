@@ -1,18 +1,13 @@
 'use strict';
 
 var _ = require('lodash'),
-    Photo = require('../photo/photo.model'),
     config = require('../../config/environment'),
     mongoose = require('mongoose'),
-    fs = require('fs'),
     gridform = require('gridform'),
+    File = require('./file.model'),
     Schema = mongoose.Schema,
     Grid = require('gridfs-stream'),
-    gridSchema = new Schema({}, {strict: false}),
-    gridModel = mongoose.model("gridModel", gridSchema, "fs.files");
-
-gridform.mongo = mongoose.mongo;
-Grid.mongo = mongoose.mongo;
+    gm = require('gm');
 
 var gfs,
     conn = mongoose.createConnection(config.mongo.uri);
@@ -27,9 +22,11 @@ conn.once('open', function(err) {
 
 // Get list of files
 exports.index = function(req, res) {
-    gridModel.find({}, function(err, gridfiles) {
-        if(err) handleError(res, err);
-        else res.json(gridfiles);
+    File.find(function(err, files) {
+        if(err) {
+            return handleError(res, err);
+        }
+        return res.json(200, files);
     });
 };
 
@@ -65,8 +62,7 @@ exports.create = function(req, res) {
     });
 
     form.parse(req, function(err, fields, files) {
-
-        if(err) return handleError(res, err);
+        //if(err) return handleError(res, err);
 
         /**
          * file.name            - the uploaded file name
@@ -85,26 +81,26 @@ exports.create = function(req, res) {
 
         console.log(file);
 
-        //console.log(files);
         console.log(fields);
 
         if(!_.isEmpty(fields)) {
+            //TODO: Break this out into separate functions for code readability
             if(fields.name && typeof fields.name == 'string') {
                 file.name = fields.name;
             }
             if(fields.purpose && typeof fields.purpose == 'string') {
                 file.purpose = fields.purpose;
-
                 if(fields.purpose.toLowerCase() === 'photo') {
+                    // Model properties
                     var photoModel = {
                         name: file.name,
                         fileId: file.id
                     };
-                    if(fields.info && typeof fields.purpose == 'string')
+                    if(fields.info && typeof fields.info == 'string')
                         photoModel.info = fields.info;
 
                     // Thumbnail generation
-                    var stream = gfs.createReadStream({_id: file.id});
+                    var stream = gfs.createReadStream({_id: file._id});
                     stream.on('error', handleGridStreamErr(res));
                     var img = gm(stream, file.id);
                     img.size(function(err, size) {
@@ -117,7 +113,7 @@ exports.create = function(req, res) {
                         img.stream(function(err, outStream) {
                             if(err) return res.status(500).end();
                             else {
-                                var writestream = gfs.createWriteStream(data);
+                                var writestream = gfs.createWriteStream({});
                                 outStream.pipe(writestream).on('close', function(file) {
                                     photoModel.thumbnailId = file.id;
                                 });
@@ -125,7 +121,21 @@ exports.create = function(req, res) {
                         });
                     });
 
+                    // Create the Photo DB instance
                     Photo.create(photoModel, function (err, photo) {
+                        if (err) return handleError(res, err);
+                        else return res.status(201).json(photo);
+                    });
+                } else if(fields.purpose.toLowerCase() === 'image') {
+                    res.status(400).send('Error: Server not setup to handle that request.');
+                } else if(fields.purpose.toLowerCase() === 'data') {
+                    res.status(400).send('Error: Server not setup to handle that request.');
+                } else {
+                    // unorganized file
+                    var fileModel = {
+                        fileId: file.id
+                    };
+                    File.create(fileModel, function (err, photo) {
                         if (err) return handleError(res, err);
                         else return res.status(201).json(photo);
                     });
@@ -140,26 +150,26 @@ exports.create = function(req, res) {
 };
 
 // Updates an existing file in the DB.
-//exports.update = function(req, res) {
-//    if(req.body._id) {
-//        delete req.body._id;
-//    }
-//    Upload.findById(req.params.id, function(err, upload) {
-//        if(err) {
-//            return handleError(res, err);
-//        } else if(!upload) {
-//            return res.send(404);
-//        } else {
-//            var updated = _.merge(upload, req.body);
-//            updated.save(function(err) {
-//                if(err) {
-//                    return handleError(res, err);
-//                }
-//                return res.json(200, upload);
-//            });
-//        }
-//    });
-//};
+exports.update = function(req, res) {
+    if(req.body._id) {
+        delete req.body._id;
+    }
+    File.findById(req.params.id, function(err, file) {
+        if(err) {
+            return handleError(res, err);
+        }
+        if(!file) {
+            return res.send(404);
+        }
+        var updated = _.merge(file, req.body);
+        updated.save(function(err) {
+            if(err) {
+                return handleError(res, err);
+            }
+            return res.json(200, file);
+        });
+    });
+};
 
 // Deletes a file from the DB.
 exports.destroy = function(req, res) {
@@ -171,6 +181,18 @@ exports.destroy = function(req, res) {
             res.status(200).end();
         });
     }
+};
+
+exports.test = function(req, res) {
+    var stream = gfs.createReadStream({_id: req.params.id});
+    stream.on('error', handleGridStreamErr(res));
+    var img = gm(stream, {_id: req.params.id});
+    img.size(function(err, val) {
+        if(err) return err;
+        console.log(val);
+    });
+    res.status(201).end();
+    //img.stream();
 };
 
 function handleError(res, err) {

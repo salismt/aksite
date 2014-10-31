@@ -18,6 +18,7 @@ function onConnect(socket) {
 	});
 
 	// Insert sockets below
+require('../api/file/file.socket').register(socket);
 require('../api/featured/featured.socket').register(socket);
 require('../api/data/data.socket').register(socket);
 require('../api/project/project.socket').register(socket);
