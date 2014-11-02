@@ -1,18 +1,19 @@
 'use strict';
 
-var express = require('express');
-var controller = require('./featured.controller.js');
+var express         = require('express'),
+    auth            = require('../../auth/auth.service'),
+    controller      = require('./featured.controller.js');
 
 var router = express.Router();
 
 router.get('/', controller.index);
-router.get('/new', controller.newFeatured);
+router.get('/new', auth.hasRole('admin'), controller.newFeatured);
 //router.get('/:id', controller.show);
-router.post('/:id', controller.add);
+router.post('/:id', auth.hasRole('admin'), controller.add);
 //router.post('/', controller.create);
 //router.put('/:id', controller.update);
 //router.patch('/:id', controller.update);
-router.delete('/:id', controller.destroy);
+router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 //router.get('/test', controller.test);
 
 module.exports = router;
