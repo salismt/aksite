@@ -1,11 +1,14 @@
 'use strict';
 
 var _ = require('lodash'),
+    Q = require('q'),
+    path = require('path'),
     Photo = require('../photo/photo.model'),
     config = require('../../config/environment'),
     mongoose = require('mongoose'),
     fs = require('fs'),
     gridform = require('gridform'),
+    gm = require('gm'),
     Schema = mongoose.Schema,
     Grid = require('gridfs-stream'),
     gridSchema = new Schema({}, {strict: false}),
@@ -61,7 +64,7 @@ exports.create = function(req, res) {
         };
 
         console.log(name);
-        console.log(file);
+        //console.log(file);
     });
 
     form.parse(req, function(err, fields, files) {
@@ -107,35 +110,30 @@ exports.create = function(req, res) {
                     var stream = gfs.createReadStream({_id: file.id});
                     stream.on('error', handleGridStreamErr(res));
                     var img = gm(stream, file.id);
-                    img.size(function(err, size) {
-                        if(size.width > size.height) {
-                            img.shave((size.width - size.height)/2, 0);
-                        } else {
-                            img.shave(0, (size.height - size.width)/2);
-                        }
-                        img.scale(200,200).quality(90);
-                        img.stream(function(err, outStream) {
-                            if(err) return res.status(500).end();
-                            else {
-                                var writestream = gfs.createWriteStream(data);
-                                outStream.pipe(writestream).on('close', function(file) {
-                                    photoModel.thumbnailId = file.id;
-                                });
-                            }
-                        });
-                    });
+                    img.resize(200, 200, "^");
+                    img.crop(200, 200, 0, 0);
+                    img.quality(90);
+                    img.stream(function(err, outStream) {
+                        if(err) return res.status(500).end();
+                        else {
+                            var writestream = gfs.createWriteStream({filename: file.name});
+                            writestream.on('close', function(file) {
+                                console.log(file);
+                                photoModel.thumbnailId = file._id;
 
-                    Photo.create(photoModel, function (err, photo) {
-                        if (err) return handleError(res, err);
-                        else return res.status(201).json(photo);
+                                Photo.create(photoModel, function (err, photo) {
+                                    if (err) return handleError(res, err);
+                                    else return res.status(201).json(photo);
+                                });
+                            });
+                            outStream.pipe(writestream);
+                        }
                     });
                 }
             }
         } else {
-            return res.status(201).end();
+            return res.status(400).end();
         }
-
-        //console.log(file.id);
     });
 };
 
@@ -177,7 +175,7 @@ function handleError(res, err) {
     return res.status(500).send(err);
 }
 
-function handleGridStreamErr (res) {
+function handleGridStreamErr(res) {
     return function (err) {
         if (/does not exist/.test(err)) {
             // trigger 404
@@ -189,4 +187,23 @@ function handleGridStreamErr (res) {
         res.status(500).end();
         console.error(err.stack);
     };
+}
+
+function getSize(fileId) {
+    var deferred = Q.defer();
+
+    (function next() {
+        var stream = gfs.createReadStream({_id: fileId});
+        stream.on('error', console.log);
+        var img = gm(stream, fileId);
+        img.size(function(err, size) {
+            if(err) return err;
+            else if(_.isUndefined(size)) return 'Error: size undefined';
+            else {
+                deferred.resolve(size);
+            }
+        });
+    })();
+
+    return deferred.promise;
 }

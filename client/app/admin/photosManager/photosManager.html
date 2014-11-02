@@ -70,6 +70,7 @@
             <ul class="list-group">
                 <li class="list-group-item" ng-repeat="photo in photos">
                     <strong>{{photo.name}}</strong><br>
+                    <img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.thumbnailId}}">
                     <img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.fileId}}">
                     <span class="text-muted">{{photo.info}}</span>
                     <a ng-click="deletePhoto(photo)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>

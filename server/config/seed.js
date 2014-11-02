@@ -12,6 +12,7 @@ var _ = require('lodash'),
     FeaturedItem = require('../api/featured/featuredItem.model.js'),
     FeaturedSection = require('../api/featured/featuredSection.model.js'),
     config = require('./environment'),
+    gm = require('gm'),
 
     mongoose = require('mongoose'),
     fs = require('fs'),
@@ -141,15 +142,33 @@ Photo.find({}).remove(function () {
             };
 
             var writestream = gfs.createWriteStream([]);
-            fs.createReadStream(photo.sourceUri).pipe(writestream);
-
             writestream.on('close', function(file) {
                 photoModel.fileId = file._id;
-                Photo.create(photoModel, function (err, photo1) {
-                    if (err) return console.log(err);
-                    else return photo1;
+
+                // Thumbnail generation
+                var stream = gfs.createReadStream({_id: file._id});
+                stream.on('error', console.log);
+                var img = gm(stream, file.id);
+                img.resize(200, 200, "^");
+                img.crop(200, 200, 0, 0);
+                img.quality(90);
+                img.stream(function(err, outStream) {
+                    if(err) return res.status(500).end();
+                    else {
+                        var thumbwritestream = gfs.createWriteStream({filename: file.name});
+                        thumbwritestream.on('close', function(file) {
+                            photoModel.thumbnailId = file._id;
+
+                            Photo.create(photoModel, function (err, photo1) {
+                                if (err) return console.log(err);
+                                else return photo1;
+                            });
+                        });
+                        outStream.pipe(thumbwritestream);
+                    }
                 });
             });
+            fs.createReadStream(photo.sourceUri).pipe(writestream);
         });
 
         console.log('finished populating photos');
@@ -163,7 +182,8 @@ Photo.find({}).remove(function () {
                             _.forEach(items, function(item) {
                                 var featuredItem = {};
                                 featuredItem.name = item.name;
-                                featuredItem.thumbnailId = item.fileId;
+                                //featuredItem.thumbnailId = item.fileId;
+                                featuredItem.thumbnailId = item.thumbnailId;
                                 featuredItem.link = '#';
                                 featuredItem.type = 'photo';
 
@@ -177,3 +197,7 @@ Photo.find({}).remove(function () {
         }, 500);
     });
 });
+
+function streamOut() {
+
+}
