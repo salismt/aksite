@@ -69,12 +69,12 @@
 
 #featured-photos:before {
     bottom: -16px;
-    box-shadow: 0px -8px 16px rgba(0,0,0,.3);
+    box-shadow: 0 -8px 16px rgba(0,0,0,.3);
 }
 
 #featured-photos:after {
     top: -16px;
-    box-shadow: 0px 8px 16px rgba(0,0,0,.3);
+    box-shadow: 0 8px 16px rgba(0,0,0,.3);
 }
 
 #featured-photos-deep {
