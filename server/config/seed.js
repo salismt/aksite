@@ -11,6 +11,7 @@ var _ = require('lodash'),
     Photo = require('../api/photo/photo.model'),
     FeaturedItem = require('../api/featured/featuredItem.model.js'),
     FeaturedSection = require('../api/featured/featuredSection.model.js'),
+    FeaturedController = require('../api/featured/featured.controller.js'),
     config = require('./environment'),
     gm = require('gm'),
 
@@ -188,7 +189,13 @@ Photo.find({}).remove(function () {
                                 featuredItem.type = 'photo';
 
                                 FeaturedItem.create(featuredItem);
-                            })
+                            });
+                            setTimeout(function() {
+                                FeaturedController.newFeatured({}, {
+                                    status: function() { return this; },
+                                    send: function() { return this; }
+                                });
+                            }, 100);
                         }
                     });
                 });
