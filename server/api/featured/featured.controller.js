@@ -34,7 +34,7 @@ exports.index = function(req, res) {
 };
 
 // Compose a new Featured Section
-exports.newFeatured = function(req, res) {
+var newFeatured = exports.newFeatured = function(req, res) {
     FeaturedSection.find({}).remove(function() {});
     FeaturedItem.find({}, function(err, items) {
         if(err) return handleError(res, err);

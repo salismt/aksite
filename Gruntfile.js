@@ -87,7 +87,7 @@ module.exports = function(grunt) {
             },
             sass: {
                 files: [
-                    '<%= yeoman.client %>/{app,components}/**/*.{scss,sass}'],
+                    '<%= yeoman.client %>/{app,components,assets/css}/**/*.{scss,sass}'],
                 tasks: ['sass', 'autoprefixer']
             },
             gruntfile: {
@@ -479,7 +479,8 @@ module.exports = function(grunt) {
                     loadPath: [
                         '<%= yeoman.client %>/bower_components',
                         '<%= yeoman.client %>/app',
-                        '<%= yeoman.client %>/components'
+                        '<%= yeoman.client %>/components',
+                        '<%= yeoman.client %>/assets/css'
                     ],
                     compass: false
                 },

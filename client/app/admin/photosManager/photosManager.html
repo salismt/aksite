@@ -66,28 +66,53 @@
             </form>
         </div>
 
-        <div class="col-sm-12">
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="photo in photos">
-                    <strong>{{photo.name}}</strong><br>
-                    <img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.thumbnailId}}">
-                    <img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.fileId}}">
-                    <span class="text-muted">{{photo.info}}</span>
-                    <a ng-click="deletePhoto(photo)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
-                </li>
-            </ul>
-        </div>
         <!--<div class="col-sm-12">-->
             <!--<ul class="list-group">-->
-                <!--<li class="list-group-item" ng-repeat="file in files">-->
-                    <!--<strong>{{file.filename}}</strong><br>-->
-                    <!--<img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{file._id}}">-->
-                    <!--<span class="text-muted">{{file.length}} Bytes</span>-->
-                    <!--<a ng-click="deleteFile(file._id)" class="trash">-->
-                        <!--<span class="glyphicon glyphicon-trash pull-right"></span>-->
-                    <!--</a>-->
+                <!--<li class="list-group-item" ng-repeat="photo in photos">-->
+                    <!--<strong>{{photo.name}}</strong><br>-->
+                    <!--<img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.thumbnailId}}">-->
+                    <!--<img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.fileId}}">-->
+                    <!--<span class="text-muted">{{photo.info}}</span>-->
+                    <!--<a ng-click="deletePhoto(photo)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>-->
                 <!--</li>-->
             <!--</ul>-->
         <!--</div>-->
     </div>
 </div>
+
+<div id="grid-gallery" class="grid-gallery">
+    <section class="grid-wrap">
+        <ul class="grid">
+            <li class="grid-sizer"></li><!-- for Masonry column width -->
+            <li ng-repeat="photo in photos">
+                <figure>
+                    <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
+                    <figcaption><h3>{{photo.name}}</h3><p>{{photo.info}}</p></figcaption>
+                </figure>
+            </li>
+        </ul>
+    </section><!-- // grid-wrap -->
+    <section class="slideshow">
+        <ul>
+            <li ng-repeat="photo in photos">
+                <figure>
+                    <figcaption>
+                        <h3>{{photo.name}}</h3>
+                        <p>{{photo.info}}</p>
+                    </figcaption>
+                    <img ng-src="api/upload/{{photo.fileId}}" alt="img"/>
+                </figure>
+            </li>
+        </ul>
+        <nav>
+            <span class="icon nav-prev fa fa-chevron-left"></span>
+            <span class="icon nav-next fa fa-chevron-right"></span>
+            <span class="icon nav-close fa fa-times"></span>
+        </nav>
+        <div class="info-keys icon">
+            <div class="fa fa-fw fa-caret-left"></div>
+            Navigate with arrow keys
+            <div class="fa fa-fw fa-caret-right"></div>
+        </div>
+    </section><!-- // slideshow -->
+</div><!-- // grid-gallery -->

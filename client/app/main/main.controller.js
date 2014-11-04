@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('MainCtrl', function ($scope, $http, socket, d3Service) {
+    .controller('MainCtrl', function ($scope, $http, socket) {
         $scope.awesomeThings = [];
         $scope.photos = [];
         $scope.featuredSection = {};
