@@ -58,3 +58,7 @@ input[readonly] {
     background-color: white !important;
     cursor: text !important;
 }
+
+md-button .md-button-inner {
+    padding: 10px;
+}
