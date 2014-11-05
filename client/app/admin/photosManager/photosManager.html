@@ -37,6 +37,8 @@
                     </div>
                 </div>
 
+                <progressbar class="progress-striped active" value="progress" ng-show="progress"><b>{{progress}}%</b></progressbar>
+
                 <!--<div class="form-group">-->
                     <!--<label>Hidden</label>-->
 
@@ -59,7 +61,7 @@
                     <button class="btn btn-inverse btn-lg btn-login" type="submit">
                         Add
                     </button>
-                    <a class="btn btn-default btn-lg btn-register" href="/admin/photos">
+                    <a class="btn btn-default btn-lg btn-register" ng-click="upload.abort()">
                         Cancel
                     </a>
                 </div>
@@ -87,11 +89,17 @@
             <li ng-repeat="photo in photos">
                 <figure>
                     <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
-                    <figcaption><h3>{{photo.name}}</h3><p>{{photo.info}}</p></figcaption>
+                    <figcaption>
+                        <a ng-click="deletePhoto(photo)" class="trash"><span class="fa fa-trash pull-right"></span></a>
+                        <h3>{{photo.name}}</h3>
+                        <p>{{photo.info}}</p>
+                        <!--<button style="text-decoration: none;" class="btn btn-link fa fa-trash"></button>-->
+                    </figcaption>
                 </figure>
             </li>
         </ul>
     </section><!-- // grid-wrap -->
+    <div class="backdrop"></div>
     <section class="slideshow">
         <ul>
             <li ng-repeat="photo in photos">

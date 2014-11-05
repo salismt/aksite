@@ -7,6 +7,7 @@ angular.module('aksiteApp')
         };
         $scope.errors = {};
         $scope.dropSupported = true;
+        $scope.progress = undefined;
 
         $scope.gallery = new CBPGridGallery( document.getElementById( 'grid-gallery' ) );
         // Use the User $resource to fetch all users
@@ -27,7 +28,7 @@ angular.module('aksiteApp')
             $scope.submitted = true;
 
             if(form.$valid) {
-                $upload.upload({
+                $scope.upload = $upload.upload({
                     url: 'api/upload',
                     method: 'POST',
                     file: $scope.fileToUpload,
@@ -37,10 +38,22 @@ angular.module('aksiteApp')
                         purpose: 'photo'
                     }})
                     .progress(function(evt) {
+                        $scope.progress = (100.0*(evt.position / evt.total)).toFixed(1);
                         console.log(evt);
                     })
                     .success(function(data) {
-                        console.log(data);
+                        $scope.progress = undefined;
+                        //console.log(data);
+                        $scope.photos = Photo.query();
+                    })
+                    .error(function(response, status, headers, config) {
+                        $scope.progress = undefined;
+                    })
+                    .xhr(function(xhr) {
+                        // to abort, use ng-click like: ng-click="abort()"
+                        $scope.abort = function() {
+                            xhr.abort();
+                        };
                     });
             }
         };

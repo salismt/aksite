@@ -99,7 +99,7 @@
 
 		// open the slideshow when clicking on the main grid items
 		this.gridItems.forEach( function( item, idx ) {
-			item.addEventListener( 'click', function() {
+            item.querySelector('figure img').addEventListener( 'click', function() {
 				self._openSlideshow( idx );
 			} );
 		} );
