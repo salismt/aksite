@@ -67,4 +67,12 @@ angular.module('aksiteApp')
                     console.log('deleteFile error');
                 });
         };
+
+        $scope.onFileSelect = function($files) {
+            //$files: an array of files selected, each file has name, size, and type.
+            var file = $files[0];
+
+            $scope.filename = file.name;
+            $scope.fileToUpload = file;
+        };
     });
