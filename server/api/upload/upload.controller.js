@@ -83,7 +83,7 @@ exports.create = function(req, res) {
          */
         var file = files.file;
 
-        if(_.isNull(file))
+        if(_.isNull(file) || _.isUndefined(file))
             return res.status(400).send(new Error('No file'));
 
         console.log(file);
