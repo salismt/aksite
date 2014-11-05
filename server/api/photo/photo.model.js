@@ -9,7 +9,10 @@ var PhotoSchema = new Schema({
 	hidden: Boolean,
     fileId: String,
     thumbnailId: String,
-    sourceUri: String
+    sourceUri: String,
+    metadata: {
+
+    }
 });
 
 module.exports = mongoose.model('Photo', PhotoSchema);

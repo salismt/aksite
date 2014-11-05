@@ -30,7 +30,19 @@ exports.show = function (req, res) {
 
 // Creates a new gallery in the DB.
 exports.create = function (req, res) {
-    Gallery.create(req.body, function (err, gallery) {
+    var sanitized = sanitiseNewGallery(req.body, req.params);
+    if(sanitized !== null) {
+        return res.status(400).send(sanitized);
+    }
+    var newGallery = {
+        name: req.body.name,
+        info: req.body.info,
+        photos: req.body.photos
+    };
+    if(req.body.date) {
+        
+    }
+    Gallery.create(newGallery, function (err, gallery) {
         if (err) {
             return handleError(res, err);
         } else {
@@ -81,4 +93,31 @@ exports.destroy = function (req, res) {
 
 function handleError(res, err) {
     return res.status(500).send(err);
+}
+
+function sanitiseNewGallery(body, params) {
+    // Required Params
+    if(!body.name) {
+        return 'Missing Name'
+    } else if(!body.info) {
+        return 'Missing info';
+    } else if(!body.photos) {
+        return 'No photos given';
+    }
+    // Type Checking
+    else if(typeof body.name !== 'string') {
+        return 'Name not String';
+    } else if(typeof body.info !== 'string') {
+        return 'Info not String';
+    } else if(body.date instanceof Date && !isNaN(body.date.valueOf())) {
+        return 'Date not of type Date';
+    } else if(body.active && typeof body.active !== 'boolean') {
+        return 'Active not Boolean';
+    } else if(!_.isArray(body.photos)) {
+        return 'Photos not Array';
+    }
+    //TODO: sanitize each photo
+    else {
+        return null;
+    }
 }

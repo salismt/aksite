@@ -6,7 +6,10 @@ var mongoose = require('mongoose'),
 var GallerySchema = new Schema({
     name: String,
     info: String,
-    active: Boolean
+    date: Date,
+    active: Boolean,
+    photos: [{}],
+    featured: {}
 });
 
 module.exports = mongoose.model('Gallery', GallerySchema);
