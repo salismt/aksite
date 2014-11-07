@@ -1,11 +1,18 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-    <ul class="list-group">
-        <li class="list-group-item" ng-repeat="user in users">
-            <strong>{{user.name}}</strong><br>
-            <span class="text-muted">{{user.email}}</span>
-            <a ng-click="deleteUser(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
-        </li>
-    </ul>
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Manage Users</h1>
+        </div>
+    </div>
+    <div class="row">
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="user in users">
+                <strong>{{user.name}}</strong><br>
+                <span class="text-muted">{{user.email}}</span>
+                <a ng-click="deleteUser(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
+            </li>
+        </ul>
+    </div>
 </div>

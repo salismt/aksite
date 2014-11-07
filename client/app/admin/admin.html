@@ -3,12 +3,14 @@
 <div class="container">
     <ul class="ch-grid">
         <li ng-repeat="page in pages">
-            <div class="ch-item">
-                <span class="fa {{page.icon}} ch-icon fa-fw"></span>
-                <a href="{{page.link}}" class="ch-info">
-                    <h3>{{page.name}}</h3>
-                </a>
-            </div>
+            <a href="{{page.link}}">
+                <div class="ch-item">
+                    <span class="fa {{page.icon}} ch-icon fa-fw"></span>
+                    <div class="ch-info">
+                        <h3>{{page.name}}</h3>
+                    </div>
+                </div>
+            </a>
         </li>
     </ul>
 
