@@ -1,6 +1,23 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
+    <div class="row">
+        <a class="btn btn-circle btn-primary">1</a>
+        <a class="btn btn-circle btn-primary">2</a>
+        <a class="btn btn-circle btn-primary">3</a>
+        <a class="btn btn-circle btn-primary">4</a>
+    </div>
+    <ul class="ch-grid">
+        <li>
+            <div class="ch-item ch-img-1">
+                <span class="fa fa-search ch-icon"></span>
+                <div class="ch-info">
+                    <h3>Use what you have</h3>
+                    <p>by Angela Duncan <a href="http://drbl.in/eOPF">View on Dribbble</a></p>
+                </div>
+            </div>
+        </li>
+    </ul>
     <p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>
     <ul class="list-group">
         <li class="list-group-item" ng-repeat="user in users">
