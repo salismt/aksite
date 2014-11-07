@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('PhotosManagerCtrl', function($scope, $http, $upload, Photo) {
+    .controller('PhotomanagerCtrl', function($scope, $http, Photo) {
         $scope.photo = {
             hidden: false
         };
@@ -9,7 +9,7 @@ angular.module('aksiteApp')
         $scope.dropSupported = true;
         $scope.progress = undefined;
 
-        $scope.gallery = new CBPGridGallery( document.getElementById( 'grid-gallery' ) );
+        $scope.gallery = new CBPGridGallery(document.getElementById('grid-gallery'));
         // Use the User $resource to fetch all users
         $scope.photos = Photo.query(function(val) {
             setTimeout(function() {
@@ -18,7 +18,7 @@ angular.module('aksiteApp')
         });
 
         $scope.files = [];
-        $http.get('/api/upload').success(function (files) {
+        $http.get('/api/upload').success(function(files) {
             $scope.files = files;
         });
 
@@ -36,9 +36,10 @@ angular.module('aksiteApp')
                         name: $scope.photo.name,
                         info: $scope.photo.info,
                         purpose: 'photo'
-                    }})
+                    }
+                })
                     .progress(function(evt) {
-                        $scope.progress = (100.0*(evt.position / evt.total)).toFixed(1);
+                        $scope.progress = (100.0 * (evt.position / evt.total)).toFixed(1);
                         console.log(evt);
                     })
                     .success(function(data) {
@@ -68,8 +69,8 @@ angular.module('aksiteApp')
         };
 
         $scope.deleteFile = function(fileId) {
-            $http.delete('/api/upload/'+fileId)
-                .success(function () {
+            $http.delete('/api/upload/' + fileId)
+                .success(function() {
                     angular.forEach($scope.files, function(u, i) {
                         if(u._id === fileId) {
                             $scope.files.splice(i, 1);

@@ -1,39 +1,21 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-    <div class="row">
-        <a class="btn btn-circle btn-primary">1</a>
-        <a class="btn btn-circle btn-primary">2</a>
-        <a class="btn btn-circle btn-primary">3</a>
-        <a class="btn btn-circle btn-primary">4</a>
-    </div>
-
     <ul class="ch-grid">
         <li ng-repeat="page in pages">
             <div class="ch-item">
-                <span class="fa {{page.icon}} ch-icon"></span>
-                <a href="" class="ch-info">
+                <span class="fa {{page.icon}} ch-icon fa-fw"></span>
+                <a href="{{page.link}}" class="ch-info">
                     <h3>{{page.name}}</h3>
                 </a>
             </div>
         </li>
     </ul>
 
-    <p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>
-    <ul class="list-group">
-        <li class="list-group-item" ng-repeat="user in users">
-            <strong>{{user.name}}</strong><br>
-            <span class="text-muted">{{user.email}}</span>
-            <a ng-click="deleteUser(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
-        </li>
-    </ul>
-
-    <a class="btn btn-primary" href="admin/photos">Manage Photos</a>
-
     <div class="form-group">
         <label for="name">Image Viewer</label>
-
-        <input type="text" name="name" id="name" class="form-control" ng-model="fileId" required>
+        <input type="text" placeholder="fileId" name="name" id="name" class="form-control" style="width: 50%;"
+               ng-model="fileId" required>
     </div>
     <img ng-src="/api/upload/{{fileId}}">
 </div>

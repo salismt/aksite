@@ -29,7 +29,8 @@
                         <span class="input-group-btn">
                             <span class="btn btn-primary btn-file">
                                 Browse
-                                <input type="file" accept="images/*" id="fileInput" name="myFiles[]" ng-file-select="onFileSelect($files)">
+                                <input type="file" accept="images/*" id="fileInput" name="myFiles[]"
+                                       ng-file-select="onFileSelect($files)">
                             </span>
                             <!--<button class="btn btn-default" ng-click="upload.abort()">Cancel Upload</button>-->
                         </span>
@@ -37,12 +38,13 @@
                     </div>
                 </div>
 
-                <progressbar class="progress-striped active" value="progress" ng-show="progress"><b>{{progress}}%</b></progressbar>
+                <progressbar class="progress-striped active" value="progress" ng-show="progress"><b>{{progress}}%</b>
+                </progressbar>
 
                 <!--<div class="form-group">-->
-                    <!--<label>Hidden</label>-->
+                <!--<label>Hidden</label>-->
 
-                    <!--<button type="button" class="btn btn-primary" ng-model="photo.hidden" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">{{photo.hidden}}</button>-->
+                <!--<button type="button" class="btn btn-primary" ng-model="photo.hidden" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">{{photo.hidden}}</button>-->
                 <!--</div>-->
 
                 <div class="form-group has-error">
@@ -69,15 +71,15 @@
         </div>
 
         <!--<div class="col-sm-12">-->
-            <!--<ul class="list-group">-->
-                <!--<li class="list-group-item" ng-repeat="photo in photos">-->
-                    <!--<strong>{{photo.name}}</strong><br>-->
-                    <!--<img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.thumbnailId}}">-->
-                    <!--<img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.fileId}}">-->
-                    <!--<span class="text-muted">{{photo.info}}</span>-->
-                    <!--<a ng-click="deletePhoto(photo)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>-->
-                <!--</li>-->
-            <!--</ul>-->
+        <!--<ul class="list-group">-->
+        <!--<li class="list-group-item" ng-repeat="photo in photos">-->
+        <!--<strong>{{photo.name}}</strong><br>-->
+        <!--<img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.thumbnailId}}">-->
+        <!--<img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.fileId}}">-->
+        <!--<span class="text-muted">{{photo.info}}</span>-->
+        <!--<a ng-click="deletePhoto(photo)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>-->
+        <!--</li>-->
+        <!--</ul>-->
         <!--</div>-->
     </div>
 </div>
@@ -85,20 +87,24 @@
 <div id="grid-gallery" class="grid-gallery">
     <section class="grid-wrap">
         <ul class="grid">
-            <li class="grid-sizer"></li><!-- for Masonry column width -->
+            <li class="grid-sizer"></li>
+            <!-- for Masonry column width -->
             <li ng-repeat="photo in photos">
                 <figure>
                     <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
                     <figcaption>
                         <a ng-click="deletePhoto(photo)" class="trash"><span class="fa fa-trash pull-right"></span></a>
+
                         <h3>{{photo.name}}</h3>
+
                         <p>{{photo.info}}</p>
                         <!--<button style="text-decoration: none;" class="btn btn-link fa fa-trash"></button>-->
                     </figcaption>
                 </figure>
             </li>
         </ul>
-    </section><!-- // grid-wrap -->
+    </section>
+    <!-- // grid-wrap -->
     <div class="backdrop"></div>
     <section class="slideshow">
         <ul>
@@ -106,6 +112,7 @@
                 <figure>
                     <figcaption>
                         <h3>{{photo.name}}</h3>
+
                         <p>{{photo.info}}</p>
                     </figcaption>
                     <img ng-src="api/upload/{{photo.fileId}}" alt="img"/>
@@ -122,5 +129,6 @@
             Navigate with arrow keys
             <div class="fa fa-fw fa-caret-right"></div>
         </div>
-    </section><!-- // slideshow -->
+    </section>
+    <!-- // slideshow -->
 </div><!-- // grid-gallery -->
