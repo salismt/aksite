@@ -5,9 +5,9 @@ var Gallery = require('./gallery.model');
 var Photo = require('../photo/photo.model');
 
 // Get list of galleries
-exports.index = function (req, res) {
-    Gallery.find(function (err, galleries) {
-        if (err) {
+exports.index = function(req, res) {
+    Gallery.find(function(err, galleries) {
+        if(err) {
             return handleError(res, err);
         } else {
             return res.status(200).json(galleries);
@@ -16,11 +16,11 @@ exports.index = function (req, res) {
 };
 
 // Get a single gallery
-exports.show = function (req, res) {
-    Gallery.findById(req.params.id, function (err, gallery) {
-        if (err) {
+exports.show = function(req, res) {
+    Gallery.findById(req.params.id, function(err, gallery) {
+        if(err) {
             return handleError(res, err);
-        } else if (!gallery) {
+        } else if(!gallery) {
             return res.send(404);
         } else {
             return res.json(gallery);
@@ -29,7 +29,7 @@ exports.show = function (req, res) {
 };
 
 // Creates a new gallery in the DB.
-exports.create = function (req, res) {
+exports.create = function(req, res) {
     var sanitized = sanitiseNewGallery(req.body, req.params);
     if(sanitized !== null) {
         return res.status(400).send(sanitized);
@@ -40,10 +40,10 @@ exports.create = function (req, res) {
         photos: req.body.photos
     };
     if(req.body.date) {
-        
+
     }
-    Gallery.create(newGallery, function (err, gallery) {
-        if (err) {
+    Gallery.create(newGallery, function(err, gallery) {
+        if(err) {
             return handleError(res, err);
         } else {
             return res.status(201).json(gallery);
@@ -52,19 +52,19 @@ exports.create = function (req, res) {
 };
 
 // Updates an existing gallery in the DB.
-exports.update = function (req, res) {
-    if (req.body._id) {
+exports.update = function(req, res) {
+    if(req.body._id) {
         delete req.body._id;
     }
-    Gallery.findById(req.params.id, function (err, gallery) {
-        if (err) {
+    Gallery.findById(req.params.id, function(err, gallery) {
+        if(err) {
             return handleError(res, err);
-        } else if (!gallery) {
+        } else if(!gallery) {
             return res.send(404);
         } else {
             var updated = _.merge(gallery, req.body);
-            return updated.save(function (err) {
-                if (err) {
+            return updated.save(function(err) {
+                if(err) {
                     return handleError(res, err);
                 }
                 return res.status(200).json(gallery);
@@ -74,15 +74,15 @@ exports.update = function (req, res) {
 };
 
 // Deletes a gallery from the DB.
-exports.destroy = function (req, res) {
-    Gallery.findById(req.params.id, function (err, gallery) {
-        if (err) {
+exports.destroy = function(req, res) {
+    Gallery.findById(req.params.id, function(err, gallery) {
+        if(err) {
             return handleError(res, err);
-        } else if (!gallery) {
+        } else if(!gallery) {
             return res.send(404);
         } else {
-            return gallery.remove(function (err) {
-                if (err) {
+            return gallery.remove(function(err) {
+                if(err) {
                     return handleError(res, err);
                 }
                 return res.send(204);

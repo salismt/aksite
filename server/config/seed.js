@@ -23,7 +23,7 @@ var _ = require('lodash'),
     gridModel1 = mongoose.model("gridModel1", gridSchema, "fs.files");
 Grid.mongo = mongoose.mongo;
 
-Thing.find({}).remove(function () {
+Thing.find({}).remove(function() {
     Thing.create({
         name: 'Thing 1',
         info: 'Hi, I\'m Thing 1'
@@ -45,7 +45,7 @@ Thing.find({}).remove(function () {
     });
 });
 
-User.find({}).remove(function () {
+User.find({}).remove(function() {
     User.create({
             provider: 'local',
             name: 'Test User',
@@ -57,13 +57,13 @@ User.find({}).remove(function () {
             name: 'Admin',
             email: 'admin@admin.com',
             password: 'admin'
-        }, function () {
+        }, function() {
             console.log('finished populating users');
         }
     );
 });
 
-Photo.find({}).remove(function () {
+Photo.find({}).remove(function() {
     var gfs,
         conn = mongoose.createConnection(config.mongo.uri);
     conn.once('open', function(err) {
@@ -86,54 +86,54 @@ Photo.find({}).remove(function () {
         });
 
         var photos = [{
-                name: 'test00',
-                info: 'testInfo',
-                sourceUri: 'data/IMG_4149.JPG'
-            }, {
-                name: 'test01',
-                info: 'testInfo',
-                sourceUri: 'data/IMG_4150.JPG'
-            }, {
-                name: 'test02',
-                info: 'testInfo',
-                sourceUri: 'data/IMG_4151.JPG'
-            }, {
-                name: 'test03',
-                info: 'testInfo',
-                sourceUri: 'data/IMG_4152.JPG'
-            }, {
-                name: 'test04',
-                info: 'testInfo',
-                sourceUri: 'data/IMG_4153.JPG'
-            }, {
-                name: 'test05',
-                info: 'testInfo',
-                sourceUri: 'data/IMG_4154.JPG'
-            }, {
-                name: 'test06',
-                info: 'testInfo',
-                sourceUri: 'data/IMG_4155.JPG'
-            }, {
-                name: 'test07',
-                info: 'testInfo',
-                sourceUri: 'data/IMG_4156.JPG'
-            }, {
-                name: 'test08',
-                info: 'testInfo',
-                sourceUri: 'data/IMG_4157.JPG'
-            }, {
-                name: 'test09',
-                info: 'testInfo',
-                sourceUri: 'data/IMG_4158.JPG'
-            }, {
-                name: 'test10',
-                info: 'testInfo',
-                sourceUri: 'data/IMG_4159.JPG'
-            }, {
-                name: 'test11',
-                info: 'testInfo',
-                sourceUri: 'data/IMG_4161.JPG'
-            }];
+            name: 'test00',
+            info: 'testInfo',
+            sourceUri: 'data/IMG_4149.JPG'
+        }, {
+            name: 'test01',
+            info: 'testInfo',
+            sourceUri: 'data/IMG_4150.JPG'
+        }, {
+            name: 'test02',
+            info: 'testInfo',
+            sourceUri: 'data/IMG_4151.JPG'
+        }, {
+            name: 'test03',
+            info: 'testInfo',
+            sourceUri: 'data/IMG_4152.JPG'
+        }, {
+            name: 'test04',
+            info: 'testInfo',
+            sourceUri: 'data/IMG_4153.JPG'
+        }, {
+            name: 'test05',
+            info: 'testInfo',
+            sourceUri: 'data/IMG_4154.JPG'
+        }, {
+            name: 'test06',
+            info: 'testInfo',
+            sourceUri: 'data/IMG_4155.JPG'
+        }, {
+            name: 'test07',
+            info: 'testInfo',
+            sourceUri: 'data/IMG_4156.JPG'
+        }, {
+            name: 'test08',
+            info: 'testInfo',
+            sourceUri: 'data/IMG_4157.JPG'
+        }, {
+            name: 'test09',
+            info: 'testInfo',
+            sourceUri: 'data/IMG_4158.JPG'
+        }, {
+            name: 'test10',
+            info: 'testInfo',
+            sourceUri: 'data/IMG_4159.JPG'
+        }, {
+            name: 'test11',
+            info: 'testInfo',
+            sourceUri: 'data/IMG_4161.JPG'
+        }];
 
         _.forEach(photos, function(photo) {
             var photoModel = {
@@ -160,8 +160,8 @@ Photo.find({}).remove(function () {
                         thumbwritestream.on('close', function(file) {
                             photoModel.thumbnailId = file._id;
 
-                            Photo.create(photoModel, function (err, photo1) {
-                                if (err) return console.log(err);
+                            Photo.create(photoModel, function(err, photo1) {
+                                if(err) return console.log(err);
                                 else return photo1;
                             });
                         });
@@ -192,8 +192,12 @@ Photo.find({}).remove(function () {
                             });
                             setTimeout(function() {
                                 FeaturedController.newFeatured({}, {
-                                    status: function() { return this; },
-                                    send: function() { return this; }
+                                    status: function() {
+                                        return this;
+                                    },
+                                    send: function() {
+                                        return this;
+                                    }
                                 });
                             }, 100);
                         }

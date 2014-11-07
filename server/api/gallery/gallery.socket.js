@@ -6,11 +6,11 @@
 
 var Gallery = require('./gallery.model');
 
-exports.register = function (socket) {
-    Gallery.schema.post('save', function (doc) {
+exports.register = function(socket) {
+    Gallery.schema.post('save', function(doc) {
         onSave(socket, doc);
     });
-    Gallery.schema.post('remove', function (doc) {
+    Gallery.schema.post('remove', function(doc) {
         onRemove(socket, doc);
     });
 }

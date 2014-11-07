@@ -1,8 +1,8 @@
 'use strict';
 
-var express         = require('express'),
-    auth            = require('../../auth/auth.service'),
-    controller      = require('./upload.controller');
+var express = require('express'),
+    auth = require('../../auth/auth.service'),
+    controller = require('./upload.controller');
 
 var router = express.Router();
 

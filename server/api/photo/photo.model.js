@@ -1,19 +1,17 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-	Schema = mongoose.Schema;
+    Schema = mongoose.Schema;
 
 var PhotoSchema = new Schema({
-	name: String,
-	info: String,
-	hidden: Boolean,
+    name: String,
+    info: String,
+    hidden: Boolean,
     featured: Boolean,
     fileId: String,
     thumbnailId: String,
     sourceUri: String,
-    metadata: {
-
-    }
+    metadata: {}
 });
 
 module.exports = mongoose.model('Photo', PhotoSchema);

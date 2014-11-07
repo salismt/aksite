@@ -6,9 +6,9 @@ var config = require('../../config/environment');
 var path = require('path');
 
 // Get list of datas
-exports.index = function (req, res) {
-    Data.find(function (err, datas) {
-        if (err) {
+exports.index = function(req, res) {
+    Data.find(function(err, datas) {
+        if(err) {
             return handleError(res, err);
         }
         return res.json(200, datas);
@@ -16,7 +16,7 @@ exports.index = function (req, res) {
 };
 
 // Get a single data
-exports.show = function (req, res) {
+exports.show = function(req, res) {
     res.sendfile(path.resolve(config.root + '/' + '/data' + req.url));
 //    Data.findById(req.params.id, function (err, data) {
 //        if (err) {
@@ -30,9 +30,9 @@ exports.show = function (req, res) {
 };
 
 // Creates a new data in the DB.
-exports.create = function (req, res) {
-    Data.create(req.body, function (err, data) {
-        if (err) {
+exports.create = function(req, res) {
+    Data.create(req.body, function(err, data) {
+        if(err) {
             return handleError(res, err);
         } else {
             return res.json(201, data);
@@ -41,19 +41,19 @@ exports.create = function (req, res) {
 };
 
 // Updates an existing data in the DB.
-exports.update = function (req, res) {
-    if (req.body._id) {
+exports.update = function(req, res) {
+    if(req.body._id) {
         delete req.body._id;
     }
-    Data.findById(req.params.id, function (err, data) {
-        if (err) {
+    Data.findById(req.params.id, function(err, data) {
+        if(err) {
             return handleError(res, err);
-        } else if (!data) {
+        } else if(!data) {
             return res.send(404);
         } else {
             var updated = _.merge(data, req.body);
-            updated.save(function (err) {
-                if (err) {
+            updated.save(function(err) {
+                if(err) {
                     return handleError(res, err);
                 }
                 return res.json(200, data);
@@ -63,15 +63,15 @@ exports.update = function (req, res) {
 };
 
 // Deletes a data from the DB.
-exports.destroy = function (req, res) {
-    Data.findById(req.params.id, function (err, data) {
-        if (err) {
+exports.destroy = function(req, res) {
+    Data.findById(req.params.id, function(err, data) {
+        if(err) {
             return handleError(res, err);
-        } else if (!data) {
+        } else if(!data) {
             return res.send(404);
         } else {
-            data.remove(function (err) {
-                if (err) {
+            data.remove(function(err) {
+                if(err) {
                     return handleError(res, err);
                 } else {
                     return res.send(204);

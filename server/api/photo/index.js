@@ -1,9 +1,9 @@
 'use strict';
 
-var express         = require('express'),
-    controller      = require('./photo.controller'),
-    auth            = require('../../auth/auth.service'),
-    router          = express.Router();
+var express = require('express'),
+    controller = require('./photo.controller'),
+    auth = require('../../auth/auth.service'),
+    router = express.Router();
 
 router.get('/', controller.index);
 router.get('/:id', controller.show);

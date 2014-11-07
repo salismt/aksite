@@ -59,9 +59,7 @@ exports.create = function(req, res) {
 
     // optionally store per-file metadata
     form.on('fileBegin', function(name, file) {
-        file.metadata = {
-
-        };
+        file.metadata = {};
 
         console.log(name);
         //console.log(file);
@@ -121,8 +119,8 @@ exports.create = function(req, res) {
                                 console.log(file);
                                 photoModel.thumbnailId = file._id;
 
-                                Photo.create(photoModel, function (err, photo) {
-                                    if (err) return handleError(res, err);
+                                Photo.create(photoModel, function(err, photo) {
+                                    if(err) return handleError(res, err);
                                     else return res.status(201).json(photo);
                                 });
                             });
@@ -176,8 +174,8 @@ function handleError(res, err) {
 }
 
 function handleGridStreamErr(res) {
-    return function (err) {
-        if (/does not exist/.test(err)) {
+    return function(err) {
+        if(/does not exist/.test(err)) {
             // trigger 404
             console.log(err);
             return err;

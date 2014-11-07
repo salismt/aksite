@@ -53,9 +53,7 @@ exports.create = function(req, res) {
 
     // optionally store per-file metadata
     form.on('fileBegin', function(name, file) {
-        file.metadata = {
-
-        };
+        file.metadata = {};
 
         console.log(name);
         console.log(file);
@@ -105,11 +103,11 @@ exports.create = function(req, res) {
                     var img = gm(stream, file.id);
                     img.size(function(err, size) {
                         if(size.width > size.height) {
-                            img.shave((size.width - size.height)/2, 0);
+                            img.shave((size.width - size.height) / 2, 0);
                         } else {
-                            img.shave(0, (size.height - size.width)/2);
+                            img.shave(0, (size.height - size.width) / 2);
                         }
-                        img.scale(200,200).quality(90);
+                        img.scale(200, 200).quality(90);
                         img.stream(function(err, outStream) {
                             if(err) return res.status(500).end();
                             else {
@@ -122,8 +120,8 @@ exports.create = function(req, res) {
                     });
 
                     // Create the Photo DB instance
-                    Photo.create(photoModel, function (err, photo) {
-                        if (err) return handleError(res, err);
+                    Photo.create(photoModel, function(err, photo) {
+                        if(err) return handleError(res, err);
                         else return res.status(201).json(photo);
                     });
                 } else if(fields.purpose.toLowerCase() === 'image') {
@@ -135,8 +133,8 @@ exports.create = function(req, res) {
                     var fileModel = {
                         fileId: file.id
                     };
-                    File.create(fileModel, function (err, photo) {
-                        if (err) return handleError(res, err);
+                    File.create(fileModel, function(err, photo) {
+                        if(err) return handleError(res, err);
                         else return res.status(201).json(photo);
                     });
                 }
@@ -199,9 +197,9 @@ function handleError(res, err) {
     return res.status(500).send(err);
 }
 
-function handleGridStreamErr (res) {
-    return function (err) {
-        if (/does not exist/.test(err)) {
+function handleGridStreamErr(res) {
+    return function(err) {
+        if(/does not exist/.test(err)) {
             // trigger 404
             console.log(err);
             return err;
