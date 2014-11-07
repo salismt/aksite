@@ -32,9 +32,7 @@
                                 <input type="file" accept="images/*" id="fileInput" name="myFiles[]"
                                        ng-file-select="onFileSelect($files)">
                             </span>
-                            <!--<button class="btn btn-default" ng-click="upload.abort()">Cancel Upload</button>-->
                         </span>
-                        <!--<div ng-file-drop="onFileSelect($files)" ng-file-drag-over-class="optional-css-class-name-or-function" ng-show="dropSupported">drop files here</div>-->
                     </div>
                 </div>
 
@@ -69,26 +67,14 @@
                 </div>
             </form>
         </div>
-
-        <!--<div class="col-sm-12">-->
-        <!--<ul class="list-group">-->
-        <!--<li class="list-group-item" ng-repeat="photo in photos">-->
-        <!--<strong>{{photo.name}}</strong><br>-->
-        <!--<img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.thumbnailId}}">-->
-        <!--<img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.fileId}}">-->
-        <!--<span class="text-muted">{{photo.info}}</span>-->
-        <!--<a ng-click="deletePhoto(photo)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>-->
-        <!--</li>-->
-        <!--</ul>-->
-        <!--</div>-->
     </div>
 </div>
 
 <div id="grid-gallery" class="grid-gallery">
     <section class="grid-wrap">
         <ul class="grid">
-            <li class="grid-sizer"></li>
             <!-- for Masonry column width -->
+            <li class="grid-sizer"></li>
             <li ng-repeat="photo in photos">
                 <figure>
                     <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
@@ -98,13 +84,11 @@
                         <h3>{{photo.name}}</h3>
 
                         <p>{{photo.info}}</p>
-                        <!--<button style="text-decoration: none;" class="btn btn-link fa fa-trash"></button>-->
                     </figcaption>
                 </figure>
             </li>
         </ul>
     </section>
-    <!-- // grid-wrap -->
     <div class="backdrop"></div>
     <section class="slideshow">
         <ul>
@@ -130,5 +114,4 @@
             <div class="fa fa-fw fa-caret-right"></div>
         </div>
     </section>
-    <!-- // slideshow -->
-</div><!-- // grid-gallery -->
+</div>
