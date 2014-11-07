@@ -78,9 +78,18 @@
             <li ng-repeat="photo in photos">
                 <figure>
                     <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
+                    <div class="photo-toolbar">
+                        <div ng-click="" class="item">
+                            <span class="fa fa-fw fa-edit"></span>
+                        </div>
+                        <div ng-click="featurePhoto(photo)" class="item">
+                            <span class="fa fa-fw fa-star-o" ng-class="{featured: photo.featured, 'fa-star': photo.featured, 'fa-star-o': !photo.featured}"></span>
+                        </div>
+                        <div ng-click="deletePhoto(photo)" class="item">
+                            <span class="fa fa-fw fa-trash-o"></span>
+                        </div>
+                    </div>
                     <figcaption>
-                        <a ng-click="deletePhoto(photo)" class="trash"><span class="fa fa-trash pull-right"></span></a>
-
                         <h3>{{photo.name}}</h3>
 
                         <p>{{photo.info}}</p>

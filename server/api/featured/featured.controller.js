@@ -150,12 +150,12 @@ exports.add = function(req, res) {
         typesString += '.';
         return res.status(400).send('Error: Please supply an accepted item type. The supported types are:' + typesString);
     } else if(!req.params.id) {
-        return res.status(404).send('Error: Invalid item ID.');
+        return res.status(400).send('Error: Invalid item ID.');
     }
 
     item.type = req.body.type;
-    item.name = req.body.type || 'TEST';
-    item.link = req.body.type || '#';
+    item.name = req.body.name || 'TEST';
+    item.link = req.body.link || '#';
 
     switch(req.body.type) {
         case 'photo':
@@ -167,8 +167,14 @@ exports.add = function(req, res) {
                 else {
                     if(photo.thumbnailId) {
                         item.thumbnailId = photo.thumbnailId;
-                    } else if(photo.fileId) {
 
+                        return FeaturedItem.create(item, function(err, featured) {
+                            if(err) return handleError(res, err);
+                            else return res.status(201).json(featured);
+                        });
+                    } else if(photo.fileId) {
+                        //TODO: if doesn't have a thumbnail
+                        return res.status(500).end();
                     } else {
                         return res.status(500).end();
                     }
@@ -184,11 +190,6 @@ exports.add = function(req, res) {
         default:
             return res.status(500).end();
     }
-
-    FeaturedItem.create(item, function(err, featured) {
-        if(err) return handleError(res, err);
-        else return res.status(201).json(featured);
-    });
 };
 
 // Deletes a featured item
