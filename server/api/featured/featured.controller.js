@@ -61,7 +61,7 @@ var newFeatured = exports.newFeatured = function(req, res) {
                 k++;
             });
 
-            Q.all(tmpPromises)
+            return Q.all(tmpPromises)
                 .then(function(results) {
                     if(results.length !== 100) return res.status(500).end();
                     var row0 = gm(results[0]);
