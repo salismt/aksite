@@ -69,18 +69,6 @@
                 </div>
             </form>
         </div>
-
-        <!--<div class="col-sm-12">-->
-        <!--<ul class="list-group">-->
-        <!--<li class="list-group-item" ng-repeat="photo in photos">-->
-        <!--<strong>{{photo.name}}</strong><br>-->
-        <!--<img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.thumbnailId}}">-->
-        <!--<img style="max-width: 200px; max-height: 200px;" ng-src="api/upload/{{photo.fileId}}">-->
-        <!--<span class="text-muted">{{photo.info}}</span>-->
-        <!--<a ng-click="deletePhoto(photo)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>-->
-        <!--</li>-->
-        <!--</ul>-->
-        <!--</div>-->
     </div>
 </div>
 
@@ -92,19 +80,26 @@
             <li ng-repeat="photo in photos">
                 <figure>
                     <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
+                    <div class="photo-toolbar">
+                        <div ng-click="" class="item">
+                            <span class="fa fa-fw fa-edit"></span>
+                        </div>
+                        <div ng-click="featurePhoto(photo)" class="item">
+                            <span class="fa fa-fw fa-star-o" ng-class="{featured: photo.featured, 'fa-star': photo.featured, 'fa-star-o': !photo.featured}"></span>
+                        </div>
+                        <div ng-click="deletePhoto(photo)" class="item">
+                            <span class="fa fa-fw fa-trash-o"></span>
+                        </div>
+                    </div>
                     <figcaption>
-                        <a ng-click="deletePhoto(photo)" class="trash"><span class="fa fa-trash pull-right"></span></a>
-
                         <h3>{{photo.name}}</h3>
 
                         <p>{{photo.info}}</p>
-                        <!--<button style="text-decoration: none;" class="btn btn-link fa fa-trash"></button>-->
                     </figcaption>
                 </figure>
             </li>
         </ul>
     </section>
-    <!-- // grid-wrap -->
     <div class="backdrop"></div>
     <section class="slideshow">
         <ul>

@@ -7,6 +7,7 @@ var PhotoSchema = new Schema({
 	name: String,
 	info: String,
 	hidden: Boolean,
+    featured: Boolean,
     fileId: String,
     thumbnailId: String,
     sourceUri: String,

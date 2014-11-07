@@ -1,0 +1,44 @@
+.photo-toolbar {
+    display: flex;
+    height: 35px;
+
+    div.item {
+        padding: 5px 0;
+        flex-grow: 1;
+        background-color: #e4e4e4;
+
+        span {
+            width: 100%;
+            text-align: center;
+            font-size: 1.7em;
+            padding: 2px 0;
+        }
+        span.fa-star-o.featured,
+        span.fa-star.featured{
+            color: #ffff00;
+        }
+        span.fa-edit {
+            color: darkgray;
+        }
+    }
+    div.item:hover {
+        background-color: #d0d0d0;
+
+        span.fa-star-o:before,
+        span.fa-star-o ~ span:before {
+            content: "\f005";
+        }
+//        span.fa-edit:before,
+//        span.fa-edit ~ span:before {
+//            content: "\f14b";
+//        }
+        span.fa-trash-o:before,
+        span.fa-trash-o ~ span:before {
+            content: "\f1f8";
+        }
+    }
+}
+
+.grid-gallery ul li figure figcaption {
+    padding-top: 10px;
+}

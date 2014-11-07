@@ -22,6 +22,14 @@ angular.module('aksiteApp')
             $scope.files = files;
         });
 
+        $scope.featurePhoto = function(photo) {
+            console.log(photo);
+            //$http.get('/api/upload')
+            //    .success(function(files) {
+            //        $scope.files = files;
+            //    });
+        };
+
         $scope.addPhoto = function(form) {
             console.log(form);
 
