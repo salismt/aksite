@@ -20,6 +20,10 @@ angular.module('aksiteApp')
                 icon: "fa-newspaper-o",
                 link: "admin/blog"
             }, {
+                name: "Featured",
+                icon: "fa-star-o",
+                link: "admin/featured"
+            }, {
                 name: "Files",
                 icon: "fa-files-o",
                 link: "admin/files"
