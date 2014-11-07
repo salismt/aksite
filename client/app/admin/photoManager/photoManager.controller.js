@@ -23,7 +23,7 @@ angular.module('aksiteApp')
         });
 
         $scope.featurePhoto = function(photo) {
-            $http.post('/api/featured/'+photo._id, {
+            $http.post('/api/featured/' + photo._id, {
                 type: 'photo',
                 name: photo.name,
                 link: ''

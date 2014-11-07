@@ -1,18 +1,18 @@
 'use strict';
 
-describe('Service: Upload', function () {
+describe('Service: Upload', function() {
 
-  // load the service's module
-  beforeEach(module('aksiteApp'));
+    // load the service's module
+    beforeEach(module('aksiteApp'));
 
-  // instantiate service
-  var Upload;
-  beforeEach(inject(function (_Upload_) {
-    Upload = _Upload_;
-  }));
+    // instantiate service
+    var Upload;
+    beforeEach(inject(function(_Upload_) {
+        Upload = _Upload_;
+    }));
 
-  it('should do something', function () {
-    expect(!!Upload).toBe(true);
-  });
+    it('should do something', function() {
+        expect(!!Upload).toBe(true);
+    });
 
 });

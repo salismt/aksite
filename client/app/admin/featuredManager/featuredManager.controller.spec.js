@@ -1,21 +1,21 @@
 'use strict';
 
-describe('Controller: FeaturedmanagerCtrl', function () {
+describe('Controller: FeaturedmanagerCtrl', function() {
 
-  // load the controller's module
-  beforeEach(module('aksiteApp'));
+    // load the controller's module
+    beforeEach(module('aksiteApp'));
 
-  var FeaturedmanagerCtrl, scope;
+    var FeaturedmanagerCtrl, scope;
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
-    scope = $rootScope.$new();
-    FeaturedmanagerCtrl = $controller('FeaturedmanagerCtrl', {
-      $scope: scope
+    // Initialize the controller and a mock scope
+    beforeEach(inject(function($controller, $rootScope) {
+        scope = $rootScope.$new();
+        FeaturedmanagerCtrl = $controller('FeaturedmanagerCtrl', {
+            $scope: scope
+        });
+    }));
+
+    it('should ...', function() {
+        expect(1).toEqual(1);
     });
-  }));
-
-  it('should ...', function () {
-    expect(1).toEqual(1);
-  });
 });

@@ -14,7 +14,7 @@
             padding: 2px 0;
         }
         span.fa-star-o.featured,
-        span.fa-star.featured{
+        span.fa-star.featured {
             color: #ffff00;
         }
         span.fa-edit {
@@ -28,10 +28,10 @@
         span.fa-star-o ~ span:before {
             content: "\f005";
         }
-//        span.fa-edit:before,
-//        span.fa-edit ~ span:before {
-//            content: "\f14b";
-//        }
+        //        span.fa-edit:before,
+        //        span.fa-edit ~ span:before {
+        //            content: "\f14b";
+        //        }
         span.fa-trash-o:before,
         span.fa-trash-o ~ span:before {
             content: "\f1f8";
