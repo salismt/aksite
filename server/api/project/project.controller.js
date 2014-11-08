@@ -19,11 +19,11 @@ exports.show = function(req, res) {
     Project.findById(req.params.id, function(err, project) {
         if(err) {
             return handleError(res, err);
+        } else if(!project) {
+            return res.status(404).end();
+        } else {
+            return res.json(project);
         }
-        if(!project) {
-            return res.send(404);
-        }
-        return res.json(project);
     });
 };
 
@@ -79,21 +79,21 @@ exports.destroy = function(req, res) {
     Project.findById(req.params.id, function(err, project) {
         if(err) {
             return handleError(res, err);
-        }
-        if(!project) {
+        } else if(!project) {
             return res.send(404);
+        } else {
+            project.remove(function (err) {
+                if (err) {
+                    return handleError(res, err);
+                }
+                return res.send(204);
+            });
         }
-        project.remove(function(err) {
-            if(err) {
-                return handleError(res, err);
-            }
-            return res.send(204);
-        });
     });
 };
 
 function handleError(res, err) {
-    return res.send(500, err);
+    return res.status(500).send(err);
 }
 
 function sanitiseNewGallery(body, params) {
@@ -120,7 +120,9 @@ function sanitiseNewGallery(body, params) {
         return 'Date not of type Date';
     } else if(body.active && typeof body.active !== 'boolean') {
         return 'Active not Boolean';
-    } else {
+    }
+    //TODO: check thumbnail and cover
+    else {
         return null;
     }
 }
