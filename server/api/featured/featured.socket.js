@@ -7,18 +7,18 @@
 var FeaturedItem = require('./featuredItem.model.js');
 
 exports.register = function(socket) {
-  FeaturedItem.schema.post('save', function (doc) {
-    onSave(socket, doc);
-  });
-  FeaturedItem.schema.post('remove', function (doc) {
-    onRemove(socket, doc);
-  });
+    FeaturedItem.schema.post('save', function(doc) {
+        onSave(socket, doc);
+    });
+    FeaturedItem.schema.post('remove', function(doc) {
+        onRemove(socket, doc);
+    });
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('featured:save', doc);
+    socket.emit('featured:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
-  socket.emit('featured:remove', doc);
+    socket.emit('featured:remove', doc);
 }

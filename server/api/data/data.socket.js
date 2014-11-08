@@ -6,11 +6,11 @@
 
 var Data = require('./data.model');
 
-exports.register = function (socket) {
-    Data.schema.post('save', function (doc) {
+exports.register = function(socket) {
+    Data.schema.post('save', function(doc) {
         onSave(socket, doc);
     });
-    Data.schema.post('remove', function (doc) {
+    Data.schema.post('remove', function(doc) {
         onRemove(socket, doc);
     });
 };

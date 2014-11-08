@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .factory('User', function ($resource) {
+    .factory('User', function($resource) {
         return $resource('/api/users/:id/:controller', {
                 id: '@_id'
             },

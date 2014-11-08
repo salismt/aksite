@@ -35,10 +35,11 @@ exports.index = function(req, res) {
 
 // Compose a new Featured Section
 var newFeatured = exports.newFeatured = function(req, res) {
-    FeaturedSection.find({}).remove(function() {});
+    FeaturedSection.find({}).remove(function() {
+    });
     FeaturedItem.find({}, function(err, items) {
         if(err) return handleError(res, err);
-        else if(_.isNull(items) || items ==[]) return res.status(500).end();
+        else if(_.isNull(items) || items == []) return res.status(500).end();
         else {
             // If there are less than 100 items, copy items until we have 100
             var index = 0,
@@ -118,7 +119,10 @@ var newFeatured = exports.newFeatured = function(req, res) {
                                         var writestream = gfs.createWriteStream({filename: 'featured.jpg'});
                                         writestream.on('close', function(file) {
                                             //console.log(file);
-                                            FeaturedSection.create({ fileId: file._id, items: items }, function(err, section) {
+                                            FeaturedSection.create({
+                                                fileId: file._id,
+                                                items: items
+                                            }, function(err, section) {
                                                 if(err) return res.status(500).send(err);
                                                 else {
                                                     res.status(201).send(section);
@@ -214,9 +218,9 @@ function handleError(res, err) {
     return res.status(500).send(err);
 }
 
-function handleGridStreamErr (res) {
-    return function (err) {
-        if (/does not exist/.test(err)) {
+function handleGridStreamErr(res) {
+    return function(err) {
+        if(/does not exist/.test(err)) {
             // trigger 404
             console.log(err);
             return err;
@@ -245,7 +249,7 @@ function writeToTmp(readStream, name) {
     (function next() {
         if(_.isNull(name) || _.isUndefined(name) || name === '') return new Error('No name given to tmp file');
         else {
-            var filename = path.resolve(config.root + '/.gmtmp/tmp_'+name+'.jpg')
+            var filename = path.resolve(config.root + '/.gmtmp/tmp_' + name + '.jpg')
             var writestream = fs.createWriteStream(filename);
             readStream.pipe(writestream).on('close', function() {
                 deferred.resolve(filename);
