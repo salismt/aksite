@@ -9,9 +9,10 @@ var _ = require('lodash'),
     Thing = require('../api/thing/thing.model'),
     User = require('../api/user/user.model'),
     Photo = require('../api/photo/photo.model'),
-    FeaturedItem = require('../api/featured/featuredItem.model.js'),
-    FeaturedSection = require('../api/featured/featuredSection.model.js'),
-    FeaturedController = require('../api/featured/featured.controller.js'),
+    Project = require('../api/project/project.model'),
+    FeaturedItem = require('../api/featured/featuredItem.model'),
+    FeaturedSection = require('../api/featured/featuredSection.model'),
+    FeaturedController = require('../api/featured/featured.controller'),
     config = require('./environment'),
     gm = require('gm'),
 
@@ -22,6 +23,9 @@ var _ = require('lodash'),
     gridSchema = new Schema({}, {strict: false}),
     gridModel1 = mongoose.model("gridModel1", gridSchema, "fs.files");
 Grid.mongo = mongoose.mongo;
+
+var gfs,
+    conn = mongoose.createConnection(config.mongo.uri);
 
 Thing.find({}).remove(function() {
     Thing.create({
@@ -63,28 +67,46 @@ User.find({}).remove(function() {
     );
 });
 
-Photo.find({}).remove(function() {
-    var gfs,
-        conn = mongoose.createConnection(config.mongo.uri);
-    conn.once('open', function(err) {
-        if(err) {
-            console.log(err);
-            return;
-        }
-        gfs = Grid(conn.db);
+conn.once('open', function(err) {
+    if(err) {
+        console.log(err);
+        return;
+    }
+    gfs = Grid(conn.db);
 
-        gridModel1.find({}, function(err, gridfiles) {
-            if(err) console.log(err);
-            else {
-                _.forEach(gridfiles, function(file) {
-                    gfs.remove({_id: file._id}, function(err) {
-                        if(err) return console.log(err);
-                        //else return console.log('deleted ' + file._id);
-                    });
+    gridModel1.find({}, function(err, gridfiles) {
+        if(err) console.log(err);
+        else {
+            _.forEach(gridfiles, function(file) {
+                gfs.remove({_id: file._id}, function(err) {
+                    if(err) console.log(err);
                 });
-            }
-        });
+            });
+        }
+    });
 
+    Project.find({}).remove(function() {
+        var newProject = {
+            name: ".synth",
+            info: ".synth 1.0",
+            link: "localhost:9050/projects/dotsynth"
+        };
+        var thumbWritestream = gfs.createWriteStream([]);
+        thumbWritestream.on('close', function(file) {
+            newProject.thumbnailId = file._id;
+            var coverWritestream = gfs.createWriteStream([]);
+            coverWritestream.on('close', function(file) {
+                newProject.coverId = file._id;
+                Project.create(newProject, function(proj) {
+                    console.log('Finished creating project0');
+                });
+            });
+            fs.createReadStream('data/proj_0_cover.jpg').pipe(coverWritestream);
+        });
+        fs.createReadStream('data/proj_0_thumb.jpg').pipe(thumbWritestream);
+    });
+
+    Photo.find({}).remove(function() {
         var photos = [{
             name: 'test00',
             info: 'testInfo',
@@ -177,25 +199,24 @@ Photo.find({}).remove(function() {
         setTimeout(function() {
             FeaturedSection.find({}).remove(function() {
                 FeaturedItem.find({}).remove(function() {
-                    Photo.find(function(err, items) {
-                        if(err) return console.log(err);
+                    Photo.find(function (err, items) {
+                        if (err) return console.log(err);
                         else {
-                            _.forEach(items, function(item) {
+                            _.forEach(items, function (item) {
                                 var featuredItem = {};
                                 featuredItem.name = item.name;
-                                //featuredItem.thumbnailId = item.fileId;
                                 featuredItem.thumbnailId = item.thumbnailId;
                                 featuredItem.link = '#';
                                 featuredItem.type = 'photo';
 
                                 FeaturedItem.create(featuredItem);
                             });
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 FeaturedController.newFeatured({}, {
-                                    status: function() {
+                                    status: function () {
                                         return this;
                                     },
-                                    send: function() {
+                                    send: function () {
                                         return this;
                                     }
                                 });
@@ -208,7 +229,3 @@ Photo.find({}).remove(function() {
         }, 500);
     });
 });
-
-function streamOut() {
-
-}
