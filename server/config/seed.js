@@ -87,9 +87,9 @@ conn.once('open', function(err) {
 
     Project.find({}).remove(function() {
         var newProject = {
-            name: ".synth",
-            info: ".synth 1.0",
-            link: "localhost:9050/projects/dotsynth"
+            name: ".synth 1.0",
+            info: "Javascript modular synthesizer",
+            link: "http://github.com/awk34/dotsynth/"
         };
         var thumbWritestream = gfs.createWriteStream([]);
         thumbWritestream.on('close', function(file) {
