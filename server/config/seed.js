@@ -196,7 +196,9 @@ Photo.find({}).remove(function() {
                                 Gallery.create({
                                     name: 'testGallery',
                                     info: 'Test gallery',
-                                    photos: _.pluck(items, '_id')
+                                    photos: _.pluck(items, '_id'),
+                                    featuredId: items[0]._id,
+                                    date: new Date()
                                 }, function(err, gallery) {
                                     if(err) {
                                         console.log(err);
