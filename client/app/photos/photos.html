@@ -3,20 +3,20 @@
 <div class="container">
     <header class="hero-unit" id="banner">
         <div class="container">
-            <h1>Photography</h1>
+            <h1>Galleries</h1>
 
             <div id="grid-gallery" class="grid-gallery">
                 <section class="grid-wrap">
                     <ul class="grid">
                         <!-- for Masonry column width -->
                         <li class="grid-sizer"></li>
-                        <li ng-repeat="photo in photos">
+                        <li ng-repeat="gallery in galleries">
                             <figure>
-                                <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
+                                <img ng-src="api/upload/{{gallery.featuredImgId}}" alt="img"/>
                                 <figcaption>
-                                    <h3>{{photo.name}}</h3>
+                                    <h3>{{gallery.name}}</h3>
 
-                                    <p>{{photo.info}}</p>
+                                    <p>{{gallery.info}}</p>
                                 </figcaption>
                             </figure>
                         </li>
@@ -25,14 +25,14 @@
                 <div class="backdrop"></div>
                 <section class="slideshow">
                     <ul>
-                        <li ng-repeat="photo in photos">
+                        <li ng-repeat="gallery in galleries">
                             <figure>
                                 <figcaption>
-                                    <h3>{{photo.name}}</h3>
+                                    <h3>{{gallery.name}}</h3>
 
-                                    <p>{{photo.info}}</p>
+                                    <p>{{gallery.info}}</p>
                                 </figcaption>
-                                <img ng-src="api/upload/{{photo.fileId}}" alt="img"/>
+                                <img ng-src="api/upload/{{gallery.featuredImgId}}" alt="img"/>
                             </figure>
                         </li>
                     </ul>
