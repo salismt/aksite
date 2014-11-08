@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('PhotomanagerCtrl', function($scope, $http, Photo) {
+    .controller('PhotomanagerCtrl', function($scope, $http, $upload, Photo) {
         $scope.photo = {
             hidden: false
         };
