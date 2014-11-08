@@ -12,6 +12,7 @@ var _ = require('lodash'),
     FeaturedItem = require('../api/featured/featuredItem.model.js'),
     FeaturedSection = require('../api/featured/featuredSection.model.js'),
     FeaturedController = require('../api/featured/featured.controller.js'),
+    Gallery = require('../api/gallery/gallery.model.js'),
     config = require('./environment'),
     gm = require('gm'),
 
@@ -177,26 +178,41 @@ Photo.find({}).remove(function () {
         setTimeout(function() {
             FeaturedSection.find({}).remove(function() {
                 FeaturedItem.find({}).remove(function() {
-                    Photo.find(function(err, items) {
-                        if(err) return console.log(err);
-                        else {
-                            _.forEach(items, function(item) {
-                                var featuredItem = {};
-                                featuredItem.name = item.name;
-                                //featuredItem.thumbnailId = item.fileId;
-                                featuredItem.thumbnailId = item.thumbnailId;
-                                featuredItem.link = '#';
-                                featuredItem.type = 'photo';
+                    Gallery.find({}).remove(function() {
+                        Photo.find(function(err, items) {
+                            if(err) return console.log(err);
+                            else {
+                                _.forEach(items, function(item) {
+                                    var featuredItem = {};
+                                    featuredItem.name = item.name;
+                                    //featuredItem.thumbnailId = item.fileId;
+                                    featuredItem.thumbnailId = item.thumbnailId;
+                                    featuredItem.link = '#';
+                                    featuredItem.type = 'photo';
 
-                                FeaturedItem.create(featuredItem);
-                            });
-                            setTimeout(function() {
-                                FeaturedController.newFeatured({}, {
-                                    status: function() { return this; },
-                                    send: function() { return this; }
+                                    FeaturedItem.create(featuredItem);
                                 });
-                            }, 100);
-                        }
+
+                                Gallery.create({
+                                    name: 'testGallery',
+                                    info: 'Test gallery',
+                                    photos: _.pluck(items, '_id')
+                                }, function(err, gallery) {
+                                    if(err) {
+                                        console.log(err);
+                                    } else {
+                                        //console.log(gallery._id);
+                                    }
+                                });
+
+                                return setTimeout(function() {
+                                    FeaturedController.newFeatured({}, {
+                                        status: function() { return this; },
+                                        send: function() { return this; }
+                                    });
+                                }, 100);
+                            }
+                        });
                     });
                 });
             });
