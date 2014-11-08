@@ -25,7 +25,8 @@
     "modernizr": "~2.8.3",
     "masonry": "~3.1.5",
     "isotope": "~2.0.1",
-    "kendo-ui": "~2014.2.903"
+    "kendo-ui": "~2014.2.903",
+    "marked": "~0.3.2"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
