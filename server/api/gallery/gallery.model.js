@@ -8,8 +8,9 @@ var GallerySchema = new Schema({
     info: String,
     date: Date,
     active: Boolean,
-    photos: [{}],
-    featured: {}
+    photos: [String],
+    featuredId: String,
+    metadata : {}
 });
 
 module.exports = mongoose.model('Gallery', GallerySchema);
