@@ -2,10 +2,6 @@
 
 angular.module('aksiteApp')
     .controller('MainCtrl', function($scope, $http, socket) {
-        $scope.awesomeThings = [];
-        $scope.photos = [];
-        $scope.featuredSection = {};
-
         $http.get('/api/photos').success(function(photos) {
             $scope.photos = photos;
         });
