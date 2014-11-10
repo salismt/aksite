@@ -1,0 +1,24 @@
+ul.project-list {
+    list-style: none;
+
+    li.project {
+        width: 500px;
+
+        .cover {
+            width: 500px;
+        }
+        .caption {
+            width: inherit;
+            background-color: lightgray;
+            padding: 20px;
+
+            .project-name {
+                font-size: 2em;
+                font-weight: 700;
+            }
+            .project-info {
+                margin-left: 10px;
+            }
+        }
+    }
+}

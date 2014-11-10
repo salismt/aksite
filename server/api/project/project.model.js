@@ -8,8 +8,9 @@ var ProjectSchema = new Schema({
     info: String,
     active: Boolean,
     thumbnailId: String,
-    coverPhotoId: String,
-    link: String
+    coverId: String,
+    link: String,
+    date: Date
 });
 
 module.exports = mongoose.model('Project', ProjectSchema);
