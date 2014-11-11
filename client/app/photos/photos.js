@@ -7,5 +7,10 @@ angular.module('aksiteApp')
                 url: '/photos',
                 templateUrl: 'app/photos/photos.html',
                 controller: 'PhotosCtrl'
+            })
+            .state('photos.gallery', {
+                url: '/:galleryId',
+                templateUrl: 'app/photos/gallery/gallery.html',
+                controller: 'GalleryCtrl'
             });
     });

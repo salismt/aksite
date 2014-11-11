@@ -37,13 +37,13 @@ exports.create = function(req, res) {
     var newGallery = {
         name: req.body.name,
         info: req.body.info,
-        photos: req.body.photos
+        photos: req.body.photos,
+        featuredId: req.body.featuredId || req.body.photos[0],
+        date: req.body.date || new Date(),
+        active: req.body.active || true
     };
-    if(req.body.date) {
-
-    }
-    Gallery.create(newGallery, function(err, gallery) {
-        if(err) {
+    return Gallery.create(newGallery, function (err, gallery) {
+        if (err) {
             return handleError(res, err);
         } else {
             return res.status(201).json(gallery);
@@ -51,6 +51,7 @@ exports.create = function(req, res) {
     });
 };
 
+//TODO: verify
 // Updates an existing gallery in the DB.
 exports.update = function(req, res) {
     if(req.body._id) {
@@ -116,7 +117,7 @@ function sanitiseNewGallery(body, params) {
     } else if(!_.isArray(body.photos)) {
         return 'Photos not Array';
     }
-    //TODO: sanitize each photo
+    //TODO: sanitize each photo, make sure each exists
     else {
         return null;
     }

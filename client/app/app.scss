@@ -31,6 +31,7 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import 'admin/userManager/userManager.scss';
 @import 'blog/blog.scss';
 @import 'main/main.scss';
+@import 'photos/gallery/gallery.scss';
 @import 'photos/photos.scss';
 @import 'projects/projects.scss';
 @import 'resume/resume.scss';
@@ -40,6 +41,15 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 html, body {
     height: 100%;
     font-family: $font-stack;
+}
+
+.row-header {
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -1px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    text-align: center;
 }
 
 .btn-file {

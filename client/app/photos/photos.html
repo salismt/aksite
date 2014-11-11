@@ -3,49 +3,26 @@
 <div class="container">
     <header class="hero-unit" id="banner">
         <div class="container">
-            <h1>Photography</h1>
+            <h1>Galleries</h1>
 
             <div id="grid-gallery" class="grid-gallery">
                 <section class="grid-wrap">
                     <ul class="grid">
                         <!-- for Masonry column width -->
                         <li class="grid-sizer"></li>
-                        <li ng-repeat="photo in photos">
+                        <li ng-repeat="gallery in galleries">
                             <figure>
-                                <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
+                                <a href="/photos/{{gallery._id}}">
+                                    <img ng-src="api/upload/{{gallery.featuredImgId}}" alt="img"/>
+                                </a>
                                 <figcaption>
-                                    <h3>{{photo.name}}</h3>
+                                    <h3>{{gallery.name}}</h3>
 
-                                    <p>{{photo.info}}</p>
+                                    <p>{{gallery.info}}</p>
                                 </figcaption>
                             </figure>
                         </li>
                     </ul>
-                </section>
-                <div class="backdrop"></div>
-                <section class="slideshow">
-                    <ul>
-                        <li ng-repeat="photo in photos">
-                            <figure>
-                                <figcaption>
-                                    <h3>{{photo.name}}</h3>
-
-                                    <p>{{photo.info}}</p>
-                                </figcaption>
-                                <img ng-src="api/upload/{{photo.fileId}}" alt="img"/>
-                            </figure>
-                        </li>
-                    </ul>
-                    <nav>
-                        <span class="icon nav-prev fa fa-chevron-left"></span>
-                        <span class="icon nav-next fa fa-chevron-right"></span>
-                        <span class="icon nav-close fa fa-times"></span>
-                    </nav>
-                    <div class="info-keys icon">
-                        <div class="fa fa-fw fa-caret-left"></div>
-                        Navigate with arrow keys
-                        <div class="fa fa-fw fa-caret-right"></div>
-                    </div>
                 </section>
             </div>
         </div>
@@ -54,7 +31,9 @@
 
 <footer class="footer">
     <div class="container">
-        <p>&copy; Andrew Koroluk |
-            <a href="https://github.com/Awk34">GitHub</a></p>
+        <p>
+            &copy; Andrew Koroluk |
+            <a href="https://github.com/Awk34">GitHub</a>
+        </p>
     </div>
 </footer>
