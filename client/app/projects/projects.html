@@ -12,7 +12,7 @@
     <div class="row">
         <ul class="project-list">
             <li class="project" ng-repeat="project in projects">
-                <a href="{{project.link}}">
+                <a href="/projects/{{project._id}}">
                     <img class="cover" ng-src="api/upload/{{project.coverId}}" alt=""/><br/>
                 </a>
                 <div class="caption">
