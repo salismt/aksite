@@ -23,7 +23,7 @@
                 <li ng-show="isLoggedIn()"><p class="navbar-text">Hello {{ getCurrentUser().name }}</p></li>
                 <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><a class="btn"
                                                                                          href="/settings"><span
-                    class="glyphicon glyphicon-cog"></span></a></li>
+                    class="fa fa-cog"></span></a></li>
                 <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a class="btn" href=""
                                                                                        ng-click="logout()">Logout</a>
                 </li>

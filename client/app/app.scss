@@ -4,7 +4,6 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600|Roboto:700);
 @import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
 @import 'font-awesome/scss/font-awesome';
-@import '../assets/css/cbp-grid-gallery';
 
 /**
  * App-wide Styles
@@ -21,6 +20,8 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 // injector
 @import '_variables.scss';
 @import 'account/login/login.scss';
+@import 'account/settings/settings.scss';
+@import 'account/signup/signup.scss';
 @import 'admin/admin.scss';
 @import 'admin/blogManager/blogManager.scss';
 @import 'admin/featuredManager/featuredManager.scss';
@@ -37,10 +38,20 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import 'resume/resume.scss';
 @import 'navbar/navbar.scss';
 // endinjector
+@import '../assets/css/cbp-grid-gallery';
 
 html, body {
     height: 100%;
     font-family: $font-stack;
+}
+
+.page-header {
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -1px;
+    font-family: $header-font-stack;
+    font-weight: 700;
+    text-align: center;
 }
 
 .btn-file {
@@ -69,6 +80,6 @@ input[readonly] {
     cursor: text !important;
 }
 
-.btn-circle {
+.circle {
     border-radius: 100%;
 }

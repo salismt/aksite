@@ -1,8 +1,39 @@
 /**
  * App-wide Variables
  */
+
 $font-stack: 'Open Sans', sans-serif;
+$header-font-stack: 'Roboto', sans-serif;
 
-$footer-height: 61px;
+$subtle-border: 1px solid #e5e5e5;
 
-$border-color: #1d1d1d;
+/**
+ * Lengths
+ */
+
+    /**
+     * Footer
+     */
+    $footer-height: 61px;
+    /**
+     * Featured Section
+     */
+    $featured-height: 460px;
+
+/**
+ * Colors
+ */
+
+    /**
+     * General
+     */
+    $ak-base-color: deepskyblue;
+    $ak-base-color-dark: #22a8e6;
+    $ak-base-color-darker: #428bca;
+    $ak-base-color-darkest: #3e709e;
+    $border-color: #1d1d1d;
+
+    /**
+     * CBP Grid Gallery
+     */
+    $cbp-caption-background-color: #e4e4e4;
