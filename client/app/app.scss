@@ -52,6 +52,9 @@ html, body {
     font-family: $header-font-stack;
     font-weight: 700;
     text-align: center;
+    border: none;
+    padding: 0;
+    margin: 20px 0 10px 0;
 }
 
 .btn-file {
