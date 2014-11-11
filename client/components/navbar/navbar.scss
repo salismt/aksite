@@ -1,6 +1,6 @@
 .navbar {
-    border-bottom: 1px solid #e5e5e5;
-    background-color: deepskyblue;
+    border-bottom: $subtle-border;
+    background-color: $ak-base-color;
     color: white;
     padding: 10px 30px;
 
@@ -25,12 +25,10 @@
             .nav {
                 a {
                     margin: 0 5px;
-                    &:hover {
-                        background-color: #22a8e6;
-                    }
+                    &:hover { background-color: $ak-base-color-dark; }
                 }
                 .active a {
-                    background-color: #428bca;
+                    background-color: $ak-base-color-darker;
                 }
             }
         }
@@ -72,7 +70,7 @@
             padding: 5px 10px;
         }
         a:hover {
-            background-color: #22a8e6;
+            background-color: $ak-base-color-dark;
         }
     }
 
