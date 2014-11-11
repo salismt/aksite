@@ -6,9 +6,13 @@
     </div>
 
     <div ng-if="!error">
-        <h1 class="page-header">{{project.name}}</h1>
+        <div class="cover-image">
+            <img ng-src="/api/upload/{{project.coverId}}" alt=""/>
+        </div>
 
-        <div ng-bind-html="content"></div>
+        <h1 class="page-header">{{project.name}} <small>{{project.info}}</small></h1>
+
+        <div class="lead" ng-bind-html="content"></div>
     </div>
 </div>
 

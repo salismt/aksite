@@ -7,10 +7,9 @@ angular.module('aksiteApp')
         $http.get('/api/projects/'+$stateParams.projectId)
             .success(function(project) {
                 $scope.project = project;
-                $scope.content = marked(project.info);
+                $scope.content = marked(project.content);
             })
             .error(function(data, status) {
                 $scope.error = status;
             });
-
     });
