@@ -1,0 +1,20 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+    <div ng-if="error" class="row">
+        <alert type="danger">Error: {{error}}</alert>
+    </div>
+
+    <div ng-if="!error">
+        <h1 class="page-header">{{project.name}}</h1>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            &copy; Andrew Koroluk |
+            <a href="https://github.com/Awk34">GitHub</a>
+        </p>
+    </div>
+</footer>
