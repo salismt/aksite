@@ -43,6 +43,15 @@ html, body {
     font-family: $font-stack;
 }
 
+.row-header {
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -1px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    text-align: center;
+}
+
 .btn-file {
     position: relative;
     overflow: hidden;

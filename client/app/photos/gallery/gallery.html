@@ -6,45 +6,49 @@
         <alert type="danger">Error: {{error}}</alert>
     </div>
 
-    <div ng-if="!error" id="grid-gallery" class="grid-gallery">
-        <section class="grid-wrap">
-            <ul class="grid">
-                <!-- for Masonry column width -->
-                <li class="grid-sizer"></li>
-                <li ng-repeat="photo in photos">
-                    <figure>
-                        <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
-                        <figcaption>
-                            <h3>{{photo.name}}</h3>
-                            <p>{{photo.info}}</p>
-                        </figcaption>
-                    </figure>
-                </li>
-            </ul>
-        </section>
-        <div class="backdrop"></div>
-        <section class="slideshow">
-            <ul>
-                <li ng-repeat="photo in photos">
-                    <figure>
-                        <figcaption>
-                            <h3>{{photo.name}}</h3>
-                            <p>{{photo.info}}</p>
-                        </figcaption>
-                        <img ng-src="api/upload/{{photo.fileId}}" alt="img"/>
-                    </figure>
-                </li>
-            </ul>
-            <nav>
-                <span class="icon nav-prev fa fa-chevron-left"></span>
-                <span class="icon nav-next fa fa-chevron-right"></span>
-                <span class="icon nav-close fa fa-times"></span>
-            </nav>
-            <div class="info-keys icon">
-                <div class="fa fa-fw fa-caret-left"></div>
-                Navigate with arrow keys
-                <div class="fa fa-fw fa-caret-right"></div>
-            </div>
-        </section>
+    <div class="container" ng-if="!error">
+        <h1 class="row-header">{{gallery.name}}</h1>
+        <h5 class="text-center">{{gallery.info}}</h5>
+        <div id="grid-gallery" class="grid-gallery">
+            <section class="grid-wrap">
+                <ul class="grid">
+                    <!-- for Masonry column width -->
+                    <li class="grid-sizer"></li>
+                    <li ng-repeat="photo in photos">
+                        <figure>
+                            <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
+                            <figcaption>
+                                <h3>{{photo.name}}</h3>
+                                <p>{{photo.info}}</p>
+                            </figcaption>
+                        </figure>
+                    </li>
+                </ul>
+            </section>
+            <div class="backdrop"></div>
+            <section class="slideshow">
+                <ul>
+                    <li ng-repeat="photo in photos">
+                        <figure>
+                            <figcaption>
+                                <h3>{{photo.name}}</h3>
+                                <p>{{photo.info}}</p>
+                            </figcaption>
+                            <img ng-src="api/upload/{{photo.fileId}}" alt="img"/>
+                        </figure>
+                    </li>
+                </ul>
+                <nav>
+                    <span class="icon nav-prev fa fa-chevron-left"></span>
+                    <span class="icon nav-next fa fa-chevron-right"></span>
+                    <span class="icon nav-close fa fa-times"></span>
+                </nav>
+                <div class="info-keys icon">
+                    <div class="fa fa-fw fa-caret-left"></div>
+                    Navigate with arrow keys
+                    <div class="fa fa-fw fa-caret-right"></div>
+                </div>
+            </section>
+        </div>
     </div>
 </div>
