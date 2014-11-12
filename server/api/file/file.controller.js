@@ -25,8 +25,9 @@ exports.index = function(req, res) {
     File.find(function(err, files) {
         if(err) {
             return handleError(res, err);
+        } else {
+            return res.status(200).json(files);
         }
-        return res.json(200, files);
     });
 };
 
@@ -164,7 +165,7 @@ exports.update = function(req, res) {
             if(err) {
                 return handleError(res, err);
             }
-            return res.json(200, file);
+            return res.status(200).json(file);
         });
     });
 };
@@ -179,18 +180,6 @@ exports.destroy = function(req, res) {
             res.status(200).end();
         });
     }
-};
-
-exports.test = function(req, res) {
-    var stream = gfs.createReadStream({_id: req.params.id});
-    stream.on('error', handleGridStreamErr(res));
-    var img = gm(stream, {_id: req.params.id});
-    img.size(function(err, val) {
-        if(err) return err;
-        console.log(val);
-    });
-    res.status(201).end();
-    //img.stream();
 };
 
 function handleError(res, err) {
