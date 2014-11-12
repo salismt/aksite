@@ -96,8 +96,7 @@ conn.once('open', function(err) {
             "This project was done as part of Boilermake, Purdue's first hackathon. It won 3rd place." +
             "<br/><br/>" +
             "<a href=\"http://scottlittle.me/dotsynth\" class=\"btn btn-lg btn-primary\">Demo</a> " +
-            "<a href=\"https://github.com/Awk34/dotsynth\" class=\"btn btn-lg btn-default\"><i class=\"fa fa-github\"></i> View on GitHub</a>",
-            link: "http://github.com/awk34/dotsynth/"
+            "<a href=\"https://github.com/Awk34/dotsynth\" class=\"btn btn-lg btn-default\"><i class=\"fa fa-github\"></i> View on GitHub</a>"
         };
         var thumbWritestream = gfs.createWriteStream([]);
         thumbWritestream.on('close', function(file) {
