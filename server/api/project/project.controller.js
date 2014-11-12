@@ -105,10 +105,8 @@ function sanitiseNewGallery(body, params) {
         return 'Missing info';
     } else if(!body.content) {
         return 'Missing content';
-    } else if(!body.thumbnailId) {
-        return 'No thumbnail given';
-    } else if(!body.coverId) {
-        return 'No cover photo given';
+    } else if(!body.file || !(body.thumbnailId && body.fileId)) {
+        return 'No cover image given';
     } else if(!body.link) {
         return 'No link given';
     }
@@ -119,14 +117,12 @@ function sanitiseNewGallery(body, params) {
         return 'Info not String';
     } else if(typeof body.content !== 'string') {
         return 'Content not String';
-    } else if(typeof body.link !== 'string') {
-        return 'Link not String';
     } else if(body.date instanceof Date && !isNaN(body.date.valueOf())) {
         return 'Date not of type Date';
     } else if(body.active && typeof body.active !== 'boolean') {
         return 'Active not Boolean';
     }
-    //TODO: check thumbnail and cover
+    //TODO: check image
     else {
         return null;
     }
