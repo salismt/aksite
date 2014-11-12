@@ -6,4 +6,72 @@
             <h1>Manage Projects</h1>
         </div>
     </div>
+    <div class="row">
+        <form class="form-horizontal" name="form" ng-submit="addProject(form)">
+
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Name</label>
+
+                <div class="col-sm-10"><input type="text" name="name" id="name" class="form-control" ng-model="project.name" required></div>
+            </div>
+
+            <div class="form-group">
+                <label for="info" class="col-sm-2 control-label">Info</label>
+
+                <div class="col-sm-10"><input type="text" name="info" id="info" class="form-control" ng-model="project.info" required></div>
+            </div>
+
+            <div class="form-group">
+                <label for="content" class="col-sm-2 control-label">Content</label>
+
+                <div class="col-sm-10"><textarea id="content" class="form-control" rows="5" ng-model="project.content" required></textarea></div>
+            </div>
+
+            <div class="form-group">
+                <label for="file" class="col-sm-2 control-label">File</label>
+
+                <div class="input-group col-sm-10" style="padding-left: 15px; padding-right: 15px;">
+                    <input type="text" id="file" class="form-control file-input-value" ng-model="filename" readonly>
+                        <span class="input-group-btn">
+                            <span class="btn btn-primary btn-file">
+                                Browse
+                                <input type="file" accept="images/*" id="fileInput" name="myFiles[]"
+                                       ng-file-select="onFileSelect($files)" required>
+                            </span>
+                        </span>
+                </div>
+            </div>
+
+            <progressbar class="progress-striped active" value="progress" ng-show="progress">
+                <b>{{progress}}%</b>
+            </progressbar>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Hidden</label>
+
+                <div class="col-sm-10"><button type="button" class="btn btn-primary" ng-model="project.hidden" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">{{project.hidden}}</button></div>
+            </div>
+
+            <div class="form-group has-error">
+                <p class="help-block" ng-show="form.name.$error.required && form.info.$error.required && submitted">
+                    Please enter all information.
+                </p>
+
+                <p class="help-block" ng-show="form.info.$error.email && submitted">
+                    Please enter a valid email.
+                </p>
+
+                <p class="help-block">{{ errors.other }}</p>
+            </div>
+
+            <div>
+                <button class="btn btn-inverse btn-lg btn-login" type="submit">
+                    Add
+                </button>
+                <a class="btn btn-default btn-lg btn-register" ng-click="upload.abort()">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
