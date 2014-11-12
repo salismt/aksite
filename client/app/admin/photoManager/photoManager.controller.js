@@ -6,7 +6,6 @@ angular.module('aksiteApp')
             hidden: false
         };
         $scope.errors = {};
-        $scope.dropSupported = true;
         $scope.progress = undefined;
 
         $scope.gallery = new CBPGridGallery(document.getElementById('grid-gallery'));
