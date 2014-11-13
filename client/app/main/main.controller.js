@@ -2,10 +2,6 @@
 
 angular.module('aksiteApp')
     .controller('MainCtrl', function($scope, $http, socket) {
-        $http.get('/api/photos').success(function(photos) {
-            $scope.photos = photos;
-        });
-
         $http.get('/api/things').success(function(awesomeThings) {
             $scope.awesomeThings = awesomeThings;
             socket.syncUpdates('thing', $scope.awesomeThings);
