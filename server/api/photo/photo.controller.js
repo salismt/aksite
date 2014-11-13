@@ -2,12 +2,10 @@
 
 var _ = require('lodash');
 var Photo = require('./photo.model');
-//var fs = require('fs');
-//var path = require('path');
 var config = require('../../config/environment');
 
 function handleError(res, err) {
-    return res.send(500, err);
+    return res.status(500).send(err);
 }
 
 // Get list of photos
@@ -23,9 +21,8 @@ exports.show = function(req, res) {
     Photo.findById(req.params.id, function(err, photo) {
         if(err) {
             return handleError(res, err);
-        }
-        else if(!photo) {
-            return res.send(404);
+        } else if(!photo) {
+            return res.status(404).end();
         } else {
             return res.json(photo);
         }
@@ -37,8 +34,9 @@ exports.create = function(req, res) {
     Photo.create(req.body, function(err, photo) {
         if(err) {
             return handleError(res, err);
+        } else {
+            return res.status(201).json(photo);
         }
-        return res.json(201, photo);
     });
 };
 
@@ -50,17 +48,18 @@ exports.update = function(req, res) {
     Photo.findById(req.params.id, function(err, photo) {
         if(err) {
             return handleError(res, err);
+        } else if(!photo) {
+            return res.status(404).end();
+        } else {
+            var updated = _.merge(photo, req.body);
+            updated.save(function(err) {
+                if(err) {
+                    return handleError(res, err);
+                } else {
+                    return res.status(200).json(photo);
+                }
+            });
         }
-        if(!photo) {
-            return res.send(404);
-        }
-        var updated = _.merge(photo, req.body);
-        updated.save(function(err) {
-            if(err) {
-                return handleError(res, err);
-            }
-            return res.json(200, photo);
-        });
     });
 };
 
@@ -69,15 +68,16 @@ exports.destroy = function(req, res) {
     Photo.findById(req.params.id, function(err, photo) {
         if(err) {
             return handleError(res, err);
+        } else if(!photo) {
+            return res.status(404).end();
+        } else {
+            photo.remove(function(err) {
+                if(err) {
+                    return handleError(res, err);
+                } else {
+                    return res.status(204).end();
+                }
+            });
         }
-        if(!photo) {
-            return res.send(404);
-        }
-        photo.remove(function(err) {
-            if(err) {
-                return handleError(res, err);
-            }
-            return res.send(204);
-        });
     });
 };
