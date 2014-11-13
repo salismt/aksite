@@ -2,24 +2,27 @@
 
 <div class="container">
     <header class="hero-unit" id="banner">
-        <div class="container">
-            <h1 class="page-header">Projects</h1>
-        </div>
+        <h1 class="page-header">Projects</h1>
     </header>
 </div>
 
 <div class="container">
-    <div class="row">
+    <div class="spinner">
+        <i ng-if="loadingProjects" class="fa fa-spinner fa-spin"></i>
+    </div>
+    <alert ng-if="projects.length === 0" type="info">No Projects</alert>
+    <div ng-if="projects.length > 0" class="row">
         <ul class="project-list">
-            <li class="project" ng-repeat="project in projects">
-                <a href="{{project.link}}">
+            <li ng-repeat="project in projects">
+                <div class="project"><a href="/projects/{{project._id}}">
                     <img class="cover" ng-src="api/upload/{{project.coverId}}" alt=""/><br/>
                 </a>
                 <div class="caption">
-                    <span class="project-name">{{project.name}}</span>
-                    <br/>
-                    <span class="project-info">{{project.info}}</span>
-                </div>
+                    <div class="project-name h1">
+                        {{project.name}}
+                        <small class="project-info">{{project.info}}</small>
+                    </div>
+                </div></div>
             </li>
         </ul>
     </div>
@@ -27,7 +30,9 @@
 
 <footer class="footer">
     <div class="container">
-        <p>&copy; Andrew Koroluk |
-            <a href="https://github.com/Awk34">GitHub</a></p>
+        <p>
+            &copy; Andrew Koroluk |
+            <a href="https://github.com/Awk34">GitHub</a>
+        </p>
     </div>
 </footer>

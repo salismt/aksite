@@ -7,5 +7,10 @@ angular.module('aksiteApp')
                 url: '/projects',
                 templateUrl: 'app/projects/projects.html',
                 controller: 'ProjectsCtrl'
+            })
+            .state('projects.project', {
+                url: '/:projectId',
+                templateUrl: 'app/projects/project/project.html',
+                controller: 'ProjectCtrl'
             });
     });

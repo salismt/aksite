@@ -89,8 +89,15 @@ conn.once('open', function(err) {
     Project.find({}).remove(function() {
         var newProject = {
             name: ".synth 1.0",
-            info: "Javascript modular synthesizer",
-            link: "http://github.com/awk34/dotsynth/"
+            info: "Modular Synthesizer",
+            content: "**.synth** (or dotsynth) is a modular synthesizer written in Javascript. Its purpose is to expose the Web Audio API in a user-friendly manner." +
+            "<br/>" +
+            "It works on both click and touch devices that utilize modern web browsers." +
+            "<br/>" +
+            "This project was done as part of Boilermake, Purdue's first hackathon. It won 3rd place." +
+            "<br/><br/>" +
+            "<a href=\"http://scottlittle.me/dotsynth\" class=\"btn btn-lg btn-primary\">Demo</a> " +
+            "<a href=\"https://github.com/Awk34/dotsynth\" class=\"btn btn-lg btn-default\"><i class=\"fa fa-github\"></i> View on GitHub</a>"
         };
         var thumbWritestream = gfs.createWriteStream([]);
         thumbWritestream.on('close', function(file) {

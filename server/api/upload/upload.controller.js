@@ -12,20 +12,20 @@ var _ = require('lodash'),
     Schema = mongoose.Schema,
     Grid = require('gridfs-stream'),
     gridSchema = new Schema({}, {strict: false}),
-    gridModel = mongoose.model("gridModel", gridSchema, "fs.files");
+    gridModel = mongoose.model("gridModel", gridSchema, "fs.files"),
+    gfs,
+    conn = mongoose.createConnection(config.mongo.uri);
 
 gridform.mongo = mongoose.mongo;
 Grid.mongo = mongoose.mongo;
 
-var gfs,
-    conn = mongoose.createConnection(config.mongo.uri);
 conn.once('open', function(err) {
     if(err) {
         handleError(err);
-        return;
+    } else {
+        gfs = Grid(conn.db);
+        gridform.db = conn.db;
     }
-    gfs = Grid(conn.db);
-    gridform.db = conn.db;
 });
 
 // Get list of files

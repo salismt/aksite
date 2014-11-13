@@ -1,24 +1,37 @@
 ul.project-list {
+    padding: 0;
+    margin: 0;
     list-style: none;
-
-    li.project {
-        width: 500px;
-
-        .cover {
+    @include display(flex);
+    -webkit-flex-flow: row wrap;
+    justify-content: space-around;
+    li {
+        .project {
             width: 500px;
-        }
-        .caption {
-            width: inherit;
-            background-color: lightgray;
-            padding: 20px;
+            float: left;
+            cursor: pointer;
+            margin: 10px;
 
-            .project-name {
-                font-size: 2em;
-                font-weight: 700;
+            .cover {
+                width: 500px;
             }
-            .project-info {
-                margin-left: 10px;
+            .caption {
+                width: 500px;
+                background-color: lightgray;
+                padding: 20px;
+
+                .project-name {
+                    font-size: 2.5em;
+                    font-weight: 700;
+                    font-family: "Roboto", sans-serif;
+                    margin: 10px 5px;
+                }
             }
         }
     }
+}
+
+.spinner {
+    font-size: 4em;
+    text-align: center;
 }
