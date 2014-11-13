@@ -1,7 +1,28 @@
 'use strict';
 
-var _ = require('lodash');
-var Project = require('./project.model');
+var _ = require('lodash'),
+    Project = require('./project.model'),
+    config = require('../../config/environment'),
+    mongoose = require('mongoose'),
+    fs = require('fs'),
+    gridform = require('gridform'),
+    gm = require('gm'),
+    Schema = mongoose.Schema,
+    Grid = require('gridfs-stream'),
+    gfs,
+    conn = mongoose.createConnection(config.mongo.uri);
+
+gridform.mongo = mongoose.mongo;
+Grid.mongo = mongoose.mongo;
+
+conn.once('open', function(err) {
+    if(err) {
+        handleError(err);
+    } else {
+        gfs = Grid(conn.db);
+        gridform.db = conn.db;
+    }
+});
 
 // Get list of projects
 exports.index = function(req, res) {
@@ -28,29 +49,105 @@ exports.show = function(req, res) {
 };
 
 // Creates a new project in the DB.
+//exports.create = function(req, res) {
+//    var sanitized = sanitiseNewProject(req.body, req.params);
+//    if(sanitized !== null) {
+//        return res.status(400).send(sanitized);
+//    } else {
+//        var newProject = {
+//            name: req.body.name,
+//            info: req.body.info,
+//            content: req.body.content,
+//            thumbnailId: req.body.thumbnailId,
+//            coverId: req.body.coverId,
+//            date: req.body.date || new Date(),
+//            active: req.body.active || true
+//        };
+//        return Project.create(newProject, function(err, project) {
+//            if(err) {
+//                return handleError(res, err);
+//            } else {
+//                return res.status(201).json(project);
+//            }
+//        });
+//    }
+//};
+
+// Creates a new file in the DB.
 exports.create = function(req, res) {
-    var sanitized = sanitiseNewGallery(req.body, req.params);
-    if(sanitized !== null) {
-        return res.status(400).send(sanitized);
-    } else {
-        var newProject = {
-            name: req.body.name,
-            info: req.body.info,
-            content: req.body.content,
-            thumbnailId: req.body.thumbnailId,
-            coverId: req.body.coverId,
-            link: req.body.link,
-            date: req.body.date || new Date(),
-            active: req.body.active || true
-        };
-        return Project.create(newProject, function(err, project) {
-            if(err) {
-                return handleError(res, err);
-            } else {
-                return res.status(201).json(project);
+    var form = gridform({db: conn.db, mongo: mongoose.mongo});
+
+    // optionally store per-file metadata
+    form.on('fileBegin', function(name, file) {
+        file.metadata = {};
+        //console.log(name);
+    });
+
+    form.parse(req, function(err, fields, files) {
+        if(err) return handleError(res, err);
+
+        /**
+         * file.name            - the uploaded file name
+         * file.type            - file type per [mime](https://github.com/bentomas/node-mime)
+         * file.size            - uploaded file size (file length in GridFS) named "size" for compatibility
+         * file.path            - same as file.name. included for compatibility
+         * file.lastModified    - included for compatibility
+         * file.root            - the root of the files collection used in MongoDB ('fs' here means the full collection in mongo is named 'fs.files')
+         * file.id              - the ObjectId for this file
+         * @type {file}
+         */
+        var file = files.file;
+
+        if(_.isNull(file) || _.isUndefined(file))
+            return res.status(400).send('No file');
+
+        //console.log(file);
+        console.log(fields);
+        var sanitised = sanitiseNewProject(fields, file);
+
+        if(sanitised === null) {
+            var projectModel = {
+                name: fields.name,
+                info: fields.info,
+                content: fields.content,
+                date: fields.date || new Date(),
+                coverId: file.id
+            };
+            if(fields.hidden === 'true') {
+                projectModel.hidden = true;
+            } else if(fields.hidden === 'false') {
+                projectModel.hidden = false;
+            } else { //sanitizer should prevent this
+                projectModel.hidden = false;
             }
-        });
-    }
+
+            // Thumbnail generation
+            var stream = gfs.createReadStream({_id: file.id});
+            stream.on('error', handleGridStreamErr(res));
+            var img = gm(stream, file.id);
+            img.resize(200, 200, "^");
+            img.crop(200, 200, 0, 0);
+            img.quality(90);
+            img.stream(function(err, outStream) {
+                if(err) return res.status(500).end();
+                else {
+                    var writestream = gfs.createWriteStream({filename: file.name});
+                    writestream.on('close', function(file) {
+                        console.log(file);
+                        projectModel.thumbnailId = file._id;
+
+                        Project.create(projectModel, function(err, project) {
+                            if(err) return handleError(res, err);
+                            else return res.status(201).json(project);
+                        });
+                    });
+                    outStream.pipe(writestream);
+                }
+            });
+        } else {
+            return res.status(400).send(sanitised);
+        }
+    });
 };
 
 // Updates an existing project in the DB.
@@ -97,7 +194,21 @@ function handleError(res, err) {
     return res.status(500).send(err);
 }
 
-function sanitiseNewGallery(body, params) {
+function handleGridStreamErr(res) {
+    return function(err) {
+        if(/does not exist/.test(err)) {
+            // trigger 404
+            console.log(err);
+            return err;
+        }
+
+        // may have written data already
+        res.status(500).end();
+        console.error(err.stack);
+    };
+}
+
+function sanitiseNewProject(body, file) {
     // Required Params
     if(!body.name) {
         return 'Missing Name'
@@ -105,10 +216,8 @@ function sanitiseNewGallery(body, params) {
         return 'Missing info';
     } else if(!body.content) {
         return 'Missing content';
-    } else if(!body.file || !(body.thumbnailId && body.fileId)) {
+    } else if(!file) {
         return 'No cover image given';
-    } else if(!body.link) {
-        return 'No link given';
     }
     // Type Checking
     else if(typeof body.name !== 'string') {
@@ -117,10 +226,10 @@ function sanitiseNewGallery(body, params) {
         return 'Info not String';
     } else if(typeof body.content !== 'string') {
         return 'Content not String';
-    } else if(body.date instanceof Date && !isNaN(body.date.valueOf())) {
+    } else if(body.date && ( !(body.date instanceof Date) || isNaN(body.date.valueOf()) )) {
         return 'Date not of type Date';
-    } else if(body.active && typeof body.active !== 'boolean') {
-        return 'Active not Boolean';
+    } else if(body.hidden && (body.hidden !== 'true' && body.hidden !== 'false')) {
+        return 'Hidden not Boolean';
     }
     //TODO: check image
     else {
