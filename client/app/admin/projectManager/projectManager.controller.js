@@ -5,7 +5,9 @@ angular.module('aksiteApp')
         $scope.project = {
             hidden: false
         };
+        //$scope.projects = Project.query();
         $scope.errors = {};
+        $scope.progress = undefined;
 
         $scope.addProject = function(form) {
             console.log(form);
@@ -15,41 +17,43 @@ angular.module('aksiteApp')
             if(form.$valid) {
                 console.log('validdd');
                 console.log($scope.project);
-                $http.post('', $scope.project)
-                    .success(function() {
+                console.log(form);
 
+                $scope.submitted = true;
+
+                if(form.$valid) {
+                    $scope.upload = $upload.upload({
+                        url: 'api/projects',
+                        method: 'POST',
+                        file: $scope.fileToUpload,
+                        data: {
+                            name: $scope.project.name,
+                            info: $scope.project.info,
+                            content: $scope.project.content,
+                            hidden: $scope.project.hidden
+                        }
                     })
-                    .error(function() {
-
-                    });
-            //    $scope.upload = $upload.upload({
-            //        url: 'api/upload',
-            //        method: 'POST',
-            //        file: $scope.fileToUpload,
-            //        data: {
-            //            name: $scope.photo.name,
-            //            info: $scope.photo.info,
-            //            purpose: 'photo'
-            //        }
-            //    })
-            //        .progress(function(evt) {
-            //            $scope.progress = (100.0 * (evt.position / evt.total)).toFixed(1);
-            //            console.log(evt);
-            //        })
-            //        .success(function(data) {
-            //            $scope.progress = undefined;
-            //            //console.log(data);
-            //            $scope.photos = Photo.query();
-            //        })
-            //        .error(function(response, status, headers, config) {
-            //            $scope.progress = undefined;
-            //        })
-            //        .xhr(function(xhr) {
-            //            // to abort, use ng-click like: ng-click="abort()"
-            //            $scope.abort = function() {
-            //                xhr.abort();
-            //            };
-            //        });
+                        .progress(function(evt) {
+                            $scope.progress = (100.0 * (evt.position / evt.total)).toFixed(1);
+                            console.log(evt);
+                        })
+                        .success(function(data, status) {
+                            $scope.progress = undefined;
+                            console.log(status);
+                            console.log(data);
+                            //$scope.projects = Project.query();
+                        })
+                        .error(function(response, status) {
+                            $scope.progress = undefined;
+                            console.log(status);
+                            console.log(response);
+                        })
+                        .xhr(function(xhr) {
+                            $scope.abort = function() {
+                                xhr.abort();
+                            };
+                        });
+                }
             }
         };
 
