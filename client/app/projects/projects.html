@@ -13,8 +13,8 @@
     <alert ng-if="projects.length === 0" type="info">No Projects</alert>
     <div ng-if="projects.length > 0" class="row">
         <ul class="project-list">
-            <li class="project" ng-repeat="project in projects">
-                <a href="/projects/{{project._id}}">
+            <li ng-repeat="project in projects">
+                <div class="project"><a href="/projects/{{project._id}}">
                     <img class="cover" ng-src="api/upload/{{project.coverId}}" alt=""/><br/>
                 </a>
                 <div class="caption">
@@ -22,7 +22,7 @@
                         {{project.name}}
                         <small class="project-info">{{project.info}}</small>
                     </div>
-                </div>
+                </div></div>
             </li>
         </ul>
     </div>
