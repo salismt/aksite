@@ -53,3 +53,32 @@ angular.module('aksiteApp', [
             });
         });
     });
+
+var myRenderer = new marked.Renderer();
+if (typeof hljs != 'undefined') {
+    myRenderer.code = function(code, lang, escaped) {
+        if (lang && _.contains(hljs.listLanguages(), lang)) {
+            try {
+                code = hljs.highlight(lang, code).value;
+            } catch (e) {}
+        }
+
+        return '<pre><code'
+            + (lang
+                ? ' class="hljs ' + this.options.langPrefix + lang + '"'
+                : ' class="hljs"')
+            + '>'
+            + code
+            + '\n</code></pre>\n';
+    };
+} else {
+    console.log('hljs undefined');
+}
+
+marked.setOptions({
+    renderer: myRenderer,
+    highlight: function(code) {
+        return hljs.highlightAuto(code).value;
+    },
+    gfm: true
+});
