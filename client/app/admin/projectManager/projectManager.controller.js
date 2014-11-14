@@ -1,13 +1,24 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('ProjectmanagerCtrl', function($scope, $http, $upload) {
+    .controller('ProjectmanagerCtrl', function($scope, $http, $upload, $sanitize) {
         $scope.project = {
+            name: undefined,
+            info: undefined,
+            file: null,
+            content: undefined,
             hidden: false
         };
         //$scope.projects = Project.query();
         $scope.errors = {};
         $scope.progress = undefined;
+        $scope.markedContent = function() {
+            try {
+                return $sanitize(marked($scope.project.content || ''));
+            } catch(e) {
+                return '<h1 class=\"text-danger\">Parsing Error</h1>';
+            }
+        };
 
         $scope.addProject = function(form) {
             console.log(form);
@@ -15,9 +26,6 @@ angular.module('aksiteApp')
             $scope.submitted = true;
 
             if(form.$valid) {
-                console.log('validdd');
-                console.log($scope.project);
-                console.log(form);
 
                 $scope.submitted = true;
 

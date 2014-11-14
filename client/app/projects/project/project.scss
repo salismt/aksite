@@ -6,6 +6,20 @@
     }
 }
 
+.marked-content {
+    background-color: rgb(232, 232, 232);
+    min-height: 200px;
+    border: 3px dashed darkgray;
+    margin: 15px;
+    padding: 10px;
+
+    h1.text-danger {
+        font-family: $header-font-stack;
+        font-weight: 900;
+        text-align: center;
+    }
+}
+
 @media (min-width: $screen-md-min) {
     .cover-image {
         width: 100%;
