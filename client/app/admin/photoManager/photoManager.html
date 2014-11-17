@@ -6,123 +6,29 @@
             <h1>Manage Photos</h1>
         </div>
 
-        <div class="col-sm-12">
-            <form class="form" name="form" ng-submit="addPhoto(form)" novalidate>
-
-                <div class="form-group">
-                    <label for="name">Name</label>
-
-                    <input type="text" name="name" id="name" class="form-control" ng-model="photo.name" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="info">Info</label>
-
-                    <input type="text" name="info" id="info" class="form-control" ng-model="photo.info">
-                </div>
-
-                <div class="form-group">
-                    <label for="file">File</label>
-
-                    <div class="input-group" id="file">
-                        <input type="text" class="form-control file-input-value" ng-model="filename" readonly>
-                        <span class="input-group-btn">
-                            <span class="btn btn-primary btn-file">
-                                Browse
-                                <input type="file" accept="images/*" id="fileInput" name="myFiles[]"
-                                       ng-file-select="onFileSelect($files)">
-                            </span>
-                        </span>
-                    </div>
-                </div>
-
-                <progressbar class="progress-striped active" value="progress" ng-show="progress"><b>{{progress}}%</b>
-                </progressbar>
-
-                <!--<div class="form-group">-->
-                <!--<label>Hidden</label>-->
-
-                <!--<button type="button" class="btn btn-primary" ng-model="photo.hidden" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">{{photo.hidden}}</button>-->
-                <!--</div>-->
-
-                <div class="form-group has-error">
-                    <p class="help-block" ng-show="form.name.$error.required && form.info.$error.required && submitted">
-                        Please enter your email and password.
-                    </p>
-
-                    <p class="help-block" ng-show="form.email.$error.email && submitted">
-                        Please enter a valid email.
-                    </p>
-
-                    <p class="help-block">{{ errors.other }}</p>
-                </div>
-
-                <div>
-                    <button class="btn btn-inverse btn-lg btn-login" type="submit">
-                        Add
-                    </button>
-                    <a class="btn btn-default btn-lg btn-register" ng-click="upload.abort()">
-                        Cancel
-                    </a>
-                </div>
-            </form>
-        </div>
+        <span class="btn btn-lg btn-primary btn-file">
+            <span class="fa fa-plus"></span> Add Photos
+            <input type="file" accept="images/*" id="file-input" name="myFiles[]"
+                   ng-file-select="onFileSelect($files)" multiple>
+        </span>
     </div>
-</div>
 
-<div id="grid-gallery" class="grid-gallery">
-    <section class="grid-wrap">
-        <ul class="grid">
-            <!-- for Masonry column width -->
-            <li class="grid-sizer"></li>
-            <li ng-repeat="photo in photos">
-                <figure>
-                    <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
-
-                    <div class="photo-toolbar">
-                        <div ng-click="" class="item">
-                            <span class="fa fa-fw fa-edit"></span>
-                        </div>
-                        <div ng-click="featurePhoto(photo)" class="item">
-                            <span class="fa fa-fw fa-star-o"
-                                  ng-class="{featured: photo.featured, 'fa-star': photo.featured, 'fa-star-o': !photo.featured}"></span>
-                        </div>
-                        <div ng-click="deletePhoto(photo)" class="item">
-                            <span class="fa fa-fw fa-trash-o"></span>
-                        </div>
-                    </div>
-                    <figcaption>
-                        <h3>{{photo.name}}</h3>
-
-                        <p>{{photo.info}}</p>
-                    </figcaption>
-                </figure>
+    <div class="row">
+        <ul class="upload-grid">
+            <li class="upload-grid-item" ng-repeat="photo in photos">
+                <div class="upload-grid-figure">
+                    <progressbar ng-if="!photo.thumbnailId" class="progress-striped active" value="photo.progress">
+                        <b>{{photo.progress}}%</b>
+                    </progressbar>
+                    <img ng-if="photo.thumbnailId" ng-src="/api/upload/{{photo.thumbnailId}}" alt="photo.filename"/>
+                </div>
+                <div class="upload-grid-caption">
+                    <form action="">
+                        <input type="text" class="form-control" placeholder="{{photo.filename}}" ng-model="photo.name">
+                        <input type="text" class="form-control" placeholder="Info" ng-model="photo.info">
+                    </form>
+                </div>
             </li>
         </ul>
-    </section>
-    <div class="backdrop"></div>
-    <section class="slideshow">
-        <ul>
-            <li ng-repeat="photo in photos">
-                <figure>
-                    <figcaption>
-                        <h3>{{photo.name}}</h3>
-
-                        <p>{{photo.info}}</p>
-                    </figcaption>
-                    <img ng-src="api/upload/{{photo.fileId}}" alt="img"/>
-                </figure>
-            </li>
-        </ul>
-        <nav>
-            <span class="icon nav-prev fa fa-chevron-left"></span>
-            <span class="icon nav-next fa fa-chevron-right"></span>
-            <span class="icon nav-close fa fa-times"></span>
-        </nav>
-        <div class="info-keys icon">
-            <div class="fa fa-fw fa-caret-left"></div>
-            Navigate with arrow keys
-            <div class="fa fa-fw fa-caret-right"></div>
-        </div>
-    </section>
+    </div>
 </div>
