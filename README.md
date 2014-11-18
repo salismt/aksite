@@ -10,6 +10,9 @@ Andrew Koroluk
     1. Download `.zip`
     2. HTTPS:  `git clone https://USERNAME@bitbucket.org/awk34/aksite.git`
     3. SSH: `git clone git@bitbucket.org:awk34/aksite.git`
+	
+	`$ ~ cd Downloads/aksite`
+	
 3. Install Node.js & NPM
 	http://nodejs.org/download/
 4. Install Bower globally
@@ -23,21 +26,13 @@ Andrew Koroluk
 	
 6. Install Node.js dependencies
 
-	```
-	$ ~ cd Downloads/aksite`
-	$ ~/Downloads/aksite npm install
-	
-	```
+	`$ ~/Downloads/aksite npm install`
+
 7. Install Bower dependencies
 
-	```
-	$ ~/Downloads/aksite bower install
+	`$ ~/Downloads/aksite bower install`
 	
-	```
 8.  Run the local server under the development environment
 
-	```
-	$ ~/Downloads/aksite grunt serve
-	
-	```
+	`$ ~/Downloads/aksite grunt serve`
 
