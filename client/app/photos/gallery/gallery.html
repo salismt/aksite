@@ -15,7 +15,10 @@
                     <!-- for Masonry column width -->
                     <li class="grid-sizer"></li>
                     <li ng-repeat="photo in photos">
-                        <figure>
+                        <figure id="photo-{{photo._id}}">
+                            <div class="spinner">
+                                <i class="fa fa-fw fa-spinner fa-spin"></i>
+                            </div>
                             <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
                             <figcaption>
                                 <h3>{{photo.name}}</h3>
