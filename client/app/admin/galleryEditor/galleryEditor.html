@@ -1,0 +1,66 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>{{gallery.name}}</h1>
+        </div>
+        <span class="btn btn-lg btn-primary btn-file pull-right">
+            <span class="fa fa-plus"></span> Add Photos
+            <input type="file" accept="images/*" id="file-input" name="myFiles[]"
+                   ng-file-select="onFileSelect($files)" multiple>
+        </span>
+    </div>
+    <br/>
+    <div class="row">
+        <form class="form-horizontal" name="form" ng-submit="saveGallery(form)">
+            <div class="form-group">
+                <label for="name" class="col-sm-1 control-label">Name</label>
+
+                <div class="col-sm-11"><input type="text" name="name" id="name" class="form-control" ng-model="gallery.name" required></div>
+            </div>
+
+            <div class="form-group">
+                <label for="info" class="col-sm-1 control-label">Info</label>
+
+                <div class="col-sm-11"><input type="text" name="info" id="info" class="form-control" ng-model="gallery.info"></div>
+            </div>
+
+            <div>
+                <button class="btn btn-inverse btn-lg" type="submit">
+                    Save
+                </button>
+                <a class="btn btn-default btn-lg">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <ul class="upload-grid">
+            <li class="upload-grid-item" ng-repeat="photo in photos">
+                <div class="upload-grid-figure">
+                    <progressbar ng-if="!photo.thumbnailId" class="progress-striped active" value="photo.progress">
+                        <b>{{photo.progress}}%</b>
+                    </progressbar>
+                    <img ng-if="photo.thumbnailId" ng-src="/api/upload/{{photo.thumbnailId}}" alt="photo.filename"/>
+                </div>
+                <div class="upload-grid-caption">
+                    <form action="">
+                        <input type="text" class="form-control" placeholder="{{photo.filename}}" ng-model="photo.name">
+                        <input type="text" class="form-control" placeholder="Info" ng-model="photo.info">
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            &copy; Andrew Koroluk |
+            <a href="https://github.com/Awk34">GitHub</a>
+        </p>
+    </div>
+</footer>
