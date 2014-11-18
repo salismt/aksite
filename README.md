@@ -13,24 +13,31 @@ Andrew Koroluk
 3. Install Node.js & NPM
 	http://nodejs.org/download/
 4. Install Bower globally
+
 	`npm install -g bower`
 	> **Note:** On *nix Operating systems, global NPM installations must be run with `sudo`
 
 5. Install Grunt globally
+
 	`npm install -g grunt`
+	
 6. Install Node.js dependencies
+
 	```
 	$ ~ cd Downloads/aksite`
 	$ ~/Downloads/aksite npm install
 	
 	```
 7. Install Bower dependencies
+
 	```
 	$ ~/Downloads/aksite bower install
 	
 	```
 8.  Run the local server under the development environment
+
 	```
 	$ ~/Downloads/aksite grunt serve
 	
 	```
+
