@@ -1,14 +1,43 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('GalleryEditorCtrl', function($scope, $http, $upload) {
-        $scope.gallery = {
-            name: 'Untitled Gallery',
-            info: '',
-            photos: []
-        };
+    .controller('GalleryEditorCtrl', function($scope, $http, $upload, $stateParams) {
         $scope.photos = [];
+        $scope.loadingGallery = true;
+        if(!$stateParams.galleryId || $stateParams.galleryId === 'new') {
+            $scope.gallery = {
+                name: 'Untitled Gallery',
+                info: '',
+                photos: []
+            };
+            $scope.loadingGallery = false;
+            $scope.newGallery = true;
+        } else {
+            $http.get('/api/gallery/'+$stateParams.galleryId)
+                .success(function(res, status) {
+                    $scope.gallery = res;
+                    $scope.gallery.id = $stateParams.galleryId;
+                    _.forEach($scope.gallery.photos, function(photoId) {
+                        $http.get('/api/photos/'+photoId)
+                            .success(function(res, status) {
+                                $scope.photos.push(res);
+                            })
+                            .error(function(res, status) {
+                                $scope.error = {status: status, res: res};
+                            });
+                    });
+                })
+                .error(function(res, status) {
+                    $scope.error = {status: status, res: res};
+                })
+                .finally(function() {
+                    $scope.loadingGallery = true;
+                });
+        }
         var nextPhoto = 0;
+
+        console.log($stateParams);
+        console.log($stateParams.galleryId);
 
         $scope.onFileSelect = function($files) {
             _.forEach($files, function(file) {
@@ -63,15 +92,27 @@ angular.module('aksiteApp')
                 });
         };
 
-        $scope.saveGallery = function(form) {
-            $http.post('/api/gallery', $scope.gallery)
-                .success(function(response, status) {
-                    console.log(status);
-                    console.log(response);
-                })
-                .error(function(response, status) {
-                    console.log(status);
-                    console.log(response);
-                });
+        $scope.saveGallery = function() {
+            if($scope.newGallery) {
+                $http.post('/api/gallery', $scope.gallery)
+                    .success(function(response, status) {
+                        console.log(status);
+                        console.log(response);
+                    })
+                    .error(function(response, status) {
+                        console.log(status);
+                        console.log(response);
+                    });
+            } else {
+                $http.put('/api/gallery', $scope.gallery)
+                    .success(function(response, status) {
+                        console.log(status);
+                        console.log(response);
+                    })
+                    .error(function(response, status) {
+                        console.log(status);
+                        console.log(response);
+                    });
+            }
         };
     });
