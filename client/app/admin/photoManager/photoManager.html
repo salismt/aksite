@@ -6,11 +6,17 @@
             <h1>Manage Photos</h1>
         </div>
 
-        <span class="btn btn-lg btn-primary btn-file">
-            <span class="fa fa-plus"></span> Add Photos
-            <input type="file" accept="images/*" id="file-input" name="myFiles[]"
-                   ng-file-select="onFileSelect($files)" multiple>
-        </span>
+
+        <div>
+            <a href="/admin/photos/gallery-editor" class="btn btn-primary btn-lg">
+                New Gallery
+            </a>
+            <span class="btn btn-lg btn-primary btn-file">
+                <span class="fa fa-plus"></span> Add Photos
+                <input type="file" accept="images/*" id="file-input" name="myFiles[]"
+                       ng-file-select="onFileSelect($files)" multiple>
+            </span>
+        </div>
     </div>
 
     <div class="row">
