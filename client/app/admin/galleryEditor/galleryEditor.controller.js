@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('GalleryEditorCtrl', function($scope, $http, $upload, $stateParams) {
+    .controller('GalleryEditorCtrl', function($scope, $http, $upload, $stateParams, $state) {
         $scope.photos = [];
         $scope.loadingGallery = true;
         if(!$stateParams.galleryId || $stateParams.galleryId === 'new') {
@@ -98,6 +98,7 @@ angular.module('aksiteApp')
                     .success(function(response, status) {
                         console.log(status);
                         console.log(response);
+                        $state.go('photoManager');
                     })
                     .error(function(response, status) {
                         console.log(status);
@@ -108,6 +109,7 @@ angular.module('aksiteApp')
                     .success(function(response, status) {
                         console.log(status);
                         console.log(response);
+                        $state.go('photoManager');
                     })
                     .error(function(response, status) {
                         console.log(status);
