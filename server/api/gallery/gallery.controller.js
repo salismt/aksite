@@ -63,12 +63,13 @@ exports.update = function(req, res) {
         } else if(!gallery) {
             return res.send(404);
         } else {
-            var updated = _.merge(gallery, req.body);
+            var updated = _.assign(gallery, req.body);
             return updated.save(function(err) {
                 if(err) {
                     return handleError(res, err);
+                } else {
+                    return res.status(200).json(gallery);
                 }
-                return res.status(200).json(gallery);
             });
         }
     });
