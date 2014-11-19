@@ -13,6 +13,9 @@
                         <li ng-repeat="gallery in galleries">
                             <figure>
                                 <a href="/photos/{{gallery._id}}">
+                                    <div ng-if="!gallery.featuredImgId" class="spinner">
+                                        <i class="fa fa-fw fa-spinner fa-spin"></i>
+                                    </div>
                                     <img ng-src="api/upload/{{gallery.featuredImgId}}" alt="img"/>
                                 </a>
                                 <figcaption>

@@ -1,106 +1,66 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('PhotomanagerCtrl', function($scope, $http, $upload, Photo) {
-        $scope.photo = {
-            hidden: false
-        };
-        $scope.errors = {};
-        $scope.progress = undefined;
+    .controller('PhotomanagerCtrl', function($scope, $http) {
+        $scope.errors = [];
+        $scope.loadingGalleries = true;
+        $scope.galleries = [];
+        $scope.galleryDeletions = [];
+        $scope.galleryChanges = [];
+        $scope.dirty = false;
 
-        $scope.gallery = new CBPGridGallery(document.getElementById('grid-gallery'));
-        // Use the User $resource to fetch all users
-        $scope.photos = Photo.query(function(val) {
-            setTimeout(function() {
-                $scope.gallery._init();
-            }, 1);
-        });
-
-        $scope.files = [];
-        $http.get('/api/upload').success(function(files) {
-            $scope.files = files;
-        });
-
-        $scope.featurePhoto = function(photo) {
-            $http.post('/api/featured/' + photo._id, {
-                type: 'photo',
-                name: photo.name,
-                link: ''
-            })
-                .success(function(data, status, headers, config) {
-                    console.log(status);
-                })
-                .error(function(data, status, headers, config) {
-                    console.log(data);
-                    console.log(status);
+        $http.get('/api/gallery')
+            .success(function(res) {
+                $scope.galleries = res;
+                _.forEach($scope.galleries, function(gallery) {
+                    $http.get('/api/photos/'+gallery.featuredId)
+                        .success(function(res) {
+                            gallery.featured = res;
+                        })
+                        .error(function(res, status) {
+                            console.log(res);
+                            console.log(status);
+                        });
                 });
-        };
+            })
+            .error(function(res, status) {
+                console.log(res);
+                console.log(status);
+            })
+            .finally(function() {
+                $scope.loadingGalleries = false;
+            });
 
-        $scope.addPhoto = function(form) {
-            console.log(form);
-
-            $scope.submitted = true;
-
-            if(form.$valid) {
-                $scope.upload = $upload.upload({
-                    url: 'api/upload',
-                    method: 'POST',
-                    file: $scope.fileToUpload,
-                    data: {
-                        name: $scope.photo.name,
-                        info: $scope.photo.info,
-                        purpose: 'photo'
-                    }
-                })
-                    .progress(function(evt) {
-                        $scope.progress = (100.0 * (evt.position / evt.total)).toFixed(1);
-                        console.log(evt);
-                    })
-                    .success(function(data) {
-                        $scope.progress = undefined;
-                        //console.log(data);
-                        $scope.photos = Photo.query();
-                    })
-                    .error(function(response, status, headers, config) {
-                        $scope.progress = undefined;
-                    })
-                    .xhr(function(xhr) {
-                        // to abort, use ng-click like: ng-click="abort()"
-                        $scope.abort = function() {
-                            xhr.abort();
-                        };
-                    });
+        $scope.toggleGalleryDeletion = function(gallery) {
+            if(!gallery.deleted) {
+                gallery.deleted = true;
+                $scope.dirty = true;
+                $scope.galleryDeletions.push(gallery);
+            } else {
+                gallery.deleted = false;
+                _.remove($scope.galleryDeletions, function(thisGallery) {
+                    return thisGallery._id === gallery._id;
+                });
+                if($scope.galleryDeletions.length === 0) {
+                    $scope.dirty = false;
+                }
             }
         };
 
-        $scope.deletePhoto = function(photo) {
-            Photo.remove({id: photo._id});
-            angular.forEach($scope.photos, function(u, i) {
-                if(u === photo) {
-                    $scope.photos.splice(i, 1);
-                }
-            });
-        };
-
-        $scope.deleteFile = function(fileId) {
-            $http.delete('/api/upload/' + fileId)
-                .success(function() {
-                    angular.forEach($scope.files, function(u, i) {
-                        if(u._id === fileId) {
-                            $scope.files.splice(i, 1);
-                        }
+        $scope.saveChanges = function() {
+            // Delete galleries
+            _.forEach($scope.galleryDeletions, function(gallery) {
+                $http.delete('/api/gallery/'+gallery._id)
+                    .success(function(res, status) {
+                        _.remove($scope.galleries, gallery);
+                        $scope.dirty = false;
+                        console.log(res);
+                        console.log(status);
+                    })
+                    .error(function(res, status) {
+                        console.log(res);
+                        console.log(status);
                     });
-                })
-                .error(function() {
-                    console.log('deleteFile error');
-                });
-        };
-
-        $scope.onFileSelect = function($files) {
-            //$files: an array of files selected, each file has name, size, and type.
-            var file = $files[0];
-
-            $scope.filename = file.name;
-            $scope.fileToUpload = file;
+            });
         };
     });

@@ -51,7 +51,7 @@ exports.create = function(req, res) {
     });
 };
 
-//TODO: verify
+//TODO: sanitize
 // Updates an existing gallery in the DB.
 exports.update = function(req, res) {
     if(req.body._id) {
@@ -63,12 +63,13 @@ exports.update = function(req, res) {
         } else if(!gallery) {
             return res.send(404);
         } else {
-            var updated = _.merge(gallery, req.body);
+            var updated = _.assign(gallery, req.body);
             return updated.save(function(err) {
                 if(err) {
                     return handleError(res, err);
+                } else {
+                    return res.status(200).json(gallery);
                 }
-                return res.status(200).json(gallery);
             });
         }
     });
@@ -100,8 +101,6 @@ function sanitiseNewGallery(body, params) {
     // Required Params
     if(!body.name) {
         return 'Missing Name'
-    } else if(!body.info) {
-        return 'Missing info';
     } else if(!body.photos) {
         return 'No photos given';
     }
