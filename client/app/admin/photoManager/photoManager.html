@@ -3,38 +3,43 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <h1>Manage Photos</h1>
+            <h1>Manage Galleries</h1>
         </div>
 
-
         <div>
-            <a href="/admin/photos/gallery-editor" class="btn btn-primary btn-lg">
+            <a href="" ng-show="dirty" ng-click="saveChanges()" class="btn btn-primary btn-lg">
+                <i class="fa fa-save"></i>
+                Save Changes
+            </a>
+            <a href="/admin/photos/gallery-editor" class="btn btn-primary btn-lg pull-right">
+                <i class="fa fa-plus"></i>
                 New Gallery
             </a>
-            <span class="btn btn-lg btn-primary btn-file">
-                <span class="fa fa-plus"></span> Add Photos
-                <input type="file" accept="images/*" id="file-input" name="myFiles[]"
-                       ng-file-select="onFileSelect($files)" multiple>
-            </span>
         </div>
     </div>
 
     <div class="row">
         <ul class="upload-grid">
-            <li class="upload-grid-item" ng-repeat="photo in photos">
+            <li class="upload-grid-item" ng-class="{deleted: gallery.deleted}" ng-repeat="gallery in galleries">
                 <div class="upload-grid-figure">
-                    <progressbar ng-if="!photo.thumbnailId" class="progress-striped active" value="photo.progress">
-                        <b>{{photo.progress}}%</b>
-                    </progressbar>
-                    <img ng-if="photo.thumbnailId" ng-src="/api/upload/{{photo.thumbnailId}}" alt="photo.filename"/>
+                    <a href="/admin/photos/gallery-editor/{{::gallery._id}}">
+                        <img ng-if="gallery.featured" ng-src="/api/upload/{{::gallery.featured.thumbnailId}}"/>
+                    </a>
                 </div>
                 <div class="upload-grid-caption">
-                    <form action="">
-                        <input type="text" class="form-control" placeholder="{{photo.filename}}" ng-model="photo.name">
-                        <input type="text" class="form-control" placeholder="Info" ng-model="photo.info">
-                    </form>
+                    <a href="#" ng-click="toggleGalleryDeletion(gallery)"><i class="fa fa-trash fa-2x text-danger"></i></a>
+                    <h2>{{::gallery.name}}</h2>
                 </div>
             </li>
         </ul>
     </div>
 </div>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            &copy; Andrew Koroluk |
+            <a href="https://github.com/Awk34">GitHub</a>
+        </p>
+    </div>
+</footer>

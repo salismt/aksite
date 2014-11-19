@@ -71,10 +71,44 @@
             padding-bottom: 1px;
             overflow: hidden;
             background-color: lightgray;
+            position: relative;
+            h2 {
+                padding: 5px;
+            }
             form {
                 input {
                     border-radius: 0;
                     border-bottom: none;
+                }
+            }
+            a {
+                position: absolute;
+                padding: 5px;
+                right: 0;
+                z-index: 100;
+                &:hover {
+                    opacity: .7;
+                }
+            }
+        }
+        &.deleted {
+            .upload-grid-figure {
+                opacity: .5;
+            }
+            .upload-grid-caption {
+                background-color: rgba(211,211,211,.5);
+                h2 {
+                    opacity: .5;
+                }
+                a {
+                    opacity: 1;
+                    i:before {
+                        color: green;
+                        content: "\f0e2";
+                    }
+                    &:hover {
+                        opacity: .7;
+                    }
                 }
             }
         }
