@@ -100,8 +100,6 @@ function sanitiseNewGallery(body, params) {
     // Required Params
     if(!body.name) {
         return 'Missing Name'
-    } else if(!body.info) {
-        return 'Missing info';
     } else if(!body.photos) {
         return 'No photos given';
     }
