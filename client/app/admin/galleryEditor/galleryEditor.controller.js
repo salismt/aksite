@@ -16,7 +16,6 @@ angular.module('aksiteApp')
             $http.get('/api/gallery/'+$stateParams.galleryId)
                 .success(function(res, status) {
                     $scope.gallery = res;
-                    $scope.gallery.id = $stateParams.galleryId;
                     _.forEach($scope.gallery.photos, function(photoId) {
                         $http.get('/api/photos/'+photoId)
                             .success(function(res, status) {
@@ -93,6 +92,7 @@ angular.module('aksiteApp')
         };
 
         $scope.saveGallery = function() {
+            //TODO: also send requests to save $dirty photo names, info
             if($scope.newGallery) {
                 $http.post('/api/gallery', $scope.gallery)
                     .success(function(response, status) {
@@ -104,7 +104,7 @@ angular.module('aksiteApp')
                         console.log(response);
                     });
             } else {
-                $http.put('/api/gallery', $scope.gallery)
+                $http.put('/api/gallery/'+$stateParams.galleryId, $scope.gallery)
                     .success(function(response, status) {
                         console.log(status);
                         console.log(response);

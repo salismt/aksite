@@ -51,7 +51,7 @@ exports.create = function(req, res) {
     });
 };
 
-//TODO: verify
+//TODO: sanitize
 // Updates an existing gallery in the DB.
 exports.update = function(req, res) {
     if(req.body._id) {
