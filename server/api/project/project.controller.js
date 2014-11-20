@@ -49,39 +49,13 @@ exports.show = function(req, res) {
 };
 
 // Creates a new project in the DB.
-//exports.create = function(req, res) {
-//    var sanitized = sanitiseNewProject(req.body, req.params);
-//    if(sanitized !== null) {
-//        return res.status(400).send(sanitized);
-//    } else {
-//        var newProject = {
-//            name: req.body.name,
-//            info: req.body.info,
-//            content: req.body.content,
-//            thumbnailId: req.body.thumbnailId,
-//            coverId: req.body.coverId,
-//            date: req.body.date || new Date(),
-//            active: req.body.active || true
-//        };
-//        return Project.create(newProject, function(err, project) {
-//            if(err) {
-//                return handleError(res, err);
-//            } else {
-//                return res.status(201).json(project);
-//            }
-//        });
-//    }
-//};
-
-// Creates a new file in the DB.
 exports.create = function(req, res) {
     var form = gridform({db: conn.db, mongo: mongoose.mongo});
 
     // optionally store per-file metadata
-    form.on('fileBegin', function(name, file) {
-        file.metadata = {};
-        //console.log(name);
-    });
+    //form.on('fileBegin', function(name, file) {
+    //    file.metadata = {};
+    //});
 
     form.parse(req, function(err, fields, files) {
         if(err) return handleError(res, err);
@@ -102,7 +76,7 @@ exports.create = function(req, res) {
             return res.status(400).send('No file');
 
         //console.log(file);
-        console.log(fields);
+        //console.log(fields);
         var sanitised = sanitiseNewProject(fields, file);
 
         if(sanitised === null) {
