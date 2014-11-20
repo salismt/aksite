@@ -124,6 +124,7 @@ exports.create = function(req, res) {
     });
 };
 
+//TODO: Sanintize
 // Updates an existing project in the DB.
 exports.update = function(req, res) {
     if(req.body._id) {
@@ -135,12 +136,13 @@ exports.update = function(req, res) {
         } else if(!project) {
             return res.send(404);
         } else {
-            var updated = _.merge(project, req.body);
+            var updated = _.assign(project, req.body);
             return updated.save(function(err) {
                 if(err) {
                     return handleError(res, err);
+                } else {
+                    return res.status(200).json(project);
                 }
-                return res.status(200).json(project);
             });
         }
     });
