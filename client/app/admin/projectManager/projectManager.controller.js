@@ -1,75 +1,56 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('ProjectmanagerCtrl', function($scope, $http, $upload, $sanitize) {
-        $scope.project = {
-            name: undefined,
-            info: undefined,
-            file: null,
-            content: undefined,
-            hidden: false
-        };
-        //$scope.projects = Project.query();
-        $scope.errors = {};
-        $scope.progress = undefined;
-        $scope.markedContent = function() {
-            try {
-                return $sanitize(marked($scope.project.content || ''));
-            } catch(e) {
-                return '<h1 class=\"text-danger\">Parsing Error</h1>';
-            }
-        };
+    .controller('ProjectmanagerCtrl', function($scope, $http) {
+        $scope.errors = [];
+        $scope.loadingProjects = true;
+        $scope.projects = [];
+        $scope.projectDeletions = [];
+        $scope.projectChanges = [];
+        $scope.dirty = false;
 
-        $scope.addProject = function(form) {
-            console.log(form);
+        $http.get('/api/projects')
+            .success(function(res) {
+                $scope.projects = res;
+            })
+            .error(function(res, status) {
+                console.log(res);
+                console.log(status);
+            })
+            .finally(function() {
+                $scope.loadingProjects = false;
+            });
 
-            $scope.submitted = true;
-
-            if(form.$valid) {
-
-                $scope.submitted = true;
-
-                if(form.$valid) {
-                    $scope.upload = $upload.upload({
-                        url: 'api/projects',
-                        method: 'POST',
-                        file: $scope.fileToUpload,
-                        data: {
-                            name: $scope.project.name,
-                            info: $scope.project.info,
-                            content: $scope.project.content,
-                            hidden: $scope.project.hidden
-                        }
-                    })
-                        .progress(function(evt) {
-                            $scope.progress = (100.0 * (evt.position / evt.total)).toFixed(1);
-                            console.log(evt);
-                        })
-                        .success(function(data, status) {
-                            $scope.progress = undefined;
-                            console.log(status);
-                            console.log(data);
-                            //$scope.projects = Project.query();
-                        })
-                        .error(function(response, status) {
-                            $scope.progress = undefined;
-                            console.log(status);
-                            console.log(response);
-                        })
-                        .xhr(function(xhr) {
-                            $scope.abort = function() {
-                                xhr.abort();
-                            };
-                        });
+        $scope.toggleProjectDeletion = function(project) {
+            if(!project.deleted) {
+                project.deleted = true;
+                $scope.dirty = true;
+                $scope.projectDeletions.push(project);
+            } else {
+                project.deleted = false;
+                _.remove($scope.projectDeletions, function(thisProject) {
+                    return thisProject._id === project._id;
+                });
+                if($scope.projectDeletions.length === 0) {
+                    $scope.dirty = false;
                 }
             }
         };
 
-        $scope.onFileSelect = function($files) {
-            //$files: an array of files selected, each file has name, size, and type.
-            var file = $files[0];
-
-            $scope.filename = file.name;
-            $scope.fileToUpload = file;
+        $scope.saveChanges = function() {
+            // Delete projects
+            _.forEach($scope.projectDeletions, function(project) {
+                $http.delete('/api/projects/'+project._id)
+                    .success(function(res, status) {
+                        _.remove($scope.projects, project);
+                        $scope.dirty = false;
+                        console.log(res);
+                        console.log(status);
+                    })
+                    .error(function(res, status) {
+                        console.log(res);
+                        console.log(status);
+                    });
+            });
         };
     });
