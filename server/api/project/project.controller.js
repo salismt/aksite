@@ -124,24 +124,116 @@ exports.create = function(req, res) {
     });
 };
 
-//TODO: Sanintize
+//TODO: Sanitize
 // Updates an existing project in the DB.
 exports.update = function(req, res) {
-    if(req.body._id) {
-        delete req.body._id;
-    }
+    var form = gridform({db: conn.db, mongo: mongoose.mongo});
+
+    //console.log(form);
+
+    // optionally store per-file metadata
+    //form.on('fileBegin', function(name, file) {
+    //    file.metadata = {};
+    //});
+
     Project.findById(req.params.id, function(err, project) {
         if(err) {
             return handleError(res, err);
         } else if(!project) {
             return res.send(404);
         } else {
-            var updated = _.assign(project, req.body);
-            return updated.save(function(err) {
-                if(err) {
-                    return handleError(res, err);
+            form.parse(req, function(err, fields, files) {
+                if(err) return handleError(res, err);
+
+                if(fields._id) {
+                    delete fields._id;
+                }
+
+                /**
+                 * file.name            - the uploaded file name
+                 * file.type            - file type per [mime](https://github.com/bentomas/node-mime)
+                 * file.size            - uploaded file size (file length in GridFS) named "size" for compatibility
+                 * file.path            - same as file.name. included for compatibility
+                 * file.lastModified    - included for compatibility
+                 * file.root            - the root of the files collection used in MongoDB ('fs' here means the full collection in mongo is named 'fs.files')
+                 * file.id              - the ObjectId for this file
+                 * @type {file}
+                 */
+                var file = files.file;
+
+                if(fields.newImage && (_.isNull(file) || _.isUndefined(file)) )
+                    return res.status(400).send(new Error('No file'));
+
+                console.log(file);
+                console.log(fields);
+
+                //TODO
+                var sanitised = null;
+
+                if(sanitised === null) {
+                    var projectModel = {};
+                    if(fields.name && typeof fields.name == 'string')
+                        projectModel.name = fields.name;
+                    if(fields.info && typeof fields.info == 'string')
+                        projectModel.info = fields.info;
+                    if(!_.isNull(fields.hidden) || !_.isUndefined(fields.hidden))
+                        projectModel.hidden = fields.hidden ? true : false;
+                    if(fields.content && typeof fields.content == 'string')
+                        projectModel.content = fields.content;
+                    if( fields.date && ( fields.date instanceof Date || isNaN(fields.date.valueOf()) ) )
+                        projectModel.date = fields.date;
+
+                    if(fields.newImage) {
+                        gfs.remove({_id: project.coverId}, function (err) {
+                            if (err) return handleError(err);
+                            else console.log('deleted coverId');
+                        });
+                        gfs.remove({_id: project.thumbnailId}, function (err) {
+                            if (err) return handleError(err);
+                            else console.log('deleted thumbnailId');
+                        });
+
+                        projectModel.coverId = file.id;
+
+                        // Thumbnail generation
+                        var stream = gfs.createReadStream({_id: file.id});
+                        stream.on('error', handleGridStreamErr(res));
+                        var img = gm(stream, file.id);
+                        img.resize(200, 200, "^");
+                        img.crop(200, 200, 0, 0);
+                        img.quality(90);
+                        img.stream(function(err, outStream) {
+                            if(err) return res.status(500).end();
+                            else {
+                                var writestream = gfs.createWriteStream({filename: file.name});
+                                writestream.on('close', function(file) {
+                                    console.log(file);
+                                    projectModel.thumbnailId = file._id;
+
+                                    var updated = _.assign(project, projectModel);
+                                    return updated.save(function(err) {
+                                        if(err) {
+                                            return handleError(res, err);
+                                        } else {
+                                            return res.status(200).json(project);
+                                        }
+                                    });
+                                });
+                                outStream.pipe(writestream);
+                            }
+                        });
+                    } else {
+                        var updated = _.assign(project, projectModel);
+                        return updated.save(function(err) {
+                            if(err) {
+                                return handleError(res, err);
+                            } else {
+                                return res.status(200).json(project);
+                            }
+                        });
+                    }
                 } else {
-                    return res.status(200).json(project);
+                    return res.status(400).send(sanitised);
                 }
             });
         }
