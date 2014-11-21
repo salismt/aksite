@@ -7,22 +7,24 @@
 </div>
 
 <div class="container">
-    <div class="spinner">
-        <i ng-if="loadingProjects" class="fa fa-spinner fa-spin"></i>
+    <div ng-if="loadingProjects" class="spinner">
+        <i class="fa fa-spinner fa-spin"></i>
     </div>
     <alert ng-if="projects.length === 0" type="info">No Projects</alert>
     <div ng-if="projects.length > 0" class="row">
         <ul class="project-list">
             <li ng-repeat="project in projects">
-                <div class="project"><a href="/projects/{{project._id}}">
-                    <img class="cover" ng-src="api/upload/{{project.coverId}}" alt=""/><br/>
-                </a>
-                <div class="caption">
-                    <div class="project-name h1">
-                        {{project.name}}
-                        <small class="project-info">{{project.info}}</small>
+                <div class="project">
+                    <a href="/projects/{{project._id}}">
+                        <img class="cover" ng-src="api/upload/{{project.coverId}}" alt=""/><br/>
+                    </a>
+                    <div class="caption">
+                        <div class="project-name h1">
+                            {{project.name}}
+                            <small class="project-info">{{project.info}}</small>
+                        </div>
                     </div>
-                </div></div>
+                </div>
             </li>
         </ul>
     </div>
