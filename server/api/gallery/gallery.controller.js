@@ -17,6 +17,9 @@ exports.index = function(req, res) {
 
 // Get a single gallery
 exports.show = function(req, res) {
+    if(!isValidObjectId(req.params.id)) {
+        return res.status(400).send('Invalid ID');
+    }
     Gallery.findById(req.params.id, function(err, gallery) {
         if(err) {
             return handleError(res, err);
@@ -54,6 +57,9 @@ exports.create = function(req, res) {
 //TODO: sanitize
 // Updates an existing gallery in the DB.
 exports.update = function(req, res) {
+    if(!isValidObjectId(req.params.id)) {
+        return res.status(400).send('Invalid ID');
+    }
     if(req.body._id) {
         delete req.body._id;
     }
@@ -77,6 +83,9 @@ exports.update = function(req, res) {
 
 // Deletes a gallery from the DB.
 exports.destroy = function(req, res) {
+    if(!isValidObjectId(req.params.id)) {
+        return res.status(400).send('Invalid ID');
+    }
     Gallery.findById(req.params.id, function(err, gallery) {
         if(err) {
             return handleError(res, err);
@@ -120,4 +129,8 @@ function sanitiseNewGallery(body, params) {
     else {
         return null;
     }
+}
+
+function isValidObjectId(objectId) {
+    return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
 }

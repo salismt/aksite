@@ -37,6 +37,9 @@ exports.index = function(req, res) {
 
 // Get a single project
 exports.show = function(req, res) {
+    if(!isValidObjectId(req.params.id)) {
+        return res.status(400).send('Invalid ID');
+    }
     Project.findById(req.params.id, function(err, project) {
         if(err) {
             return handleError(res, err);
@@ -127,6 +130,9 @@ exports.create = function(req, res) {
 //TODO: Sanitize
 // Updates an existing project in the DB.
 exports.update = function(req, res) {
+    if(!isValidObjectId(req.params.id)) {
+        return res.status(400).send('Invalid ID');
+    }
     var form = gridform({db: conn.db, mongo: mongoose.mongo});
 
     //console.log(form);
@@ -242,6 +248,9 @@ exports.update = function(req, res) {
 
 // Deletes a project from the DB.
 exports.destroy = function(req, res) {
+    if(!isValidObjectId(req.params.id)) {
+        return res.status(400).send('Invalid ID');
+    }
     Project.findById(req.params.id, function(err, project) {
         if(err) {
             return handleError(res, err);
@@ -303,4 +312,8 @@ function sanitiseNewProject(body, file) {
     else {
         return null;
     }
+}
+
+function isValidObjectId(objectId) {
+    return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
 }

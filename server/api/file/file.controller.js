@@ -33,6 +33,9 @@ exports.index = function(req, res) {
 
 // Get a single file
 exports.show = function(req, res) {
+    if(!isValidObjectId(req.params.id)) {
+        return res.status(400).send('Invalid ID');
+    }
     gfs.exist({_id: req.params.id}, function(err, found) {
         if(err) return handleError(err);
         else if(!found) return res.status(404).end();
@@ -150,6 +153,9 @@ exports.create = function(req, res) {
 
 // Updates an existing file in the DB.
 exports.update = function(req, res) {
+    if(!isValidObjectId(req.params.id)) {
+        return res.status(400).send('Invalid ID');
+    }
     if(req.body._id) {
         delete req.body._id;
     }
@@ -172,6 +178,9 @@ exports.update = function(req, res) {
 
 // Deletes a file from the DB.
 exports.destroy = function(req, res) {
+    if(!isValidObjectId(req.params.id)) {
+        return res.status(400).send('Invalid ID');
+    }
     if(!req.params.id)
         res.status(404).send(new ReferenceError('File not found.'));
     else {
@@ -198,4 +207,8 @@ function handleGridStreamErr(res) {
         res.status(500).end();
         console.error(err.stack);
     };
+}
+
+function isValidObjectId(objectId) {
+    return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
 }

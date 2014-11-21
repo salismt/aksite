@@ -34,7 +34,7 @@ exports.index = function(req, res) {
 };
 
 // Compose a new Featured Section
-var newFeatured = exports.newFeatured = function(req, res) {
+exports.newFeatured = function(req, res) {
     FeaturedSection.find({}).remove(function() {
     });
     FeaturedItem.find({}, function(err, items) {
@@ -142,6 +142,9 @@ var newFeatured = exports.newFeatured = function(req, res) {
 
 // Add an Item to the DB
 exports.add = function(req, res) {
+    if(!isValidObjectId(req.params.id)) {
+        return res.status(400).send('Invalid ID');
+    }
     var acceptedTypes = ['photo', 'project', 'post'];
     var item = {};
     if(!req.body.type || !_.contains(acceptedTypes, req.body.type.toLowerCase())) {
@@ -198,6 +201,9 @@ exports.add = function(req, res) {
 
 // Deletes a featured item
 exports.destroy = function(req, res) {
+    if(!isValidObjectId(req.params.id)) {
+        return res.status(400).send('Invalid ID');
+    }
     FeaturedItem.findById(req.params.id, function(err, featured) {
         if(err) {
             return handleError(res, err);
@@ -258,4 +264,8 @@ function writeToTmp(readStream, name) {
     })();
 
     return deferred.promise;
+}
+
+function isValidObjectId(objectId) {
+    return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
 }
