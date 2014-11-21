@@ -42,8 +42,13 @@ angular.module('aksiteApp')
             //$files: an array of files selected, each file has name, size, and type.
             var file = $files[0];
 
-            $scope.filename = file.name;
-            $scope.fileToUpload = file;
+            if(!file) {
+                $scope.filename = null;
+                $scope.fileToUpload = null;
+            } else {
+                $scope.filename = file.name;
+                $scope.fileToUpload = file;
+            }
         };
 
         $scope.saveProject = function(form) {
@@ -51,21 +56,65 @@ angular.module('aksiteApp')
             console.log(form);
 
             if(form.$valid) {
-                if(!$scope.newProject && $scope.filename === $scope.project.coverId) {
-                    delete $scope.project.coverId;
-                    delete $scope.project.thumbnailId;
-                    $http.put('/api/projects/'+$stateParams.projectId, $scope.project)
-                        .success(function(response, status) {
+                if(!$scope.newProject && ($scope.filename === $scope.project.coverId || $scope.filename === null)) {
+                    $scope.upload = $upload.upload({
+                        url: 'api/projects/'+$scope.project._id,
+                        method: 'PUT',
+                        data: $scope.project
+                    })
+                        .progress(function(evt) {
+                            $scope.progress = (100.0 * (evt.position / evt.total)).toFixed(1);
+                        })
+                        .success(function(data, status) {
+                            $scope.progress = undefined;
                             console.log(status);
-                            console.log(response);
+                            console.log(data);
                             $state.go('projectManager');
                         })
                         .error(function(response, status) {
+                            $scope.progress = undefined;
                             console.log(status);
                             console.log(response);
+                        })
+                        .xhr(function(xhr) {
+                            $scope.abort = function() {
+                                xhr.abort();
+                            };
                         });
-                } else if(!$scope.newProject && $scope.filename !== $scope.project.coverId) {
-
+                } else if(!$scope.newProject) {
+                    var updated = $scope.project;
+                    updated.newImage = true;
+                    $scope.upload = $upload.upload({
+                        url: 'api/projects/'+$scope.project._id,
+                        method: 'PUT',
+                        file: $scope.fileToUpload,
+                        data: {
+                            name: $scope.project.name,
+                            info: $scope.project.info,
+                            content: $scope.project.content,
+                            hidden: $scope.project.hidden,
+                            newImage: true
+                        }
+                    })
+                        .progress(function(evt) {
+                            $scope.progress = (100.0 * (evt.position / evt.total)).toFixed(1);
+                        })
+                        .success(function(data, status) {
+                            $scope.progress = undefined;
+                            console.log(status);
+                            console.log(data);
+                            $state.go('projectManager');
+                        })
+                        .error(function(response, status) {
+                            $scope.progress = undefined;
+                            console.log(status);
+                            console.log(response);
+                        })
+                        .xhr(function(xhr) {
+                            $scope.abort = function() {
+                                xhr.abort();
+                            };
+                        });
                 } else {
                     $scope.upload = $upload.upload({
                         url: 'api/projects',
