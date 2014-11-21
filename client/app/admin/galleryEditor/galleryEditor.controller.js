@@ -35,9 +35,6 @@ angular.module('aksiteApp')
         }
         var nextPhoto = 0;
 
-        console.log($stateParams);
-        console.log($stateParams.galleryId);
-
         $scope.onFileSelect = function($files) {
             _.forEach($files, function(file) {
                 $scope.photos.push({name: file.name, filename: file.name, info: "", file: file, progress: 0});
