@@ -88,6 +88,11 @@ input[readonly] {
     cursor: text !important;
 }
 
-.circle {
-    border-radius: 100%;
+md-button {
+    font-size: 2rem;
+    padding: 0 15px;
+    .md-button-inner {
+        padding: 10px;
+        text-decoration: none;
+    }
 }

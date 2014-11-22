@@ -7,7 +7,8 @@ angular.module('aksiteApp', [
     'btford.socket-io',
     'ui.router',
     'ui.bootstrap',
-    'angularFileUpload'
+    'angularFileUpload',
+    'ngMaterial'
 ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
         $urlRouterProvider
