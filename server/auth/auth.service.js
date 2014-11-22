@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var config = require('../config/environment');
@@ -54,6 +55,35 @@ function hasRole(roleRequired) {
 }
 
 /**
+ * If there is a user, appends it to the req
+ * else req.user would be undefined
+ */
+function appendUser() {
+    return compose()
+        // Attach user to request
+        .use(function(req, res, next) {
+            validateJwt(req, res, function(val) {
+                if(_.isUndefined(val)) {
+                    User.findById(req.user._id, function(err, user) {
+                        if(err) {
+                            return next(err);
+                        } else if(!user) {
+                            req.user = undefined;
+                            return next();
+                        } else {
+                            req.user = user;
+                            next();
+                        }
+                    });
+                } else {
+                    req.user = undefined;
+                    next();
+                }
+            });
+        });
+}
+
+/**
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
@@ -72,5 +102,6 @@ function setTokenCookie(req, res) {
 
 exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
+exports.appendUser = appendUser;
 exports.signToken = signToken;
 exports.setTokenCookie = setTokenCookie;
