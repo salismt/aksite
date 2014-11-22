@@ -59,6 +59,11 @@ input[readonly] {
     cursor: text !important;
 }
 
-md-button .md-button-inner {
-    padding: 10px;
+md-button {
+    font-size: 2rem;
+    padding: 0 15px;
+    .md-button-inner {
+        padding: 10px;
+        text-decoration: none;
+    }
 }
