@@ -7,7 +7,7 @@ var ProjectSchema = new Schema({
     name: String,
     info: String,
     content: String,
-    active: Boolean,
+    hidden: Boolean,
     thumbnailId: String,
     coverId: String,
     link: String,

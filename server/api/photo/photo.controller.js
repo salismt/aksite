@@ -1,8 +1,9 @@
 'use strict';
 
-var _ = require('lodash');
-var Photo = require('./photo.model');
-var config = require('../../config/environment');
+var _ = require('lodash'),
+    Photo = require('./photo.model'),
+    auth = require('../../auth/auth.service'),
+    config = require('../../config/environment');
 
 function handleError(res, err) {
     return res.status(500).send(err);
@@ -12,7 +13,12 @@ function handleError(res, err) {
 exports.index = function(req, res) {
     Photo.find(function(err, photos) {
         if(err) return handleError(res, err);
-        else return res.status(200).json(photos);
+        else {
+            if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
+                _.remove(photos, 'hidden');
+            }
+            return res.status(200).json(photos);
+        }
     });
 };
 
@@ -27,7 +33,11 @@ exports.show = function(req, res) {
         } else if(!photo) {
             return res.status(404).end();
         } else {
-            return res.json(photo);
+            if( (!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) && photo.hidden ) {
+                return res.status(401).end();
+            } else {
+                return res.json(photo);
+            }
         }
     });
 };

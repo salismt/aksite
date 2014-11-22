@@ -10,7 +10,8 @@ var _ = require('lodash'),
     Schema = mongoose.Schema,
     Grid = require('gridfs-stream'),
     gfs,
-    conn = mongoose.createConnection(config.mongo.uri);
+    conn = mongoose.createConnection(config.mongo.uri),
+    auth = require('../../auth/auth.service');
 
 gridform.mongo = mongoose.mongo;
 Grid.mongo = mongoose.mongo;
@@ -30,6 +31,9 @@ exports.index = function(req, res) {
         if(err) {
             return handleError(res, err);
         } else {
+            if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
+                _.remove(projects, 'hidden');
+            }
             return res.status(200).json(projects);
         }
     });
@@ -46,7 +50,11 @@ exports.show = function(req, res) {
         } else if(!project) {
             return res.status(404).end();
         } else {
-            return res.json(project);
+            if( (!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) && project.hidden ) {
+                return res.status(401).end();
+            } else {
+                return res.json(project);
+            }
         }
     });
 };

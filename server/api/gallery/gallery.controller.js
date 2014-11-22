@@ -1,8 +1,10 @@
 'use strict';
 
-var _ = require('lodash');
-var Gallery = require('./gallery.model');
-var Photo = require('../photo/photo.model');
+var _ = require('lodash'),
+    Gallery = require('./gallery.model'),
+    Photo = require('../photo/photo.model'),
+    auth = require('../../auth/auth.service'),
+    config = require('../../config/environment');
 
 // Get list of galleries
 exports.index = function(req, res) {
@@ -10,6 +12,9 @@ exports.index = function(req, res) {
         if(err) {
             return handleError(res, err);
         } else {
+            if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
+                _.remove(galleries, 'hidden');
+            }
             return res.status(200).json(galleries);
         }
     });
@@ -26,7 +31,11 @@ exports.show = function(req, res) {
         } else if(!gallery) {
             return res.send(404);
         } else {
-            return res.json(gallery);
+            if( (!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) && gallery.hidden ) {
+                return res.status(401).end();
+            } else {
+                return res.json(gallery);
+            }
         }
     });
 };
@@ -43,7 +52,7 @@ exports.create = function(req, res) {
         photos: req.body.photos,
         featuredId: req.body.featuredId || req.body.photos[0],
         date: req.body.date || new Date(),
-        active: req.body.active || true
+        hidden: req.body.hidden || false
     };
     return Gallery.create(newGallery, function (err, gallery) {
         if (err) {
@@ -120,8 +129,8 @@ function sanitiseNewGallery(body, params) {
         return 'Info not String';
     } else if(body.date instanceof Date && !isNaN(body.date.valueOf())) {
         return 'Date not of type Date';
-    } else if(body.active && typeof body.active !== 'boolean') {
-        return 'Active not Boolean';
+    } else if(body.hidden && typeof body.hidden !== 'boolean') {
+        return 'Hidden not Boolean';
     } else if(!_.isArray(body.photos)) {
         return 'Photos not Array';
     }

@@ -1,13 +1,18 @@
 'use strict';
 
-var _ = require('lodash');
-var Post = require('./post.model');
+var _ = require('lodash'),
+    Post = require('./post.model'),
+    auth = require('../../auth/auth.service'),
+    config = require('../../config/environment');
 
 // Get list of posts
 exports.index = function(req, res) {
     Post.find(function(err, posts) {
         if(err) {
             return handleError(res, err);
+        }
+        if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
+            _.remove(posts, 'hidden');
         }
         return res.status(200).json(posts);
     });
@@ -21,11 +26,15 @@ exports.show = function(req, res) {
     Post.findById(req.params.id, function(err, post) {
         if(err) {
             return handleError(res, err);
+        } else if(!post) {
+            return res.status(404).end();
+        } else {
+            if( (!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) && post.hidden ) {
+                return res.status(401).end();
+            } else {
+                return res.json(post);
+            }
         }
-        if(!post) {
-            return res.send(404);
-        }
-        return res.json(post);
     });
 };
 
@@ -34,8 +43,9 @@ exports.create = function(req, res) {
     Post.create(req.body, function(err, post) {
         if(err) {
             return handleError(res, err);
+        } else {
+            return res.status(201).json(post);
         }
-        return res.status(201).json(post);
     });
 };
 
@@ -52,7 +62,7 @@ exports.update = function(req, res) {
             return handleError(res, err);
         }
         if(!post) {
-            return res.send(404);
+            return res.status(404).end();
         }
         var updated = _.merge(post, req.body);
         updated.save(function(err) {

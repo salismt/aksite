@@ -7,7 +7,6 @@ var mongoose = require('mongoose'),
 var FeaturedSectionSchema = new Schema({
     name: String,
     info: String,
-    active: Boolean,
     items: [{}],
     fileId: String
 });

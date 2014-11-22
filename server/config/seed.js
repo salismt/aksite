@@ -90,6 +90,7 @@ conn.once('open', function(err) {
         var newProject = {
             name: ".synth 1.0",
             info: "Modular Synthesizer",
+            hidden: false,
             content: "**.synth** (or dotsynth) is a modular synthesizer written in Javascript. Its purpose is to expose the Web Audio API in a user-friendly manner." +
             "<br/>" +
             "It works on both click and touch devices that utilize modern web browsers." +
@@ -169,7 +170,7 @@ conn.once('open', function(err) {
             var photoModel = {
                 name: photo.name,
                 info: photo.info,
-                sourceUri: photo.sourceUri
+                hidden: false
             };
 
             var writestream = gfs.createWriteStream([]);
@@ -226,7 +227,8 @@ conn.once('open', function(err) {
                                     info: 'Test gallery',
                                     photos: _.pluck(items, '_id'),
                                     featuredId: items[0]._id,
-                                    date: new Date()
+                                    date: new Date(),
+                                    hidden: false
                                 }, function(err, gallery) {
                                     if(err) {
                                         console.log(err);

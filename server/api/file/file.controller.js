@@ -7,7 +7,8 @@ var _ = require('lodash'),
     File = require('./file.model'),
     Schema = mongoose.Schema,
     Grid = require('gridfs-stream'),
-    gm = require('gm');
+    gm = require('gm'),
+    auth = require('../../auth/auth.service');
 
 var gfs,
     conn = mongoose.createConnection(config.mongo.uri);
@@ -26,6 +27,9 @@ exports.index = function(req, res) {
         if(err) {
             return handleError(res, err);
         } else {
+            if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
+                _.remove(files, 'hidden');
+            }
             return res.status(200).json(files);
         }
     });
@@ -40,11 +44,15 @@ exports.show = function(req, res) {
         if(err) return handleError(err);
         else if(!found) return res.status(404).end();
         else {
-            var readStream = gfs.createReadStream({
-                _id: req.params.id
-            });
+            if( (!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) /*&& file.hidden*/ ) {
+                return res.status(401).end();
+            } else {
+                var readStream = gfs.createReadStream({
+                    _id: req.params.id
+                });
 
-            readStream.pipe(res);
+                readStream.pipe(res);
+            }
         }
     });
 };

@@ -7,7 +7,7 @@ var GallerySchema = new Schema({
     name: String,
     info: String,
     date: Date,
-    active: Boolean,
+    hidden: Boolean,
     photos: [String],
     featuredId: String,
     metadata : {}
