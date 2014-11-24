@@ -10,22 +10,26 @@
         <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
                 <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
-                    <a class="btn" ng-href="{{item.link}}">{{item.title}}</a>
+                    <md-button ng-href="{{::item.link}}" aria-label="{{::item.title}}">{{::item.title}}</md-button>
                 </li>
-                <li ng-show="isAdmin()" ng-class="{active: isActive('/admin')}"><a class="btn" href="/admin">Admin</a>
+                <li ng-show="isAdmin()" ng-class="{active: isActive('/admin')}">
+                    <md-button href="/admin" aria-label="Admin">Admin</md-button>
                 </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 <!--<li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup">Sign up</a></li>-->
-                <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a class="btn"
-                                                                                      href="/login">Login</a></li>
-                <li ng-show="isLoggedIn()"><p class="navbar-text">Hello {{ getCurrentUser().name }}</p></li>
-                <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><a class="btn"
-                                                                                         href="/settings"><span
-                    class="fa fa-cog"></span></a></li>
-                <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a class="btn" href=""
-                                                                                       ng-click="logout()">Logout</a>
+                <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}">
+                    <md-button href="/login" aria-label="Login">Login</md-button>
+                </li>
+                <li ng-show="isLoggedIn()">
+                    <p class="navbar-text">Hello {{ getCurrentUser().name }}</p>
+                </li>
+                <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}">
+                    <md-button href="/settings" aria-label="Settings"><i class="fa fa-cog"></i></md-button>
+                </li>
+                <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}">
+                    <md-button href="" ng-click="logout()" aria-label="Logout">Logout</md-button>
                 </li>
             </ul>
         </div>

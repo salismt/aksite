@@ -23,13 +23,44 @@
             border: none;
             @include box-shadow(none);
             .nav {
-                a {
-                    margin: 0 5px;
-                    &:hover { background-color: $ak-base-color-dark; }
+                color: #777;
+                li {
+                    .navbar-text {
+                        text-align: center;
+                        margin: 12px;
+                    }
+                    md-button {
+                        position: relative;
+                        padding: 5px;
+                        text-transform: none;
+                        display: block;
+                        margin-left: 5px;
+                        margin-right: 5px;
+                        .md-button-inner {
+                            position: relative;
+                            font-size: 14px;
+                            display: block;
+                        }
+                    }
+                    md-button.md-default-theme:not([disabled]):hover, md-button.md-default-theme:not([disabled]).focus {
+                        background-color: $ak-base-color-dark;
+                    }
+                    &.active {
+                        md-button.md-default-theme:not([disabled]),
+                        md-button.md-default-theme:not([disabled]):hover,
+                        md-button.md-default-theme:not([disabled]).focus {
+                            background-color: $ak-base-color-darker;
+                            color: #2a6496;
+                        }
+                    }
                 }
-                .active a {
-                    background-color: $ak-base-color-darker;
-                }
+//                a {
+//                    margin: 0 5px;
+//                    &:hover { background-color: $ak-base-color-dark; }
+//                }
+//                .active a {
+//                    background-color: $ak-base-color-darker;
+//                }
             }
         }
     }
@@ -65,13 +96,6 @@
         clear: both;
         width: 275px;
         font-size: .5em;
-
-        a {
-            padding: 5px 10px;
-        }
-        a:hover {
-            background-color: $ak-base-color-dark;
-        }
     }
 
     /* Make the masthead heading the same height as the navigation */
