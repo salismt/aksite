@@ -29,38 +29,30 @@
                         text-align: center;
                         margin: 12px;
                     }
-                    md-button {
+                    .md-button {
                         position: relative;
-                        padding: 5px;
                         text-transform: none;
                         display: block;
                         margin-left: 5px;
                         margin-right: 5px;
-                        .md-button-inner {
+                        span {
                             position: relative;
                             font-size: 14px;
                             display: block;
                         }
                     }
-                    md-button.md-default-theme:not([disabled]):hover, md-button.md-default-theme:not([disabled]).focus {
+                    .md-button.md-default-theme:not([disabled]):hover, .md-button.md-default-theme:not([disabled]).focus {
                         background-color: $ak-base-color-dark;
                     }
                     &.active {
-                        md-button.md-default-theme:not([disabled]),
-                        md-button.md-default-theme:not([disabled]):hover,
-                        md-button.md-default-theme:not([disabled]).focus {
+                        .md-button.md-default-theme:not([disabled]),
+                        .md-button.md-default-theme:not([disabled]):hover,
+                        .md-button.md-default-theme:not([disabled]).focus {
                             background-color: $ak-base-color-darker;
                             color: #2a6496;
                         }
                     }
                 }
-//                a {
-//                    margin: 0 5px;
-//                    &:hover { background-color: $ak-base-color-dark; }
-//                }
-//                .active a {
-//                    background-color: $ak-base-color-darker;
-//                }
             }
         }
     }
