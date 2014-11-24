@@ -27,8 +27,9 @@ angular.module('aksiteApp')
                     promises.push(promise);
                 });
                 $q.all(promises)
-                    .then(function(results) {
-                        $scope.gridGallery._init();
+                    .then(function() {
+                        $scope.thumbnailsLoaded = true;
+                        setTimeout(function() {$scope.gridGallery._init();}, 5);
                     });
             })
             .error(function(data, status) {
