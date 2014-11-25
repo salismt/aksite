@@ -89,11 +89,15 @@ input[readonly] {
     cursor: text !important;
 }
 
-md-button {
-    font-size: 2rem;
-    padding: 0 15px;
-    .md-button-inner {
-        padding: 10px;
+.md-button:focus, .md-button:hover {
+    text-decoration: none;
+}
+.md-button-lg {
+    font-size: 1.5rem;
+    padding: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    span {
         text-decoration: none;
     }
 }
