@@ -17,7 +17,7 @@ module.exports = function(app) {
     app.use('/api/upload', require('./api/upload'));
     app.use('/api/projects', require('./api/project'));
     app.use('/api/featured', require('./api/featured'));
-    app.use('/api/blog/posts', require('./api/post'));
+    app.use('/api/posts', require('./api/post'));
     app.use('/api/photos', require('./api/photo'));
     app.use('/api/things', require('./api/thing'));
     app.use('/api/users', require('./api/user'));

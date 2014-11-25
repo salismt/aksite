@@ -8,6 +8,7 @@
 var _ = require('lodash'),
     Thing = require('../api/thing/thing.model'),
     User = require('../api/user/user.model'),
+    Post = require('../api/post/post.model'),
     Photo = require('../api/photo/photo.model'),
     Project = require('../api/project/project.model'),
     FeaturedItem = require('../api/featured/featuredItem.model.js'),
@@ -62,6 +63,22 @@ User.find({}).remove(function() {
             name: 'Admin',
             email: 'admin@admin.com',
             password: 'admin'
+        }, function() {
+            console.log('finished populating users');
+        }
+    );
+});
+
+Post.find({}).remove(function() {
+    Post.create({
+            title: "Test Post 1",
+            alias: "test-post-1",
+            hidden: false,
+            author: "",
+            date: new Date(),
+            imageId: null,
+            content: "This is test post number **1**",
+            categories: ["tests"]
         }, function() {
             console.log('finished populating users');
         }

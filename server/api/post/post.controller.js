@@ -5,9 +5,13 @@ var _ = require('lodash'),
     auth = require('../../auth/auth.service'),
     config = require('../../config/environment');
 
+var DEFAULT_PAGESIZE = 10;
+
 // Get list of posts
 exports.index = function(req, res) {
-    Post.find(function(err, posts) {
+    Post.find()
+        .limit(DEFAULT_PAGESIZE)
+        .exec(function(err, posts) {
         if(err) {
             return handleError(res, err);
         }
