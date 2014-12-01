@@ -8,6 +8,9 @@ angular.module('aksiteApp')
         $http.get('api/posts')
             .success(function(posts) {
                 $scope.posts = posts;
+                _.forEach($scope.posts, function(post) {
+                    post.localeDate = new Date(post.date).toLocaleString();
+                });
                 console.log($scope.posts);
             })
             .error(function(err) {

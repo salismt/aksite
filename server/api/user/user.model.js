@@ -12,6 +12,8 @@ var UserSchema = new Schema({
         type: String,
         default: 'user'
     },
+    imageId: Schema.ObjectId,
+    smallImageId: Schema.ObjectId,
     hashedPassword: String,
     provider: String,
     salt: String,

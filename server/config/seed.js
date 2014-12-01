@@ -51,40 +51,6 @@ Thing.find({}).remove(function() {
     });
 });
 
-User.find({}).remove(function() {
-    User.create({
-            provider: 'local',
-            name: 'Test User',
-            email: 'test@test.com',
-            password: 'test'
-        }, {
-            provider: 'local',
-            role: 'admin',
-            name: 'Admin',
-            email: 'admin@admin.com',
-            password: 'admin'
-        }, function() {
-            console.log('finished populating users');
-        }
-    );
-});
-
-Post.find({}).remove(function() {
-    Post.create({
-            title: "Test Post 1",
-            alias: "test-post-1",
-            hidden: false,
-            author: "",
-            date: new Date(),
-            imageId: null,
-            content: "This is test post number **1**",
-            categories: ["tests"]
-        }, function() {
-            console.log('finished populating users');
-        }
-    );
-});
-
 conn.once('open', function(err) {
     if(err) {
         console.log(err);
@@ -101,6 +67,71 @@ conn.once('open', function(err) {
                 });
             });
         }
+    });
+
+    User.find({}).remove(function() {
+        var userImageWritestream = gfs.createWriteStream([]);
+        userImageWritestream.on('close', function(file) {
+            console.log(file);
+            User.create({
+                provider: 'local',
+                name: 'Test User',
+                email: 'test@test.com',
+                password: 'test',
+                imageId: file._id,
+                smallImageId: file._id
+            }, {
+                provider: 'local',
+                role: 'admin',
+                name: 'Admin',
+                email: 'admin@admin.com',
+                password: 'admin',
+                imageId: file._id,
+                smallImageId: file._id
+            }, function() {
+                console.log('finished populating users');
+
+                Post.find({}).remove(function() {
+                    var author = {
+                        name: "Andrew Koroluk",
+                        smallImageId: file._id,
+                        id: "XXX"
+                    };
+                    Post.create({
+                            title: "Test Post 1",
+                            alias: "test-post-1",
+                            hidden: false,
+                            //author: author,
+                            date: new Date(),
+                            imageId: null,
+                            content: "This is test post number **1**",
+                            categories: ["tests"]
+                        },{
+                            title: "Test Post 2",
+                            alias: "test-post-2",
+                            hidden: false,
+                            //author: author,
+                            date: new Date(),
+                            imageId: null,
+                            content: "This is test post number **2**",
+                            categories: ["tests"]
+                        },{
+                            title: "Test Post 3",
+                            alias: "test-post-3",
+                            hidden: false,
+                            //author: author,
+                            date: new Date(),
+                            imageId: null,
+                            content: "This is test post number **3**",
+                            categories: ["tests"]
+                        }, function() {
+                            console.log('finished populating posts');
+                        }
+                    );
+                });
+            });
+        });
+        fs.createReadStream('client/assets/images/portrait_2014.jpg').pipe(userImageWritestream);
     });
 
     Project.find({}).remove(function() {
