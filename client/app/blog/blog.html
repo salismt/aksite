@@ -5,27 +5,25 @@
         <div class="post-block" ng-repeat="post in posts">
             <a ng-href="{{::post._id}}" class="block-image" style="background-image:url('assets/images/yeoman.png')"></a>
             <a ng-href="{{::post._id}}">
-                <h2 class="block-header">
-                    {{post.title}}
-                    <small>{{post.localeDate}}</small>
-                </h2>
+                <h2 class="block-header">{{post.title}}</h2>
             </a>
 
-            <p class="block-snippet">{{post.subheader}}</p>
+            <p class="block-snippet" ng-bind-html="post.subheader"></p>
 
             <div class="block-author">
                 <div class="block-meta">
                     <div class="meta-avatar">
                         <a ng-href="/users/{{::post.author.id}}" class="avatar avatar--small" title="Go to {{::post.author.name}}'s profile">
-                            <img ng-src="/api/uploads/{{::post.author.imageId}}" class="img-circle" title="{{::post.author.name}}">
+                            <img ng-src="/api/upload/{{::post.author.imageId}}" class="img-circle" title="{{::post.author.name}}">
                         </a>
                     </div>
                     <div class="meta-summary">
+                        by
                         <a ng-href="/users/{{::post.author.id}}" title="Go to {{::post.author.name}}'s profile" class="link link--accent link--darken">
                             {{::post.author.name}}
                         </a>
                         <span class="metaInline metaInline--supplemental">
-                            2d ago
+                            {{post.localeDate}}
                         </span>
                     </div>
                 </div>

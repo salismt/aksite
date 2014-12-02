@@ -13,9 +13,6 @@
         font-family: $header-font-stack;
         font-weight: 900;
         font-size: 24px;
-        small {
-            font-size: 50%;
-        }
     }
     .block-image {
         display: block;
@@ -47,13 +44,37 @@
             width: 40px;
             height: 40px;
             a {
+                display: block;
+                background-position: center;
+                margin: 0 auto;
+                overflow: hidden;
+                width: 40px;
+                height: 40px;
+                line-height: 0;
+                background-size: cover;
+                border-radius: 100%;
                 img {
-
+                    width: 40px;
+                    height: 40px;
+                    vertical-align: top;
+                    border-radius: 100%;
+                    background: #f0f0f0;
                 }
             }
         }
         .meta-summary {
+            display: table-cell;
+            vertical-align: middle;
+            font-size: 14px;
+            color: rgba(0,0,0,0.3);
+            line-height: 1.4;
+            padding-left: 15px;
+            .link {
 
+            }
+            .metaInline {
+                display: block;
+            }
         }
     }
 }

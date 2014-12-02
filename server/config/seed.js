@@ -91,38 +91,52 @@ conn.once('open', function(err) {
             }, function() {
                 console.log('finished populating users');
 
+                User.find({}, function(arg) {
+                    console.log(arg);
+                });
+
                 Post.find({}).remove(function() {
-                    var author = {
-                        name: "Andrew Koroluk",
-                        smallImageId: file._id,
-                        id: "XXX"
-                    };
                     Post.create({
                             title: "Test Post 1",
                             alias: "test-post-1",
                             hidden: false,
-                            //author: author,
+                            author: {
+                                name: "Andrew Koroluk",
+                                imageId: file._id,
+                                smallImageId: file._id
+                            },
                             date: new Date(),
                             imageId: null,
                             content: "This is test post number **1**",
+                            subheader: "This is test post number **1**",
                             categories: ["tests"]
                         },{
                             title: "Test Post 2",
                             alias: "test-post-2",
                             hidden: false,
-                            //author: author,
+                            author: {
+                                name: "Andrew Koroluk",
+                                imageId: file._id,
+                                smallImageId: file._id
+                            },
                             date: new Date(),
                             imageId: null,
                             content: "This is test post number **2**",
+                            subheader: "This is test post number **2**",
                             categories: ["tests"]
                         },{
                             title: "Test Post 3",
                             alias: "test-post-3",
                             hidden: false,
-                            //author: author,
+                            author: {
+                                name: "Andrew Koroluk",
+                                imageId: file._id,
+                                smallImageId: file._id
+                            },
                             date: new Date(),
                             imageId: null,
                             content: "This is test post number **3**",
+                            subheader: "This is test post number **3**",
                             categories: ["tests"]
                         }, function() {
                             console.log('finished populating posts');
@@ -139,12 +153,9 @@ conn.once('open', function(err) {
             name: ".synth 1.0",
             info: "Modular Synthesizer",
             hidden: false,
-            content: "**.synth** (or dotsynth) is a modular synthesizer written in Javascript. Its purpose is to expose the Web Audio API in a user-friendly manner." +
-            "<br/>" +
-            "It works on both click and touch devices that utilize modern web browsers." +
-            "<br/>" +
-            "This project was done as part of Boilermake, Purdue's first hackathon. It won 3rd place." +
-            "<br/><br/>" +
+            content: "**.synth** (or dotsynth) is a modular synthesizer written in Javascript. Its purpose is to expose the Web Audio API in a user-friendly manner.\n" +
+            "It works on both click and touch devices that utilize modern web browsers.\n" +
+            "This project was done as part of Boilermake, Purdue's first hackathon. It won 3rd place.\n\n" +
             "<a href=\"http://scottlittle.me/dotsynth\" class=\"btn btn-lg btn-primary\">Demo</a> " +
             "<a href=\"https://github.com/Awk34/dotsynth\" class=\"btn btn-lg btn-default\"><i class=\"fa fa-github\"></i> View on GitHub</a>"
         };

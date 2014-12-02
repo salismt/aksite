@@ -10,6 +10,7 @@ angular.module('aksiteApp')
                 $scope.posts = posts;
                 _.forEach($scope.posts, function(post) {
                     post.localeDate = new Date(post.date).toLocaleString();
+                    post.subheader = marked(post.subheader);
                 });
                 console.log($scope.posts);
             })
