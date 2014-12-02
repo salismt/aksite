@@ -3,12 +3,15 @@
 <div class="container">
     <div class="container">
         <div class="post-block" ng-repeat="post in posts">
-            <a ng-href="{{::post._id}}" class="block-image" style="background-image:url('assets/images/yeoman.png')"></a>
-            <a ng-href="{{::post._id}}">
+            <a ng-href="/blog/{{::post._id}}" class="block-image" style="background-image:url('assets/images/yeoman.png')"></a>
+            
+            <a ng-href="/blog/{{::post._id}}">
                 <h2 class="block-header">{{post.title}}</h2>
             </a>
 
-            <p class="block-snippet" ng-bind-html="post.subheader"></p>
+            <a ng-href="/blog/{{::post._id}}">
+                <p class="block-snippet" ng-bind-html="post.subheader"></p>
+            </a>
 
             <div class="block-author">
                 <div class="block-meta">
