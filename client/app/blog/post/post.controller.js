@@ -8,7 +8,7 @@ angular.module('aksiteApp')
             .success(function(post) {
                 $scope.post = post;
                 $scope.post.content = marked($scope.post.content);
-                $scope.post.localeDate = new Date($scope.post.date).toLocaleString();
+                $scope.post.date = moment($scope.post.date).format("LL");
                 console.log($scope.post);
             })
             .error(function(err) {

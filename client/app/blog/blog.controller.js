@@ -9,7 +9,7 @@ angular.module('aksiteApp')
             .success(function(posts) {
                 $scope.posts = posts;
                 _.forEach($scope.posts, function(post) {
-                    post.localeDate = new Date(post.date).toLocaleString();
+                    post.date = moment(post.date).format("LL");
                     post.subheader = marked(post.subheader);
                 });
                 console.log($scope.posts);
