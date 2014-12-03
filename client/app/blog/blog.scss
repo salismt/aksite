@@ -4,7 +4,6 @@
     overflow: hidden;
 
     a {
-        color: black;
         &:hover {
             text-decoration: none;
         }
@@ -22,6 +21,9 @@
         float: right;
         margin: 2px 0 0 20px;
         border: 1px solid rgba(0,0,0,0.05);
+    }
+    .block-header, .block-snippet {
+        color: $text-black;
     }
     .block-snippet {
         display: block;
@@ -78,5 +80,16 @@
         .metaInline {
             display: block;
         }
+    }
+}
+
+@media (min-width: $screen-md-min) {
+    .post-list {
+        padding-right: 15%;
+    }
+}
+@media (min-width: $screen-lg-min) {
+    .post-list {
+        padding-right: 25%;
     }
 }
