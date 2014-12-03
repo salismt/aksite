@@ -7,5 +7,10 @@ angular.module('aksiteApp')
                 url: '/blog',
                 templateUrl: 'app/blog/blog.html',
                 controller: 'BlogCtrl'
+            })
+            .state('blog.post', {
+                url: '/:postId',
+                templateUrl: 'app/blog/post/post.html',
+                controller: 'PostCtrl'
             });
     });
