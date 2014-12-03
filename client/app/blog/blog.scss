@@ -31,50 +31,52 @@
         margin: 2px 0 10px 0;
         line-height: 1.4;
     }
-    .block-author {
-        @include clearfix();
-    }
-    .block-meta {
-        display: inline-block;
-        margin-right: 10px;
-        vertical-align: top;
-        line-height: 1.6;
-        .meta-avatar {
-            display: table-cell;
+}
+
+.block-author {
+    @include clearfix();
+}
+
+.block-meta {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: top;
+    line-height: 1.6;
+    .meta-avatar {
+        display: table-cell;
+        width: 40px;
+        height: 40px;
+        a {
+            display: block;
+            background-position: center;
+            margin: 0 auto;
+            overflow: hidden;
             width: 40px;
             height: 40px;
-            a {
-                display: block;
-                background-position: center;
-                margin: 0 auto;
-                overflow: hidden;
+            line-height: 0;
+            background-size: cover;
+            border-radius: 100%;
+            img {
                 width: 40px;
                 height: 40px;
-                line-height: 0;
-                background-size: cover;
+                vertical-align: top;
                 border-radius: 100%;
-                img {
-                    width: 40px;
-                    height: 40px;
-                    vertical-align: top;
-                    border-radius: 100%;
-                    background: #f0f0f0;
-                }
+                background: #f0f0f0;
             }
         }
-        .meta-summary {
-            display: table-cell;
-            vertical-align: middle;
-            font-size: 14px;
-            color: rgba(0,0,0,0.3);
-            line-height: 1.4;
-            padding-left: 15px;
-            .link {
+    }
+    .meta-summary {
+        display: table-cell;
+        vertical-align: middle;
+        font-size: 14px;
+        color: rgba(0,0,0,0.3);
+        line-height: 1.4;
+        padding-left: 15px;
+        .link {
 
-            }
-            .metaInline {
-                display: block;
-            }
+        }
+        .metaInline {
+            display: block;
         }
     }
 }
