@@ -6,11 +6,20 @@ var _ = require('lodash'),
     config = require('../../config/environment');
 
 var DEFAULT_PAGESIZE = 10;
+var MAX_PAGESIZE = 25;
 
 // Get list of posts
 exports.index = function(req, res) {
+    if(req.query.page && req.query.page < 1)
+        return res.status(400).send('Invalid page');
+    var pageSize = (req.query.pagesize && req.query.pagesize <= MAX_PAGESIZE && req.query.pagesize > 0) ? req.query.pagesize : DEFAULT_PAGESIZE;
+    console.log(pageSize);
+    console.log(req.query.pagesize);
+    console.log(req.query.page);
     Post.find()
-        .limit(DEFAULT_PAGESIZE)
+        .limit(pageSize)
+        .sort('date')
+        .skip((req.query.page-1) * pageSize || 0)//doesn't scale well, I'll worry about it later
         .exec(function(err, posts) {
         if(err) {
             return handleError(res, err);

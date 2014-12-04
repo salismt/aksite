@@ -4,7 +4,7 @@ angular.module('aksiteApp')
     .config(function($stateProvider) {
         $stateProvider
             .state('blog', {
-                url: '/blog',
+                url: '/blog?page&pagesize',
                 templateUrl: 'app/blog/blog.html',
                 controller: 'BlogCtrl'
             })
