@@ -9,7 +9,6 @@ angular.module('aksiteApp')
                 $scope.post = post;
                 $scope.post.content = marked($scope.post.content);
                 $scope.post.date = moment($scope.post.date).format("LL");
-                console.log($scope.post);
             })
             .error(function(err) {
                 console.log(err);

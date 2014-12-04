@@ -13,9 +13,6 @@ exports.index = function(req, res) {
     if(req.query.page && req.query.page < 1)
         return res.status(400).send('Invalid page');
     var pageSize = (req.query.pagesize && req.query.pagesize <= MAX_PAGESIZE && req.query.pagesize > 0) ? req.query.pagesize : DEFAULT_PAGESIZE;
-    console.log(pageSize);
-    console.log(req.query.pagesize);
-    console.log(req.query.page);
     Post.find()
         .limit(pageSize)
         .sort('date')
