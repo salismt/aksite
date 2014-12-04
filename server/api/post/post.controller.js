@@ -10,22 +10,22 @@ var MAX_PAGESIZE = 25;
 
 // Get list of posts
 exports.index = function(req, res) {
-    if(req.query.page && req.query.page < 1)
-        return res.status(400).send('Invalid page');
+    if(req.query.page && req.query.page < 1) return res.status(400).send('Invalid page');
+
     var pageSize = (req.query.pagesize && req.query.pagesize <= MAX_PAGESIZE && req.query.pagesize > 0) ? req.query.pagesize : DEFAULT_PAGESIZE;
     Post.find()
         .limit(pageSize)
         .sort('date')
         .skip((req.query.page-1) * pageSize || 0)//doesn't scale well, I'll worry about it later
         .exec(function(err, posts) {
-        if(err) {
-            return handleError(res, err);
-        }
-        if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
-            _.remove(posts, 'hidden');
-        }
-        return res.status(200).json(posts);
-    });
+            if(err) {
+                return handleError(res, err);
+            }
+            if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
+                _.remove(posts, 'hidden');
+            }
+            return res.status(200).json(posts);
+        });
 };
 
 // Get a single post
