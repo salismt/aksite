@@ -17,6 +17,7 @@ var _ = require('lodash'),
     Gallery = require('../api/gallery/gallery.model.js'),
     config = require('./environment'),
     gm = require('gm'),
+    moment = require('moment'),
 
     mongoose = require('mongoose'),
     fs = require('fs'),
@@ -72,8 +73,8 @@ conn.once('open', function(err) {
     User.find({}).remove(function() {
         var userImageWritestream = gfs.createWriteStream([]);
         userImageWritestream.on('close', function(file) {
-            console.log(file);
-            User.create({
+            //console.log(file);
+            var userPromise = User.create({
                 provider: 'local',
                 name: 'Test User',
                 email: 'test@test.com',
@@ -88,62 +89,38 @@ conn.once('open', function(err) {
                 password: 'admin',
                 imageId: file._id,
                 smallImageId: file._id
-            }, function() {
-                console.log('finished populating users');
+            })
+                .then(function(results) {
+                    console.log('finished populating users');
 
-                User.find({}, function(arg) {
-                    console.log(arg);
-                });
+                    User.find({}, function(arg) {
+                        console.log(arg);
+                    });
 
-                Post.find({}).remove(function() {
-                    Post.create({
-                            title: "Test Post 1",
-                            alias: "test-post-1",
-                            hidden: false,
-                            author: {
-                                name: "Andrew Koroluk",
-                                imageId: file._id,
-                                smallImageId: file._id
-                            },
-                            date: new Date(),
-                            imageId: null,
-                            content: "This is test post number **1**",
-                            subheader: "This is test post number **1**",
-                            categories: ["tests"]
-                        },{
-                            title: "Test Post 2",
-                            alias: "test-post-2",
-                            hidden: false,
-                            author: {
-                                name: "Andrew Koroluk",
-                                imageId: file._id,
-                                smallImageId: file._id
-                            },
-                            date: new Date(),
-                            imageId: null,
-                            content: "This is test post number **2**",
-                            subheader: "This is test post number **2**",
-                            categories: ["tests"]
-                        },{
-                            title: "Test Post 3",
-                            alias: "test-post-3",
-                            hidden: false,
-                            author: {
-                                name: "Andrew Koroluk",
-                                imageId: file._id,
-                                smallImageId: file._id
-                            },
-                            date: new Date(),
-                            imageId: null,
-                            content: "This is test post number **3**",
-                            subheader: "This is test post number **3**",
-                            categories: ["tests"]
-                        }, function() {
-                            console.log('finished populating posts');
-                        }
-                    );
+                    var postPromise = Post.find({}).remove(function() {
+                        var posts = _.map(_.range(20), function(arg) {
+                            return {
+                                title: "Test Post "+arg,
+                                alias: "test-post-"+arg,
+                                hidden: false,
+                                author: {
+                                    name: "Andrew Koroluk",
+                                    imageId: file._id,
+                                    smallImageId: file._id
+                                },
+                                date: moment().add(arg, 'days').format(),
+                                imageId: null,
+                                content: "This is test post number **"+arg+"**",
+                                subheader: "This is test post number **"+arg+"**",
+                                categories: ["tests"]
+                            };
+                        });
+                        Post.create(posts, function() {
+                                console.log('finished populating posts');
+                            }
+                        );
+                    });
                 });
-            });
         });
         fs.createReadStream('client/assets/images/portrait_2014.jpg').pipe(userImageWritestream);
     });
