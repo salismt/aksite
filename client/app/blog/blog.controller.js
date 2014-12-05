@@ -4,6 +4,8 @@ angular.module('aksiteApp')
     .controller('BlogCtrl', function($scope, $http, $stateParams, $state, $location) {
         $state.reloadOnSearch = false;
 
+        $scope.loadingItems = true;
+        $scope.noItems = false;
         $scope.page = $stateParams.page || 1;
         $scope.pagesize = $stateParams.pagesize || 10;
         $scope.posts = [];
@@ -19,6 +21,7 @@ angular.module('aksiteApp')
                         post.date = moment(post.date).format("LL");
                         post.subheader = marked(post.subheader);
                     });
+                    $scope.noItems = response.items.length <= 0;
                     document.body.scrollTop = document.documentElement.scrollTop = 0;
                 })
                 .error(function(err) {
