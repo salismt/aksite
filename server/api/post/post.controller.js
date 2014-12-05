@@ -13,19 +13,27 @@ exports.index = function(req, res) {
     if(req.query.page && req.query.page < 1) return res.status(400).send('Invalid page');
 
     var pageSize = (req.query.pagesize && req.query.pagesize <= MAX_PAGESIZE && req.query.pagesize > 0) ? req.query.pagesize : DEFAULT_PAGESIZE;
-    Post.find()
-        .limit(pageSize)
-        .sort('date')
-        .skip((req.query.page-1) * pageSize || 0)//doesn't scale well, I'll worry about it later
-        .exec(function(err, posts) {
-            if(err) {
-                return handleError(res, err);
-            }
-            if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
-                _.remove(posts, 'hidden');
-            }
-            return res.status(200).json(posts);
-        });
+    var page = parseInt(req.query.page) || 0;
+
+    Post.count({}, function(err, count) {
+        if(err) return handleError(res, err);
+        Post.find()
+            .limit(pageSize)
+            .sort('date')
+            .skip((req.query.page-1) * pageSize || 0)//doesn't scale well, I'll worry about it later
+            .exec(function(err, posts) {
+                if(err) return handleError(res, err);
+                if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
+                    _.remove(posts, 'hidden');
+                }
+                return res.status(200).json({
+                    page: page,
+                    pages: Math.ceil(count / pageSize),
+                    items: posts,
+                    numItems: count
+                });
+            });
+    });
 };
 
 // Get a single post
