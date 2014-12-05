@@ -1,13 +1,11 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="container" ng-if="noItems">
-    <alert>No Items</alert>
-</div>
+<div class="container">
+    <alert ng-if="noItems">No Items</alert>
 
-<div class="container" ng-if="!noItems">
     <div class="container post-list">
         <div class="post-block" ng-repeat="post in posts">
-            <a ng-href="/blog/post/{{::post._id}}" class="block-image" style="background-image:url('assets/images/yeoman.png')"></a>
+            <a ng-if="::post.imageId" ng-href="/blog/post/{{::post._id}}" class="block-image" ng-style="{'background-image':'url(/api/upload/{{::post.imageId}})'}"></a>
 
             <a ng-href="/blog/post/{{::post._id}}">
                 <h2 class="block-header">{{post.title}}</h2>
