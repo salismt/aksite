@@ -67,13 +67,12 @@ angular.module('aksiteApp')
                 }
             })
                 .progress(function(evt) {
-                    photo.progress = (100.0 * (evt.position / evt.total)).toFixed(1);
+                    photo.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
                 })
                 .success(function(data) {
                     photo.thumbnailId = data.thumbnailId;
                     if($scope.photos[nextPhoto]) {
-                        $scope.uploadPhoto($scope.photos[nextPhoto]);
-                        nextPhoto++;
+                        $scope.uploadPhoto($scope.photos[nextPhoto++]);
                     }
                     $scope.gallery.photos.push(data._id);
                 })
