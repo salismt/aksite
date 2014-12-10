@@ -58,18 +58,12 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
     var form = gridform({db: conn.db, mongo: mongoose.mongo});
 
-    //console.log(form);
-
     // optionally store per-file metadata
     form.on('fileBegin', function(name, file) {
         file.metadata = {};
-
-        console.log(name);
-        //console.log(file);
     });
 
     form.parse(req, function(err, fields, files) {
-
         if(err) return handleError(res, err);
 
         /**
@@ -87,10 +81,8 @@ exports.create = function(req, res) {
         if(_.isNull(file) || _.isUndefined(file))
             return res.status(400).send(new Error('No file'));
 
-        console.log(file);
-
-        //console.log(files);
-        console.log(fields);
+        console.log(file.name+' -> '+file.id);
+        //console.log(fields);
 
         if(!_.isEmpty(fields)) {
             if(fields.name && typeof fields.name == 'string') {
@@ -108,23 +100,40 @@ exports.create = function(req, res) {
                         photoModel.info = fields.info;
 
                     // Thumbnail generation
-                    var stream = gfs.createReadStream({_id: file.id});
-                    stream.on('error', handleGridStreamErr(res));
-                    var img = gm(stream, file.id);
-                    img.resize(200, 200, "^");
-                    img.crop(200, 200, 0, 0);
-                    img.quality(90);
-                    img.stream(function(err, outStream) {
+                    var thumbStream = gfs.createReadStream({_id: file.id});
+                    thumbStream.on('error', handleGridStreamErr(res));
+                    var thumb = gm(thumbStream, file.id);
+                    thumb.resize(null, 400);
+                    thumb.quality(90);
+                    thumb.stream(function(err, outStream) {
                         if(err) return res.status(500).end();
                         else {
                             var writestream = gfs.createWriteStream({filename: file.name});
-                            writestream.on('close', function(file) {
-                                console.log(file);
-                                photoModel.thumbnailId = file._id;
+                            writestream.on('close', function(thumbFile) {
+                                console.log(file.name+' -> (thumb)'+thumbFile._id);
+                                photoModel.thumbnailId = thumbFile._id;
 
-                                Photo.create(photoModel, function(err, photo) {
-                                    if(err) return handleError(res, err);
-                                    else return res.status(201).json(photo);
+                                var sqThumbstream = gfs.createReadStream({_id: thumbFile.id});
+                                sqThumbstream.on('error', handleGridStreamErr(res));
+                                var sqThumb = gm(sqThumbstream, thumbFile.id);
+                                sqThumb.resize(200, 200, "^");
+                                sqThumb.crop(200, 200, 0, 0);
+                                sqThumb.quality(90);
+                                sqThumb.stream(function(err, outStream) {
+                                    if(err) return res.status(500).end();
+                                    else {
+                                        var writestream = gfs.createWriteStream({filename: thumbFile.name});
+                                        writestream.on('close', function(sqThumbFile) {
+                                            console.log(file.name+' -> (sqThumb)'+sqThumbFile._id);
+                                            photoModel.sqThumbnailId = sqThumbFile._id;
+
+                                            Photo.create(photoModel, function(err, photo) {
+                                                if(err) return handleError(res, err);
+                                                else return res.status(201).json(photo);
+                                            });
+                                        });
+                                        outStream.pipe(writestream);
+                                    }
                                 });
                             });
                             outStream.pipe(writestream);

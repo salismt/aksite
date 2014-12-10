@@ -10,6 +10,7 @@ var PhotoSchema = new Schema({
     featured: Boolean,
     fileId: String,
     thumbnailId: String,
+    sqThumbnailId: String,
     metadata: {}
 });
 
