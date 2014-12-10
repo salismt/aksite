@@ -214,25 +214,43 @@ conn.once('open', function(err) {
                 photoModel.fileId = file._id;
 
                 // Thumbnail generation
-                var stream = gfs.createReadStream({_id: file._id});
-                stream.on('error', console.log);
-                var img = gm(stream, file.id);
-                img.resize(200, 200, "^");
-                img.crop(200, 200, 0, 0);
-                img.quality(90);
-                img.stream(function(err, outStream) {
+                var thumbStream = gfs.createReadStream({_id: file.id});
+                thumbStream.on('error', console.log);
+                var thumb = gm(thumbStream, file.id);
+                thumb.resize(null, 400);
+                thumb.quality(90);
+                thumb.stream(function(err, outStream) {
                     if(err) return res.status(500).end();
                     else {
-                        var thumbwritestream = gfs.createWriteStream({filename: file.name});
-                        thumbwritestream.on('close', function(file) {
-                            photoModel.thumbnailId = file._id;
+                        var writestream = gfs.createWriteStream({filename: file.name});
+                        writestream.on('close', function(thumbFile) {
+                            //console.log(thumbFile);
+                            photoModel.thumbnailId = thumbFile._id;
 
-                            Photo.create(photoModel, function(err, photo1) {
-                                if(err) return console.log(err);
-                                else return photo1;
+                            var sqThumbstream = gfs.createReadStream({_id: thumbFile.id});
+                            sqThumbstream.on('error', console.log);
+                            var sqThumb = gm(sqThumbstream, thumbFile.id);
+                            sqThumb.resize(200, 200, "^");
+                            sqThumb.crop(200, 200, 0, 0);
+                            sqThumb.quality(90);
+                            sqThumb.stream(function(err, outStream) {
+                                if(err) console.log(err);
+                                else {
+                                    var writestream = gfs.createWriteStream({filename: thumbFile.name});
+                                    writestream.on('close', function(sqThumbFile) {
+                                        console.log(sqThumbFile);
+                                        photoModel.sqThumbnailId = sqThumbFile._id;
+
+                                        Photo.create(photoModel, function(err, photo1) {
+                                            if(err) console.log(err);
+                                            else return photo1;
+                                        });
+                                    });
+                                    outStream.pipe(writestream);
+                                }
                             });
                         });
-                        outStream.pipe(thumbwritestream);
+                        outStream.pipe(writestream);
                     }
                 });
             });
