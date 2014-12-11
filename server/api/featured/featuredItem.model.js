@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
 var FeaturedItemSchema = new Schema({
     name: String,
     info: String,
+    sqThumbnailId: String,
     thumbnailId: String,
     link: String,
     type: String

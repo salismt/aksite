@@ -55,7 +55,7 @@ exports.newFeatured = function(req, res) {
                 tmpPromises = [],
                 k = 0;
             _.forEach(items, function(item) {
-                var stream = gfs.createReadStream({_id: item.thumbnailId});
+                var stream = gfs.createReadStream({_id: item.sqThumbnailId});
                 stream.on('error', handleGridStreamErr(res));
                 readStreams.push(stream);
                 tmpPromises.push(writeToTmp(stream, k));
@@ -172,8 +172,8 @@ exports.add = function(req, res) {
                 else if(!photo)
                     return res.status(404).end();
                 else {
-                    if(photo.thumbnailId) {
-                        item.thumbnailId = photo.thumbnailId;
+                    if(photo.sqThumbnailId) {
+                        item.sqThumbnailId = photo.sqThumbnailId;
 
                         return FeaturedItem.create(item, function(err, featured) {
                             if(err) return handleError(res, err);
