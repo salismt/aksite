@@ -6,6 +6,8 @@ var mongoose = require('mongoose'),
 var PhotoSchema = new Schema({
     name: String,
     info: String,
+    height: Number,
+    width: Number,
     hidden: Boolean,
     featured: Boolean,
     fileId: String,
