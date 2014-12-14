@@ -4,78 +4,71 @@
     <div ng-if="error" class="row">
         <alert type="danger">Error: {{error}}</alert>
     </div>
+    <div ng-if="noPhotos" class="row">
+        <alert type="warning">No Photos</alert>
+    </div>
 
-    <div class="container">
-        <h1 class="page-header">{{gallery.name}}</h1>
-        <h5 class="text-center">{{gallery.info}}</h5>
-        <!--<div id="grid-gallery" class="grid-gallery">-->
-            <!--<section class="grid-wrap">-->
-                <!--<ul class="grid">-->
-                    <!--&lt;!&ndash; for Masonry column width &ndash;&gt;-->
-                    <!--<li class="grid-sizer"></li>-->
-                    <!--<li ng-repeat="photo in photos">-->
-                        <!--<figure id="photo-{{photo._id}}">-->
-                            <!--<div class="spinner" ng-hide="photo.done">-->
-                                <!--<i class="fa fa-fw fa-spinner fa-spin"></i>-->
-                            <!--</div>-->
-                            <!--<img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>-->
-                            <!--<figcaption>-->
-                                <!--<h3>{{photo.name}}</h3>-->
-                                <!--<p>{{photo.info}}</p>-->
-                            <!--</figcaption>-->
-                        <!--</figure>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</section>-->
-        <!--</div>-->
-        <div class="gallery-grid">
-            <a ng-repeat="photo in photos" data-size="{{photo.width}}x{{photo.height}}" ng-click="onThumbnailsClick($event, photo.index)" id="/api/upload/{{::photo.fileId}}">
-                <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img"/>
-                <figure id="photo-{{photo._id}}">
-                    asdf
-                </figure>
-            </a>
-        </div>
-        <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="pswp__bg"></div>
-            <div class="pswp__scroll-wrap">
-                <!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
-                <div class="pswp__container">
-                    <div class="pswp__item"></div>
-                    <div class="pswp__item"></div>
-                    <div class="pswp__item"></div>
-                </div>
+    <h1 class="page-header">{{gallery.name}}</h1>
+    <h5 class="text-center">{{gallery.info}}</h5>
 
-                <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-                <div class="pswp__ui pswp__ui--hidden">
-                    <div class="pswp__top-bar">
-                        <!--  Controls are self-explanatory. Order can be changed. -->
-                        <div class="pswp__counter"></div>
-                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                        <button class="pswp__button pswp__button--share" title="Share"></button>
-                        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-                        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                        <!-- element will get class pswp__preloader--active when preloader is running -->
-                        <div class="pswp__preloader">
-                            <div class="pswp__preloader__icn">
-                                <div class="pswp__preloader__cut">
-                                    <div class="pswp__preloader__donut"></div>
-                                </div>
+    <div class="photo-gallery">
+        <section class="grid-wrap">
+            <ul class="grid" id="grid-gallery">
+                <!-- for Masonry column width -->
+                <li class="grid-sizer"></li>
+
+                <li ng-repeat="photo in photos" data-size="{{photo.width}}x{{photo.height}}" ng-click="onThumbnailsClick(photo.index)" id="/api/upload/{{::photo.fileId}}">
+                    <figure id="photo-{{photo._id}}">
+                        <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img" style="display: block; width: 100%;"/>
+                        <!--<figcaption>-->
+                            <!--<h3>{{photo.name}}</h3>-->
+                            <!--<p>{{photo.info}}</p>-->
+                        <!--</figcaption>-->
+                    </figure>
+                </li>
+            </ul>
+        </section>
+    </div>
+
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="pswp__bg"></div>
+        <div class="pswp__scroll-wrap">
+            <!-- Container that holds slides. PhotoSwipe keeps only 3 slides in DOM to save memory. -->
+            <div class="pswp__container">
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+            </div>
+
+            <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+            <div class="pswp__ui pswp__ui--hidden">
+                <div class="pswp__top-bar">
+                    <!--  Controls are self-explanatory. Order can be changed. -->
+                    <div class="pswp__counter"></div>
+                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                    <button class="pswp__button pswp__button--share" title="Share"></button>
+                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                    <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                    <!-- element will get class pswp__preloader--active when preloader is running -->
+                    <div class="pswp__preloader">
+                        <div class="pswp__preloader__icn">
+                            <div class="pswp__preloader__cut">
+                                <div class="pswp__preloader__donut"></div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                        <div class="pswp__share-tooltip"></div>
-                    </div>
+                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                    <div class="pswp__share-tooltip"></div>
+                </div>
 
-                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
-                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
 
-                    <div class="pswp__caption">
-                        <div class="pswp__caption__center"></div>
-                    </div>
+                <div class="pswp__caption">
+                    <div class="pswp__caption__center"></div>
                 </div>
             </div>
         </div>
