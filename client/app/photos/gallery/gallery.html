@@ -17,9 +17,9 @@
                 <!-- for Masonry column width -->
                 <li class="grid-sizer"></li>
 
-                <li ng-repeat="photo in photos" data-size="{{photo.width}}x{{photo.height}}" ng-click="onThumbnailsClick(photo.index)" id="/api/upload/{{::photo.fileId}}">
+                <li ng-repeat="photo in photos" data-size="{{photo.width}}x{{photo.height}}" ng-click="onThumbnailsClick(photo.index)" id="/api/upload/{{::photo.fileId}}.jpg">
                     <figure id="photo-{{photo._id}}">
-                        <img ng-src="api/upload/{{photo.thumbnailId}}" alt="img" style="display: block; width: 100%;"/>
+                        <img ng-src="api/upload/{{photo.thumbnailId}}.jpg" alt="img" style="display: block; width: 100%;"/>
                         <!--<figcaption>-->
                             <!--<h3>{{photo.name}}</h3>-->
                             <!--<p>{{photo.info}}</p>-->

@@ -38,6 +38,9 @@ exports.index = function(req, res) {
 
 // Get a single file
 exports.show = function(req, res) {
+    if(req.params.id.substring(24) === '.jpg') {
+        req.params.id = req.params.id.substring(0, 24);
+    }
     if(!isValidObjectId(req.params.id)) {
         return res.status(400).send('Invalid ID');
     }
@@ -45,11 +48,12 @@ exports.show = function(req, res) {
         if(err) return handleError(err);
         else if(!found) return res.status(404).end();
         else {
-            var readStream = gfs.createReadStream({
-                _id: req.params.id
-            });
-
-            readStream.pipe(res);
+            res.header('Content-Type', 'image/jpeg');
+            gfs.createReadStream({ _id: req.params.id })
+                .on('error', function (err){
+                    return handleError(res, err)
+                })
+                .pipe(res);
         }
     });
 };
@@ -215,7 +219,8 @@ exports.destroy = function(req, res) {
 };
 
 function handleError(res, err) {
-    return res.status(500).send(err);
+    console.log(err);
+    return res.status(500).end();
 }
 
 function handleGridStreamErr(res) {
