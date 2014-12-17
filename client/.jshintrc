@@ -34,6 +34,9 @@
     "browser": true,
     "element": true,
     "by": true,
-    "marked": true
+    "marked": true,
+    "PhotoSwipe": true,
+    "PhotoSwipeUI_Default": true,
+    "Masonry": true
   }
 }
