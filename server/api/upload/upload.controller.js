@@ -8,6 +8,7 @@ var _ = require('lodash'),
     mongoose = require('mongoose'),
     fs = require('fs'),
     gridform = require('gridform'),
+    ExifImage = require('exif').ExifImage,
     gm = require('gm'),
     Schema = mongoose.Schema,
     Grid = require('gridfs-stream'),
@@ -111,10 +112,10 @@ exports.create = function(req, res) {
         //console.log(fields);
 
         if(!_.isEmpty(fields)) {
-            if(fields.name && typeof fields.name == 'string') {
+            if(fields.name && typeof fields.name === 'string') {
                 file.name = fields.name;
             }
-            if(fields.purpose && typeof fields.purpose == 'string') {
+            if(fields.purpose && typeof fields.purpose === 'string') {
                 file.purpose = fields.purpose;
 
                 if(fields.purpose.toLowerCase() === 'photo') {
@@ -122,54 +123,60 @@ exports.create = function(req, res) {
                         name: file.name,
                         fileId: file.id
                     };
-                    if(fields.info && typeof fields.purpose == 'string')
+                    if(fields.info && typeof fields.purpose === 'string')
                         photoModel.info = fields.info;
 
-                    // Thumbnail generation
-                    var thumbStream = gfs.createReadStream({_id: file.id});
-                    thumbStream.on('error', handleGridStreamErr(res));
-                    gm(thumbStream, file.id)
-                        .size({bufferStream: true}, function(err, size) {
-                            photoModel.width = size.width;
-                            photoModel.height = size.height;
-                            console.log(size);
-                            this.resize(null, 400);
-                            this.quality(90);
-                            this.stream(function(err, outStream) {
-                                if(err) return res.status(500).end();
-                                else {
-                                    var writestream = gfs.createWriteStream({filename: file.name});
-                                    writestream.on('close', function(thumbFile) {
-                                        console.log(file.name+' -> (thumb)'+thumbFile._id);
-                                        photoModel.thumbnailId = thumbFile._id;
+                    getExif(file)
+                        .then(function(exifData) {
+                            //photoModel.metadata = {exif: exifData.exif, image: exifData.image, gps: exifData.gps};
+                            console.log(exifData);
 
-                                        var sqThumbstream = gfs.createReadStream({_id: file.id});
-                                        sqThumbstream.on('error', handleGridStreamErr(res));
-                                        gm(sqThumbstream, thumbFile._id)
-                                            .resize(200, 200, "^")
-                                            .crop(200, 200, 0, 0)
-                                            .quality(90)
-                                            .stream(function(err, outStream) {
-                                                if(err) return res.status(500).end();
-                                                else {
-                                                    var writestream = gfs.createWriteStream({filename: thumbFile.name});
-                                                    writestream.on('close', function(sqThumbFile) {
-                                                        console.log(file.name+' -> (sqThumb)'+sqThumbFile._id);
-                                                        photoModel.sqThumbnailId = sqThumbFile._id;
+                            // Thumbnail generation
+                            var thumbStream = gfs.createReadStream({_id: file.id});
+                            thumbStream.on('error', handleGridStreamErr(res));
+                            gm(thumbStream, file.id)
+                                .size({bufferStream: true}, function(err, size) {
+                                    photoModel.width = size.width;
+                                    photoModel.height = size.height;
+                                    console.log(size);
+                                    this.resize(null, 400);
+                                    this.quality(90);
+                                    this.stream(function(err, outStream) {
+                                        if(err) res.status(500).end();
+                                        else {
+                                            var writestream = gfs.createWriteStream({filename: file.name});
+                                            writestream.on('close', function(thumbFile) {
+                                                console.log(file.name+' -> (thumb)'+thumbFile._id);
+                                                photoModel.thumbnailId = thumbFile._id;
 
-                                                        Photo.create(photoModel, function(err, photo) {
-                                                            if(err) return handleError(res, err);
-                                                            else return res.status(201).json(photo);
-                                                        });
+                                                var sqThumbstream = gfs.createReadStream({_id: file.id});
+                                                sqThumbstream.on('error', handleGridStreamErr(res));
+                                                gm(sqThumbstream, thumbFile._id)
+                                                    .resize(200, 200, "^")
+                                                    .crop(200, 200, 0, 0)
+                                                    .quality(90)
+                                                    .stream(function(err, outStream) {
+                                                        if(err) res.status(500).end();
+                                                        else {
+                                                            var writestream = gfs.createWriteStream({filename: thumbFile.name});
+                                                            writestream.on('close', function(sqThumbFile) {
+                                                                console.log(file.name+' -> (sqThumb)'+sqThumbFile._id);
+                                                                photoModel.sqThumbnailId = sqThumbFile._id;
+
+                                                                Photo.create(photoModel, function(err, photo) {
+                                                                    if(err) return handleError(res, err);
+                                                                    else return res.status(201).json(photo);
+                                                                });
+                                                            });
+                                                            outStream.pipe(writestream);
+                                                        }
                                                     });
-                                                    outStream.pipe(writestream);
-                                                }
                                             });
+                                            outStream.pipe(writestream);
+                                        }
                                     });
-                                    outStream.pipe(writestream);
-                                }
-                            });
-                    });
+                                });
+                        });
                 }
             }
         } else {
@@ -258,4 +265,20 @@ function getSize(fileId) {
 
 function isValidObjectId(objectId) {
     return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
+}
+
+function getExif(file) {
+    var deferred = Q.defer();
+
+    gm(gfs.createReadStream({_id: file.id}).on('error', console.log), file.id)
+        .toBuffer('JPG', function(err, buffer) {
+            new ExifImage({ image: buffer }, function (error, exifData) {
+                if (error)
+                    deferred.reject(error);
+                else
+                    deferred.resolve(exifData);
+            });
+        });
+
+    return deferred.promise;
 }
