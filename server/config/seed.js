@@ -67,6 +67,13 @@ conn.once('open', function(err) {
         }
     });
 
+    // Create an orphaned file
+    var orphanWriteStream = gfs.createWriteStream([]);
+    orphanWriteStream.on('close', function(orphan) {
+        console.log('Created orphaned file: '+orphan._id);
+    });
+    fs.createReadStream('data/proj_0_cover.jpg').pipe(orphanWriteStream);
+
     User.find({}).remove(function() {
         var userImageWritestream = gfs.createWriteStream([]);
         userImageWritestream.on('close', function(userImgFile) {

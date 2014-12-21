@@ -4,6 +4,9 @@ var _ = require('lodash'),
     Q = require('q'),
     path = require('path'),
     Photo = require('../photo/photo.model'),
+    Project = require('../project/project.model'),
+    User = require('../user/user.model'),
+    FeaturedSection = require('../featured/featuredSection.model'),
     config = require('../../config/environment'),
     mongoose = require('mongoose'),
     fs = require('fs'),
@@ -225,6 +228,31 @@ exports.destroy = function(req, res) {
     }
 };
 
+// Finds and cleans orphaned GridFS files
+exports.clean = function(req, res) {
+    getFileIds()
+        .then(function(fileIds) {
+            Q.allSettled([getPhotoIds(), getProjectIds(), getUserIds(), getFeaturedSectionIds()])
+                .then(function(results) {
+                    var usedIds = _.pluck(results, 'value');
+                    usedIds = _.union(usedIds[0], usedIds[1], usedIds[2], usedIds[3]);
+                    usedIds = _.invoke(usedIds, 'toString');
+
+                    fileIds = _.invoke(fileIds, 'toString');
+
+                    var idsToRemove = _.xor(fileIds, usedIds);
+
+                    _.forEach(idsToRemove, function(idToRemove) {
+                        gfs.remove({_id: idToRemove}, function(err) {
+                            if(err) return handleError(err);
+                        });
+                    });
+
+                    res.status(200).json(idsToRemove);
+                });
+        });
+};
+
 function handleError(res, err) {
     console.log(err);
     return res.status(500).end();
@@ -279,6 +307,61 @@ function getExif(file) {
                     deferred.resolve(exifData);
             });
         });
+
+    return deferred.promise;
+}
+
+function getPhotoIds() {
+    var deferred = Q.defer();
+
+    Photo.find({}, function(err, photos) {
+        if(err) deferred.reject(err);
+        else deferred.resolve(_.union( _.pluck(photos, 'fileId'), _.pluck(photos, 'thumbnailId'), _.pluck(photos, 'sqThumbnailId') ));
+    });
+
+    return deferred.promise;
+}
+
+function getUserIds() {
+    var deferred = Q.defer();
+
+    User.find({}, function(err, users) {
+        if(err) deferred.reject(err);
+        else deferred.resolve(_.union( _.pluck(users, 'imageId'), _.pluck(users, 'smallImageId') ));
+    });
+
+    return deferred.promise;
+}
+
+function getProjectIds() {
+    var deferred = Q.defer();
+
+    Project.find({}, function(err, projects) {
+        if(err) deferred.reject(err);
+        else deferred.resolve(_.union( _.pluck(projects, 'thumbnailId'), _.pluck(projects, 'coverId') ));
+    });
+
+    return deferred.promise;
+}
+
+function getFeaturedSectionIds() {
+    var deferred = Q.defer();
+
+    FeaturedSection.find({}, function(err, featuredSections) {
+        if(err) deferred.reject(err);
+        else deferred.resolve(_.pluck(featuredSections, 'fileId'));
+    });
+
+    return deferred.promise;
+}
+
+function getFileIds() {
+    var deferred = Q.defer();
+
+    gridModel.find({}, function(err, gridfiles) {
+        if(err) deferred.reject(err);
+        else deferred.resolve(_.pluck(gridfiles, '_id'));
+    });
 
     return deferred.promise;
 }
