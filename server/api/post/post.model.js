@@ -16,6 +16,7 @@ var PostSchema = new Schema({
     },
     date: Date,
     imageId: Schema.ObjectId,
+    thumbnailId: Schema.ObjectId,
     content: String,
     categories: [String]
 });
