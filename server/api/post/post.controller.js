@@ -109,12 +109,13 @@ exports.create = function(req, res) {
         var sanitised = sanitiseNewPost(fields);
 
         if(sanitised === null) {
+            console.log(fields.author);
             var postModel = {
                 title: fields.title,
                 subheader: fields.subheader,
                 content: fields.content,
                 date: new Date(fields.date) || new Date(),
-                author: req.user._id,
+                author: JSON.parse(fields.author),
                 imageId: undefined,
                 alias: fields.alias || undefined,
                 categories: fields.categories || []
@@ -147,6 +148,7 @@ exports.create = function(req, res) {
                                     console.log(thumbFile.name+' -> (thumb)'+thumbFile._id);
                                     postModel.thumbnailId = thumbFile._id;
 
+                                    console.log(postModel);
                                     Post.create(postModel, function(err, post) {
                                         if(err) return handleError(res, err);
                                         else return res.status(201).json(post);
@@ -157,6 +159,7 @@ exports.create = function(req, res) {
                         });
                     });
             } else {
+                console.log(postModel);
                 Post.create(postModel, function(err, post) {
                     if(err) return handleError(res, err);
                     else return res.status(201).json(post);
