@@ -6,7 +6,11 @@ var mongoose = require('mongoose'),
 var FileSchema = new Schema({
     name: String,
     info: String,
-    hidden: Boolean
+    hidden: Boolean,
+    fileId: String,
+    thumbnailId: String,
+    sqThumbnailId: String,
+    metadata: {}
 });
 
 module.exports = mongoose.model('File', FileSchema);
