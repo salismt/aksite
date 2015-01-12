@@ -9,9 +9,14 @@
     <div class="row">
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="user in users">
-                <strong>{{user.name}}</strong><br>
-                <span class="text-muted">{{user.email}}</span>
-                <a ng-click="deleteUser(user)" class="trash"><span class="glyphicon glyphicon-trash pull-right"></span></a>
+                <a ng-href="admin/users/{{user._id}}" style="text-decoration: none;">
+                    <strong>{{user.name}}</strong>
+                    <br/>
+                    <span class="text-muted">{{user.email}}</span>
+                </a>
+                <a ng-click="deleteUser(user)" class="trash">
+                    <span class="glyphicon glyphicon-trash pull-right"></span>
+                </a>
             </li>
         </ul>
     </div>
