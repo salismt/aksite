@@ -240,15 +240,17 @@ exports.clean = function(req, res) {
 
                     fileIds = _.invoke(fileIds, 'toString');
 
-                    var idsToRemove = _.xor(fileIds, usedIds);
-
-                    _.forEach(idsToRemove, function(idToRemove) {
-                        gfs.remove({_id: idToRemove}, function(err) {
-                            if(err) return handleError(err);
-                        });
+                    _.forEach(fileIds, function(id) {
+                        if(!_.contains(usedIds, id)) {
+                            console.log('Delete '+id);
+                            gfs.remove({_id: id}, function(err) {
+                                if(err) return handleError(err);
+                            });
+                        }
                     });
-
-                    res.status(200).json(idsToRemove);
+                })
+                .finally(function() {
+                    res.status(200).end();
                 });
         });
 };
