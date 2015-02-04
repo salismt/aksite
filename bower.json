@@ -29,7 +29,6 @@
     "marked": "~0.3.2",
     "bourbon": "~4.0.2",
     "neat": "~1.7.0",
-    "refills": "~0.0.2",
     "moment": "~2.8.4",
     "photoswipe": "~4.0.0"
   },
