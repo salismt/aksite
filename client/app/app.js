@@ -8,7 +8,8 @@ angular.module('aksiteApp', [
     'ui.router',
     'ui.bootstrap',
     'angularFileUpload',
-    'ngMaterial'
+    'ngMaterial',
+    'ngMessages'
 ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
         $urlRouterProvider
