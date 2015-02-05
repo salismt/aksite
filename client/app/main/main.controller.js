@@ -148,8 +148,7 @@ angular.module('aksiteApp')
             var graphic = deep.selectAll("svg,canvas");
 
             var image = new Image;
-            //image.src = "/assets/images/featured.jpg";
-            image.src = "/api/upload/" + $scope.featuredSection.fileId;
+            image.src = "/api/upload/" + $scope.featuredSection.fileId + '.jpg';
             image.onload = resized;
 
             d3.select(window)
