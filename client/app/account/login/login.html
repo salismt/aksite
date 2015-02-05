@@ -8,56 +8,53 @@
             <p>Test account is <code>test@test.com</code> / <code>test</code></p>
         </div>
         <div class="col-sm-12">
-            <form class="form" name="form" ng-submit="login(form)" novalidate>
+            <md-content class="md-padding">
+                <form name="loginForm" ng-submit="login()">
+                    <md-input-container>
+                        <label>Email</label>
+                        <input md-maxlength="60" required name="email" type="email" ng-model="user.email">
+                        <div ng-messages="loginForm.email.$error">
+                            <div ng-message="required">This is required.</div>
+                            <div ng-message="md-maxlength">The email can be at most 60 characters long.</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Password</label>
+                        <input type="password" required name="password" ng-model="user.password">
+                        <div ng-messages="loginForm.password.$error">
+                            <div ng-message="required">This is required.</div>
+                        </div>
+                    </md-input-container>
 
-                <div class="form-group">
-                    <label>Email</label>
+                    <section layout="row" layout-sm="column" layout-align="center center">
+                        <md-button class="md-primary md-button-lg" type="submit" aria-label="Login">
+                            Login
+                        </md-button>
+                        <md-button class="md-button-lg" href="/signup" aria-label="Register">
+                            Register
+                        </md-button>
+                    </section>
+                </form>
 
-                    <input type="email" name="email" class="form-control" ng-model="user.email" required>
-                </div>
+                <br/>
 
-                <div class="form-group">
-                    <label>Password</label>
-
-                    <input type="password" name="password" class="form-control" ng-model="user.password" required>
-                </div>
-
-                <div class="form-group has-error">
-                    <p class="help-block"
-                       ng-show="form.email.$error.required && form.password.$error.required && submitted">
-                        Please enter your email and password.
-                    </p>
-
-                    <p class="help-block" ng-show="form.email.$error.email && submitted">
-                        Please enter a valid email.
-                    </p>
-
-                    <p class="help-block">{{ errors.other }}</p>
-                </div>
-
-                <div>
-                    <md-button class="md-primary md-button-lg" type="submit" aria-label="Login">
-                        Login
+                <section layout="row" layout-sm="column" layout-align="center center">
+                    <md-button class="md-primary md-button-lg btn-facebook" href="" aria-label="Login" ng-click="loginOauth('facebook')" style="color: #0d2456;">
+                        <i class="fa fa-facebook"></i>
+                        Connect with Facebook
                     </md-button>
-                    <md-button class="md-button-lg" href="/signup" aria-label="Register">
-                        Register
+                    <md-button class="md-primary md-button-lg btn-google-plus" href="" aria-label="Login" ng-click="loginOauth('google')" style="color: #c23321;">
+                        <i class="fa fa-google-plus"></i>
+                        Connect with Google+
                     </md-button>
-                </div>
-
-                <hr>
-                <div>
-                    <a class="btn btn-facebook" href="" ng-click="loginOauth('facebook')">
-                        <i class="fa fa-facebook"></i> Connect with Facebook
-                    </a>
-                    <a class="btn btn-google-plus" href="" ng-click="loginOauth('google')">
-                        <i class="fa fa-google-plus"></i> Connect with Google+
-                    </a>
-                    <a class="btn btn-twitter" href="" ng-click="loginOauth('twitter')">
-                        <i class="fa fa-twitter"></i> Connect with Twitter
-                    </a>
-                </div>
-            </form>
+                    <md-button class="md-primary md-button-lg btn-twitter" href="" aria-label="Login" ng-click="loginOauth('twitter')" style="color: #1f8eb7;">
+                        <i class="fa fa-twitter"></i>
+                        Connect with Twitter
+                    </md-button>
+                </section>
+            </md-content>
         </div>
     </div>
-    <hr>
 </div>
+
+

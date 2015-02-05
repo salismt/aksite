@@ -5,7 +5,7 @@ angular.module('aksiteApp')
         $scope.user = {};
         $scope.errors = {};
 
-        $scope.register = function(form) {
+        $scope.register = function() {
             $scope.submitted = true;
 
             if(form.$valid) {
@@ -15,18 +15,10 @@ angular.module('aksiteApp')
                     password: $scope.user.password
                 })
                     .then(function() {
-                        // Account created, redirect to home
                         $location.path('/');
                     })
                     .catch(function(err) {
-                        err = err.data;
-                        $scope.errors = {};
-
-                        // Update validity of form fields that match the mongoose errors
-                        angular.forEach(err.errors, function(error, field) {
-                            form[field].$setValidity('mongoose', false);
-                            $scope.errors[field] = error.message;
-                        });
+                        $scope.errors = err;
                     });
             }
         };

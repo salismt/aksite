@@ -17,17 +17,17 @@ $btnGithubBackgroundHighlight: #ccc;
 // --------------------------------------------------
 
 .btn-facebook {
-    @include button-variant($btnText, $btnFacebookBackgroundHighlight, $btnFacebookBackgroundHighlight);
+    color: $btnFacebookBackgroundHighlight;
 }
 
 .btn-twitter {
-    @include button-variant($btnText, $btnTwitterBackground, $btnTwitterBackgroundHighlight);
+    color: $btnTwitterBackground;
 }
 
 .btn-google-plus {
-    @include button-variant($btnText, $btnGooglePlusBackground, $btnGooglePlusBackgroundHighlight);
+    color: $btnGooglePlusBackground;
 }
 
 .btn-github {
-    @include button-variant($btnTextAlt, $btnGithubBackground, $btnGithubBackgroundHighlight);
+    color: $btnGithubBackground;
 }
