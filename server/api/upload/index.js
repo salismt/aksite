@@ -8,6 +8,7 @@ var router = express.Router();
 
 router.get('/', auth.hasRole('admin'), controller.index);
 router.get('/clean', controller.clean);
+router.get('/make-links', controller.makeLinks);
 router.get('/:id', controller.show);
 router.get('/:id/size', controller.showSize);
 router.post('/', auth.hasRole('admin'), controller.create);

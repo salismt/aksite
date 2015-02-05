@@ -248,11 +248,25 @@ exports.clean = function(req, res) {
                             });
                         }
                     });
-                })
-                .finally(function() {
-                    res.status(200).end();
                 });
         });
+};
+
+exports.makeLinks = function(req, res) {
+    var photoStream = Photo.find().stream();
+
+    photoStream.on('data', function (doc) {
+        //console.log(doc);
+        if(!doc.metadata)
+            doc.metadata = {};
+        if(doc.fileId) {
+
+        }
+    }).on('error', function (err) {
+        console.log(err);
+    }).on('close', function () {
+        console.log('done');
+    });
 };
 
 function handleError(res, err) {
