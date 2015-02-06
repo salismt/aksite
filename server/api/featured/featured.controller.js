@@ -33,6 +33,16 @@ exports.index = function(req, res) {
     });
 };
 
+exports.listItems = function(req, res) {
+    FeaturedItem.find(function(err, items) {
+        if(err) {
+            return handleError(res, err);
+        } else {
+            return res.status(200).json(items);
+        }
+    });
+};
+
 // Compose a new Featured Section
 exports.newFeatured = function(req, res) {
     FeaturedSection.find({}).remove(function() {

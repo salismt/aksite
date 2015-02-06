@@ -9,6 +9,7 @@ var router = express.Router();
 router.get('/', controller.index);
 router.get('/new', auth.hasRole('admin'), controller.newFeatured);
 //router.get('/:id', controller.show);
+router.get('/items', controller.listItems);
 router.post('/:id', auth.hasRole('admin'), controller.add);
 //router.post('/', controller.create);
 //router.put('/:id', controller.update);
