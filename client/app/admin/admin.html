@@ -1,32 +1,60 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="container">
-    <ul class="ch-grid">
-        <li ng-repeat="page in pages">
-            <a href="{{page.link}}">
-                <div class="ch-item">
-                    <span class="fa fa-fw {{page.icon}} ch-icon"></span>
-                    <div class="ch-info">
-                        <h3>{{page.name}}</h3>
-                    </div>
-                </div>
-            </a>
-        </li>
-    </ul>
+<section layout="row" flex>
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-md')">
+        <md-toolbar class="md-theme-indigo">
+            <h1 class="md-toolbar-tools">Sidenav Left</h1>
+        </md-toolbar>
+        <md-content class="md-padding" ng-controller="LeftCtrl">
+            <md-button ng-click="close()" class="md-primary" hide-gt-md>
+                Close Sidenav Left
+            </md-button>
+            <p hide-md show-gt-md>
+                This sidenav is locked open on your device. To go back to the default behavior,
+                narrow your display.
+            </p>
+        </md-content>
+    </md-sidenav>
+    <md-content flex class="md-padding">
+        <div layout="column" layout-fill layout-align="center center">
+            <p>
+                The left sidenav will 'lock open' on a medium (>=960px wide) device.
+            </p>
+            <div>
+                <md-button ng-click="toggleLeft()"
+                           class="md-primary" hide-gt-md>
+                    Toggle left
+                </md-button>
+            </div>
+            <div>
+                <md-button ng-click="toggleRight()"
+                           class="md-primary">
+                    Toggle right
+                </md-button>
+            </div>
+        </div>
+        <div class="container">
+            <ul class="ch-grid">
+                <li ng-repeat="page in pages">
+                    <a href="{{page.link}}">
+                        <div class="ch-item">
+                            <span class="fa fa-fw {{page.icon}} ch-icon"></span>
+                            <div class="ch-info">
+                                <h3>{{page.name}}</h3>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
 
-    <div class="form-group">
-        <label for="name">Image Viewer</label>
-        <input type="text" placeholder="fileId" name="name" id="name" class="form-control" style="width: 50%;"
-               ng-model="fileId" required>
-    </div>
-    <img ng-src="/api/upload/{{fileId}}">
-</div>
+            <div class="form-group">
+                <label for="name">Image Viewer</label>
+                <input type="text" placeholder="fileId" name="name" id="name" class="form-control" style="width: 50%;"
+                       ng-model="fileId" required>
+            </div>
+            <img ng-src="/api/upload/{{fileId}}">
+        </div>
+    </md-content>
+</section>
 
-<footer class="footer">
-    <div class="container">
-        <p>
-            &copy; Andrew Koroluk |
-            <a href="https://github.com/Awk34">GitHub</a>
-        </p>
-    </div>
-</footer>
+<div ng-include="'components/footer/footer.html'"></div>

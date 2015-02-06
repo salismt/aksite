@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('AdminCtrl', function($scope) {
+    .controller('AdminCtrl', function($scope, $mdSidenav) {
         $scope.pages = [
             {
                 name: 'Users',
@@ -33,4 +33,19 @@ angular.module('aksiteApp')
                 link: 'admin/settings'
             }
         ];
+
+        $scope.toggleLeft = function() {
+            $mdSidenav('left').toggle()
+                .then(function(){
+                    $log.debug("toggle left is done");
+                });
+        };
+    })
+    .controller('LeftCtrl', function($scope, $timeout, $mdSidenav, $log) {
+        $scope.close = function() {
+            $mdSidenav('left').close()
+                .then(function(){
+                    $log.debug("close LEFT is done");
+                });
+        };
     });
