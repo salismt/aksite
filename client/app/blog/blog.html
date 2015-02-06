@@ -39,11 +39,4 @@
     <pagination ng-change="pageChanged()" items-per-page="pagesize" boundary-links="true" total-items="numItems" ng-model="page" class="center-block" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p>
-            &copy; Andrew Koroluk |
-            <a href="https://github.com/Awk34">GitHub</a>
-        </p>
-    </div>
-</footer>
+<div ng-include="'components/footer/footer.html'"></div>
