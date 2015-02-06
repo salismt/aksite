@@ -10,6 +10,31 @@
             </button>
         </div>
     </div>
+    <div class="row">
+        <md-content>
+            <md-list class="user-list">
+                <md-item ng-repeat="item in items">
+                    <md-item-content class="user-row">
+                        <div class="md-tile-left">
+                            <img ng-src="/api/upload/{{item.thumbnailId}}.jpg" alt="{{item.name}}" style="height: 50px;">
+                        </div>
+                        <div class="md-tile-content">
+                            <h3>{{item.name}}</h3>
+                            <h4>{{item.type}}</h4>
+                            <p>
+                                {{item.link}}
+                            </p>
+                        </div>
+                        <div class="md-tile-right">
+                            <md-button class="md-fab" ng-click="deleteItem(item)" aria-label="Delete Item">
+                                <span class="fa fa-trash-o fa-2x" style="color: red;"></span>
+                            </md-button>
+                        </div>
+                    </md-item-content>
+                </md-item>
+            </md-list>
+        </md-content>
+    </div>
 </div>
 
 <div ng-include="'components/footer/footer.html'"></div>
