@@ -8,19 +8,17 @@ angular.module('aksiteApp')
         $scope.register = function() {
             $scope.submitted = true;
 
-            if(form.$valid) {
-                Auth.createUser({
-                    name: $scope.user.name,
-                    email: $scope.user.email,
-                    password: $scope.user.password
+            Auth.createUser({
+                name: $scope.user.name,
+                email: $scope.user.email,
+                password: $scope.user.password
+            })
+                .then(function() {
+                    $location.path('/');
                 })
-                    .then(function() {
-                        $location.path('/');
-                    })
-                    .catch(function(err) {
-                        $scope.errors = err;
-                    });
-            }
+                .catch(function(err) {
+                    $scope.errors = err;
+                });
         };
 
         $scope.loginOauth = function(provider) {
