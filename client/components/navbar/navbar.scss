@@ -1,8 +1,9 @@
 .navbar {
-    border-bottom: $subtle-border;
+    border-bottom: none;
     background-color: $ak-base-color;
     color: white;
     padding: 10px 30px;
+    margin-bottom: 0;
 
     .container {
         .navbar-header {
