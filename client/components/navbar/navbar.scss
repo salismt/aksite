@@ -9,6 +9,9 @@
         .navbar-header {
             .logo-portrait {
                 margin: 0 20px;
+                img {
+                    height: 50px;
+                }
             }
             .navbar-toggle {
                 padding: 0;
