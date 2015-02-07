@@ -4,8 +4,8 @@ Andrew Koroluk
 ===================
 
 ##Building Locally
-1. Install Git
-	http://www.git-scm.com/downloads
+1. [Install Git](http://www.git-scm.com/downloads)
+
 2. Download the source files
     1. Download `.zip`
     2. HTTPS:  `git clone https://USERNAME@bitbucket.org/awk34/aksite.git`
@@ -13,10 +13,12 @@ Andrew Koroluk
 	
 	`$ ~ cd Downloads/aksite`
 	
-3. Install Node.js & NPM
-	http://nodejs.org/download/
+3. [Install Node.js & NPM](http://nodejs.org/download/)
+
 4. Install GraphicsMagick
+
 	The site depends upon the `gm` module, which depends upon GraphicsMagick being installed and added to the machine's path. Download it [here](http://www.graphicsmagick.org/).
+
 5. Install Bower globally
 
 	`npm install -g bower`
