@@ -12,7 +12,7 @@
                 <md-item ng-repeat="user in users">
                     <md-item-content class="user-row">
                         <div class="md-tile-left">
-                            <img ng-src="/api/upload/{{user.imageId}}.jpg" class="face img-circle" alt="{{user.name}}">
+                            <img ng-src="/api/upload/{{user.imageId}}.jpg" class="face img-circle" alt="{{user.name}}" style="width: 48px; margin: 16px; border: 1px solid #ddd;">
                         </div>
                         <div class="md-tile-content">
                             <h3>{{user.name}}</h3>
