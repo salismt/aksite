@@ -10,7 +10,7 @@
     <div ng-if="loadingProjects" class="spinner">
         <i class="fa fa-spinner fa-spin"></i>
     </div>
-    <alert ng-if="projects.length === 0" type="info">No Projects</alert>
+    <alert ng-if="!loadingProjects && projects.length === 0" type="info">No Projects</alert>
     <div ng-if="projects.length > 0" class="row">
         <ul class="project-list">
             <li ng-repeat="project in projects">
