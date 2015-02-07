@@ -23,4 +23,16 @@ angular.module('aksiteApp')
         $scope.deleteItem = function(item) {
             //TODO
         };
+    })
+    .directive('bgImg', function() {
+        return function(scope, element, attrs){
+            var url = attrs.bgImg;
+            element.css({
+                'background-image': 'url(' + url + ')',
+                'background-repeat': 'no-repeat',
+                'background-position-x': '50%',
+                'background-position-y': '50%',
+                'background-size': 'cover'
+            });
+        };
     });

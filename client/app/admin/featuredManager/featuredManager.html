@@ -16,7 +16,7 @@
                 <md-item ng-repeat="item in items">
                     <md-item-content class="user-row">
                         <div class="md-tile-left">
-                            <img ng-src="/api/upload/{{item.thumbnailId}}.jpg" alt="{{item.name}}" style="height: 50px;">
+                            <div bg-img="api/upload/{{item.thumbnailId}}.jpg" style="width: 48px; height: 48px; margin: 16px;"></div>
                         </div>
                         <div class="md-tile-content">
                             <h3>{{item.name}}</h3>
