@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('AdminCtrl', function($scope, $mdSidenav) {
+    .controller('AdminCtrl', function($scope, $mdSidenav, $timeout, $log) {
         $scope.pages = [
             {
                 name: 'Users',
@@ -29,6 +29,42 @@ angular.module('aksiteApp')
                 link: 'admin/files'
             }, {
                 name: 'Settings',
+                icon: 'fa-cog',
+                link: 'admin/settings'
+            }
+        ];
+
+        $scope.sections = [
+            {
+                title: 'Home',
+                icon: 'fa-home',
+                link: 'admin'
+            }, {
+                title: 'Users',
+                icon: 'fa-user',
+                link: 'admin/users'
+            }, {
+                title: 'Photos',
+                icon: 'fa-photo',
+                link: 'admin/photos'
+            }, {
+                title: 'Projects',
+                icon: 'fa-briefcase',
+                link: 'admin/projects'
+            }, {
+                title: 'Blog',
+                icon: 'fa-newspaper-o',
+                link: 'admin/blog'
+            }, {
+                title: 'Featured',
+                icon: 'fa-star-o',
+                link: 'admin/featured'
+            }, {
+                title: 'Files',
+                icon: 'fa-files-o',
+                link: 'admin/files'
+            }, {
+                title: 'Settings',
                 icon: 'fa-cog',
                 link: 'admin/settings'
             }
