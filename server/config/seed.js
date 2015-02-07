@@ -280,6 +280,7 @@ function createPhoto(photo) {
 
         // Thumbnail generation
         saveThumb(file)
+            .catch(function(err) { console.log(err); })
             .then(function(thumbnail) {
                 console.log(photo.name+' -> (thumb)'+thumbnail.thumbnailId);
                 photoModel.thumbnailId = thumbnail.thumbnailId;
