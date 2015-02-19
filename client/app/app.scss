@@ -2,10 +2,11 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 $fa-font-path: "/bower_components/font-awesome/fonts";
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,900|Roboto:500,700,900);
-@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
-@import 'font-awesome/scss/font-awesome';
+@import '../bower_components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+@import '../bower_components/font-awesome/scss/font-awesome';
 
-@import 'bourbon/dist/bourbon';
+@import '../bower_components/bourbon/dist/bourbon';
+@import '../bower_components/neat/app/assets/stylesheets/neat';
 
 // Component styles are injected through grunt
 // injector

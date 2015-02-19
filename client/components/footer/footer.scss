@@ -1,6 +1,6 @@
 .navbar {
     border-bottom: none;
-    background-color: $ak-base-color;
+    background-color: $primaryColor;
     color: white;
     padding: 10px 30px;
     margin-bottom: 0;
@@ -43,7 +43,7 @@
                         }
                     }
                     .md-button.md-default-theme:not([disabled]):hover, .md-button.md-default-theme:not([disabled]).focus {
-                        background-color: $ak-base-color-dark;
+                        background-color: $darkPrimaryColor;
                     }
                     &.active {
                         .md-button.md-default-theme:not([disabled]),
