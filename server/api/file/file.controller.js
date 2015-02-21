@@ -57,6 +57,14 @@ exports.show = function(req, res) {
     });
 };
 
+// Get the number of files
+exports.count = function(req, res) {
+    File.count({}, function(err, count) {
+        if(err) handleError(res, err);
+        else res.status(200).json(count);
+    });
+};
+
 // Creates a new file in the DB.
 exports.create = function(req, res) {
     var form = gridform({db: conn.db, mongo: mongoose.mongo});

@@ -39,16 +39,57 @@
             <!--</div>-->
         </div>
         <div class="container">
-            <h2 class="page-header">Admin Dashboard</h2>
+            <h2 class="dashboard-header">Admin Dashboard</h2>
 
-            <div class="form-group">
-                <label for="name">Image Viewer</label>
-                <input type="text" placeholder="fileId" name="name" id="name" class="form-control" style="width: 50%;"
-                       ng-model="fileId" required>
+            <div class="row dashboard-pie-row">
+                <div id="chart1" class="col-sm-3">
+                    <svg></svg>
+                </div>
+                <div id="chart2" class="col-sm-3">
+                    <svg></svg>
+                </div>
+                <div id="chart3" class="col-sm-3">
+                    <svg></svg>
+                </div>
+                <div id="chart4" class="col-sm-3">
+                    <svg></svg>
+                </div>
             </div>
-            <img ng-src="/api/upload/{{fileId}}">
+
+            <div class="analytics-container col-sm-6">
+                <section id="auth-button"></section>
+                <section id="view-selector"></section>
+                <section id="timeline"></section>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Collection</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in tableItems">
+                                <td ng-repeat="data in row">{{data}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </md-content>
 </section>
 
 <div ng-include="'components/footer/footer.html'"></div>
+
+<script>
+    (function(w,d,s,g,js,fjs){
+        g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(cb){this.q.push(cb)}};
+        js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];
+        js.src='https://apis.google.com/js/platform.js';
+        fjs.parentNode.insertBefore(js,fjs);js.onload=function(){g.load('analytics')};
+    }(window,document,'script'));
+</script>

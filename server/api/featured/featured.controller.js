@@ -33,6 +33,15 @@ exports.index = function(req, res) {
     });
 };
 
+// Get the number of featured items
+exports.count = function(req, res) {
+    FeaturedItem.count({}, function(err, count) {
+        if(err) handleError(res, err);
+        else res.status(200).json(count);
+    });
+};
+
+// Get the list of featured items
 exports.listItems = function(req, res) {
     FeaturedItem.find(function(err, items) {
         if(err) {

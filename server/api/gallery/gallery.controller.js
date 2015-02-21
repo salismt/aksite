@@ -40,6 +40,14 @@ exports.show = function(req, res) {
     });
 };
 
+// Get the number of galleries
+exports.count = function(req, res) {
+    Gallery.count({}, function(err, count) {
+        if(err) handleError(res, err);
+        else res.status(200).json(count);
+    });
+};
+
 // Creates a new gallery in the DB.
 exports.create = function(req, res) {
     var sanitized = sanitiseNewGallery(req.body, req.params);

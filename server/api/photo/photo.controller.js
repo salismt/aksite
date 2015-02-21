@@ -42,6 +42,14 @@ exports.show = function(req, res) {
     });
 };
 
+// Get the number of photos
+exports.count = function(req, res) {
+    Photo.count({}, function(err, count) {
+        if(err) handleError(res, err);
+        else res.status(200).json(count);
+    });
+};
+
 // Creates a new photo in the DB.
 exports.create = function(req, res) {
     Photo.create(req.body, function(err, photo) {

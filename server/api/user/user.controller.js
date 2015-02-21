@@ -63,6 +63,14 @@ exports.index = function(req, res) {
     });
 };
 
+// Get the number of users
+exports.count = function(req, res) {
+    User.count({}, function(err, count) {
+        if(err) handleError(res, err);
+        else res.status(200).json(count);
+    });
+};
+
 /**
  * Creates a new user
  */

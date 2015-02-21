@@ -76,6 +76,14 @@ exports.show = function(req, res) {
     });
 };
 
+// Get the number of posts
+exports.count = function(req, res) {
+    Post.count({}, function(err, count) {
+        if(err) handleError(res, err);
+        else res.status(200).json(count);
+    });
+};
+
 // Creates a new post in the DB.
 exports.create = function(req, res) {
     if(config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {

@@ -62,6 +62,14 @@ exports.show = function(req, res) {
     });
 };
 
+// Get the number of uploads
+exports.count = function(req, res) {
+    gridModel.count({}, function(err, count) {
+        if(err) handleError(res, err);
+        else res.status(200).json(count);
+    });
+};
+
 //
 exports.showSize = function(req, res) {
     if(!isValidObjectId(req.params.id)) {
