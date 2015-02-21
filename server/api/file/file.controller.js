@@ -22,6 +22,11 @@ conn.once('open', function(err) {
 
 // Get list of files
 exports.index = function(req, res) {
+    if(req.query.page && req.query.page < 1) return res.status(400).send('Invalid page');
+
+    var pageSize = (req.query.pagesize && req.query.pagesize <= MAX_PAGESIZE && req.query.pagesize > 0) ? req.query.pagesize : DEFAULT_PAGESIZE;
+    var page = parseInt(req.query.page) || 0;
+
     File.find()
         .limit(MAX_PAGESIZE)
         .sort('date')
