@@ -117,37 +117,6 @@ angular.module('aksiteApp')
                 });
         });
 
-        addChart(1);
-        addChart(2);
-        addChart(3);
-        addChart(4);
-
-        //Donut chart example
-        function addChart(chartNum) {
-            nv.addGraph(function () {
-                var chart = nv.models.pieChart()
-                        .x(function (d) {
-                            return d.label
-                        })
-                        .y(function (d) {
-                            return d.value
-                        })
-                        .showLabels(true)     //Display pie labels
-                        .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
-                        .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
-                        .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
-                        .donutRatio(0.35)     //Configure how big you want the donut hole size to be.
-                    ;
-
-                d3.select("#chart" + chartNum + " svg")
-                    .datum(exampleData)
-                    .transition().duration(350)
-                    .call(chart);
-
-                return chart;
-            });
-        }
-
         var exampleData = [
             {
                 "label": "One",
@@ -175,6 +144,46 @@ angular.module('aksiteApp')
                 "value": 5.1387322875705
             }
         ];
+
+        addChart(3, exampleData);
+        addChart(4, exampleData);
+
+        //Donut chart example
+        function addChart(chartNum, data) {
+            nv.addGraph(function () {
+                var chart = nv.models.pieChart()
+                        .x(function (d) {
+                            return d.label
+                        })
+                        .y(function (d) {
+                            return d.value
+                        })
+                        .showLabels(true)     //Display pie labels
+                        .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
+                        .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
+                        .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
+                        .donutRatio(0.35)     //Configure how big you want the donut hole size to be.
+                    ;
+
+                d3.select("#chart" + chartNum + " svg")
+                    .datum(data)
+                    .transition().duration(350)
+                    .call(chart);
+
+                return chart;
+            });
+        }
+
+        function convertGAPItoD3(rows) {
+            var data = [];
+            _.forEach(rows, function(item) {
+                data.push({
+                    label: item[0],
+                    value: item[1]
+                });
+            });
+            return data;
+        }
 
         gapi.analytics.ready(function () {
             var CLIENT_ID = '693903895035-1lk6sfgma8o270mk4icngumgnomuahob.apps.googleusercontent.com';
@@ -226,17 +235,37 @@ angular.module('aksiteApp')
 
             viewSelector.on('change', function (ids) {
 
+                var now = moment();
+
                 query({
                     'ids': ids,
                     'dimensions': 'ga:browser',
                     'metrics': 'ga:pageviews',
                     'sort': '-ga:pageviews',
-                    'max-results': 5
+                    'start-date': moment(now).subtract(1, 'month').format('YYYY-MM-DD'),
+                    'end-date': moment(now).format('YYYY-MM-DD')
                 }).then(function(results) {
-                    console.log(results);
+                    var browserData = convertGAPItoD3(results.rows);
+                    _.forEach(browserData, function(item) {
+                        if(item.label === 'Mozilla Compatible Agent') item.label = 'Mozilla';
+                    });
+                    addChart(1, browserData);
+                    //console.log(results);
                 });
 
-                console.log(ids);
+                query({
+                    'ids': ids,
+                    'dimensions': 'ga:operatingSystem',
+                    'metrics': 'ga:users',
+                    'sort': '-ga:users',
+                    'start-date': moment(now).subtract(1, 'month').format('YYYY-MM-DD'),
+                    'end-date': moment(now).format('YYYY-MM-DD')
+                }).then(function(results) {
+                    var browserData = convertGAPItoD3(results.rows);
+                    addChart(2, browserData);
+                    //console.log(results);
+                });
+
                 var newIds = {
                     query: {
                         ids: ids
