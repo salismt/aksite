@@ -10,19 +10,34 @@ var _ = require('lodash'),
     gm = require('gm'),
     auth = require('../../auth/auth.service');
 
+var MAX_PAGESIZE = 50;
+
 var gfs,
     conn = mongoose.createConnection(config.mongo.uri);
 conn.once('open', function(err) {
-    if(err) {
-        handleError(err);
-        return;
-    }
+    if(err) return handleError(err);
     gfs = Grid(conn.db);
     gridform.db = conn.db;
 });
 
 // Get list of files
 exports.index = function(req, res) {
+    File.find()
+        .limit(MAX_PAGESIZE)
+        .sort('date')
+        .skip((req.query.page-1) * pageSize || 0)//doesn't scale well, I'll worry about it later
+        .exec(function(err, posts) {
+            if(err) return handleError(res, err);
+            if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
+                _.remove(posts, 'hidden');
+            }
+            return res.status(200).json({
+                page: page,
+                pages: Math.ceil(count / pageSize),
+                items: posts,
+                numItems: count
+            });
+        });
     File.find(function(err, files) {
         if(err) {
             return handleError(res, err);
