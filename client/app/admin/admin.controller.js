@@ -150,6 +150,8 @@ angular.module('aksiteApp')
 
         //Donut chart example
         function addChart(chartNum, data) {
+            var chartDiv = document.querySelector("#chart" + chartNum);
+
             nv.addGraph(function () {
                 var chart = nv.models.pieChart()
                         .x(function (d) {
@@ -172,6 +174,8 @@ angular.module('aksiteApp')
 
                 return chart;
             });
+
+            classie.addClass(chartDiv, 'hide-preloader');
         }
 
         function convertGAPItoD3(rows) {
