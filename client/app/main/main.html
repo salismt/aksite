@@ -1,6 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<svg viewBox="0 0 600 100" ng-click="changeText()">
+<div class="styled-home-text">
+<svg viewBox="0 0 600 100" ng-click="changeText()" id="dashed-stroke-text" class="hidden">
     <!-- Symbol -->
     <symbol id="s-text">
         <text text-anchor="middle"
@@ -10,17 +11,28 @@
     </symbol>
 
     <!-- Duplicate symbols -->
-    <use xlink:href="#s-text" class="text"
-        ></use>
-    <use xlink:href="#s-text" class="text"
-        ></use>
-    <use xlink:href="#s-text" class="text"
-        ></use>
-    <use xlink:href="#s-text" class="text"
-        ></use>
-    <use xlink:href="#s-text" class="text"
-        ></use>
+    <use xlink:href="#s-text" class="dashed-stroke-text"></use>
+    <use xlink:href="#s-text" class="dashed-stroke-text"></use>
+    <use xlink:href="#s-text" class="dashed-stroke-text"></use>
+    <use xlink:href="#s-text" class="dashed-stroke-text"></use>
+    <use xlink:href="#s-text" class="dashed-stroke-text"></use>
 </svg>
+<svg viewBox="0 0 600 100" ng-click="changeText()" id="gradient-text" class="hidden">
+    <text text-anchor="middle"
+          x="50%"
+          y="50%"
+          dy=".35em"
+          class="text"
+          fill="url(#gr-simple)"
+        >
+        Andrew Koroluk
+    </text>
+    <linearGradient id="gr-simple" x1="0" y1="0" x2="100%" y2="100%">
+        <stop stop-color="hsl(50, 100%, 70%)" offset="10%"/>
+        <stop stop-color="hsl(320, 100%, 50%)" offset="90%"/>
+    </linearGradient>
+</svg>
+</div>
 
 <div class="container" style="display: none;">
     <header class="hero-unit" id="banner">

@@ -32,8 +32,28 @@ angular.module('aksiteApp')
             socket.unsyncUpdates('thing');
         });
 
+        var texts = ['dashed-stroke-text', 'gradient-text'],
+            usedTexts = [],
+
+        // Load first random text
+            currentText = _.sample(texts);
+        classie.removeClass( document.getElementById(currentText), 'hidden' );
+        usedTexts.push(_.remove( texts, _.partial(_.isEqual, currentText, _) ));
+
         $scope.changeText = function() {
-            console.log('change text');
+            // We've used all the styles; start over, using them all again
+            if(texts.length == 0) {
+                texts = usedTexts;
+                usedTexts = [];
+            }
+            // Hide the previously used text
+            classie.addClass( document.getElementById(currentText), 'hidden' );
+            // Get the new text ID
+            currentText = _.sample(texts);
+            // Move the new text ID to the usedTexts array, so that it's not used again until we run out of styles
+            usedTexts.push(_.remove( texts, _.partial(_.isEqual, currentText, _) ));
+            // Show the new text
+            classie.removeClass( document.getElementById(currentText), 'hidden' );
         };
 
         $scope.loadFeatured = function() {

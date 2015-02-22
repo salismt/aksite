@@ -89,6 +89,12 @@
     }
 }
 
+.styled-home-text {
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-size: 70px;
+}
+
 $colors: $accentColor, #F5A503, #E9F1DF, #56D9CD, $primaryColor;
 $max: length($colors);
 $dash: 70;
@@ -97,10 +103,7 @@ $dash-space: $dash * ($max - 1) + $dash-gap * $max;
 $time: 6s;
 $time-step: $time/$max;
 
-.text {
-    font-family: "Roboto", sans-serif;
-    font-weight: 900;
-    font-size: 70px;
+.dashed-stroke-text {
     fill: none;
     stroke-width: 3;
     stroke-linejoin: round;
