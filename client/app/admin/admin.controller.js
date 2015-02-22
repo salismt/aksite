@@ -117,39 +117,10 @@ angular.module('aksiteApp')
                 });
         });
 
-        var exampleData = [
-            {
-                "label": "One",
-                "value": 29.765957771107
-            }, {
-                "label": "Two",
-                "value": 0
-            }, {
-                "label": "Three",
-                "value": 32.807804682612
-            }, {
-                "label": "Four",
-                "value": 196.45946739256
-            }, {
-                "label": "Five",
-                "value": 0.19434030906893
-            }, {
-                "label": "Six",
-                "value": 98.079782601442
-            }, {
-                "label": "Seven",
-                "value": 13.925743130903
-            }, {
-                "label": "Eight",
-                "value": 5.1387322875705
-            }
-        ];
-
-        addChart(3, exampleData);
-        addChart(4, exampleData);
-
         //Donut chart example
-        function addChart(chartNum, data) {
+        function addChart(chartNum, data, options) {
+            options = options ? options : {};
+
             var chartDiv = document.querySelector("#chart" + chartNum);
 
             nv.addGraph(function () {
@@ -160,12 +131,15 @@ angular.module('aksiteApp')
                         .y(function (d) {
                             return d.value
                         })
-                        .showLabels(true)     //Display pie labels
-                        .labelThreshold(.05)  //Configure the minimum slice size for labels to show up
-                        .labelType("percent") //Configure what type of data to show in the label. Can be "key", "value" or "percent"
-                        .donut(true)          //Turn on Donut mode. Makes pie chart look tasty!
-                        .donutRatio(0.35)     //Configure how big you want the donut hole size to be.
                     ;
+
+                chart.showLegend(_.has(options, 'showLegend') ?  options.showLegend : false);
+                chart.showLabels(_.has(options, 'showLabels') ?  options.showLabels : true);
+                chart.labelThreshold(options.labelThreshold || .05);
+                chart.labelType(options.labelType || 'percent');   // key, value, percent
+
+                chart.donut(options.donut || false);
+                if(options.donut) chart.donutRatio(options.donutRatio || .35);
 
                 d3.select("#chart" + chartNum + " svg")
                     .datum(data)
@@ -239,22 +213,24 @@ angular.module('aksiteApp')
 
             viewSelector.on('change', function (ids) {
 
-                var now = moment();
+                var now = moment(),
+                    monthAgo = moment(now).subtract(1, 'month');
 
                 query({
                     'ids': ids,
                     'dimensions': 'ga:browser',
                     'metrics': 'ga:pageviews',
                     'sort': '-ga:pageviews',
-                    'start-date': moment(now).subtract(1, 'month').format('YYYY-MM-DD'),
-                    'end-date': moment(now).format('YYYY-MM-DD')
+                    'start-date': monthAgo.format('YYYY-MM-DD'),
+                    'end-date': now.format('YYYY-MM-DD')
                 }).then(function(results) {
                     var browserData = convertGAPItoD3(results.rows);
                     _.forEach(browserData, function(item) {
                         if(item.label === 'Mozilla Compatible Agent') item.label = 'Mozilla';
                     });
-                    addChart(1, browserData);
-                    //console.log(results);
+                    addChart(1, browserData, {
+                        showLegend: true
+                    });
                 });
 
                 query({
@@ -262,12 +238,44 @@ angular.module('aksiteApp')
                     'dimensions': 'ga:operatingSystem',
                     'metrics': 'ga:users',
                     'sort': '-ga:users',
-                    'start-date': moment(now).subtract(1, 'month').format('YYYY-MM-DD'),
-                    'end-date': moment(now).format('YYYY-MM-DD')
+                    'start-date': monthAgo.format('YYYY-MM-DD'),
+                    'end-date': now.format('YYYY-MM-DD')
                 }).then(function(results) {
-                    var browserData = convertGAPItoD3(results.rows);
-                    addChart(2, browserData);
-                    //console.log(results);
+                    addChart(2, convertGAPItoD3(results.rows), {
+                        showLegend: true
+                    });
+                });
+
+                query({
+                    'ids': ids,
+                    'dimensions': 'ga:country',
+                    'metrics': 'ga:users',
+                    'sort': '-ga:users',
+                    'start-date': monthAgo.format('YYYY-MM-DD'),
+                    'end-date': now.format('YYYY-MM-DD')
+                }).then(function(results) {
+                    addChart(3, convertGAPItoD3(results.rows), {
+                        showLegend: false,
+                        showLabels: true,
+                        labelThreshold: .01,
+                        labelType: 'key'
+                    });
+                });
+
+                query({
+                    'ids': ids,
+                    'dimensions': 'ga:userType',
+                    'metrics': 'ga:users',
+                    'sort': '-ga:users',
+                    'start-date': monthAgo.format('YYYY-MM-DD'),
+                    'end-date': now.format('YYYY-MM-DD')
+                }).then(function(results) {
+                    addChart(4, convertGAPItoD3(results.rows), {
+                        showLegend: true,
+                        showLabels: true,
+                        labelThreshold: .01,
+                        labelType: 'percent'
+                    });
                 });
 
                 var newIds = {
