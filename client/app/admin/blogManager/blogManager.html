@@ -1,5 +1,3 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
-
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
@@ -8,14 +6,14 @@
     </div>
     <div class="row">
         <div>
-            <a href="" ng-show="dirty" ng-click="saveChanges()" class="btn btn-primary btn-lg">
+            <md-button ng-show="dirty" ng-click="saveChanges()" class="md-button-lg">
                 <i class="fa fa-save"></i>
                 Save Changes
-            </a>
-            <a href="/admin/blog/post-editor" class="btn btn-primary btn-lg pull-right">
+            </md-button>
+            <md-button href="/admin/blog/post-editor" class="md-button-lg pull-right">
                 <i class="fa fa-plus"></i>
                 New Post
-            </a>
+            </md-button>
         </div>
     </div>
 
@@ -33,5 +31,3 @@
         </ul>
     </div>
 </div>
-
-<div ng-include="'components/footer/footer.html'"></div>

@@ -3,8 +3,8 @@
 angular.module('aksiteApp')
     .config(function($stateProvider) {
         $stateProvider
-            .state('fileManager', {
-                url: '/admin/files',
+            .state('admin.files', {
+                url: '/files',
                 templateUrl: 'app/admin/fileManager/fileManager.html',
                 controller: 'FilemanagerCtrl'
             });

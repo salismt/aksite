@@ -3,8 +3,8 @@
 angular.module('aksiteApp')
     .config(function($stateProvider) {
         $stateProvider
-            .state('featuredManager', {
-                url: '/admin/featured',
+            .state('admin.featured', {
+                url: '/featured',
                 templateUrl: 'app/admin/featuredManager/featuredManager.html',
                 controller: 'FeaturedmanagerCtrl'
             });

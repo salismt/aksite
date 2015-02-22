@@ -3,8 +3,8 @@
 angular.module('aksiteApp')
     .config(function($stateProvider) {
         $stateProvider
-            .state('projectManager', {
-                url: '/admin/projects',
+            .state('admin.projects', {
+                url: '/projects',
                 templateUrl: 'app/admin/projectManager/projectManager.html',
                 controller: 'ProjectmanagerCtrl'
             });

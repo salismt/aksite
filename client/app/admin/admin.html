@@ -13,14 +13,14 @@
             <!--</p>-->
             <ul class="sidenav-menu">
                 <li class="" ng-repeat="section in sections">
-                    <md-button ng-href="{{section.link}}">
+                    <md-button ui-sref="{{section.link}}">
                         <i class="fa fa-fw {{section.icon}}"></i> {{section.title}}
                     </md-button>
                 </li>
             </ul>
         </md-content>
     </md-sidenav>
-    <md-content flex class="md-padding">
+    <md-content flex class="md-padding" style="min-height: 500px;">
         <div layout="column" layout-fill layout-align="center center">
             <p>
                 <!--The left sidenav will 'lock open' on a medium (>=960px wide) device.-->
@@ -32,58 +32,13 @@
                 </md-button>
             </div>
             <!--<div>-->
-                <!--<md-button ng-click="toggleRight()"-->
-                           <!--class="md-primary">-->
-                    <!--Toggle right-->
-                <!--</md-button>-->
+            <!--<md-button ng-click="toggleRight()"-->
+            <!--class="md-primary">-->
+            <!--Toggle right-->
+            <!--</md-button>-->
             <!--</div>-->
         </div>
-        <div class="container">
-            <h2 class="dashboard-header">Admin Dashboard</h2>
-
-            <div class="row dashboard-pie-row">
-                <div id="chart1" class="col-sm-3 dashboard-donut">
-                    <span class="preloader"></span>
-                    <svg></svg>
-                </div>
-                <div id="chart2" class="col-sm-3 dashboard-donut">
-                    <span class="preloader"></span>
-                    <svg></svg>
-                </div>
-                <div id="chart3" class="col-sm-3 dashboard-donut">
-                    <span class="preloader"></span>
-                    <svg></svg>
-                </div>
-                <div id="chart4" class="col-sm-3 dashboard-donut">
-                    <span class="preloader"></span>
-                    <svg></svg>
-                </div>
-            </div>
-
-            <div class="analytics-container col-sm-6">
-                <section id="auth-button"></section>
-                <section id="view-selector" style="display: none;"></section>
-                <section id="timeline"></section>
-            </div>
-
-            <div class="col-sm-6">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Collection</th>
-                                <th>Count</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="row in tableItems">
-                                <td ng-repeat="data in row">{{data}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        <div ui-view=""></div>
     </md-content>
 </section>
 
