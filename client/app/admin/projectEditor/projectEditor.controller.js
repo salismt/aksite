@@ -30,6 +30,12 @@ angular.module('aksiteApp')
                 });
         }
 
+        $scope.cancel = function() {
+            if($scope.upload)
+                $scope.upload.abort();
+            $state.go('admin.projects');
+        };
+
         $scope.markedContent = function() {
             try {
                 return $sanitize(marked($scope.project.content || ''));
@@ -69,7 +75,7 @@ angular.module('aksiteApp')
                             $scope.progress = undefined;
                             console.log(status);
                             console.log(data);
-                            $state.go('projectManager');
+                            $state.go('admin.projects');
                         })
                         .error(function(response, status) {
                             $scope.progress = undefined;
@@ -103,7 +109,7 @@ angular.module('aksiteApp')
                             $scope.progress = undefined;
                             console.log(status);
                             console.log(data);
-                            $state.go('projectManager');
+                            $state.go('admin.projects');
                         })
                         .error(function(response, status) {
                             $scope.progress = undefined;
@@ -135,7 +141,7 @@ angular.module('aksiteApp')
                             $scope.progress = undefined;
                             console.log(status);
                             console.log(data);
-                            $state.go('projectManager');
+                            $state.go('admin.projects');
                         })
                         .error(function(response, status) {
                             $scope.progress = undefined;
