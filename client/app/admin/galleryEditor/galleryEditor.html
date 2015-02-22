@@ -3,12 +3,16 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
+            <a href="/admin/photos" class="text-muted" style="text-decoration: none;"><h2>< Gallery List</h2></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
             <h1>{{gallery.name}}</h1>
         </div>
         <span class="btn btn-lg btn-primary btn-file pull-right">
             <span class="fa fa-plus"></span> Add Photos
-            <input type="file" accept="images/*" id="file-input" name="myFiles[]"
-                   ng-file-select="onFileSelect($files)" multiple>
+            <input type="file" accept="images/*" id="file-input" name="myFiles[]" ng-file-select="onFileSelect($files)" multiple>
         </span>
     </div>
     <br/>
