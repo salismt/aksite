@@ -32,6 +32,10 @@ angular.module('aksiteApp')
             socket.unsyncUpdates('thing');
         });
 
+        $scope.changeText = function() {
+            console.log('change text');
+        };
+
         $scope.loadFeatured = function() {
             /* https://github.com/davidbau/seedrandom Copyright 2013 David Bau. */
             !function(a, b, c, d, e, f, g, h, i) {
