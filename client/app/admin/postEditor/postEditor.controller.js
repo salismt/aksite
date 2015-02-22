@@ -50,6 +50,12 @@ angular.module('aksiteApp')
             }
         };
 
+        $scope.cancel = function() {
+            if($scope.upload)
+                $scope.upload.abort();
+            $state.go('admin.blog');
+        };
+
         $scope.onFileSelect = function($files) {
             //$files: an array of files selected, each file has name, size, and type.
             var file = $files[0];
@@ -81,7 +87,7 @@ angular.module('aksiteApp')
                             $scope.progress = undefined;
                             console.log(status);
                             console.log(data);
-                            $state.go('blogManager');
+                            $state.go('admin.blog');
                         })
                         .error(function(response, status) {
                             $scope.progress = undefined;
@@ -109,7 +115,7 @@ angular.module('aksiteApp')
                             $scope.progress = undefined;
                             console.log(status);
                             console.log(data);
-                            $state.go('blogManager');
+                            $state.go('admin.blog');
                         })
                         .error(function(response, status) {
                             $scope.progress = undefined;
@@ -136,7 +142,7 @@ angular.module('aksiteApp')
                             $scope.progress = undefined;
                             console.log(status);
                             console.log(data);
-                            $state.go('blogManager');
+                            $state.go('admin.blog');
                         })
                         .error(function(response, status) {
                             $scope.progress = undefined;
