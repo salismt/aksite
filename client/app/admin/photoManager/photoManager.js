@@ -3,8 +3,8 @@
 angular.module('aksiteApp')
     .config(function($stateProvider) {
         $stateProvider
-            .state('photoManager', {
-                url: '/admin/photos',
+            .state('admin.photos', {
+                url: '/photos',
                 templateUrl: 'app/admin/photoManager/photoManager.html',
                 controller: 'PhotomanagerCtrl'
             });

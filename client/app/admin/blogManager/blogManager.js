@@ -3,8 +3,8 @@
 angular.module('aksiteApp')
     .config(function($stateProvider) {
         $stateProvider
-            .state('blogManager', {
-                url: '/admin/blog',
+            .state('admin.blog', {
+                url: '/blog',
                 templateUrl: 'app/admin/blogManager/blogManager.html',
                 controller: 'BlogmanagerCtrl'
             });

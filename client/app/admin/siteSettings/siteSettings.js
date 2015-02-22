@@ -3,8 +3,8 @@
 angular.module('aksiteApp')
     .config(function($stateProvider) {
         $stateProvider
-            .state('siteSettings', {
-                url: '/admin/settings',
+            .state('admin.settings', {
+                url: '/settings',
                 templateUrl: 'app/admin/siteSettings/siteSettings.html',
                 controller: 'SitesettingsCtrl'
             });
