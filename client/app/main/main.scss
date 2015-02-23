@@ -125,3 +125,46 @@ $time-step: $time/$max;
         stroke-dashoffset: -($dash + $dash-gap) * $max;
     }
 }
+
+.patterned-text {
+    fill: url(#p-spots);
+    stroke: #1D4259;
+    stroke-width: 2;
+    stroke-opacity: .5;
+}
+
+.g-spots circle {
+    @for $item from 1 through $max {
+        &:nth-child(#{$max}n + #{$item}){
+            fill: nth($colors, $item);
+        }
+    }
+}
+
+.text-copy-stroke {
+    fill: none;
+    stroke: white;
+    stroke-width: 10px;
+}
+
+.c-fill {
+    fill: url(#p-lines);
+    -webkit-transform-origin: 400px 150px;
+    -ms-transform-origin: 400px 150px;
+    transform-origin: 400px 150px;
+    -webkit-transform: rotate(32deg);
+    -ms-transform: rotate(32deg);
+    transform: rotate(32deg);
+}
+
+/* Fix for firefox */
+.r-fill--color {
+    fill: #1a8cff;
+}
+
+.text-mask {
+    fill: white;
+    stroke: white;
+    stroke-opacity: .2;
+    stroke-width: 5;
+}

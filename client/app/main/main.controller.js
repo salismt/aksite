@@ -32,7 +32,7 @@ angular.module('aksiteApp')
             socket.unsyncUpdates('thing');
         });
 
-        var texts = ['dashed-stroke-text', 'gradient-text'],
+        var texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', 'diag-striped-text'/*, 'image-text'*/],
             usedTexts = [],
 
         // Load first random text
