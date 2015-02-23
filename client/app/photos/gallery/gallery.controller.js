@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('GalleryCtrl', function($scope, $stateParams, $http, $q) {
+    .controller('GalleryCtrl', function($scope, $stateParams, $http) {
         $scope.galleryId = $stateParams.galleryId;
         $scope.errors = [];
         $scope.photos = [];
         $scope.pswpPhotos = [];
-        var galleryElement = document.querySelectorAll('.photo-gallery .grid-wrap .grid')[0];
+        var galleryElement = document.getElementById('masonry-container');
         var items = [];
 
         $http.get('/api/gallery/'+$stateParams.galleryId)
@@ -15,26 +15,14 @@ angular.module('aksiteApp')
 
                 if($scope.gallery.photos.length < 1) return $scope.noPhotos = true;
 
-                var photoPromises = [];
                 _.each(gallery.photos, function(photo) {
-                    photoPromises.push($http.get('api/photos/'+photo)
+                    $http.get('api/photos/'+photo)
                         .success(function(photo) {
                             photo.index = $scope.photos.length;
                             $scope.photos.push(photo);
                             $scope.pswpPhotos.push(photoToPSWP(photo, $scope.photos.length-1));
-                        }));
+                        });
                 });
-
-                $q.all(photoPromises)
-                    .then(function() {
-                        //TODO: If I take the timeout out, photo grid doesn't load properly
-                        setTimeout(function() {
-                            new Masonry(document.querySelector('.photo-gallery'), {
-                                itemSelector: 'li',
-                                columnWidth: document.querySelector('.photo-gallery .grid-sizer')
-                            });
-                        }, 30);
-                    });
             })
             .error(function(data, status) {
                 $scope.errors.push(status);
@@ -87,7 +75,7 @@ angular.module('aksiteApp')
                 item;
 
             _.forEach(thumbElements, function(el) {
-                if(el.nodeType !== 1 || el.localName !== 'li' || el.className === 'grid-sizer') {
+                if(el.nodeType !== 1 || el.localName !== 'div' || el.className === 'grid-sizer') {
                     return;
                 }
 

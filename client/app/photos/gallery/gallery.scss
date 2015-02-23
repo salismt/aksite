@@ -6,34 +6,13 @@
     font-size: 3em;
 }
 
-.photo-gallery ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 auto;
-
-    li {
-        width: 25%;
-        float: left;
-        cursor: pointer;
-        figure {
-            margin: 0;
-            padding: 1px;
-            img {
-                display: block;
-                width: 100%;
-                &:hover {
-                    -webkit-transition: opacity 0.3s;
-                    transition: opacity 0.3s;
-                    opacity: 0.7;
-                }
-            }
-        }
+.masonry-brick {
+    display: block;
+    width: 25%;
+    img {
+        width: 100%;
+        display: block;
     }
-}
-.grid-wrap {
-    max-width: 69em;
-    margin: 0 auto;
-    padding: 0 1em 1.875em;
 }
 
 .pswp {
@@ -44,19 +23,19 @@
 /* Media queries (reduce number of columns and change slideshow layout) */
 @media screen and (max-width: 60em) {
     /* responsive columns; see "Element sizing" on http://masonry.desandro.com/options.html */
-    .photo-gallery .grid li {
+    .masonry-brick {
         width: 33.3%;
     }
 }
 
 @media screen and (max-width: 35em) {
-    .photo-gallery .grid li {
+    .masonry-brick {
         width: 50%;
     }
 }
 
 @media screen and (max-width: 24em) {
-    .photo-gallery .grid li {
+    .masonry-brick {
         width: 100%;
     }
 }

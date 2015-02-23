@@ -11,23 +11,29 @@
     <h1 class="page-header">{{gallery.name}}</h1>
     <h5 class="text-center">{{gallery.info}}</h5>
 
-    <div class="photo-gallery">
-        <section class="grid-wrap">
-            <ul class="grid" id="grid-gallery">
-                <!-- for Masonry column width -->
-                <li class="grid-sizer"></li>
+    <!--<div class="photo-gallery">-->
+        <!--<section class="grid-wrap">-->
+            <!--<ul class="grid" id="grid-gallery">-->
+                <!--&lt;!&ndash; for Masonry column width &ndash;&gt;-->
+                <!--<li class="grid-sizer"></li>-->
 
-                <li ng-repeat="photo in photos" data-size="{{photo.width}}x{{photo.height}}" ng-click="onThumbnailsClick(photo.index)" id="/api/upload/{{::photo.fileId}}.jpg">
-                    <figure id="photo-{{photo._id}}">
-                        <img ng-src="api/upload/{{photo.thumbnailId}}.jpg" alt="img" style="display: block; width: 100%;"/>
-                        <!--<figcaption>-->
-                            <!--<h3>{{photo.name}}</h3>-->
-                            <!--<p>{{photo.info}}</p>-->
-                        <!--</figcaption>-->
-                    </figure>
-                </li>
-            </ul>
-        </section>
+                <!--<li ng-repeat="photo in photos" data-size="{{photo.width}}x{{photo.height}}" ng-click="onThumbnailsClick(photo.index)" id="/api/upload/{{::photo.fileId}}.jpg">-->
+                    <!--<figure id="photo-{{photo._id}}">-->
+                        <!--<img ng-src="api/upload/{{photo.thumbnailId}}.jpg" alt="img" style="display: block; width: 100%;"/>-->
+                        <!--&lt;!&ndash;<figcaption>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<h3>{{photo.name}}</h3>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p>{{photo.info}}</p>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</figcaption>&ndash;&gt;-->
+                    <!--</figure>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</section>-->
+    <!--</div>-->
+
+    <div masonry='{ "transitionDuration" : "0.4s" , "itemSelector" : ".tile"}' id="masonry-container">
+        <div masonry-tile ng-repeat="photo in photos" class="tile masonry-brick" data-size="{{photo.width}}x{{photo.height}}" id="/api/upload/{{::photo.fileId}}.jpg">
+            <img ng-src="/api/upload/{{::photo.fileId}}.jpg" alt="" ng-click="onThumbnailsClick(photo.index)">
+        </div>
     </div>
 
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
