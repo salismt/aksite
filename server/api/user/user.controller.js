@@ -159,7 +159,7 @@ exports.update = function(req, res) {
                                 userModel.width = size.width;
                                 userModel.height = size.height;
                                 this.resize(200, 200, "^");
-                                this.crop(200, 200, 0, 0)
+                                this.crop(200, 200, 0, 0);
                                 this.quality(90);
                                 this.stream(function(err, outStream) {
                                     if(err) return res.status(500).end();
