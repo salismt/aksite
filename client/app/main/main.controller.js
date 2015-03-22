@@ -2,11 +2,6 @@
 
 angular.module('aksiteApp')
     .controller('MainCtrl', function($scope, $http, socket) {
-        $http.get('/api/things').success(function(awesomeThings) {
-            $scope.awesomeThings = awesomeThings;
-            socket.syncUpdates('thing', $scope.awesomeThings);
-        });
-
         $scope.getFeatured = function() {
             $http.get('/api/featured')
                 .success(function(res) {
@@ -16,27 +11,10 @@ angular.module('aksiteApp')
         };
         $scope.getFeatured();
 
-        $scope.addThing = function() {
-            if($scope.newThing === '' || $scope.newThing === ' ') {
-                return;
-            }
-            $http.post('/api/things', {name: $scope.newThing});
-            $scope.newThing = '';
-        };
-
-        $scope.deleteThing = function(thing) {
-            $http.delete('/api/things/' + thing._id);
-        };
-
-        $scope.$on('$destroy', function() {
-            socket.unsyncUpdates('thing');
-        });
-
         var texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', 'diag-striped-text'],
             usedTexts = [],
-
-        // Load first random text
-            currentText = _.sample(texts);
+            currentText = _.sample(texts);  // Load first random text
+        
         classie.removeClass( document.getElementById(currentText), 'hidden' );
         usedTexts.push(_.remove( texts, _.partial(_.isEqual, currentText, _) ));
 
