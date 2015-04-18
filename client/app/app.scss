@@ -145,3 +145,12 @@ md-sidenav {
         width: 100%;
     }
 }
+
+md-list md-item {
+    a md-item-content .md-tile-content * {
+        color: $darkTextColor;
+    }
+    a:hover, a:focus {
+        text-decoration: none;
+    }
+}
