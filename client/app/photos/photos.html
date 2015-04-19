@@ -1,35 +1,21 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-    <header class="hero-unit" id="banner">
-        <div class="container">
-            <h1 class="page-header">Galleries</h1>
+    <div ng-if="galleries.length > 0" class="row masonry-cards-container">
+        <h1 class="page-header">Galleries</h1>
 
-            <div id="grid-gallery" class="grid-gallery">
-                <section class="grid-wrap">
-                    <ul class="grid">
-                        <!-- for Masonry column width -->
-                        <li class="grid-sizer"></li>
-                        <li ng-repeat="gallery in galleries">
-                            <figure>
-                                <a href="/photos/{{gallery._id}}">
-                                    <div ng-if="!gallery.featuredImgId" class="spinner">
-                                        <i class="fa fa-fw fa-spinner fa-spin"></i>
-                                    </div>
-                                    <img ng-src="api/upload/{{gallery.featuredImgId}}.jpg" alt="img"/>
-                                </a>
-                                <figcaption>
-                                    <h3>{{gallery.name}}</h3>
-
-                                    <p>{{gallery.info}}</p>
-                                </figcaption>
-                            </figure>
-                        </li>
-                    </ul>
-                </section>
-            </div>
+        <div masonry='{ "transitionDuration" : "0.4s" , "itemSelector" : ".tile", "gutter": 10, "containerStyle": null}' id="masonry-container" style="position: relative;">
+            <a masonry-tile class="tile masonry-brick" ng-repeat="gallery in galleries" ng-href="/photos/{{gallery._id}}">
+                <md-card>
+                    <img ng-src="api/upload/{{gallery.featuredImgId}}" class="md-card-image" alt="">
+                    <md-card-content>
+                        <h2 class="md-title">{{gallery.name}}</h2>
+                        <p>{{gallery.info}}</p>
+                    </md-card-content>
+                </md-card>
+            </a>
         </div>
-    </header>
+    </div>
 </div>
 
 <div ng-include="'components/footer/footer.html'"></div>
