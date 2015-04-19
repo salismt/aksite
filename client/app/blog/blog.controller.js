@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('BlogCtrl', function($scope, $http, $stateParams, $state, $location) {
+    .controller('BlogCtrl', function($scope, $http, $stateParams, $state) {
         $state.reloadOnSearch = false;
 
         $scope.loadingItems = true;
