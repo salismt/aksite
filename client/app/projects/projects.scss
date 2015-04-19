@@ -31,6 +31,19 @@ ul.project-list {
     }
 }
 
+$itemMdCardHeight: 350px;
+$itemMdCardWidth: 350px;
+.masonry-cards-container a {
+    color: $darkTextColor;
+    text-decoration: none;
+    min-height: $itemMdCardHeight;
+    width: $itemMdCardWidth;
+    md-card {
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
+}
+
 .spinner {
     font-size: 4em;
     text-align: center;
