@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('GalleryCtrl', function($scope, $stateParams, $http) {
+    .controller('GalleryCtrl', function($rootScope, $scope, $stateParams, $http) {
         $scope.galleryId = $stateParams.galleryId;
         $scope.errors = [];
         $scope.photos = [];
@@ -12,6 +12,7 @@ angular.module('aksiteApp')
         $http.get('/api/gallery/'+$stateParams.galleryId)
             .success(function(gallery) {
                 $scope.gallery = gallery;
+                $rootScope.title += ' | ' + gallery.name;
 
                 if($scope.gallery.photos.length < 1) return $scope.noPhotos = true;
 

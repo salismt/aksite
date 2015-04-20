@@ -7,6 +7,9 @@ angular.module('aksiteApp')
                 abstract: true,
                 url: '/admin',
                 templateUrl: 'app/admin/admin.html',
-                controller: 'AdminCtrl'
+                controller: 'AdminCtrl',
+                onEnter: function($rootScope) {
+                    $rootScope.title = $rootScope.titleRoot + ' | Admin';
+                }
             });
     });

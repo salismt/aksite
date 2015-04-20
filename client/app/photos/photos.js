@@ -6,7 +6,10 @@ angular.module('aksiteApp')
             .state('photos', {
                 url: '/photos',
                 templateUrl: 'app/photos/photos.html',
-                controller: 'PhotosCtrl'
+                controller: 'PhotosCtrl',
+                onEnter: function($rootScope) {
+                    $rootScope.title = $rootScope.titleRoot + ' | Photos';
+                }
             })
             .state('photos.gallery', {
                 url: '/:galleryId',

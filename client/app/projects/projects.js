@@ -6,7 +6,10 @@ angular.module('aksiteApp')
             .state('projects', {
                 url: '/projects',
                 templateUrl: 'app/projects/projects.html',
-                controller: 'ProjectsCtrl'
+                controller: 'ProjectsCtrl',
+                onEnter: function($rootScope) {
+                    $rootScope.title = $rootScope.titleRoot + ' | Projects';
+                }
             })
             .state('projects.project', {
                 url: '/:projectId',

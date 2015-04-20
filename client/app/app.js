@@ -49,12 +49,16 @@ angular.module('aksiteApp', [
     .run(function($rootScope, $location, Auth) {
         // Redirect to login if route requires auth and you're not logged in
         $rootScope.$on('$stateChangeStart', function(event, next) {
+            $rootScope.title = 'Andrew Koroluk';
             Auth.isLoggedInAsync(function(loggedIn) {
                 if(next.authenticate && !loggedIn) {
                     $location.path('/login');
                 }
             });
         });
+
+        $rootScope.titleRoot = 'AK';
+        $rootScope.title = 'Andrew Koroluk';
     });
 
 var myRenderer = new marked.Renderer();

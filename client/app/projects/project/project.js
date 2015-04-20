@@ -6,6 +6,9 @@ angular.module('aksiteApp')
             .state('project', {
                 url: '/projects/:projectId',
                 templateUrl: 'app/projects/project/project.html',
-                controller: 'ProjectCtrl'
+                controller: 'ProjectCtrl',
+                onEnter: function($rootScope) {
+                    $rootScope.title = $rootScope.titleRoot + ' | Projects';
+                }
             });
     });
