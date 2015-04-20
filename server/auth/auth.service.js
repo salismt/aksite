@@ -84,6 +84,20 @@ function appendUser() {
 }
 
 /**
+ * Takes the token cookie and adds the header
+ * for it on the request
+ */
+function addAuthHeaderFromCookie() {
+    return compose()
+        .use(function(req, res, next) {
+            if(req.cookies.token) {
+                req.headers.authorization = 'Bearer ' + _.trim(req.cookies.token, '\"');
+            }
+            return next();
+        });
+}
+
+/**
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
@@ -103,5 +117,6 @@ function setTokenCookie(req, res) {
 exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
 exports.appendUser = appendUser;
+exports.addAuthHeaderFromCookie = addAuthHeaderFromCookie;
 exports.signToken = signToken;
 exports.setTokenCookie = setTokenCookie;

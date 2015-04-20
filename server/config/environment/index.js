@@ -59,7 +59,17 @@ var all = {
         callbackURL: process.env.DOMAIN || '' + '/auth/google/callback'
     },
 
-    uploadDir: '/uploads/'
+    linkedIn: {
+        clientID: process.env.LINKEDIN_ID || 'id',
+        clientSecret: process.env.LINKEDIN_SECRET || 'secret',
+        callbackURL: process.env.DOMAIN || '' + '/auth/linkedin/callback'
+    },
+
+    gitHub: {
+        clientID: process.env.GITHUB_ID || 'id',
+        clientSecret: process.env.GITHUB_SECRET || 'secret',
+        callbackURL: process.env.DOMAIN || '' + '/auth/github/callback'
+    }
 };
 
 // Export the config object based on the NODE_ENV

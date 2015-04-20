@@ -18,6 +18,12 @@ module.exports = {
     GOOGLE_ID: 'app-id',
     GOOGLE_SECRET: 'secret',
 
+    LINKEDIN_ID: 'app-id',
+    LINKEDIN_SECRET: 'secret',
+
+    GITHUB_ID: 'app-id',
+    GITHUB_SECRET: 'secret',
+
     // Control debug level for modules using visionmedia/debug
     DEBUG: ''
 };
