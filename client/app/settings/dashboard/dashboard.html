@@ -1,42 +1,36 @@
-<div class="container-fluid">
-    <!--<h2 class="dashboard-header">Dashboard</h2>-->
-
-    <img ng-src="/api/upload/{{currentUser.imageId}}.jpg" alt="Current User Image" class="settings-profile-img" />
-
-    <div class="row">
-        <div class="col-sm-12">
-            <h2>Change Password</h2>
-        </div>
-        <div class="col-sm-12">
-            <form class="form" name="form" ng-submit="changePassword(form)" novalidate>
-
-                <div class="form-group">
-                    <label>Current Password</label>
-
-                    <input type="password" name="password" class="form-control" ng-model="user.oldPassword" mongoose-error/>
-
-                    <p class="help-block" ng-show="form.password.$error.mongoose">
-                        {{ errors.other }}
-                    </p>
+<div layout="column" flex layout-fill style="position: absolute;" id="">
+    <md-toolbar class="md-theme-light">
+        <h2 class="md-toolbar-tools">
+            <span>Overview</span>
+        </h2>
+    </md-toolbar>
+    <md-content style="padding: 10px;">
+        <img ng-src="/api/upload/{{currentUser.imageId}}.jpg" alt="Current User Image" class="settings-profile-img" />
+    </md-content>
+    <md-toolbar class="md-theme-light">
+        <h2 class="md-toolbar-tools">
+            <span>Change Password</span>
+        </h2>
+    </md-toolbar>
+    <md-content class="md-padding">
+        <form name="userForm" ng-submit="changePassword(userForm)">
+            <md-input-container flex>
+                <label>Old Password</label>
+                <input ng-model="user.oldPassword" name="oldPassword" type="password">
+                <div ng-messages="userForm.oldPassword.$error">
+                    <div ng-message="wrongPassword">Incorrect password</div>
                 </div>
+            </md-input-container>
 
-                <div class="form-group">
-                    <label>New Password</label>
-
-                    <input type="password" name="newPassword" class="form-control" ng-model="user.newPassword"
-                           ng-minlength="3"
-                           required/>
-
-                    <p class="help-block"
-                       ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && (form.newPassword.$dirty || submitted)">
-                        Password must be at least 3 characters.
-                    </p>
+            <md-input-container flex>
+                <label>New Password</label>
+                <input ng-model="user.newPassword" name="newPassword" type="password" minlength="3">
+                <div ng-messages="userForm.newPassword.$error">
+                    <div ng-message="minlength">Your password has to be at least 3 characters long.</div>
                 </div>
+            </md-input-container>
 
-                <p class="help-block"> {{ message }} </p>
-
-                <button class="btn btn-lg btn-primary" type="submit">Save changes</button>
-            </form>
-        </div>
-    </div>
+            <md-button class="md-primary" type="submit">Save changes</md-button>
+        </form>
+    </md-content>
 </div>

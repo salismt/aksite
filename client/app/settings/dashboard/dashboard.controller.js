@@ -1,19 +1,26 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('SettingsDashboardCtrl', function($scope, Auth) {
+    .controller('SettingsDashboardCtrl', function($scope, Auth, $mdToast) {
         $scope.changePassword = function(form) {
             $scope.submitted = true;
             if(form.$valid) {
                 Auth.changePassword($scope.user.oldPassword, $scope.user.newPassword)
                     .then(function() {
-                        $scope.message = 'Password successfully changed.';
+                        $scope.showSimpleToast('Password Updated');
                     })
                     .catch(function() {
-                        form.password.$setValidity('mongoose', false);
-                        $scope.errors.other = 'Incorrect password';
-                        $scope.message = '';
+                        $scope.userForm.oldPassword.$setValidity('wrongPassword', false);
                     });
             }
+        };
+
+        $scope.showSimpleToast = function(text) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .content(text)
+                    .position('bottom right')
+                    .hideDelay(3000)
+            );
         };
     });

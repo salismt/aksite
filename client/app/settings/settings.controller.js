@@ -3,7 +3,10 @@
 angular.module('aksiteApp')
     .controller('SettingsCtrl', function($scope, $mdSidenav, Auth) {
         $scope.currentUser = Auth.getCurrentUser();
-        
+        $scope.heightStyle = {
+            height: (window.innerHeight - 70 - 66)
+        };
+
         $scope.sections = [
             {
                 title: 'Dashboard',
