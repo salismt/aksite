@@ -4,7 +4,7 @@ angular.module('aksiteApp')
     .config(function($stateProvider) {
         $stateProvider
             .state('settings.profile', {
-                url: '',
+                url: '/profile',
                 templateUrl: 'app/settings/profile/profile.html',
                 controller: 'ProfileSettingsCtrl'
             });
