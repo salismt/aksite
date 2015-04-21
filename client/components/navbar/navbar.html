@@ -23,7 +23,7 @@
                     <md-button href="/login" aria-label="Login">Login</md-button>
                 </li>
                 <li ng-show="isLoggedIn()">
-                    <p class="navbar-text">Hello {{ getCurrentUser().name }}</p>
+                    <span class="user-image" ng-style="{'background-image':'url(/api/upload/{{getCurrentUser().imageId}}.jpg)'}"></span>
                 </li>
                 <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}">
                     <md-button href="/settings" aria-label="Settings"><i class="fa fa-cog"></i></md-button>
