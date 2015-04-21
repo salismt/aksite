@@ -15,9 +15,7 @@ exports.setup = function(User, config) {
             if(req.user) {
                 User.findById(req.user._id, function(err, user) {
                     if(user) {
-                        if(!_.includes(user.providers, 'facebook')) {
-                            user.providers.push('facebook');
-                        }
+                        user.providers.facebook = true;
                         user.facebook = profile._json;
                         user.save(function(err) {
                             if(err) done(err);
@@ -33,7 +31,7 @@ exports.setup = function(User, config) {
                     email: profile.emails[0].value,
                     role: 'user',
                     provider: 'facebook',
-                    providers: ['facebook'],
+                    providers: { facebook: true },
                     facebook: profile._json
                 });
                 user.save(function(err) {

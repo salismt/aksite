@@ -15,9 +15,7 @@ exports.setup = function(User, config) {
             if(req.user) {
                 User.findById(req.user._id, function(err, user) {
                     if(user) {
-                        if(!_.includes(user.providers, 'twitter')) {
-                            user.providers.push('twitter');
-                        }
+                        user.providers.twitter = true;
                         user.twitter = profile._json;
                         user.save(function(err) {
                             if(err) done(err);
@@ -33,7 +31,7 @@ exports.setup = function(User, config) {
                     email: profile.emails[0].value,
                     role: 'user',
                     provider: 'twitter',
-                    providers: ['twitter'],
+                    providers: { twitter: true },
                     twitter: profile._json
                 });
                 user.save(function(err) {

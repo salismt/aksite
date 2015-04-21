@@ -16,9 +16,7 @@ exports.setup = function(User, config) {
             if(req.user) {
                 User.findById(req.user._id, function(err, user) {
                     if(user) {
-                        if(!_.includes(user.providers, 'linkedin')) {
-                            user.providers.push('linkedin');
-                        }
+                        user.providers.linkedin = true;
                         user.linkedIn = profile._json;
                         user.save(function(err) {
                             if(err) done(err);
@@ -34,7 +32,7 @@ exports.setup = function(User, config) {
                     email: profile.emails[0].value,
                     role: 'user',
                     provider: 'linkedin',
-                    providers: ['linkedin'],
+                    providers: { linkedin: true },
                     linkedIn: profile._json
                 });
                 user.save(function(err) {

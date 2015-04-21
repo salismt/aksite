@@ -77,6 +77,7 @@ exports.count = function(req, res) {
 exports.create = function(req, res, next) {
     var newUser = new User(req.body);
     newUser.provider = 'local';
+    newUser.providers.local = true;
     newUser.role = 'user';
     var userImageWritestream = gfs.createWriteStream([]);
     userImageWritestream.on('close', function(userImgFile) {

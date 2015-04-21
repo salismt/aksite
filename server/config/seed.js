@@ -79,6 +79,7 @@ conn.once('open', function(err) {
         userImageWritestream.on('close', function(userImgFile) {
             User.create({
                 provider: 'local',
+                providers: { local: true },
                 name: 'Test User',
                 email: 'test@test.com',
                 password: 'test',
@@ -86,6 +87,7 @@ conn.once('open', function(err) {
                 smallImageId: userImgFile._id
             }, {
                 provider: 'local',
+                providers: { local: true },
                 role: 'admin',
                 name: 'Admin',
                 email: 'admin@admin.com',

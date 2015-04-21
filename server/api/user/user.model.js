@@ -16,7 +16,14 @@ var UserSchema = new Schema({
     smallImageId: Schema.ObjectId,
     hashedPassword: String,
     provider: String,
-    providers: [String],
+    providers: {type: Object, default: {
+        local: false,
+        facebook: false,
+        twitter: false,
+        google: false,
+        linkedIn: false,
+        github: false
+    }},
     salt: String,
     facebook: {},
     twitter: {},
