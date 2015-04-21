@@ -12,7 +12,6 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 // injector
 @import '_variables.scss';
 @import 'account/login/login.scss';
-@import 'account/settings/settings.scss';
 @import 'account/signup/signup.scss';
 @import 'admin/admin.scss';
 @import 'admin/blogManager/blogManager.scss';
@@ -35,6 +34,9 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import 'projects/project/project.scss';
 @import 'projects/projects.scss';
 @import 'resume/resume.scss';
+@import 'settings/dashboard/dashboard.scss';
+@import 'settings/profile/profile.scss';
+@import 'settings/settings.scss';
 @import 'footer/footer.scss';
 @import 'navbar/navbar.scss';
 // endinjector

@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('SettingsCtrl', function($scope, User, Auth) {
-        $scope.errors = {};
-
+    .controller('SettingsDashboardCtrl', function($scope, Auth) {
         $scope.changePassword = function(form) {
             $scope.submitted = true;
             if(form.$valid) {

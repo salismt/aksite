@@ -19,13 +19,5 @@ angular.module('aksiteApp')
                     $rootScope.title = $rootScope.titleRoot + ' | Signup';
                 }
             })
-            .state('settings', {
-                url: '/settings',
-                templateUrl: 'app/account/settings/settings.html',
-                controller: 'SettingsCtrl',
-                authenticate: true,
-                onEnter: function($rootScope) {
-                    $rootScope.title = $rootScope.titleRoot + ' | Settings';
-                }
-            });
+        ;
     });
