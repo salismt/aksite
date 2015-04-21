@@ -1,9 +1,11 @@
 <div class="container-fluid">
     <!--<h2 class="dashboard-header">Dashboard</h2>-->
 
+    <img ng-src="/api/upload/{{currentUser.imageId}}.jpg" alt="Current User Image" class="settings-profile-img" />
+
     <div class="row">
         <div class="col-sm-12">
-            <h3>Change Password</h3>
+            <h2>Change Password</h2>
         </div>
         <div class="col-sm-12">
             <form class="form" name="form" ng-submit="changePassword(form)" novalidate>

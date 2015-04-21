@@ -18,6 +18,10 @@ var all = {
     // Root path of server
     root: path.normalize(__dirname + '/../../..'),
 
+    client: '/client',
+
+    server: '/server',
+
     // Server port
     port: process.env.PORT || 9050,
 

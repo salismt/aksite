@@ -13,6 +13,8 @@ module.exports = {
     process.env.PORT ||
     80,
 
+    client: '/public',
+
     // MongoDB connection options
     mongo: {
         uri: process.env.MONGOLAB_URI ||

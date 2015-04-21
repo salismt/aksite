@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('SettingsCtrl', function($scope, $mdSidenav) {
+    .controller('SettingsCtrl', function($scope, $mdSidenav, Auth) {
+        $scope.currentUser = Auth.getCurrentUser();
+        
         $scope.sections = [
             {
                 title: 'Dashboard',
