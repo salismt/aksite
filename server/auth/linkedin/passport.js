@@ -10,7 +10,7 @@ exports.setup = function(User, config) {
             consumerSecret: config.linkedIn.clientSecret,
             callbackURL: config.linkedIn.callbackURL,
             passReqToCallback: true,
-            profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline', 'picture-url', 'location', 'industry', 'num-connections', 'summary', 'positions', 'public-profile-url', 'site-standard-profile-request', 'api-standard-profile-request']
+            profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline', 'picture-url', 'picture-urls::(original)', 'location', 'industry', 'num-connections', 'summary', 'positions', 'public-profile-url', 'site-standard-profile-request', 'api-standard-profile-request']
         },
         function(req, accessToken, refreshToken, profile, done) {
             if(req.user) {
