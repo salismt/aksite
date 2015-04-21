@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require("lodash");
+var _ = require('lodash');
 var passport = require('passport');
 var LinkedInStrategy = require('passport-linkedin').Strategy;
 
