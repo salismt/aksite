@@ -13,7 +13,7 @@ router
         session: false
     }))
 
-    .get('/callback', passport.authenticate('facebook', {
+    .get('/callback', auth.addAuthHeaderFromCookie(), auth.appendUser(), passport.authenticate('facebook', {
         failureRedirect: '/signup',
         session: false
     }), auth.setTokenCookie);
