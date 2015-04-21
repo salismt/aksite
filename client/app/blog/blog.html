@@ -8,7 +8,7 @@
             <a ng-if="::post.imageId" ng-href="/blog/post/{{::post._id}}" class="block-image" ng-style="{'background-image':'url(/api/upload/{{::post.imageId}})'}"></a>
 
             <a ng-href="/blog/post/{{::post._id}}">
-                <h2 class="block-header">{{post.title}}</h2>
+                <h2 class="block-header">{{post.title}}<small ng-show="post.hidden">Hidden</small></h2>
             </a>
 
             <a ng-href="/blog/post/{{::post._id}}">
