@@ -11,7 +11,7 @@ angular.module('aksiteApp')
         };
         $scope.getFeatured();
 
-        var texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', 'diag-striped-text'],
+        var texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', 'diag-striped-text', 'bg-img-text'],
             usedTexts = [],
             currentText = _.sample(texts);  // Load first random text
         

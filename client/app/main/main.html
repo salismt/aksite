@@ -2,6 +2,21 @@
 
 <div class="container">
     <div class="styled-home-text">
+        <svg viewBox="0 0 600 100" ng-click="changeText()" id="bg-img-text" class="hidden">
+            <symbol id="s-text">
+                <text text-anchor="middle" x="50%" y="50%" dy=".35em" class="text">
+                    Andrew Koroluk
+                </text>
+            </symbol>
+
+            <mask id="masked-text" maskunits="userSpaceOnUse" maskcontentunits="userSpaceOnUse">
+                <use xlink:href="#s-text" class="text-mask"></use>
+            </mask>
+
+            <g mask="url(#masked-text)">
+                <image xlink:href="../assets/images/low_poly_texture.jpg" width="1500" height="667" x="-50%" y="-400%"></image>
+            </g>
+        </svg>
         <svg viewBox="0 0 600 100" ng-click="changeText()" id="dashed-stroke-text" class="hidden">
             <!-- Symbol -->
             <symbol id="s-text">
