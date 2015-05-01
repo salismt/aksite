@@ -263,7 +263,7 @@ conn.once('open', function(err) {
                 fs.createReadStream('data/proj_0_thumb.jpg').pipe(thumbWritestream);
             });
         });
-        fs.createReadStream('client/assets/images/portrait_2014.jpg').pipe(userImageWritestream);
+        fs.createReadStream('client/assets/images/default_user.jpg').pipe(userImageWritestream);
     });
 });
 
