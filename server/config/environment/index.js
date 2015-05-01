@@ -48,31 +48,31 @@ var all = {
     facebook: {
         clientID: process.env.FACEBOOK_ID || 'id',
         clientSecret: process.env.FACEBOOK_SECRET || 'secret',
-        callbackURL: process.env.DOMAIN || '' + '/auth/facebook/callback'
+        callbackURL: (process.env.DOMAIN || '') + '/auth/facebook/callback'
     },
 
     twitter: {
         clientID: process.env.TWITTER_ID || 'id',
         clientSecret: process.env.TWITTER_SECRET || 'secret',
-        callbackURL: process.env.DOMAIN || '' + '/auth/twitter/callback'
+        callbackURL: (process.env.DOMAIN || '') + '/auth/twitter/callback'
     },
 
     google: {
         clientID: process.env.GOOGLE_ID || 'id',
         clientSecret: process.env.GOOGLE_SECRET || 'secret',
-        callbackURL: process.env.DOMAIN || '' + '/auth/google/callback'
+        callbackURL: (process.env.DOMAIN || '') + '/auth/google/callback'
     },
 
     linkedIn: {
         clientID: process.env.LINKEDIN_ID || 'id',
         clientSecret: process.env.LINKEDIN_SECRET || 'secret',
-        callbackURL: process.env.DOMAIN || '' + '/auth/linkedin/callback'
+        callbackURL: (process.env.DOMAIN || '') + '/auth/linkedin/callback'
     },
 
     gitHub: {
         clientID: process.env.GITHUB_ID || 'id',
         clientSecret: process.env.GITHUB_SECRET || 'secret',
-        callbackURL: process.env.DOMAIN || '' + '/auth/github/callback'
+        callbackURL: (process.env.DOMAIN || '') + '/auth/github/callback'
     }
 };
 
