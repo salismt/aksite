@@ -246,6 +246,8 @@ exports.changePassword = function(req, res, next) {
     var oldPass = String(req.body.oldPassword);
     var newPass = String(req.body.newPassword);
 
+    if(!req.user || req.user._id != userId) return res.status(401).end();
+
     User.findById(userId, function(err, user) {
         if(user.authenticate(oldPass)) {
             user.password = newPass;
