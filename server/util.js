@@ -6,7 +6,7 @@
 
 var _ = require('lodash'),
     q = require('q'),
-    //request = require('request'),
+    request = require('request'),
     //path = require('path'),
     config = require('./config/environment'),
     mongoose = require('mongoose'),
@@ -65,6 +65,23 @@ exports.createThumbnail = function(id, options) {
                 }
             });
         });
+
+    return deferred.promise;
+};
+
+/**
+ * Makes a request for a file from a URL, and stores it in GridFS
+ * @param {string} url
+ */
+exports.saveFileFromUrl = function(url) {
+    var deferred = q.defer();
+
+    var writestream = gfs.createWriteStream({});
+    writestream.on('error', deferred.reject);
+    writestream.on('close', function(file) {
+        deferred.resolve(file);
+    });
+    request(url).pipe(writestream);
 
     return deferred.promise;
 };
