@@ -220,10 +220,6 @@ exports.show = function(req, res, next) {
         if(req.user && config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf('admin')) {
             delete user.hashedPassword;
             delete user.salt;
-            delete user.facebook;
-            delete user.twitter;
-            delete user.google;
-            delete user.github;
             return res.json(user);
         } else {
             return res.json(user.profile);
