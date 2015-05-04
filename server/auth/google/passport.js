@@ -62,27 +62,24 @@ exports.setup = function(User, config) {
                             if(profilePic.substring(profilePic.length-6, profilePic.length) === '?sz=50')
                                 profilePic = profilePic.substring(0, profilePic.length-6);
 
-                            var writestream = gfs.createWriteStream({});
-                            writestream.on('close', function(file) {
-                                newUser.imageId = file._id;
+                            util.saveFileFromUrl(profilePic)
+                                .catch(done)
+                                .then(function(file) {
+                                    console.log(file);
+                                    newUser.imageId = file._id;
 
-                                util.createThumbnail(file._id)
-                                    .catch(function(err) {
-                                        done(err);
-                                    })
-                                    .then(function(thumbnail) {
-                                        console.log(thumbnail);
+                                    util.createThumbnail(file._id)
+                                        .catch(done)
+                                        .then(function(thumbnail) {
+                                            console.log(thumbnail);
+                                            newUser.smallImageId = thumbnail.id;
 
-                                        newUser.smallImageId = thumbnail.id;
-
-                                        newUser.save(function(err) {
-                                            if(err) return done(err);
-                                            return done(err, newUser);
+                                            newUser.save(function(err) {
+                                                if(err) return done(err);
+                                                return done(err, newUser);
+                                            });
                                         });
-                                    });
-                            });
-
-                            request(profilePic).pipe(writestream);
+                                });
                         }
                     });
             }
