@@ -47,10 +47,16 @@ exports.createThumbnail = function(id, options) {
     stream.on('error', deferred.reject);
     gm(stream, id)
         .size({bufferStream: true}, function(err, size) {
-            thumbnail.width = size.width;
-            thumbnail.height = size.height;
-            this.resize(options.height, options.width, "^");
-            this.crop(options.height, options.width, 0, 0);
+            thumbnail.width = options.width;
+            thumbnail.height = options.height;
+            thumbnail.originalWidth = size.width;
+            thumbnail.originalHeight = size.height;
+            if(options.width === null) {
+                this.resize(options.width, options.height);
+            } else {
+                this.resize(options.width, options.height, "^");
+                this.crop(options.width, options.height, 0, 0);
+            }
             this.quality(options.quality);
             this.stream(function(err, outStream) {
                 if(err) return deferred.reject(err);
