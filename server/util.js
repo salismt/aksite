@@ -7,6 +7,7 @@
 var _ = require('lodash'),
     q = require('q'),
     request = require('request'),
+    fs = require('fs'),
     //path = require('path'),
     config = require('./config/environment'),
     mongoose = require('mongoose'),
@@ -84,4 +85,39 @@ exports.saveFileFromUrl = function(url) {
     request(url).pipe(writestream);
 
     return deferred.promise;
+};
+
+/**
+ * Stores a file from a filesystem path in GridFS
+ * @param {string} uri
+ */
+exports.saveFileFromFs = function(uri) {
+    var deferred = q.defer();
+
+    var writestream = gfs.createWriteStream({});
+    writestream.on('error', deferred.reject);
+    writestream.on('close', function(file) {
+        deferred.resolve(file);
+    });
+    fs.createReadStream(uri).pipe(writestream);
+
+    return deferred.promise;
+};
+
+/**
+ * Returns whether or not the given string is a valid ObjectID
+ * @param {string} objectId
+ * @returns {boolean}
+ */
+exports.isValidObjectId = function(objectId) {
+    return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
+};
+
+/**
+ * Sends a 500 Internal Server Error
+ * @param res
+ * @param [err]
+ */
+exports.handleError = function(res, err) {
+    res.status(500).send(err);
 };
