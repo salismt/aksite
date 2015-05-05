@@ -79,11 +79,17 @@ exports.createThumbnail = function(id, options) {
 /**
  * Makes a request for a file from a URL, and stores it in GridFS
  * @param {string} url
+ * @param [options]
  */
-exports.saveFileFromUrl = function(url) {
+exports.saveFileFromUrl = function(url, options) {
     var deferred = q.defer();
 
-    var writestream = gfs.createWriteStream({});
+    options = options ? options : {};
+
+    var writestream = gfs.createWriteStream({
+        filename: options.filename,
+        content_type: options.content_type
+    });
     writestream.on('error', deferred.reject);
     writestream.on('close', function(file) {
         deferred.resolve(file);
@@ -96,11 +102,17 @@ exports.saveFileFromUrl = function(url) {
 /**
  * Stores a file from a filesystem path in GridFS
  * @param {string} uri
+ * @param [options]
  */
-exports.saveFileFromFs = function(uri) {
+exports.saveFileFromFs = function(uri, options) {
     var deferred = q.defer();
 
-    var writestream = gfs.createWriteStream({});
+    options = options ? options : {};
+
+    var writestream = gfs.createWriteStream({
+        filename: options.filename,
+        content_type: options.content_type
+    });
     writestream.on('error', deferred.reject);
     writestream.on('close', function(file) {
         deferred.resolve(file);
