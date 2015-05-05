@@ -94,7 +94,7 @@ angular.module('aksiteApp')
                     .success(function(response, status) {
                         console.log(status);
                         console.log(response);
-                        $state.go('photoManager');
+                        $state.go('admin.photos');
                     })
                     .error(function(response, status) {
                         console.log(status);
@@ -105,7 +105,7 @@ angular.module('aksiteApp')
                     .success(function(response, status) {
                         console.log(status);
                         console.log(response);
-                        $state.go('photoManager');
+                        $state.go('admin.photos');
                     })
                     .error(function(response, status) {
                         console.log(status);
