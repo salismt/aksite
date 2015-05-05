@@ -1,7 +1,8 @@
 'use strict';
 
 var _ = require('lodash'),
-    Q = require('q'),
+    q = require('q'),
+    util = require('../../util'),
     path = require('path'),
     Photo = require('../photo/photo.model'),
     Project = require('../project/project.model'),
@@ -25,7 +26,7 @@ Grid.mongo = mongoose.mongo;
 
 conn.once('open', function(err) {
     if(err) {
-        handleError(err);
+        util.handleError(err);
     } else {
         gfs = Grid(conn.db);
         gridform.db = conn.db;
@@ -35,7 +36,7 @@ conn.once('open', function(err) {
 // Get list of files
 exports.index = function(req, res) {
     gridModel.find({}, function(err, gridfiles) {
-        if(err) handleError(res, err);
+        if(err) util.handleError(res, err);
         else res.json(gridfiles);
     });
 };
@@ -45,18 +46,16 @@ exports.show = function(req, res) {
     if(req.params.id.substring(24) === '.jpg') {
         req.params.id = req.params.id.substring(0, 24);
     }
-    if(!isValidObjectId(req.params.id)) {
+    if(!util.isValidObjectId(req.params.id)) {
         return res.status(400).send('Invalid ID');
     }
     gfs.exist({_id: req.params.id}, function(err, found) {
-        if(err) return handleError(err);
+        if(err) return util.handleError(err);
         else if(!found) return res.status(404).end();
         else {
             res.header('Content-Type', 'image/jpeg');
             gfs.createReadStream({ _id: req.params.id })
-                .on('error', function (err){
-                    return handleError(res, err)
-                })
+                .on('error', _.partial(util.handleError, res))
                 .pipe(res);
         }
     });
@@ -65,7 +64,7 @@ exports.show = function(req, res) {
 // Get the number of uploads
 exports.count = function(req, res) {
     gridModel.count({}, function(err, count) {
-        if(err) handleError(res, err);
+        if(err) util.handleError(res, err);
         else res.status(200).json(count);
     });
 };
@@ -76,17 +75,14 @@ exports.showSize = function(req, res) {
         return res.status(400).send('Invalid ID');
     }
     gfs.exist({_id: req.params.id}, function(err, found) {
-        if(err) return handleError(err);
+        if(err) return util.handleError(err);
         else if(!found) return res.status(404).end();
         else {
             var readStream = gfs.createReadStream({_id: req.params.id});
             readStream.on('error', handleGridStreamErr(res));
-            var sqThumb = gm(readStream, req.params.id);
-            sqThumb.size(function(err, size) {
-                if(err) return res.status(500).end();
-                else {
-                    res.status(200).json(size);
-                }
+            gm(readStream, req.params.id).size(function(err, size) {
+                if(err) return util.handleError(res, err);
+                else return res.status(200).json(size);
             });
         }
     });
@@ -102,7 +98,7 @@ exports.create = function(req, res) {
     });
 
     form.parse(req, function(err, fields, files) {
-        if(err) return handleError(res, err);
+        if(err) return util.handleError(res, err);
 
         /**
          * file.name            - the uploaded file name
@@ -137,57 +133,69 @@ exports.create = function(req, res) {
                     if(fields.info && typeof fields.purpose === 'string')
                         photoModel.info = fields.info;
 
-                    getExif(file)
-                        .then(function(exifData) {
-                            //photoModel.metadata = {exif: exifData.exif, image: exifData.image, gps: exifData.gps};
-                            console.log(exifData);
+                    var promises = [
+                        getExif(file)
+                            .then(function(exifData) {
+                                photoModel.metadata = { exif: exifData.exif, image: exifData.image, gps: exifData.gps };
+                                console.log(exifData);
+                            }),
+                        util.createThumbnail(file.id, {
+                            width: null,
+                            height: 400
+                        })
+                            .catch(_.partial(util.handleError, res))
+                            .then(function(thumbnail) {
+                                console.log(file.name+' -> (thumb)'+thumbnail.id);
+                                photoModel.thumbnailId = thumbnail.id;
+                                photoModel.width = thumbnail.originalWidth;
+                                photoModel.height = thumbnail.originalHeight;
+                            }),
+                        util.createThumbnail(file.id)
+                            .catch(_.partial(util.handleError, res))
+                            .then(function(squareThumbnail) {
+                                console.log(file.name+' -> (sqThumb)'+squareThumbnail.id);
+                                photoModel.sqThumbnailId = squareThumbnail.id;
+                            })
+                    ];
 
-                            // Thumbnail generation
-                            var thumbStream = gfs.createReadStream({_id: file.id});
-                            thumbStream.on('error', handleGridStreamErr(res));
-                            gm(thumbStream, file.id)
-                                .size({bufferStream: true}, function(err, size) {
-                                    photoModel.width = size.width;
-                                    photoModel.height = size.height;
-                                    console.log(size);
-                                    this.resize(null, 400);
-                                    this.quality(90);
-                                    this.stream(function(err, outStream) {
-                                        if(err) res.status(500).end();
-                                        else {
-                                            var writestream = gfs.createWriteStream({filename: file.name});
-                                            writestream.on('close', function(thumbFile) {
-                                                console.log(file.name+' -> (thumb)'+thumbFile._id);
-                                                photoModel.thumbnailId = thumbFile._id;
-
-                                                var sqThumbstream = gfs.createReadStream({_id: file.id});
-                                                sqThumbstream.on('error', handleGridStreamErr(res));
-                                                gm(sqThumbstream, thumbFile._id)
-                                                    .resize(200, 200, "^")
-                                                    .crop(200, 200, 0, 0)
-                                                    .quality(90)
-                                                    .stream(function(err, outStream) {
-                                                        if(err) res.status(500).end();
-                                                        else {
-                                                            var writestream = gfs.createWriteStream({filename: thumbFile.name});
-                                                            writestream.on('close', function(sqThumbFile) {
-                                                                console.log(file.name+' -> (sqThumb)'+sqThumbFile._id);
-                                                                photoModel.sqThumbnailId = sqThumbFile._id;
-
-                                                                Photo.create(photoModel, function(err, photo) {
-                                                                    if(err) return handleError(res, err);
-                                                                    else return res.status(201).json(photo);
-                                                                });
-                                                            });
-                                                            outStream.pipe(writestream);
-                                                        }
-                                                    });
-                                            });
-                                            outStream.pipe(writestream);
-                                        }
-                                    });
-                                });
+                    q.allSettled(promises)
+                        .then(function(results) {
+                            console.log(results);
+                            Photo.create(photoModel, function(err, photo) {
+                                if(err) return util.handleError(res, err);
+                                else return res.status(201).json(photo);
+                            });
                         });
+
+                    //getExif(file)
+                    //    .then(function(exifData) {
+                    //        photoModel.metadata = { exif: exifData.exif, image: exifData.image, gps: exifData.gps };
+                    //        console.log(exifData);
+                    //
+                    //        util.createThumbnail(file.id, {
+                    //            width: null,
+                    //            height: 400
+                    //        })
+                    //            .catch(_.partial(util.handleError, res))
+                    //            .then(function(thumbnail) {
+                    //                console.log(file.name+' -> (thumb)'+thumbnail.id);
+                    //                photoModel.thumbnailId = thumbnail.id;
+                    //                photoModel.width = thumbnail.originalWidth;
+                    //                photoModel.height = thumbnail.originalHeight;
+                    //
+                    //                util.createThumbnail(file.id)
+                    //                    .catch(_.partial(util.handleError, res))
+                    //                    .then(function(squareThumbnail) {
+                    //                        console.log(file.name+' -> (sqThumb)'+squareThumbnail.id);
+                    //                        photoModel.sqThumbnailId = squareThumbnail.id;
+                    //
+                    //                        Photo.create(photoModel, function(err, photo) {
+                    //                            if(err) return util.handleError(res, err);
+                    //                            else return res.status(201).json(photo);
+                    //                        });
+                    //                    });
+                    //            });
+                    //    });
                 }
             }
         } else {
@@ -206,14 +214,14 @@ exports.create = function(req, res) {
 //    }
 //    Upload.findById(req.params.id, function(err, upload) {
 //        if(err) {
-//            return handleError(res, err);
+//            return util.handleError(res, err);
 //        } else if(!upload) {
 //            return res.send(404);
 //        } else {
 //            var updated = _.merge(upload, req.body);
 //            updated.save(function(err) {
 //                if(err) {
-//                    return handleError(res, err);
+//                    return util.handleError(res, err);
 //                }
 //                return res.json(200, upload);
 //            });
@@ -223,24 +231,22 @@ exports.create = function(req, res) {
 
 // Deletes a file from the DB.
 exports.destroy = function(req, res) {
-    if(!isValidObjectId(req.params.id)) {
+    if(!util.isValidObjectId(req.params.id))
         return res.status(400).send('Invalid ID');
-    }
     if(!req.params.id)
-        res.status(404).send(new ReferenceError('File not found.'));
-    else {
+        return res.status(404).send(new ReferenceError('File not found.'));
+    else
         gfs.remove({_id: req.params.id}, function(err) {
-            if(err) return handleError(err);
+            if(err) return util.handleError(err);
             res.status(200).end();
         });
-    }
 };
 
 // Finds and cleans orphaned GridFS files
 exports.clean = function(req, res) {
     getFileIds()
         .then(function(fileIds) {
-            Q.allSettled([getPhotoIds(), getProjectIds(), getUserIds(), getFeaturedSectionIds()])
+            q.allSettled([getPhotoIds(), getProjectIds(), getUserIds(), getFeaturedSectionIds()])
                 .then(function(results) {
                     var usedIds = _.pluck(results, 'value');
                     usedIds = _.union(usedIds[0], usedIds[1], usedIds[2], usedIds[3]);
@@ -252,7 +258,7 @@ exports.clean = function(req, res) {
                         if(!_.contains(usedIds, id)) {
                             console.log('Delete '+id);
                             gfs.remove({_id: id}, function(err) {
-                                if(err) return handleError(err);
+                                if(err) return util.handleError(err);
                             });
                         }
                     });
@@ -261,26 +267,20 @@ exports.clean = function(req, res) {
 };
 
 exports.makeLinks = function(req, res) {
-    var photoStream = Photo.find().stream();
+    Photo.find().stream()
+        .on('data', function (doc) {
+            //console.log(doc);
+            if(!doc.metadata)
+                doc.metadata = {};
+            if(doc.fileId) {
 
-    photoStream.on('data', function (doc) {
-        //console.log(doc);
-        if(!doc.metadata)
-            doc.metadata = {};
-        if(doc.fileId) {
-
-        }
-    }).on('error', function (err) {
-        console.log(err);
-    }).on('close', function () {
-        console.log('done');
-    });
+            }
+        })
+        .on('error', console.log)
+        .on('close', function () {
+            console.log('done');
+        });
 };
-
-function handleError(res, err) {
-    console.log(err);
-    return res.status(500).end();
-}
 
 function handleGridStreamErr(res) {
     return function(err) {
@@ -297,7 +297,7 @@ function handleGridStreamErr(res) {
 }
 
 function getSize(fileId) {
-    var deferred = Q.defer();
+    var deferred = q.defer();
 
     (function next() {
         var stream = gfs.createReadStream({_id: fileId});
@@ -320,7 +320,7 @@ function isValidObjectId(objectId) {
 }
 
 function getExif(file) {
-    var deferred = Q.defer();
+    var deferred = q.defer();
 
     gm(gfs.createReadStream({_id: file.id}).on('error', console.log), file.id)
         .toBuffer('JPG', function(err, buffer) {
@@ -336,7 +336,7 @@ function getExif(file) {
 }
 
 function getPhotoIds() {
-    var deferred = Q.defer();
+    var deferred = q.defer();
 
     Photo.find({}, function(err, photos) {
         if(err) deferred.reject(err);
@@ -347,7 +347,7 @@ function getPhotoIds() {
 }
 
 function getUserIds() {
-    var deferred = Q.defer();
+    var deferred = q.defer();
 
     User.find({}, function(err, users) {
         if(err) deferred.reject(err);
@@ -358,7 +358,7 @@ function getUserIds() {
 }
 
 function getProjectIds() {
-    var deferred = Q.defer();
+    var deferred = q.defer();
 
     Project.find({}, function(err, projects) {
         if(err) deferred.reject(err);
@@ -369,7 +369,7 @@ function getProjectIds() {
 }
 
 function getFeaturedSectionIds() {
-    var deferred = Q.defer();
+    var deferred = q.defer();
 
     FeaturedSection.find({}, function(err, featuredSections) {
         if(err) deferred.reject(err);
@@ -380,7 +380,7 @@ function getFeaturedSectionIds() {
 }
 
 function getFileIds() {
-    var deferred = Q.defer();
+    var deferred = q.defer();
 
     gridModel.find({}, function(err, gridfiles) {
         if(err) deferred.reject(err);
