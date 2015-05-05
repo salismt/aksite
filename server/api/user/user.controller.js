@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash'),
+    util = require('../../util'),
     User = require('./user.model'),
     passport = require('passport'),
     config = require('../../config/environment'),
@@ -19,38 +20,12 @@ Grid.mongo = mongoose.mongo;
 
 conn.once('open', function(err) {
     if(err) {
-        handleError(err);
+        util.handleError(err);
     } else {
         gfs = Grid(conn.db);
         gridform.db = conn.db;
     }
 });
-
-function isValidObjectId(objectId) {
-    return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
-}
-
-var validationError = function(res, err) {
-    return res.json(422, err);
-};
-
-function handleError(res, err) {
-    return res.send(500, err);
-}
-
-function handleGridStreamErr(res) {
-    return function(err) {
-        if(/does not exist/.test(err)) {
-            // trigger 404
-            console.log(err);
-            return err;
-        }
-
-        // may have written data already
-        res.status(500).end();
-        console.error(err.stack);
-    };
-}
 
 /**
  * Get list of users
@@ -58,7 +33,7 @@ function handleGridStreamErr(res) {
  */
 exports.index = function(req, res) {
     User.find({}, '-salt -hashedPassword', function(err, users) {
-        if(err) return res.send(500, err);
+        if(err) return util.handleError(res, err);
         res.status(200).json(users);
     });
 };
@@ -66,7 +41,7 @@ exports.index = function(req, res) {
 // Get the number of users
 exports.count = function(req, res) {
     User.count({}, function(err, count) {
-        if(err) handleError(res, err);
+        if(err) util.handleError(res, err);
         else res.status(200).json(count);
     });
 };
@@ -83,7 +58,7 @@ exports.create = function(req, res, next) {
     userImageWritestream.on('close', function(userImgFile) {
         newUser.imageId = userImgFile._id;
         newUser.save(function(err, user) {
-            if(err) return validationError(res, err);
+            if(err) return util.handleError(res, err);
             var token = jwt.sign({_id: user._id}, config.secrets.session, {expiresInMinutes: 60 * 5});
             res.json({token: token});
         });
@@ -93,19 +68,19 @@ exports.create = function(req, res, next) {
 
 /** Update a user */
 exports.update = function(req, res) {
-    if(!isValidObjectId(req.params.id)) {
+    if(!util.isValidObjectId(req.params.id)) {
         return res.status(400).send('Invalid ID');
     }
     var form = gridform({db: conn.db, mongo: mongoose.mongo});
 
     User.findById(req.params.id, function(err, user) {
         if(err) {
-            return handleError(res, err);
+            return util.handleError(res, err);
         } else if(!user) {
             return res.status(404).end();
         } else {
             form.parse(req, function(err, fields, files) {
-                if(err) return handleError(res, err);
+                if(err) return util.handleError(res, err);
 
                 if(fields._id) {
                     delete fields._id;
@@ -146,53 +121,34 @@ exports.update = function(req, res) {
                     if(fields.newImage || (!user.imageId && file)) {
                         if(user.imageId) {
                             gfs.remove({_id: user.imageId}, function (err) {
-                                if (err) return handleError(err);
+                                if (err) return util.handleError(err);
                                 else console.log('deleted imageId');
                             });
                             gfs.remove({_id: user.smallImageId}, function (err) {
-                                if (err) return handleError(err);
+                                if (err) return util.handleError(err);
                                 else console.log('deleted smallImageId');
                             });
                         }
 
                         userModel.imageId = file.id;
 
-                        // Thumbnail generation
-                        var stream = gfs.createReadStream({_id: file.id});
-                        stream.on('error', handleGridStreamErr(res));
-                        gm(stream, file.id)
-                            .size({bufferStream: true}, function(err, size) {
-                                userModel.width = size.width;
-                                userModel.height = size.height;
-                                this.resize(200, 200, "^");
-                                this.crop(200, 200, 0, 0);
-                                this.quality(90);
-                                this.stream(function(err, outStream) {
-                                    if(err) return res.status(500).end();
-                                    else {
-                                        var writestream = gfs.createWriteStream({filename: file.name});
-                                        writestream.on('close', function(smallImageFile) {
-                                            console.log(file.name+' -> (thumb)'+smallImageFile._id);
-                                            userModel.smallImageId = smallImageFile._id;
+                        util.createThumbnail(file.id)
+                            .catch(util.handleError)
+                            .then(function(thumbnail) {
+                                console.log(file.name+' -> (thumb)'+thumbnail.id);
+                                userModel.smallImageId = thumbnail.id;
 
-                                            var updated = _.assign(user, userModel);
-                                            return updated.save(function(err) {
-                                                if(err) {
-                                                    return handleError(res, err);
-                                                } else {
-                                                    return res.status(200).json(user);
-                                                }
-                                            });
-                                        });
-                                        outStream.pipe(writestream);
-                                    }
+                                var updated = _.assign(user, userModel);
+                                return updated.save(function(err) {
+                                    if(err) return util.handleError(res, err);
+                                    else return res.status(200).json(user);
                                 });
                             });
                     } else {
                         var updated = _.assign(user, userModel);
                         return updated.save(function(err) {
                             if(err) {
-                                return handleError(res, err);
+                                return util.handleError(res, err);
                             } else {
                                 return res.status(200).json(user);
                             }
@@ -252,7 +208,7 @@ exports.changePassword = function(req, res, next) {
         if(user.authenticate(oldPass)) {
             user.password = newPass;
             user.save(function(err) {
-                if(err) return validationError(res, err);
+                if(err) return util.handleError(res, err);
                 res.send(200);
             });
         } else {
