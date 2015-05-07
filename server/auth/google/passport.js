@@ -5,17 +5,7 @@ var _ = require('lodash'),
     config = require('../../config/environment'),
     passport = require('passport'),
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
-    request = require('request'),
-    gm = require('gm'),
-    mongoose = require('mongoose'),
-    Grid = require('gridfs-stream'),
-    gfs,
-    conn = mongoose.createConnection(config.mongo.uri);
-
-conn.once('open', function(err) {
-    if(err) console.log(err);
-    else gfs = Grid(conn.db);
-});
+    request = require('request');
 
 exports.setup = function(User, config) {
     passport.use(new GoogleStrategy({
