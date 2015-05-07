@@ -29,6 +29,7 @@ var _ = require('lodash'),
     gridModel1 = mongoose.model("gridModel1", gridSchema, "fs.files"),
     gfs,
     conn = mongoose.createConnection(config.mongo.uri);
+
 Grid.mongo = mongoose.mongo;
 
 Thing.find({}).remove(function() {
@@ -213,7 +214,7 @@ conn.once('open', function(err) {
                                                                         if(err) {
                                                                             console.log(err);
                                                                         } else {
-                                                                            console.log(gallery._id);
+                                                                            console.log('Gallery Created', gallery._id);
                                                                         }
                                                                     });
 
@@ -263,6 +264,7 @@ function createPhoto(photo) {
                     photoModel.width = thumbnail.originalWidth;
                     photoModel.height = thumbnail.originalHeight;
 
+                    // Square thumbnail generation
                     util.createThumbnail(file._id)
                         .catch(console.log)
                         .then(function(sqThumbnail) {
@@ -275,6 +277,7 @@ function createPhoto(photo) {
                                 });
                         });
                 });
+            //TODO: Run ^these^ two promises at once
         });
 
     return deferred.promise;
