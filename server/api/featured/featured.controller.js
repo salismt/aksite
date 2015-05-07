@@ -2,6 +2,7 @@
 
 var _ = require('lodash'),
     Q = require('q'),
+    util = require('../../util'),
     mongoose = require('mongoose'),
     FeaturedItem = require('./featuredItem.model.js'),
     FeaturedSection = require('./featuredSection.model.js'),
@@ -24,7 +25,7 @@ conn.once('open', function(err) {
 // Get the Featured Section
 exports.index = function(req, res) {
     FeaturedSection.findOne({}, function(err, section) {
-        if(err) return handleError(res, err);
+        if(err) return util.handleError(res, err);
         else if(_.isNull(section)) return res.status(500).end();
         else return res.status(200).json(section);
     });
@@ -33,7 +34,7 @@ exports.index = function(req, res) {
 // Get the number of featured items
 exports.count = function(req, res) {
     FeaturedItem.count({}, function(err, count) {
-        if(err) handleError(res, err);
+        if(err) util.handleError(res, err);
         else res.status(200).json(count);
     });
 };
@@ -42,7 +43,7 @@ exports.count = function(req, res) {
 exports.listItems = function(req, res) {
     FeaturedItem.find(function(err, items) {
         if(err) {
-            return handleError(res, err);
+            return util.handleError(res, err);
         } else {
             return res.status(200).json(items);
         }
@@ -54,8 +55,8 @@ exports.newFeatured = function(req, res) {
     FeaturedSection.find({}).remove(function() {
     });
     FeaturedItem.find({}, function(err, items) {
-        if(err) return handleError(res, err);
         else if(_.isNull(items) || items == []) return res.status(500).end();
+        if(err) return util.handleError(res, err);
         else {
             // If there are less than 100 items, copy items until we have 100
             var index = 0,
@@ -72,7 +73,7 @@ exports.newFeatured = function(req, res) {
                 k = 0;
             _.forEach(items, function(item) {
                 var stream = gfs.createReadStream({_id: item.sqThumbnailId});
-                stream.on('error', handleGridStreamErr(res));
+                stream.on('error', _.partial(util.handleError, res));
                 readStreams.push(stream);
                 tmpPromises.push(writeToTmp(stream, k));
                 k++;
@@ -139,7 +140,7 @@ exports.newFeatured = function(req, res) {
                                                 fileId: file._id,
                                                 items: items
                                             }, function(err, section) {
-                                                if(err) return res.status(500).send(err);
+                                                if(err) return util.handleError(res, err);
                                                 else {
                                                     res.status(201).send(section);
                                                 }
@@ -158,9 +159,7 @@ exports.newFeatured = function(req, res) {
 
 // Add an Item to the DB
 exports.add = function(req, res) {
-    if(!isValidObjectId(req.params.id)) {
-        return res.status(400).send('Invalid ID');
-    }
+    if(!req.params.id || !util.isValidObjectId(req.params.id))  return res.status(400).send('Invalid ID');
     var acceptedTypes = ['photo', 'project', 'post'];
     var item = {};
     if(!req.body.type || !_.contains(acceptedTypes, req.body.type.toLowerCase())) {
@@ -172,8 +171,6 @@ exports.add = function(req, res) {
         typesString = typesString.substring(0, typesString.length - 1);
         typesString += '.';
         return res.status(400).send('Error: Please supply an accepted item type. The supported types are:' + typesString);
-    } else if(!req.params.id) {
-        return res.status(400).send('Error: Invalid item ID.');
     }
 
     item.type = req.body.type;
@@ -184,7 +181,7 @@ exports.add = function(req, res) {
         case 'photo':
             Photo.findById(req.params.id, function(err, photo) {
                 if(err)
-                    return handleError(res, err);
+                    return util.handleError(res, err);
                 else if(!photo)
                     return res.status(404).end();
                 else {
@@ -192,7 +189,7 @@ exports.add = function(req, res) {
                         item.sqThumbnailId = photo.sqThumbnailId;
 
                         return FeaturedItem.create(item, function(err, featured) {
-                            if(err) return handleError(res, err);
+                            if(err) return util.handleError(res, err);
                             else return res.status(201).json(featured);
                         });
                     } else if(photo.fileId) {
@@ -222,23 +219,19 @@ exports.destroy = function(req, res) {
     }
     FeaturedItem.findById(req.params.id, function(err, featured) {
         if(err) {
-            return handleError(res, err);
+            return util.handleError(res, err);
         }
         if(!featured) {
             return res.status(404).end();
         }
         featured.remove(function(err) {
             if(err) {
-                return handleError(res, err);
+                return util.handleError(res, err);
             }
             return res.send(204);
         });
     });
 };
-
-function handleError(res, err) {
-    return res.status(500).send(err);
-}
 
 function handleGridStreamErr(res) {
     return function(err) {
