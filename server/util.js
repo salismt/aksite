@@ -47,6 +47,7 @@ exports.createThumbnail = function(id, options) {
     stream.on('error', deferred.reject);
     gm(stream, id)
         .size({bufferStream: true}, function(err, size) {
+            if(err) return deferred.reject(err);
             thumbnail.width = options.width;
             thumbnail.height = options.height;
             thumbnail.originalWidth = size.width;
