@@ -1,7 +1,6 @@
 'use strict';
 
-var _ = require('lodash'),
-    util = require('../../util'),
+var util = require('../../util'),
     config = require('../../config/environment'),
     passport = require('passport'),
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
