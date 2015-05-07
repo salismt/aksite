@@ -5,6 +5,7 @@ var _ = require('lodash'),
     util = require('../../util'),
     path = require('path'),
     Photo = require('../photo/photo.model'),
+    Gallery = require('../gallery/gallery.model'),
     Project = require('../project/project.model'),
     User = require('../user/user.model'),
     FeaturedSection = require('../featured/featuredSection.model'),
@@ -115,7 +116,7 @@ exports.create = function(req, res) {
                         photoModel.info = fields.info;
 
                     var promises = [
-                        getExif(file)
+                        getExif(file.id)
                             .then(function(exifData) {
                                 photoModel.metadata = { exif: exifData.exif, image: exifData.image, gps: exifData.gps };
                                 console.log(exifData);
@@ -154,7 +155,7 @@ exports.create = function(req, res) {
 
 // Updates an existing file in the DB.
 //exports.update = function(req, res) {
-//    if(!isValidObjectId(req.params.id)) {
+//    if(!util.isValidObjectId(req.params.id)) {
 //        return res.status(400).send('Invalid ID');
 //    }
 //    if(req.body._id) {
@@ -192,147 +193,96 @@ exports.destroy = function(req, res) {
 
 // Finds and cleans orphaned GridFS files
 exports.clean = function(req, res) {
-    getFileIds()
-        .then(function(fileIds) {
-            q.allSettled([getPhotoIds(), getProjectIds(), getUserIds(), getFeaturedSectionIds()])
-                .then(function(results) {
-                    var usedIds = _.pluck(results, 'value');
-                    usedIds = _.union(usedIds[0], usedIds[1], usedIds[2], usedIds[3]);
-                    usedIds = _.invoke(usedIds, 'toString');
+    /**
+     * This baby plucks all of the GridFS document IDs from all Photos, Projects,
+     * Users, and FeaturedSections. It then compares that list to a list of all documents
+     * in GridFS. If the GridFS document isn't used in the first list, it gets deleted.
+     */
+    q.all([
+        getIds(gridModel, ['_id']),
+        getIds(Photo, ['fileId', 'thumbnailId', 'sqThumbnailId']),
+        getIds(Project, ['thumbnailId', 'coverId']),
+        getIds(User, ['imageId', 'smallImageId']),
+        getIds(FeaturedSection, ['fileId'])
+    ])
+        .spread(function(fileIds, photoIds, projectIds, userIds, featSectionIds) {
+            _.forEach(_.difference(_.invoke(fileIds, 'toString'), _.invoke(_.union(photoIds, projectIds, userIds, featSectionIds), 'toString')), function(id) {
+                gfs.remove({_id: id}, function(err) {
+                    if(err) return console.log(err);
+                    console.log('Delete file', id);
+                });
+            });
+        }, console.log);
 
-                    fileIds = _.invoke(fileIds, 'toString');
+    /**
+     * This little gem generates a list of all the Photos that aren't
+     * in a Gallery, and then deletes those photos, along with the three files
+     * in GridFS linked to each of them.
+     */
+    q.all([
+        getIds(Gallery, ['photos']),
+        Photo.find().exec()
+    ])
+        .spread(function(photosInGalleries, allPhotos) {
+            _.forEach(_.difference(_.invoke(_.pluck(allPhotos, '_id'), 'toString'), _.flatten(photosInGalleries)), function(id) {
+                Photo.findByIdAndRemove(id, function(err, photo) {
+                    if(err) return console.log(err);
 
-                    _.forEach(fileIds, function(id) {
-                        if(!_.contains(usedIds, id)) {
-                            console.log('Delete '+id);
-                            gfs.remove({_id: id}, function(err) {
-                                if(err) return util.handleError(err);
-                            });
-                        }
+                    console.log('Delete photo', photo._id);
+
+                    gfs.remove({_id: photo.fileId}, function(err) {
+                        if(err) return console.log(err);
+                        console.log('Delete file', id);
+                    });
+                    gfs.remove({_id: photo.thumbnailId}, function(err) {
+                        if(err) return console.log(err);
+                        console.log('Delete file', id);
+                    });
+                    gfs.remove({_id: photo.sqThumbnailId}, function(err) {
+                        if(err) return console.log(err);
+                        console.log('Delete file', id);
                     });
                 });
-        });
+            });
+        }, console.log);
+
+    res.status(202).end();
 };
 
-exports.makeLinks = function(req, res) {
-    Photo.find().stream()
-        .on('data', function (doc) {
-            //console.log(doc);
-            if(!doc.metadata)
-                doc.metadata = {};
-            if(doc.fileId) {
-
-            }
-        })
-        .on('error', console.log)
-        .on('close', function () {
-            console.log('done');
-        });
-};
-
-function handleGridStreamErr(res) {
-    return function(err) {
-        if(/does not exist/.test(err)) {
-            // trigger 404
-            console.log(err);
-            return err;
-        }
-
-        // may have written data already
-        res.status(500).end();
-        console.error(err.stack);
-    };
-}
-
-function getSize(fileId) {
+/**
+ * Takes an image from a GridFS document ID, uses GM to stream it to a buffer,
+ * and then uses the exif library to extract its EXIF data and return it
+ * @param id    - ID of the GridFS image file to get EXIF data for
+ * @returns {deferred.promise|{then, always}}
+ */
+function getExif(id) {
     var deferred = q.defer();
 
-    (function next() {
-        var stream = gfs.createReadStream({_id: fileId});
-        stream.on('error', console.log);
-        var img = gm(stream, fileId);
-        img.size(function(err, size) {
-            if(err) return err;
-            else if(_.isUndefined(size)) return 'Error: size undefined';
-            else {
-                deferred.resolve(size);
-            }
-        });
-    })();
-
-    return deferred.promise;
-}
-
-function isValidObjectId(objectId) {
-    return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
-}
-
-function getExif(file) {
-    var deferred = q.defer();
-
-    gm(gfs.createReadStream({_id: file.id}).on('error', console.log), file.id)
+    gm(gfs.createReadStream({_id: id}).on('error', console.log), id)
         .toBuffer('JPG', function(err, buffer) {
+            if(err) return deferred.reject(err);
             new ExifImage({ image: buffer }, function (error, exifData) {
-                if (error)
-                    deferred.reject(error);
-                else
-                    deferred.resolve(exifData);
+                if(error) deferred.reject(error);
+                else deferred.resolve(exifData);
             });
         });
 
     return deferred.promise;
 }
 
-function getPhotoIds() {
+/**
+ * Fetches every document of `model`, plucks each property in `properties` out
+ * of it, and returns them all in one flattened array
+ * @param model         - The mongoose model in which to get all of the documents for
+ * @param properties    - An array of model property names, as strings
+ * @returns {deferred.promise}
+ */
+function getIds(model, properties) {
     var deferred = q.defer();
 
-    Photo.find({}, function(err, photos) {
+    model.find({}, function(err, files) {
         if(err) deferred.reject(err);
-        else deferred.resolve(_.union( _.pluck(photos, 'fileId'), _.pluck(photos, 'thumbnailId'), _.pluck(photos, 'sqThumbnailId') ));
-    });
-
-    return deferred.promise;
-}
-
-function getUserIds() {
-    var deferred = q.defer();
-
-    User.find({}, function(err, users) {
-        if(err) deferred.reject(err);
-        else deferred.resolve(_.union( _.pluck(users, 'imageId'), _.pluck(users, 'smallImageId') ));
-    });
-
-    return deferred.promise;
-}
-
-function getProjectIds() {
-    var deferred = q.defer();
-
-    Project.find({}, function(err, projects) {
-        if(err) deferred.reject(err);
-        else deferred.resolve(_.union( _.pluck(projects, 'thumbnailId'), _.pluck(projects, 'coverId') ));
-    });
-
-    return deferred.promise;
-}
-
-function getFeaturedSectionIds() {
-    var deferred = q.defer();
-
-    FeaturedSection.find({}, function(err, featuredSections) {
-        if(err) deferred.reject(err);
-        else deferred.resolve(_.pluck(featuredSections, 'fileId'));
-    });
-
-    return deferred.promise;
-}
-
-function getFileIds() {
-    var deferred = q.defer();
-
-    gridModel.find({}, function(err, gridfiles) {
-        if(err) deferred.reject(err);
-        else deferred.resolve(_.pluck(gridfiles, '_id'));
+        else deferred.resolve(_.flatten(_.map(properties, _.partial(_.pluck, files))));
     });
 
     return deferred.promise;
