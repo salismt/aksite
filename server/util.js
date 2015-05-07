@@ -31,6 +31,7 @@ conn.once('open', function(err) {
  * @param {number} [options.height=200] - The height of the thumbnail, in pixels
  * @param {number} [options.width=200] - The width of the thumbnail, in pixels
  * @param {number} [options.quality=90] - The quality of the thumbnail
+ * @param {string} [options.filename=''] - The filename to use
  */
 exports.createThumbnail = function(id, options) {
     var deferred = q.defer(),
@@ -62,7 +63,9 @@ exports.createThumbnail = function(id, options) {
             this.stream(function(err, outStream) {
                 if(err) return deferred.reject(err);
                 else {
-                    var writestream = gfs.createWriteStream({});
+                    var writestream = gfs.createWriteStream({
+                        filename: options.filename
+                    });
                     writestream.on('close', function(thumbnailFile) {
                         thumbnail.file = thumbnailFile;
                         thumbnail.id = thumbnailFile._id;
