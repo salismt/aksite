@@ -69,25 +69,6 @@ exports.count = function(req, res) {
     });
 };
 
-//
-exports.showSize = function(req, res) {
-    if(!isValidObjectId(req.params.id)) {
-        return res.status(400).send('Invalid ID');
-    }
-    gfs.exist({_id: req.params.id}, function(err, found) {
-        if(err) return util.handleError(err);
-        else if(!found) return res.status(404).end();
-        else {
-            var readStream = gfs.createReadStream({_id: req.params.id});
-            readStream.on('error', handleGridStreamErr(res));
-            gm(readStream, req.params.id).size(function(err, size) {
-                if(err) return util.handleError(res, err);
-                else return res.status(200).json(size);
-            });
-        }
-    });
-};
-
 // Creates a new file in the DB.
 exports.create = function(req, res) {
     var form = gridform({db: conn.db, mongo: mongoose.mongo});
