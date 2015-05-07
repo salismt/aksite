@@ -17,10 +17,7 @@ Grid.mongo = mongoose.mongo;
 
 var gfs;
 conn.once('open', function(err) {
-    if(err) {
-        handleError(err);
-        return;
-    }
+    if(err) console.log(err);
     gfs = Grid(conn.db);
 });
 
