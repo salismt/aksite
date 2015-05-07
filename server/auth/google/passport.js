@@ -62,7 +62,10 @@ exports.setup = function(User, config) {
                             if(profilePic.substring(profilePic.length-6, profilePic.length) === '?sz=50')
                                 profilePic = profilePic.substring(0, profilePic.length-6);
 
-                            util.saveFileFromUrl(profilePic)
+                            util.saveFileFromUrl(profilePic, {
+                                filename: profilePic.split('/')[profilePic.split('/').length-1],
+                                content_type: 'image/jpeg'
+                            })
                                 .catch(done)
                                 .then(function(file) {
                                     console.log(file);
