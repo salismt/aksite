@@ -38,6 +38,8 @@ exports.setup = function(User, config) {
 
                         // There are no users linked to this account. Make a new one
                         else {
+                            profile._json.image.url = profile._json.image.url.replace('?sz=50', '');
+
                             var newUser = new User({
                                 name: profile.displayName,
                                 email: profile.emails[0].value,
@@ -47,12 +49,11 @@ exports.setup = function(User, config) {
                                 google: profile._json
                             });
 
-                            var profilePic = profile._json.image.url;
-                            if(profilePic.substring(profilePic.length-6, profilePic.length) === '?sz=50')
-                                profilePic = profilePic.substring(0, profilePic.length-6);
+                            var profilePic = profile._json.image.url,
+                                picName = profilePic.split('/')[profilePic.split('/').length-1];
 
                             util.saveFileFromUrl(profilePic, {
-                                filename: profilePic.split('/')[profilePic.split('/').length-1],
+                                filename: picName,
                                 content_type: 'image/jpeg'
                             })
                                 .catch(done)
@@ -60,7 +61,7 @@ exports.setup = function(User, config) {
                                     console.log(file);
                                     newUser.imageId = file._id;
 
-                                    util.createThumbnail(file._id)
+                                    util.createThumbnail(file._id, {filename: picName+'_thumbnail'})
                                         .catch(done)
                                         .then(function(thumbnail) {
                                             console.log(thumbnail);
