@@ -52,11 +52,10 @@ exports.listItems = function(req, res) {
 
 // Compose a new Featured Section
 exports.newFeatured = function(req, res) {
-    FeaturedSection.find({}).remove(function() {
-    });
+    FeaturedSection.find({}).remove(function(err, section) { if(err) console.log(err); });
     FeaturedItem.find({}, function(err, items) {
-        else if(_.isNull(items) || items == []) return res.status(500).end();
         if(err) return util.handleError(res, err);
+        else if(_.isNull(items) || items == []) return res.status(400).send('No featured items!');
         else {
             // If there are less than 100 items, copy items until we have 100
             var index = 0,
