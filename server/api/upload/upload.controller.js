@@ -124,7 +124,6 @@ exports.create = function(req, res) {
                             width: null,
                             height: 400
                         })
-                            .catch(_.partial(util.handleError, res))
                             .then(function(thumbnail) {
                                 console.log(file.name+' -> (thumb)'+thumbnail.id);
                                 photoModel.thumbnailId = thumbnail.id;
@@ -132,51 +131,19 @@ exports.create = function(req, res) {
                                 photoModel.height = thumbnail.originalHeight;
                             }),
                         util.createThumbnail(file.id)
-                            .catch(_.partial(util.handleError, res))
                             .then(function(squareThumbnail) {
                                 console.log(file.name+' -> (sqThumb)'+squareThumbnail.id);
                                 photoModel.sqThumbnailId = squareThumbnail.id;
                             })
                     ];
 
-                    q.allSettled(promises)
-                        .then(function(results) {
-                            console.log(results);
+                    q.all(promises)
+                        .spread(function() {
                             Photo.create(photoModel, function(err, photo) {
                                 if(err) return util.handleError(res, err);
                                 else return res.status(201).json(photo);
                             });
-                        });
-
-                    //getExif(file)
-                    //    .then(function(exifData) {
-                    //        photoModel.metadata = { exif: exifData.exif, image: exifData.image, gps: exifData.gps };
-                    //        console.log(exifData);
-                    //
-                    //        util.createThumbnail(file.id, {
-                    //            width: null,
-                    //            height: 400
-                    //        })
-                    //            .catch(_.partial(util.handleError, res))
-                    //            .then(function(thumbnail) {
-                    //                console.log(file.name+' -> (thumb)'+thumbnail.id);
-                    //                photoModel.thumbnailId = thumbnail.id;
-                    //                photoModel.width = thumbnail.originalWidth;
-                    //                photoModel.height = thumbnail.originalHeight;
-                    //
-                    //                util.createThumbnail(file.id)
-                    //                    .catch(_.partial(util.handleError, res))
-                    //                    .then(function(squareThumbnail) {
-                    //                        console.log(file.name+' -> (sqThumb)'+squareThumbnail.id);
-                    //                        photoModel.sqThumbnailId = squareThumbnail.id;
-                    //
-                    //                        Photo.create(photoModel, function(err, photo) {
-                    //                            if(err) return util.handleError(res, err);
-                    //                            else return res.status(201).json(photo);
-                    //                        });
-                    //                    });
-                    //            });
-                    //    });
+                        }, res.status(400).send);
                 }
             }
         } else {
