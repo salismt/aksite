@@ -6,14 +6,12 @@
     </div>
     <div class="row">
         <md-content>
-            <md-list class="user-list">
-                <md-item ng-repeat="user in users">
-                    <md-item-content class="user-row">
-                        <div class="md-tile-left">
-                            <img ng-src="/api/upload/{{user.imageId}}.jpg" class="face img-circle" alt="{{user.name}}" style="width: 48px; margin: 16px; border: 1px solid #ddd;">
-                        </div>
-                        <div class="md-tile-content">
-                            <div class="text-section">
+            <md-list>
+                <md-list-item class="md-2-line md-with-secondary md-clickable" ng-repeat="user in users" ng-class="{deleted: user.deleted}">
+                    <md-button class="md-no-style" ng-click="goToUser(user._id, $event)">
+                        <div class="md-list-item-inner">
+                            <img class="md-avatar" ng-src="/api/upload/{{user.imageId}}.jpg" alt="{{user.name}}">
+                            <div class="md-list-item-text">
                                 <h3>{{user.name}}</h3>
                                 <p>{{user.email}}</p>
                             </div>
@@ -26,13 +24,11 @@
                                 <i class="fa fa-github fa-2x" ng-class="{'github-color': user.providers.github}"></i>
                             </div>
                         </div>
-                        <div class="md-tile-right">
-                            <md-button class="md-fab md-warn" ng-click="deleteUser(user)" aria-label="Delete User">
-                                <span class="fa fa-trash-o fa-2x"></span>
-                            </md-button>
-                        </div>
-                    </md-item-content>
-                </md-item>
+                    </md-button>
+                    <md-button class="md-secondary-container md-icon-button" aria-label="Delete User" ng-click="deleteUser(user)">
+                        <md-icon class="fa fa-2x md-warn" md-font-icon="fa-trash-o"></md-icon>
+                    </md-button>
+                </md-list-item>
             </md-list>
         </md-content>
     </div>

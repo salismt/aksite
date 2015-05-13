@@ -1,42 +1,11 @@
-.user-list {
-    .user-row {
-        padding: 0 10px;
-        background-color: #ffffff;
-        @include transition(background-color .2s ease);
-    }
-    .user-row:hover {
-        background-color: #dcdcdc;
-    }
+.local-color { color: #ffd841 }
 
-    .md-tile-content {
-        display: flex;
-        .text-section {
-            display: inline-flex;
-            flex-direction: column;
-            flex-grow: 3;
-            justify-content: center;
-            * {
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-            }
-        }
-        .icon-section {
-            flex-shrink: 0;
-            text-align: center;
-            line-height: 59px;
-            i {
-                vertical-align: middle;
-                margin: 0 3px;
-            }
-        }
-    }
-
-    .md-tile-right {
-        a {
-            padding: 5px;
-        }
+.icon-section {
+    margin-right: 48px;
+    padding-top: 19px;
+    padding-bottom: 16px;
+    height: 75px;
+    i {
+        line-height: 40px;
     }
 }
-
-.local-color { color: #ffd841 }
