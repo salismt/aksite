@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('BlogmanagerCtrl', function($scope, $http) {
+    .controller('BlogmanagerCtrl', function($scope, $http, $state) {
         $scope.errors = [];
         $scope.loadingPosts = true;
         $scope.posts = [];
@@ -25,6 +25,11 @@ angular.module('aksiteApp')
                 $scope.loadingPosts = false;
             });
 
+        $scope.goToPost = function(id, event) {
+            $state.go('postEditor', {postId: id});
+        };
+
+        //TODO: remove strange toggling, change to immediately delete, but show a 'Post Deleted' toast with an 'UNDO' button
         $scope.togglePostDeletion = function(post) {
             if(!post.deleted) {
                 post.deleted = true;

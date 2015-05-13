@@ -18,27 +18,17 @@
     </div>
     <div class="row">
         <md-content>
-            <md-list class="user-list">
-                <md-item ng-class="{deleted: post.deleted}" ng-repeat="post in posts">
-                    <a ng-href="/admin/blog/post-editor/{{::post._id}}">
-                        <md-item-content class="user-row">
-                            <div class="md-tile-left">
-                                <div ng-if="post.imageId" bg-img="api/upload/{{post.thumbnailId}}.jpg" style="width: 48px; height: 48px; border-radius: 50%; margin: 16px;"></div>
-                                <div ng-if="!post.imageId" style="width: 48px; height: 48px; border-radius: 50%; margin: 16px; background-color: lightblue;"></div>
-                            </div>
-                            <div class="md-tile-content">
-                                <h3>{{post.title}}</h3>
-                                <h4>{{post.subheader}}</h4>
-                                <p>{{post.link}}</p>
-                            </div>
-                            <div class="md-tile-right">
-                                <md-button class="md-fab md-warn" ng-click="togglePostDeletion(post)" aria-label="Delete Item">
-                                    <span class="fa fa-trash-o fa-2x"></span>
-                                </md-button>
-                            </div>
-                        </md-item-content>
-                    </a>
-                </md-item>
+            <md-list>
+                <md-list-item class="md-2-line" ng-repeat="post in posts" ng-class="{deleted: post.deleted}" ng-click="goToPost(post._id, $event)">
+                    <div class="md-avatar" ng-if="post.imageId" bg-img="api/upload/{{post.thumbnailId}}.jpg" style="width: 48px; height: 48px; border-radius: 50%; margin: 16px;"></div>
+                    <div class="md-avatar" ng-if="!post.imageId" style="width: 48px; height: 48px; border-radius: 50%; margin: 16px; background-color: lightblue;"></div>
+                    <div class="md-list-item-text">
+                        <h3>{{post.title}}</h3>
+                        <p>{{post.subheader}}</p>
+                        <!--<p>{{post.link}}</p>-->
+                    </div>
+                    <md-icon class="fa fa-2x md-warn" md-font-icon="fa-trash-o" ng-click="togglePostDeletion(post)" aria-label="Delete Item"></md-icon>
+                </md-list-item>`
             </md-list>
         </md-content>
     </div>
