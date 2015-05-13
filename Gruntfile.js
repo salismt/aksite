@@ -34,7 +34,8 @@ module.exports = function(grunt) {
         },
         express: {
             options: {
-                port: process.env.PORT || 9050
+                port: process.env.PORT || 9050,
+                harmony: true
             },
             dev: {
                 options: {
