@@ -46,11 +46,6 @@ angular.module('aksiteApp')
             }
         };
 
-        $scope.getTitleStyle = function(post) {
-            if(post.deleted) return {'text-decoration':'line-through'};
-            else return {'text-decoration':'none'};
-        };
-
         $scope.saveChanges = function() {
             // Delete posts
             _.forEach($scope.postDeletions, function(post) {
