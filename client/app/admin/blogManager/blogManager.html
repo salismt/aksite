@@ -19,16 +19,21 @@
     <div class="row">
         <md-content>
             <md-list>
-                <md-list-item class="md-2-line" ng-repeat="post in posts" ng-class="{deleted: post.deleted}" ng-click="goToPost(post._id, $event)">
-                    <div class="md-avatar" ng-if="post.imageId" bg-img="api/upload/{{post.thumbnailId}}.jpg" style="width: 48px; height: 48px; border-radius: 50%; margin: 16px;"></div>
-                    <div class="md-avatar" ng-if="!post.imageId" style="width: 48px; height: 48px; border-radius: 50%; margin: 16px; background-color: lightblue;"></div>
-                    <div class="md-list-item-text">
-                        <h3>{{post.title}}</h3>
-                        <p>{{post.subheader}}</p>
-                        <!--<p>{{post.link}}</p>-->
-                    </div>
-                    <md-icon class="fa fa-2x md-warn" md-font-icon="fa-trash-o" ng-click="togglePostDeletion(post)" aria-label="Delete Item"></md-icon>
-                </md-list-item>`
+                <md-list-item class="md-2-line md-with-secondary md-clickable" ng-repeat="post in posts" ng-class="{deleted: post.deleted}">
+                    <md-button class="md-no-style" ng-click="goToPost(post._id, $event)">
+                        <div class="md-list-item-inner">
+                            <div class="md-avatar" ng-if="post.imageId" bg-img="api/upload/{{post.thumbnailId}}.jpg" style="width: 48px; height: 48px; border-radius: 50%; margin: 16px;"></div>
+                            <div class="md-avatar" ng-if="!post.imageId" style="width: 48px; height: 48px; border-radius: 50%; margin: 16px; background-color: lightblue;"></div>
+                            <div class="md-list-item-text">
+                                <h3>{{post.title}}</h3>
+                                <p>{{post.subheader}}</p>
+                            </div>
+                        </div>
+                    </md-button>
+                    <md-button class="md-secondary-container md-icon-button" aria-label="Delete Post" ng-click="togglePostDeletion(post)">
+                        <md-icon class="fa fa-2x md-warn" md-font-icon="fa-trash-o"></md-icon>
+                    </md-button>
+                </md-list-item>
             </md-list>
         </md-content>
     </div>
