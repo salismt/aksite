@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('FeaturedmanagerCtrl', function($scope, $http) {
+    .controller('FeaturedmanagerCtrl', function($scope, $http, $state) {
         $scope.loadingItems = true;
         $http.get('/api/featured/items')
             .success(function(data) {

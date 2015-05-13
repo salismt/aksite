@@ -10,24 +10,22 @@
     </div>
     <div class="row">
         <md-content>
-            <md-list class="user-list">
-                <md-item ng-repeat="item in items">
-                    <md-item-content class="user-row">
-                        <div class="md-tile-left">
-                            <div bg-img="api/upload/{{item.thumbnailId}}.jpg" style="width: 48px; height: 48px; margin: 16px;"></div>
+            <md-list>
+                <md-list-item class="md-3-line md-with-secondary md-clickable" ng-repeat="item in items" ng-class="{deleted: item.deleted}">
+                    <md-button class="md-no-style">
+                        <div class="md-list-item-inner">
+                            <img class="md-avatar" ng-src="/api/upload/{{item.thumbnailId}}.jpg" alt="{{item.name}}">
+                            <div class="md-list-item-text">
+                                <h3>{{item.name}}</h3>
+                                <h4>{{item.type}}</h4>
+                                <p>{{item.link}}</p>
+                            </div>
                         </div>
-                        <div class="md-tile-content">
-                            <h3>{{item.name}}</h3>
-                            <h4>{{item.type}}</h4>
-                            <p>{{item.link}}</p>
-                        </div>
-                        <div class="md-tile-right">
-                            <md-button class="md-fab md-warn" ng-click="deleteItem(item)" aria-label="Delete Item">
-                                <span class="fa fa-trash-o fa-2x"></span>
-                            </md-button>
-                        </div>
-                    </md-item-content>
-                </md-item>
+                    </md-button>
+                    <md-button class="md-secondary-container md-icon-button" aria-label="Delete Item" ng-click="deleteItem(item)">
+                        <md-icon class="fa fa-2x md-warn" md-font-icon="fa-trash-o"></md-icon>
+                    </md-button>
+                </md-list-item>
             </md-list>
         </md-content>
     </div>
