@@ -1,15 +1,18 @@
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
-            <h1>Manage Featured Items</h1>
-
-            <button ng-click="newFeaturedSection()" type="button" class="btn btn-primary btn-lg">Generate new Featured
-                Section
-            </button>
-        </div>
-    </div>
-    <div class="row">
         <md-content>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2><span>Manage Featured Items</span></h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" aria-label="Render new Featured Section" ng-click="newFeaturedSection()">
+                        <div flex layout="row" layout-align="center center">
+                            <md-icon class="fa fa-2x" md-font-icon="fa-refresh"></md-icon>
+                            Render New Section
+                        </div>
+                    </md-button>
+                </div>
+            </md-toolbar>
             <md-list>
                 <md-list-item class="md-3-line md-with-secondary md-clickable" ng-repeat="item in items" ng-class="{deleted: item.deleted}">
                     <md-button class="md-no-style">
