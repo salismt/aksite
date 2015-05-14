@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('FeaturedmanagerCtrl', function($scope, $http, $state) {
+    .controller('FeaturedmanagerCtrl', function($scope, $http, $mdToast, $animate) {
         $scope.loadingItems = true;
         $http.get('/api/featured/items')
             .success(function(data) {
@@ -15,8 +15,21 @@ angular.module('aksiteApp')
 
         $scope.newFeaturedSection = function() {
             $http.get('/api/featured/new')
-                .success(function(data, status) {
-                    console.log(status);
+                .success(function() {
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .content('Rendering Finished')
+                            .position('bottom right')
+                            .hideDelay(3000)
+                        );
+                })
+                .error(function() {
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .content('Rendering Failed')
+                            .position('bottom right')
+                            .hideDelay(3000)
+                    );
                 });
         };
 
