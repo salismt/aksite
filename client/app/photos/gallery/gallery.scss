@@ -6,36 +6,7 @@
     font-size: 3em;
 }
 
-.masonry-brick {
-    display: block;
-    width: 25%;
-    img {
-        width: 100%;
-        display: block;
-    }
-}
-
 .pswp {
     // Fix Bootstrap navbar on top of PhotoSwipe
     z-index: 1500 !important;
-}
-
-/* Media queries (reduce number of columns and change slideshow layout) */
-@media screen and (max-width: 60em) {
-    /* responsive columns; see "Element sizing" on http://masonry.desandro.com/options.html */
-    .masonry-brick {
-        width: 33.3%;
-    }
-}
-
-@media screen and (max-width: 35em) {
-    .masonry-brick {
-        width: 50%;
-    }
-}
-
-@media screen and (max-width: 24em) {
-    .masonry-brick {
-        width: 100%;
-    }
 }

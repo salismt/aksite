@@ -12,8 +12,15 @@
     </div>
     <alert ng-if="!loadingProjects && projects.length === 0" type="info">No Projects</alert>
     <div ng-if="projects.length > 0" class="row masonry-cards-container">
-        <div masonry='{ "transitionDuration" : "0.4s" , "itemSelector" : ".tile", "gutter": 10, "containerStyle": null}' id="masonry-container" style="position: relative;">
-            <a masonry-tile class="tile masonry-brick" ng-repeat="project in projects" ng-href="/projects/{{project._id}}">
+        <div masonry='{
+                "transitionDuration" : "0.4s" ,
+                "itemSelector" : ".brick",
+                "gutter": 10,
+                "containerStyle": {"margin": "auto"},
+                "isFitWidth": true
+            }'
+             id="masonry-container" style="position: relative;">
+            <a masonry-tile class="brick" ng-repeat="project in projects" ng-href="/projects/{{project._id}}">
                 <md-card>
                     <img ng-src="api/upload/{{project.coverId}}" class="md-card-image" alt="">
                     <md-card-content>

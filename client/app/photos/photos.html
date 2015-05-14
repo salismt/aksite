@@ -4,8 +4,14 @@
     <div ng-if="galleries.length > 0" class="row masonry-cards-container">
         <h1 class="page-header">Galleries</h1>
 
-        <div masonry='{ "transitionDuration" : "0.4s" , "itemSelector" : ".tile", "gutter": 10, "containerStyle": null}' id="masonry-container" style="position: relative;">
-            <a masonry-tile class="tile masonry-brick" ng-repeat="gallery in galleries" ng-href="/photos/{{gallery._id}}">
+        <div masonry='{
+                "transitionDuration" : "0.4s" ,
+                "itemSelector" : ".brick",
+                "gutter": 10,
+                "containerStyle": {"margin": "auto"},
+                "isFitWidth": true
+            }' id="masonry-container" style="position: relative;">
+            <a masonry-tile class="brick" ng-repeat="gallery in galleries" ng-href="/photos/{{gallery._id}}">
                 <md-card>
                     <img ng-src="api/upload/{{gallery.featuredImgId}}" class="md-card-image" alt="">
                     <md-card-content>
