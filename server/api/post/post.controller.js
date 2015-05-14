@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash'),
+    util = require('../../util'),
     Post = require('./post.model'),
     auth = require('../../auth/auth.service'),
     config = require('../../config/environment'),
@@ -17,16 +18,15 @@ gridform.mongo = mongoose.mongo;
 Grid.mongo = mongoose.mongo;
 
 conn.once('open', function(err) {
-    if(err) {
-        handleError(err);
-    } else {
+    if(err) console.log(err);
+    else {
         gfs = Grid(conn.db);
         gridform.db = conn.db;
     }
 });
 
-var DEFAULT_PAGESIZE = 10;
-var MAX_PAGESIZE = 25;
+const DEFAULT_PAGESIZE = 10;
+const MAX_PAGESIZE = 25;
 
 // Get list of posts
 exports.index = function(req, res) {
@@ -42,7 +42,7 @@ exports.index = function(req, res) {
             .sort('date')
             .skip((req.query.page-1) * pageSize || 0)//doesn't scale well, I'll worry about it later
             .exec(function(err, posts) {
-                if(err) return handleError(res, err);
+                if(err) return util.handleError(res, err);
                 if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
                     _.remove(posts, 'hidden');
                 }
@@ -58,12 +58,12 @@ exports.index = function(req, res) {
 
 // Get a single post
 exports.show = function(req, res) {
-    if(!isValidObjectId(req.params.id)) {
+    if(!util.isvalidobjectId(req.params.id)) {
         return res.status(400).send('Invalid ID');
     }
     Post.findById(req.params.id, function(err, post) {
         if(err) {
-            return handleError(res, err);
+            return util.handleError(res, err);
         } else if(!post) {
             return res.status(404).end();
         } else {
@@ -79,7 +79,7 @@ exports.show = function(req, res) {
 // Get the number of posts
 exports.count = function(req, res) {
     Post.count({}, function(err, count) {
-        if(err) handleError(res, err);
+        if(err) util.handleError(res, err);
         else res.status(200).json(count);
     });
 };
@@ -98,7 +98,7 @@ exports.create = function(req, res) {
     //});
 
     form.parse(req, function(err, fields, files) {
-        if(err) return handleError(res, err);
+        if(err) return util.handleError(res, err);
 
         /**
          * file.name            - the uploaded file name
@@ -114,64 +114,59 @@ exports.create = function(req, res) {
 
         //console.log(file);
         //console.log(fields);
-        var sanitised = sanitiseNewPost(fields);
 
-        if(sanitised === null) {
-            var postModel = {
-                title: fields.title,
-                subheader: fields.subheader,
-                content: fields.content,
-                date: new Date(fields.date) || new Date(),
-                author: JSON.parse(fields.author),
-                imageId: undefined,
-                alias: fields.alias || undefined,
-                categories: fields.categories || []
-            };
-            if(fields.hidden === 'true') {
-                postModel.hidden = true;
-            } else if(fields.hidden === 'false') {
-                postModel.hidden = false;
-            } else { //sanitizer should prevent this
-                postModel.hidden = false;
-            }
+        var postModel = {
+            title: fields.title,
+            subheader: fields.subheader,
+            content: fields.content,
+            date: new Date(fields.date) || new Date(),
+            author: JSON.parse(fields.author),
+            imageId: undefined,
+            alias: fields.alias || undefined,
+            categories: fields.categories || []
+        };
+        if(fields.hidden === 'true') {
+            postModel.hidden = true;
+        } else if(fields.hidden === 'false') {
+            postModel.hidden = false;
+        } else { //sanitizer should prevent this
+            postModel.hidden = false;
+        }
 
-            if(file) {
-                postModel.imageId = file.id;
+        if(file) {
+            postModel.imageId = file.id;
 
-                // Thumbnail generation
-                var stream = gfs.createReadStream({_id: file.id});
-                stream.on('error', handleGridStreamErr(res));
-                gm(stream, file.id)
-                    .size({bufferStream: true}, function(err, size) {
-                        postModel.width = size.width;
-                        postModel.height = size.height;
-                        this.resize(null, 400);
-                        this.quality(90);
-                        this.stream(function(err, outStream) {
-                            if(err) return res.status(500).end();
-                            else {
-                                var writestream = gfs.createWriteStream({filename: file.name});
-                                writestream.on('close', function(thumbFile) {
-                                    console.log(thumbFile.name+' -> (thumb)'+thumbFile._id);
-                                    postModel.thumbnailId = thumbFile._id;
+            // Thumbnail generation
+            var stream = gfs.createReadStream({_id: file.id});
+            stream.on('error', util.handleError(res));
+            gm(stream, file.id)
+                .size({bufferStream: true}, function(err, size) {
+                    postModel.width = size.width;
+                    postModel.height = size.height;
+                    this.resize(null, 400);
+                    this.quality(90);
+                    this.stream(function(err, outStream) {
+                        if(err) return res.status(500).end();
+                        else {
+                            var writestream = gfs.createWriteStream({filename: file.name});
+                            writestream.on('close', function(thumbFile) {
+                                console.log(thumbFile.name+' -> (thumb)'+thumbFile._id);
+                                postModel.thumbnailId = thumbFile._id;
 
-                                    Post.create(postModel, function(err, post) {
-                                        if(err) return handleError(res, err);
-                                        else return res.status(201).json(post);
-                                    });
+                                Post.create(postModel, function(err, post) {
+                                    if(err) return util.handleError(res, err);
+                                    else return res.status(201).json(post);
                                 });
-                                outStream.pipe(writestream);
-                            }
-                        });
+                            });
+                            outStream.pipe(writestream);
+                        }
                     });
-            } else {
-                Post.create(postModel, function(err, post) {
-                    if(err) return handleError(res, err);
-                    else return res.status(201).json(post);
                 });
-            }
         } else {
-            return res.status(400).send(sanitised);
+            Post.create(postModel, function(err, post) {
+                if(err) return util.handleError(res, err);
+                else return res.status(201).json(post);
+            });
         }
     });
 };
@@ -181,19 +176,19 @@ exports.update = function(req, res) {
     if(config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
         return res.status(401).send('You need to be an admin to create posts');
     }
-    if(!isValidObjectId(req.params.id)) {
+    if(!util.isvalidobjectId(req.params.id)) {
         return res.status(400).send('Invalid ID');
     }
     var form = gridform({db: conn.db, mongo: mongoose.mongo});
 
     Post.findById(req.params.id, function(err, post) {
         if(err) {
-            return handleError(res, err);
+            return util.handleError(res, err);
         } else if(!post) {
             return res.status(404).end();
         } else {
             form.parse(req, function(err, fields, files) {
-                if(err) return handleError(res, err);
+                if(err) return util.handleError(res, err);
 
                 if(fields._id) {
                     delete fields._id;
@@ -242,11 +237,11 @@ exports.update = function(req, res) {
                     if(fields.newImage) {
                         if(post.imageId) {
                             gfs.remove({_id: post.imageId}, function (err) {
-                                if (err) return handleError(err);
+                                if (err) return util.handleError(err);
                                 else console.log('deleted imageId');
                             });
                             gfs.remove({_id: post.thumbnailId}, function (err) {
-                                if (err) return handleError(err);
+                                if (err) return util.handleError(err);
                                 else console.log('deleted thumbnailId');
                             });
                         }
@@ -255,7 +250,7 @@ exports.update = function(req, res) {
 
                         // Thumbnail generation
                         var stream = gfs.createReadStream({_id: file.id});
-                        stream.on('error', handleGridStreamErr(res));
+                        stream.on('error', util.handleError(res));
                         gm(stream, file.id)
                             .size({bufferStream: true}, function(err, size) {
                                 postModel.width = size.width;
@@ -273,7 +268,7 @@ exports.update = function(req, res) {
                                             var updated = _.assign(post, postModel);
                                             return updated.save(function(err) {
                                                 if(err) {
-                                                    return handleError(res, err);
+                                                    return util.handleError(res, err);
                                                 } else {
                                                     return res.status(200).json(post);
                                                 }
@@ -287,7 +282,7 @@ exports.update = function(req, res) {
                         var updated = _.assign(post, postModel);
                         return updated.save(function(err) {
                             if(err) {
-                                return handleError(res, err);
+                                return util.handleError(res, err);
                             } else {
                                 return res.status(200).json(post);
                             }
@@ -301,69 +296,14 @@ exports.update = function(req, res) {
 
 // Deletes a post from the DB.
 exports.destroy = function(req, res) {
-    if(!isValidObjectId(req.params.id)) {
-        return res.status(400).send('Invalid ID');
-    }
+    if(!util.isvalidobjectId(req.params.id)) return res.status(400).send('Invalid ID');
     Post.findById(req.params.id, function(err, post) {
-        if(err) {
-            return handleError(res, err);
-        }
-        if(!post) {
-            return res.send(404);
-        }
-        post.remove(function(err) {
-            if(err) {
-                return handleError(res, err);
-            }
+        if(err) return util.handleError(res, err);
+        if(!post) return res.send(404);
+
+        post.remove((err) => {
+            if(err) return util.handleError(res, err);
             return res.send(204);
         });
     });
 };
-
-function handleError(res, err) {
-    return res.send(500, err);
-}
-
-function handleGridStreamErr(res) {
-    return function(err) {
-        if(/does not exist/.test(err)) {
-            // trigger 404
-            console.log(err);
-            return err;
-        }
-
-        // may have written data already
-        res.status(500).end();
-        console.error(err.stack);
-    };
-}
-
-//TODO
-function sanitiseNewPost(body) {
-    // Required Params
-    if(!body.title) {
-        return 'Missing title'
-    } else if(!body.subheader) {
-        return 'Missing subheader';
-    } else if(!body.content) {
-        return 'Missing content';
-    }
-    // Type Checking
-    else if(typeof body.title !== 'string') {
-        return 'Title not String';
-    } else if(typeof body.subheader !== 'string') {
-        return 'Subheader not String';
-    } else if(typeof body.content !== 'string') {
-        return 'Content not String';
-    } else if(body.hidden && (body.hidden !== 'true' && body.hidden !== 'false')) {
-        return 'Hidden not Boolean';
-    }
-    //TODO: check image, etc
-    else {
-        return null;
-    }
-}
-
-function isValidObjectId(objectId) {
-    return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
-}
