@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('PhotosCtrl', function($scope, $http, Photo, Gallery) {
+    .controller('PhotosCtrl', function($scope, $http, Photo, Gallery, $state) {
         $scope.galleries = Gallery.query(function(val) {
             _.forEach($scope.galleries, function(gallery) {
                 $http.get('/api/photos/'+gallery.featuredId)
@@ -10,4 +10,8 @@ angular.module('aksiteApp')
                     });
             });
         });
+
+        $scope.goToGallery = function(id, event) {
+            $state.go('gallery', {galleryId: id});
+        }
     });
