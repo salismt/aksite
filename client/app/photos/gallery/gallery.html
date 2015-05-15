@@ -13,8 +13,7 @@
 
     <div masonry='{
                 "transitionDuration" : "0.4s" ,
-                "itemSelector" : ".brick",
-                "isFitWidth": true
+                "itemSelector" : ".brick"
             }' id="masonry-container">
         <div masonry-tile ng-repeat="photo in photos" class="brick" data-size="{{photo.width}}x{{photo.height}}" id="/api/upload/{{::photo.fileId}}.jpg">
             <img ng-src="/api/upload/{{::photo.thumbnailId}}.jpg" alt="" ng-click="onThumbnailsClick(photo.index)">
