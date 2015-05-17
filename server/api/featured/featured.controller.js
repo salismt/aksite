@@ -155,22 +155,14 @@ exports.newFeatured = function(req, res) {
     });
 };
 
-
 // Add an Item to the DB
 exports.add = function(req, res) {
     if(!req.params.id || !util.isValidObjectId(req.params.id))  return res.status(400).send('Invalid ID');
+
     var acceptedTypes = ['photo', 'project', 'post'];
     var item = {};
-    if(!req.body.type || !_.contains(acceptedTypes, req.body.type.toLowerCase())) {
-        var typesString = '';
-        _.forEach(acceptedTypes, function(type, i) {
-            if(i == acceptedTypes.length - 1) typesString += ' &';
-            typesString += ' ' + type + ',';
-        });
-        typesString = typesString.substring(0, typesString.length - 1);
-        typesString += '.';
-        return res.status(400).send('Error: Please supply an accepted item type. The supported types are:' + typesString);
-    }
+    if(!req.body.type || !_.contains(acceptedTypes, req.body.type.toLowerCase()))
+        return res.status(400).send('Error: Please supply an accepted item type. The supported types are:' + acceptedTypes.join(', '));
 
     item.type = req.body.type;
     item.name = req.body.name || 'Untitled';
