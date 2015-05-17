@@ -63,9 +63,7 @@ conn.once('open', function(err) {
         if(err) console.log(err);
         else {
             _.forEach(gridfiles, function(file) {
-                gfs.remove({_id: file._id}, function(err) {
-                    if(err) console.log(err);
-                });
+                util.deleteFile({_id: file._id});
             });
         }
     });

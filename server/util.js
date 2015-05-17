@@ -127,6 +127,22 @@ exports.saveFileFromFs = function(uri, options) {
 };
 
 /**
+ * Removes a file from GridFS
+ * @param options
+ * @param {string|ObjectID} options._id
+ */
+exports.deleteFile = function(options) {
+    var deferred = q.defer();
+
+    gfs.remove({_id: options._id}, function(err, document) {
+        if(err) return deferred.reject(err);
+        deferred.resolve(document);
+    });
+
+    return deferred.promise;
+};
+
+/**
  * Returns whether or not the given string is a valid ObjectID
  * @param {string} objectId
  * @returns {boolean}

@@ -229,19 +229,9 @@ exports.clean = function(req, res) {
                     if(err) return console.log(err);
 
                     console.log('Delete photo', photo._id);
-
-                    gfs.remove({_id: photo.fileId}, function(err) {
-                        if(err) return console.log(err);
-                        console.log('Delete file', id);
-                    });
-                    gfs.remove({_id: photo.thumbnailId}, function(err) {
-                        if(err) return console.log(err);
-                        console.log('Delete file', id);
-                    });
-                    gfs.remove({_id: photo.sqThumbnailId}, function(err) {
-                        if(err) return console.log(err);
-                        console.log('Delete file', id);
-                    });
+                    util.deleteFile({_id: photo.fileId});
+                    util.deleteFile({_id: photo.thumbnailId});
+                    util.deleteFile({_id: photo.sqThumbnailId});
                 });
             });
         }, console.log);
