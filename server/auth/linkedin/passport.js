@@ -3,15 +3,16 @@
 var util = require('../../util'),
     config = require('../../config/environment'),
     passport = require('passport'),
-    LinkedInStrategy = require('passport-linkedin').Strategy,
+    LinkedInStrategy = require('passport-linkedin-oauth2').Strategy,
     request = require('request');
 
 exports.setup = function(User, config) {
     passport.use(new LinkedInStrategy({
-            consumerKey: config.linkedin.clientID,
-            consumerSecret: config.linkedin.clientSecret,
+            clientID: config.linkedin.clientID,
+            clientSecret: config.linkedin.clientSecret,
             callbackURL: config.linkedin.callbackURL,
             passReqToCallback: true,
+            state: true,
             profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline', 'picture-url', 'picture-urls::(original)', 'location', 'industry', 'num-connections', 'summary', 'positions', 'public-profile-url', 'site-standard-profile-request', 'api-standard-profile-request']
         },
         function(req, accessToken, refreshToken, profile, done) {

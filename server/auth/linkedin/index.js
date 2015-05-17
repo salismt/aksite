@@ -10,9 +10,9 @@ router
     .get('/', passport.authenticate('linkedin', {
         failureRedirect: '/signup',
         scope: [
-            'r_network',
-            'r_fullprofile',
-            'r_contactinfo',
+            //'r_network',
+            //'r_fullprofile',
+            //'r_contactinfo',
             'r_emailaddress'
         ],
         session: false

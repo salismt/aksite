@@ -32,7 +32,7 @@
     "passport-facebook": "latest",
     "passport-github": "^0.1.5",
     "passport-google-oauth": "latest",
-    "passport-linkedin": "^0.1.3",
+    "passport-linkedin-oauth2": "^1.2.1",
     "passport-local": "~0.1.6",
     "passport-twitter": "latest",
     "q": "^1.1.2",
