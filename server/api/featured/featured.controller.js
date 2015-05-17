@@ -176,38 +176,34 @@ exports.add = function(req, res) {
     item.name = req.body.name || 'TEST';
     item.link = req.body.link || '#';
 
-    switch(req.body.type) {
-        case 'photo':
-            Photo.findById(req.params.id, function(err, photo) {
-                if(err)
-                    return util.handleError(res, err);
-                else if(!photo)
-                    return res.status(404).end();
-                else {
-                    if(photo.sqThumbnailId) {
-                        item.sqThumbnailId = photo.sqThumbnailId;
+    if(req.body.type === 'photo') {
+        Photo.findById(req.params.id, function(err, photo) {
+            if(err)
+                return util.handleError(res, err);
+            else if(!photo)
+                return res.status(404).end();
+            else {
+                if(photo.sqThumbnailId) {
+                    item.sqThumbnailId = photo.sqThumbnailId;
 
-                        return FeaturedItem.create(item, function(err, featured) {
-                            if(err) return util.handleError(res, err);
-                            else return res.status(201).json(featured);
-                        });
-                    } else if(photo.fileId) {
-                        //TODO: if doesn't have a thumbnail
-                        return res.status(500).end();
-                    } else {
-                        return res.status(500).end();
-                    }
+                    return FeaturedItem.create(item, function(err, featured) {
+                        if(err) return util.handleError(res, err);
+                        else return res.status(201).json(featured);
+                    });
+                } else if(photo.fileId) {
+                    //TODO: if doesn't have a thumbnail
+                    return res.status(500).end();
+                } else {
+                    return res.status(500).end();
                 }
-            });
-            break;
-        case 'project':
-            return res.status(500).send('Error: Server not set up for item of type ' + req.body.type + '.');
-            break;
-        case 'post':
-            return res.status(500).send('Error: Server not set up for item of type ' + req.body.type + '.');
-            break;
-        default:
-            return res.status(500).end();
+            }
+        });
+    } else if (req.body.type === 'project') {
+        return res.status(500).send('Error: Server not set up for projects');
+    } else if (req.body.type === 'post') {
+        return res.status(500).send('Error: Server not set up for posts');
+    } else {
+        return res.status(400).send('Unknown type');
     }
 };
 
