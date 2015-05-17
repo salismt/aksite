@@ -1,29 +1,50 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="container">
-    <header class="hero-unit" id="banner">
-        <div class="container">
-            <h1 class="page-header">Résumé</h1>
-
-            <p class="lead">This site is under construction.</p>
-
-            <p ng-show="true">
-                Bacon ipsum dolor sit amet ham hock pork belly landjaeger, sirloin turducken ground round pork chop
-                corned beef. Bacon flank biltong, ground round tenderloin kevin brisket rump meatball strip steak
-                prosciutto short ribs swine shankle capicola. Ball tip tri-tip bacon salami shankle. Leberkas drumstick
-                t-bone pastrami, kevin meatloaf ball tip turkey porchetta chicken prosciutto andouille chuck brisket
-                swine.
-                <br/><br/>
-                Hamburger short loin pastrami, ham hock pancetta turducken beef ribs ribeye porchetta pig tri-tip.
-                Bresaola kevin jerky flank. Leberkas jowl andouille, frankfurter rump beef spare ribs doner chicken
-                corned beef salami meatball. Ground round sirloin pig drumstick jerky tri-tip bacon.
-                <br/><br/>
-                Corned beef ham hock cow biltong shankle. Beef ribs rump pork loin andouille. Filet mignon hamburger
-                meatball rump shankle. Jerky flank chuck, tongue bacon pork loin drumstick salami. Pork loin bacon filet
-                mignon, leberkas kielbasa ground round pork ham hock turducken tenderloin cow.
-            </p>
+<div class="container md-padding">
+    <div class="md-whiteframe-z1" style="background-color: rgb(63, 81, 181);">
+        <img src="assets/images/portrait_2014.jpg" style="height: 300px;" alt=""/>
+        <div class="text-white md-padding" style="display: inline-block;">
+            <h1>Andrew Koroluk</h1>
+            <h3>{{profile.headline}}</h3>
         </div>
-    </header>
+    </div>
+    <div class="md-whiteframe-z1">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Skills</span>
+                </h2>
+            </div>
+        </md-toolbar>
+        <md-content class="md-padding">
+            <md-chips class="md-chips-noline">
+                <md-chip ng-repeat="skill in profile.skills.values">{{skill.skill.name}}</md-chip>
+            </md-chips>
+        </md-content>
+    </div>
+    <div class="md-whiteframe-z1">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Certifications</span>
+                </h2>
+            </div>
+        </md-toolbar>
+        <md-content class="md-padding">
+            <md-list class="md-default-theme">
+                <md-list-item class="md-clickable" ng-repeat="cert in profile.certifications.values">
+                    <md-button class="md-no-style" ng-click="goToUser(user._id, $event)">
+                        <div class="md-list-item-inner">
+                            <img class="md-avatar" src="assets/images/codeschool_avatar.svg" alt="">
+                            <div class="md-list-item-text">
+                                <p>{{cert.name}}</p>
+                            </div>
+                        </div>
+                    </md-button>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div>
 </div>
 
 <div ng-include="'components/footer/footer.html'"></div>

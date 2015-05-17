@@ -133,6 +133,10 @@ input[readonly] {
     }
 }
 
+md-chips.md-chips-noline .md-chips {
+    box-shadow: none;
+}
+
 .grid-gallery {
     min-height: 350px;
 }

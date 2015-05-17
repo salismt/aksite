@@ -1,0 +1,589 @@
+{
+    "certifications":{
+        "_total":4,
+        "values":[
+            {
+                "authority":{
+                    "name":"Code School"
+                },
+                "id":631424176,
+                "name":"JavaScript Best Practices"
+            },
+            {
+                "authority":{
+                    "name":"Code School"
+                },
+                "id":631424178,
+                "name":"Fundamentals of Design"
+            },
+            {
+                "authority":{
+                    "name":"Code School"
+                },
+                "id":631424179,
+                "name":"Assembling Sass"
+            },
+            {
+                "authority":{
+                    "name":"Code School"
+                },
+                "id":631424180,
+                "name":"Assembling Sass Part 2"
+            }
+        ]
+    },
+    "dateOfBirth":{
+        "day":23,
+        "month":5,
+        "year":1994
+    },
+    "educations":{
+        "_total":2,
+        "values":[
+            {
+                "activities":"Purdue Hackers, Silver Wings Society, Photography Club",
+                "degree":"Bachelor of Science (B.S.)",
+                "endDate":{
+                    "year":2016
+                },
+                "fieldOfStudy":"Computer Science",
+                "id":131998551,
+                "notes":"Computer Science (Security track) BS Student, 2 years AFROTC, Silver Wings Society, Photography club, Purdue Hackers, Intramurals",
+                "schoolName":"Purdue University",
+                "startDate":{
+                    "year":2012
+                }
+            },
+            {
+                "activities":"WSTX, Varsity Ice Hockey",
+                "endDate":{
+                    "year":2012
+                },
+                "id":99304656,
+                "notes":"Honors-level student",
+                "schoolName":"Saint Xavier High School",
+                "startDate":{
+                    "year":2008
+                }
+            }
+        ]
+    },
+    "firstName":"Andrew",
+    "headline":"Full-Stack Web Software Engineer",
+    "honorsAwards":{
+        "_total":3,
+        "values":[
+            {
+                "id":32,
+                "name":"Boilermake Feb 2014, 3rd Place"
+            },
+            {
+                "id":15,
+                "issuer":"Western Kentucky University",
+                "name":"WKU Programming Contest, 1st Place"
+            },
+            {
+                "id":273,
+                "issuer":"Bloomberg",
+                "name":"Boilermake Oct 2014, Bloomberg Winner"
+            }
+        ]
+    },
+    "id":"yK2Jf2fgRe",
+    "industry":"Computer Software",
+    "languages":{
+        "_total":3,
+        "values":[
+            {
+                "id":275,
+                "language":{
+                    "name":"English"
+                },
+                "proficiency":{
+                    "level":"native_or_bilingual",
+                    "name":"Native or bilingual proficiency"
+                }
+            },
+            {
+                "id":276,
+                "language":{
+                    "name":"Spanish"
+                },
+                "proficiency":{
+                    "level":"elementary",
+                    "name":"Elementary proficiency"
+                }
+            },
+            {
+                "id":277,
+                "language":{
+                    "name":"Russian"
+                },
+                "proficiency":{
+                    "level":"elementary",
+                    "name":"Elementary proficiency"
+                }
+            }
+        ]
+    },
+    "lastName":"Koroluk",
+    "numRecommenders":0,
+    "pictureUrl":"https://media.licdn.com/mpr/mprx/0_DBwsjZ9_oB_kxHLDfNedjVLSoAbk0wND_1xLjVvYzqPvhf_STlUnPs3KXxFsyuv32NWk-gF4GFxO",
+    "positions":{
+        "_total":4,
+        "values":[
+            {
+                "company":{
+                    "id":3631160,
+                    "industry":"Internet",
+                    "name":"Mimir LLC",
+                    "size":"1-10 employees",
+                    "ticker":"",
+                    "type":"Privately Held"
+                },
+                "endDate":{
+                    "month":3,
+                    "year":2015
+                },
+                "id":631424175,
+                "isCurrent":false,
+                "startDate":{
+                    "month":1,
+                    "year":2015
+                },
+                "summary":"Full-stack web development",
+                "title":"Software Developer"
+            },
+            {
+                "company":{
+                    "id":164405,
+                    "industry":"Computer Software",
+                    "name":"Interactive Intelligence",
+                    "size":"1001-5000 employees",
+                    "ticker":"ININ",
+                    "type":"Public Company"
+                },
+                "endDate":{
+                    "month":12,
+                    "year":2014
+                },
+                "id":542520038,
+                "isCurrent":false,
+                "startDate":{
+                    "month":5,
+                    "year":2014
+                },
+                "summary":"Front-end web application development using AngularJS/KnockoutJS for Caas and PureCloud products.",
+                "title":"Software Engineer"
+            },
+            {
+                "company":{
+                    "name":"St. Xavier High School"
+                },
+                "endDate":{
+                    "month":8,
+                    "year":2012
+                },
+                "id":510770618,
+                "isCurrent":false,
+                "startDate":{
+                    "month":5,
+                    "year":2012
+                },
+                "summary":"Multi-million dollar enterprise rollout, School computer maintenance, software/hardware upgrades, imaging, installation...",
+                "title":"Computer Department Assistant"
+            },
+            {
+                "company":{
+                    "name":"St. Xavier High School"
+                },
+                "endDate":{
+                    "month":8,
+                    "year":2011
+                },
+                "id":269778942,
+                "isCurrent":false,
+                "startDate":{
+                    "month":5,
+                    "year":2011
+                },
+                "summary":"School computer maintenance, software/hardware upgrades, imaging, installation...",
+                "title":"Computer Department Assistant"
+            }
+        ]
+    },
+    "recommendationsReceived":{
+        "_total":0
+    },
+    "skills":{
+        "_total":40,
+        "values":[
+            {
+                "id":39,
+                "skill":{
+                    "name":"JavaScript"
+                }
+            },
+            {
+                "id":40,
+                "skill":{
+                    "name":"AngularJS"
+                }
+            },
+            {
+                "id":41,
+                "skill":{
+                    "name":"HTML5"
+                }
+            },
+            {
+                "id":42,
+                "skill":{
+                    "name":"CSS3"
+                }
+            },
+            {
+                "id":43,
+                "skill":{
+                    "name":"Software Development"
+                }
+            },
+            {
+                "id":44,
+                "skill":{
+                    "name":"C++"
+                }
+            },
+            {
+                "id":45,
+                "skill":{
+                    "name":"Java"
+                }
+            },
+            {
+                "id":46,
+                "skill":{
+                    "name":"HTML"
+                }
+            },
+            {
+                "id":47,
+                "skill":{
+                    "name":"CSS"
+                }
+            },
+            {
+                "id":48,
+                "skill":{
+                    "name":"ES6"
+                }
+            },
+            {
+                "id":49,
+                "skill":{
+                    "name":"Web Development"
+                }
+            },
+            {
+                "id":50,
+                "skill":{
+                    "name":"MongoDB"
+                }
+            },
+            {
+                "id":51,
+                "skill":{
+                    "name":"Photoshop"
+                }
+            },
+            {
+                "id":52,
+                "skill":{
+                    "name":"Software Engineering"
+                }
+            },
+            {
+                "id":53,
+                "skill":{
+                    "name":"User Experience"
+                }
+            },
+            {
+                "id":54,
+                "skill":{
+                    "name":"Linux"
+                }
+            },
+            {
+                "id":55,
+                "skill":{
+                    "name":"Eclipse"
+                }
+            },
+            {
+                "id":56,
+                "skill":{
+                    "name":"Perforce"
+                }
+            },
+            {
+                "id":57,
+                "skill":{
+                    "name":"JIRA"
+                }
+            },
+            {
+                "id":58,
+                "skill":{
+                    "name":"Unit Testing"
+                }
+            },
+            {
+                "id":59,
+                "skill":{
+                    "name":"C"
+                }
+            },
+            {
+                "id":60,
+                "skill":{
+                    "name":"Jasmine"
+                }
+            },
+            {
+                "id":61,
+                "skill":{
+                    "name":"Agile"
+                }
+            },
+            {
+                "id":62,
+                "skill":{
+                    "name":"Git"
+                }
+            },
+            {
+                "id":63,
+                "skill":{
+                    "name":"SASS"
+                }
+            },
+            {
+                "id":64,
+                "skill":{
+                    "name":"LESS"
+                }
+            },
+            {
+                "id":65,
+                "skill":{
+                    "name":"Grunt"
+                }
+            },
+            {
+                "id":66,
+                "skill":{
+                    "name":"Webstorm"
+                }
+            },
+            {
+                "id":67,
+                "skill":{
+                    "name":"Web Design"
+                }
+            },
+            {
+                "id":68,
+                "skill":{
+                    "name":"CMS"
+                }
+            },
+            {
+                "id":69,
+                "skill":{
+                    "name":"Realtime Programming"
+                }
+            },
+            {
+                "id":70,
+                "skill":{
+                    "name":"Open Source"
+                }
+            },
+            {
+                "id":71,
+                "skill":{
+                    "name":"Photography"
+                }
+            },
+            {
+                "id":72,
+                "skill":{
+                    "name":"Graphic Design"
+                }
+            },
+            {
+                "id":73,
+                "skill":{
+                    "name":"KnockoutJS"
+                }
+            },
+            {
+                "id":74,
+                "skill":{
+                    "name":"Socket.io"
+                }
+            },
+            {
+                "id":75,
+                "skill":{
+                    "name":"ECMAScript"
+                }
+            },
+            {
+                "id":76,
+                "skill":{
+                    "name":"Arduino"
+                }
+            },
+            {
+                "id":77,
+                "skill":{
+                    "name":"Yeoman"
+                }
+            },
+            {
+                "id":631424177,
+                "skill":{
+                    "name":"Agile Methodologies"
+                }
+            }
+        ]
+    },
+    "summary":"Full-stack JavaScript developer with experience using today’s modern technologies, including Node.js, ECMAScript 6, and AngularJS. Has a passion for modern paradigms in software development and emerging technologies.",
+    "threeCurrentPositions":{
+        "_total":0
+    },
+    "threePastPositions":{
+        "_total":3,
+        "values":[
+            {
+                "company":{
+                    "id":3631160,
+                    "industry":"Internet",
+                    "name":"Mimir LLC",
+                    "size":"1-10 employees",
+                    "ticker":"",
+                    "type":"Privately Held"
+                },
+                "endDate":{
+                    "month":3,
+                    "year":2015
+                },
+                "id":631424175,
+                "isCurrent":false,
+                "startDate":{
+                    "month":1,
+                    "year":2015
+                },
+                "summary":"Full-stack web development",
+                "title":"Software Developer"
+            },
+            {
+                "company":{
+                    "id":164405,
+                    "industry":"Computer Software",
+                    "name":"Interactive Intelligence",
+                    "size":"1001-5000 employees",
+                    "ticker":"ININ",
+                    "type":"Public Company"
+                },
+                "endDate":{
+                    "month":12,
+                    "year":2014
+                },
+                "id":542520038,
+                "isCurrent":false,
+                "startDate":{
+                    "month":5,
+                    "year":2014
+                },
+                "summary":"Front-end web application development using AngularJS/KnockoutJS for Caas and PureCloud products.",
+                "title":"Software Engineer"
+            },
+            {
+                "company":{
+                    "name":"St. Xavier High School"
+                },
+                "endDate":{
+                    "month":8,
+                    "year":2012
+                },
+                "id":510770618,
+                "isCurrent":false,
+                "startDate":{
+                    "month":5,
+                    "year":2012
+                },
+                "summary":"Multi-million dollar enterprise rollout, School computer maintenance, software/hardware upgrades, imaging, installation...",
+                "title":"Computer Department Assistant"
+            }
+        ]
+    },
+    "volunteer":{
+        "causes":{
+            "_total":5,
+            "values":[
+                {
+                    "name":"animalRights"
+                },
+                {
+                    "name":"children"
+                },
+                {
+                    "name":"education"
+                },
+                {
+                    "name":"politics"
+                },
+                {
+                    "name":"scienceAndTechnology"
+                }
+            ]
+        },
+        "opportunities":{
+            "boardMember":false,
+            "proBono":true
+        },
+        "supportedOrganizations":{
+            "_total":4,
+            "values":[
+                {
+                    "name":"Habitat for Humanity"
+                },
+                {
+                    "name":"Crusade for Children"
+                },
+                {
+                    "name":"American Red Cross"
+                },
+                {
+                    "id":397738,
+                    "name":"Indiana Blood Center"
+                }
+            ]
+        },
+        "volunteerExperiences":{
+            "_total":1,
+            "values":[
+                {
+                    "id":274,
+                    "organization":{
+                        "name":"Silver Wings Society (Purdue)"
+                    },
+                    "role":"VP"
+                }
+            ]
+        }
+    }
+}
