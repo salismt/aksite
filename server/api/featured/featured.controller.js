@@ -173,7 +173,7 @@ exports.add = function(req, res) {
     }
 
     item.type = req.body.type;
-    item.name = req.body.name || 'TEST';
+    item.name = req.body.name || 'Untitled';
     item.link = req.body.link || '#';
 
     if(req.body.type === 'photo') {
