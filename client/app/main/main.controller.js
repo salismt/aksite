@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('MainCtrl', function($scope, $http, socket) {
+    .controller('MainCtrl', function($scope, $http) {
         $scope.getFeatured = function() {
             $http.get('/api/featured')
                 .success(function(res) {
@@ -29,7 +29,7 @@ angular.module('aksiteApp')
             // Get the new text ID
             currentText = _.sample(texts);
             // Move the new text ID to the usedTexts array, so that it's not used again until we run out of styles
-            usedTexts.push(_.remove( texts, _.partial(_.isEqual, currentText, _) ));
+            usedTexts.push(_.remove( texts, _.partial(_.isEqual, currentText) ));
             // Show the new text
             classie.removeClass( document.getElementById(currentText), 'hidden' );
         };
