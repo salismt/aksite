@@ -91,6 +91,13 @@ module.exports = function(grunt) {
                     '<%= yeoman.client %>/{app,components,assets/css}/**/*.{scss,sass}'],
                 tasks: ['sass', 'autoprefixer']
             },
+            babel: {
+                files: [
+                    '<%%= yeoman.client %>/{app,components}/**/*.js',
+                    '!<%%= yeoman.client %>/{app,components}/**/*.spec.js'
+                ],
+                tasks: ['babel']
+            },
             gruntfile: {
                 files: ['Gruntfile.js']
             },
@@ -98,7 +105,7 @@ module.exports = function(grunt) {
                 files: [
                     '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.css',
                     '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.html',
-                    '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
+                    '.tmp/{app,components}/**/*.js',
                     '!{.tmp,<%= yeoman.client %>}{app,components}/**/*.spec.js',
                     '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js',
                     '<%= yeoman.client %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
@@ -417,10 +424,12 @@ module.exports = function(grunt) {
         // Run some tasks in parallel to speed up the build process
         concurrent: {
             server: [
+                'babel',
                 'sass'
             ],
             test: [
-                'sass'
+                'sass',
+                'babel'
             ],
             debug: {
                 tasks: [
@@ -433,6 +442,7 @@ module.exports = function(grunt) {
             },
             dist: [
                 'sass',
+                'babel',
                 'imagemin',
                 'svgmin'
             ]
@@ -494,6 +504,24 @@ module.exports = function(grunt) {
             }
         },
 
+        // Compiles ES6 to JavaScript using Babel
+        babel: {
+            options: {
+                sourceMap: true
+            },
+            server: {
+                files: [{
+                    expand: true,
+                    cwd: 'client',
+                    src: [
+                        '{app,components}/**/*.js',
+                        '!{app,components}/**/*.spec.js'
+                    ],
+                    dest: '.tmp'
+                }]
+            }
+        },
+
         injector: {
             options: {},
             // Inject application script files into index.html (doesn't include bower)
@@ -509,10 +537,12 @@ module.exports = function(grunt) {
                 },
                 files: {
                     '<%= yeoman.client %>/index.html': [
-                        ['{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
+                        [
+                            '.tmp/{app,components}/**/*.js',
                             '!{.tmp,<%= yeoman.client %>}/app/app.js',
                             '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.spec.js',
-                            '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js']
+                            '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js'
+                        ]
                     ]
                 }
             },
