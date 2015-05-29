@@ -17,8 +17,7 @@ var express = require('express'),
     passport = require('passport'),
     session = require('express-session'),
     mongoStore = require('connect-mongo')(session),
-    mongoose = require('mongoose'),
-    qt = require('quickthumb');
+    mongoose = require('mongoose');
 
 module.exports = function(app) {
     var env = app.get('env');
@@ -32,7 +31,6 @@ module.exports = function(app) {
     app.use(methodOverride());
     app.use(cookieParser());
     app.use(passport.initialize());
-    app.use(qt.static(__dirname + '/'));
 
     // Persist sessions with mongoStore
     // We need to enable sessions for passport twitter because its an oauth 1.0 strategy
