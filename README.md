@@ -22,9 +22,9 @@ Andrew Koroluk
 	`npm install -g grunt`
 
 7. Download the source files
-    1. Download `.zip`
-    2. HTTPS:  `git clone https://USERNAME@bitbucket.org/awk34/aksite.git`
-    3. SSH: `git clone git@bitbucket.org:awk34/aksite.git`
+    1. Download ZIP: [https://github.com/Awk34/aksite/archive/master.zip]
+    2. HTTPS:  `git clone https://github.com/Awk34/aksite.git`
+    3. SSH: `git clone git@github.com:Awk34/aksite.git`
 	
 	`$ ~ cd Downloads/aksite`
 	
