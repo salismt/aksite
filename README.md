@@ -39,3 +39,11 @@ Andrew Koroluk
 10.  Run the local server under the development environment
 
 	`grunt serve`
+	
+=====
+
+##Testing
+
+Install `grunt-cli` locally (`npm install grunt-cli`)
+
+From the project root, run `npm test`
