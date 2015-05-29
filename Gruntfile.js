@@ -685,7 +685,8 @@ module.exports = function(grunt) {
             ]);
         }
 
-        else grunt.task.run([
+        else
+            grunt.task.run([
                 'test:server',
                 'test:client'
             ]);
