@@ -53,21 +53,16 @@ exports.index = function(req, res) {
 
 // Get a single post
 exports.show = function(req, res) {
-    if(!util.isValidObjectId(req.params.id)) {
+    if(!util.isValidObjectId(req.params.id))
         return res.status(400).send('Invalid ID');
-    }
     Post.findById(req.params.id, function(err, post) {
-        if(err) {
-            return util.handleError(res, err);
-        } else if(!post) {
-            return res.status(404).end();
-        } else {
-            if( (!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) && post.hidden ) {
-                return res.status(401).end();
-            } else {
-                return res.json(post);
-            }
-        }
+        if(err) return util.handleError(res, err);
+        if(!post) return res.status(404).end();
+
+        if( (!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) && post.hidden )
+            return res.status(401).end();
+
+        res.json(post);
     });
 };
 
@@ -81,9 +76,8 @@ exports.count = function(req, res) {
 
 // Creates a new post in the DB.
 exports.create = function(req, res) {
-    if(config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
+    if(config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin'))
         return res.status(401).send('You need to be an admin to create posts');
-    }
 
     var form = gridform({db: conn.db, mongo: mongoose.mongo});
 
@@ -110,23 +104,12 @@ exports.create = function(req, res) {
         //console.log(file);
         //console.log(fields);
 
-        var postModel = {
-            title: fields.title,
-            subheader: fields.subheader,
-            content: fields.content,
-            date: new Date(fields.date) || new Date(),
-            author: JSON.parse(fields.author),
-            imageId: undefined,
-            alias: fields.alias || undefined,
-            categories: fields.categories || []
-        };
-        if(fields.hidden === 'true') {
-            postModel.hidden = true;
-        } else if(fields.hidden === 'false') {
-            postModel.hidden = false;
-        } else { //sanitizer should prevent this
-            postModel.hidden = false;
-        }
+        var postModel = _.pick(fields, ['title', 'subheader', 'alias', 'content']);
+
+        postModel.date = !_.isEmpty(fields.date) ? new Date(fields.date) : new Date();
+        postModel.author = JSON.parse(fields.author);
+        postModel.hidden = !_.isEmpty(fields.hidden) ? !!JSON.parse(fields.hidden) : false;
+        postModel.categories = !_.isEmpty(fields.categories) ? JSON.parse(fields.categories) : [];
 
         if(file) {
             postModel.imageId = file.id;
