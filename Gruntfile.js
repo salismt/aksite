@@ -93,8 +93,8 @@ module.exports = function(grunt) {
             },
             babel: {
                 files: [
-                    '<%%= yeoman.client %>/{app,components}/**/*.js',
-                    '!<%%= yeoman.client %>/{app,components}/**/*.spec.js'
+                    '<%= yeoman.client %>/{app,components}/**/*.js',
+                    '!<%= yeoman.client %>/{app,components}/**/*.spec.js'
                 ],
                 tasks: ['babel']
             },
