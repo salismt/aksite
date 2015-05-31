@@ -14,14 +14,15 @@ conn.once('open', function(err) {
     else gridform.db = conn.db;
 });
 
-const DEFAULT_PAGESIZE = 10;
-const MAX_PAGESIZE = 25;
+const DEFAULT_PAGESIZE = 10,
+    MIN_PAGESIZE = 5,
+    MAX_PAGESIZE = 25;
 
 // Get list of posts
 exports.index = function(req, res) {
     if(req.query.page && req.query.page < 1) return res.status(400).send('Invalid page');
 
-    var pageSize = (req.query.pagesize && req.query.pagesize <= MAX_PAGESIZE && req.query.pagesize > 0) ? req.query.pagesize : DEFAULT_PAGESIZE;
+    var pageSize = (req.query.pagesize && req.query.pagesize <= MAX_PAGESIZE && req.query.pagesize > MIN_PAGESIZE) ? req.query.pagesize : DEFAULT_PAGESIZE;
     var page = parseInt(req.query.page) || 0;
 
     Post.count({}, function(err, count) {
