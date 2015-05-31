@@ -207,7 +207,9 @@ exports.update = function(req, res) {
 
             console.log(file);
             console.log(fields);
-            var postModel = {};
+            var postModel = _.pick(fields, ['title', 'subheader', 'alias', 'content', 'date']);
+            if(!_.isEmpty(fields.hidden)) postModel.hidden = !!JSON.parse(fields.hidden);
+            if(!_.isEmpty(fields.categories)) postModel.categories = JSON.parse(fields.categories);
 
             if(fields.newImage) {
                 if(post.imageId) {
