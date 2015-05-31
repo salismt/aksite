@@ -135,7 +135,8 @@ angular.module('aksiteApp')
 
                 anchor.exit().remove();
 
-                anchor.enter().append("a")
+                anchor.enter()
+                    .append("a")
                     .attr("xlink:href", d => d.photo.link)
                     .attr("xlink:title", d => d.photo.name)
                     .append("path")
