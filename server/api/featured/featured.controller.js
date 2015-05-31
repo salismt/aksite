@@ -140,9 +140,7 @@ exports.newFeatured = function(req, res) {
                                                 items: items
                                             }, function(err, section) {
                                                 if(err) return util.handleError(res, err);
-                                                else {
-                                                    res.status(201).send(section);
-                                                }
+                                                else return res.status(201).send(section);
                                             });
                                         });
                                         outStream.pipe(writestream);
@@ -201,67 +199,30 @@ exports.add = function(req, res) {
 
 // Deletes a featured item
 exports.destroy = function(req, res) {
-    if(!isValidObjectId(req.params.id)) {
-        return res.status(400).send('Invalid ID');
-    }
+    if(!util.isValidObjectId(req.params.id)) return res.status(400).send('Invalid ID');
     FeaturedItem.findById(req.params.id, function(err, featured) {
-        if(err) {
-            return util.handleError(res, err);
-        }
-        if(!featured) {
-            return res.status(404).end();
-        }
+        if(err) return util.handleError(res, err);
+        if(!featured) return res.status(404).end();
+
         featured.remove(function(err) {
-            if(err) {
-                return util.handleError(res, err);
-            }
+            if(err) return util.handleError(res, err);
             return res.send(204);
         });
     });
 };
 
-function handleGridStreamErr(res) {
-    return function(err) {
-        if(/does not exist/.test(err)) {
-            // trigger 404
-            console.log(err);
-            return err;
-        }
-
-        // may have written data already
-        res.status(500).end();
-        console.error(err.stack);
-    };
-}
-
-function writeToGridFS(readStream, data) {
-    var deferred = Q.defer();
-
-    (function next() {
-        var writestream = gfs.createWriteStream(data);
-        readStream.pipe(writestream).on('close', deferred.resolve);
-    })();
-
-    return deferred.promise;
-}
-
 function writeToTmp(readStream, name) {
     var deferred = Q.defer();
 
-    (function next() {
-        if(_.isNull(name) || _.isUndefined(name) || name === '') return new Error('No name given to tmp file');
-        else {
-            var filename = path.resolve(config.root + '/.gmtmp/tmp_' + name + '.jpg')
-            var writestream = fs.createWriteStream(filename);
-            readStream.pipe(writestream).on('close', function() {
+    if(_.isNull(name) || _.isUndefined(name) || name === '') return Q.reject('No name given to tmp file');
+    else {
+        var filename = path.resolve(config.root + '/.gmtmp/tmp_' + name + '.jpg');
+        var writestream = fs.createWriteStream(filename);
+        readStream.pipe(writestream)
+            .on('close', function() {
                 deferred.resolve(filename);
             });
-        }
-    })();
+    }
 
     return deferred.promise;
-}
-
-function isValidObjectId(objectId) {
-    return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
 }
