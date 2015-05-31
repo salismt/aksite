@@ -68,9 +68,8 @@ exports.create = function(req, res, next) {
 
 /** Update a user */
 exports.update = function(req, res) {
-    if(!util.isValidObjectId(req.params.id)) {
+    if(!util.isValidObjectId(req.params.id))
         return res.status(400).send('Invalid ID');
-    }
     var form = gridform({db: conn.db, mongo: mongoose.mongo});
 
     User.findById(req.params.id, function(err, user) {
