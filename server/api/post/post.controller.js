@@ -58,7 +58,7 @@ exports.index = function(req, res) {
 
 // Get a single post
 exports.show = function(req, res) {
-    if(!util.isvalidobjectId(req.params.id)) {
+    if(!util.isValidObjectId(req.params.id)) {
         return res.status(400).send('Invalid ID');
     }
     Post.findById(req.params.id, function(err, post) {
@@ -175,7 +175,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
     if(config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin'))
         return res.status(401).send('You need to be an admin to create posts');
-    if(!util.isvalidobjectId(req.params.id))
+    if(!util.isValidObjectId(req.params.id))
         return res.status(400).send('Invalid ID');
 
     var form = gridform({db: conn.db, mongo: mongoose.mongo});
