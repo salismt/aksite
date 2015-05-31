@@ -54,16 +54,16 @@ exports.create = function(req, res, next) {
     newUser.provider = 'local';
     newUser.providers.local = true;
     newUser.role = 'user';
-    var userImageWritestream = gfs.createWriteStream([]);
-    userImageWritestream.on('close', function(userImgFile) {
-        newUser.imageId = userImgFile._id;
-        newUser.save(function(err, user) {
-            if(err) return util.handleError(res, err);
-            var token = jwt.sign({_id: user._id}, config.secrets.session, {expiresInMinutes: 60 * 5});
-            res.json({token: token});
+
+    util.saveFileFromFs(config.root + config.client + '/assets/images/default_user.jpg', { filename: 'default_user.jpg' })
+        .then(userImgFile => {
+            newUser.imageId = userImgFile._id;
+            newUser.save(function(err, user) {
+                if(err) return util.handleError(res, err);
+                var token = jwt.sign({_id: user._id}, config.secrets.session, {expiresInMinutes: 60 * 5});
+                res.json({token: token});
+            });
         });
-    });
-    fs.createReadStream(config.root + config.client + '/assets/images/default_user.jpg').pipe(userImageWritestream);
 };
 
 /** Update a user */
