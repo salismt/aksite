@@ -6,23 +6,12 @@ var _ = require('lodash'),
     auth = require('../../auth/auth.service'),
     config = require('../../config/environment'),
     mongoose = require('mongoose'),
-    fs = require('fs'),
     gridform = require('gridform'),
-    gm = require('gm'),
-    Schema = mongoose.Schema,
-    Grid = require('gridfs-stream'),
-    gfs,
     conn = mongoose.createConnection(config.mongo.uri);
-
-gridform.mongo = mongoose.mongo;
-Grid.mongo = mongoose.mongo;
 
 conn.once('open', function(err) {
     if(err) console.log(err);
-    else {
-        gfs = Grid(conn.db);
-        gridform.db = conn.db;
-    }
+    else gridform.db = conn.db;
 });
 
 const DEFAULT_PAGESIZE = 10;
@@ -136,30 +125,14 @@ exports.create = function(req, res) {
         if(file) {
             postModel.imageId = file.id;
 
-            // Thumbnail generation
-            var stream = gfs.createReadStream({_id: file.id});
-            stream.on('error', util.handleError(res));
-            gm(stream, file.id)
-                .size({bufferStream: true}, function(err, size) {
-                    postModel.width = size.width;
-                    postModel.height = size.height;
-                    this.resize(null, 400);
-                    this.quality(90);
-                    this.stream(function(err, outStream) {
-                        if(err) return res.status(500).end();
-                        else {
-                            var writestream = gfs.createWriteStream({filename: file.name});
-                            writestream.on('close', function(thumbFile) {
-                                console.log(thumbFile.name+' -> (thumb)'+thumbFile._id);
-                                postModel.thumbnailId = thumbFile._id;
+            util.createThumbnail(file.id)
+                .then(thumbnail => {
+                    console.log(thumbnail.filename + ' -> (thumb)' + thumbnail.id);
+                    postModel.thumbnailId = thumbnail.id;
 
-                                Post.create(postModel, function(err, post) {
-                                    if(err) return util.handleError(res, err);
-                                    else return res.status(201).json(post);
-                                });
-                            });
-                            outStream.pipe(writestream);
-                        }
+                    Post.create(postModel, function(err, post) {
+                        if(err) return util.handleError(res, err);
+                        res.status(201).json(post);
                     });
                 });
         } else {
@@ -213,46 +186,25 @@ exports.update = function(req, res) {
 
             if(fields.newImage) {
                 if(post.imageId) {
-                    gfs.remove({_id: post.imageId}, function (err) {
-                        if (err) return util.handleError(err);
-                        else console.log('deleted imageId');
-                    });
-                    gfs.remove({_id: post.thumbnailId}, function (err) {
-                        if (err) return util.handleError(err);
-                        else console.log('deleted thumbnailId');
-                    });
+                    util.deleteFile(post.imageId)
+                        .catch(util.handleError)
+                        .then(_.partial(console.log('deleted imageId')));
+                    util.deleteFile(post.thumbnailId)
+                        .catch(util.handleError)
+                        .then(_.partial(console.log('deleted thumbnailId')));
                 }
 
                 postModel.imageId = file.id;
 
-                // Thumbnail generation
-                var stream = gfs.createReadStream({_id: file.id});
-                stream.on('error', util.handleError(res));
-                gm(stream, file.id)
-                    .size({bufferStream: true}, function(err, size) {
-                        postModel.width = size.width;
-                        postModel.height = size.height;
-                        this.resize(null, 400);
-                        this.quality(90);
-                        this.stream(function(err, outStream) {
-                            if(err) return res.status(500).end();
-                            else {
-                                var writestream = gfs.createWriteStream({filename: file.name});
-                                writestream.on('close', function(thumbFile) {
-                                    console.log(file.name+' -> (thumb)'+thumbFile._id);
-                                    postModel.thumbnailId = thumbFile._id;
+                util.createThumbnail(file.id)
+                    .then(thumbnail => {
+                        console.log(thumbnail.filename+' -> (thumb)'+thumbnail.id);
+                        postModel.thumbnailId = thumbnail.id;
 
-                                    var updated = _.assign(post, postModel);
-                                    return updated.save(function(err) {
-                                        if(err) {
-                                            return util.handleError(res, err);
-                                        } else {
-                                            return res.status(200).json(post);
-                                        }
-                                    });
-                                });
-                                outStream.pipe(writestream);
-                            }
+                        var updated = _.assign(post, postModel);
+                        return updated.save(function(err) {
+                            if(err) return util.handleError(res, err);
+                            res.status(200).json(post);
                         });
                     });
             } else {
