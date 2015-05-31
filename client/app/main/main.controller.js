@@ -2,21 +2,18 @@
 
 angular.module('aksiteApp')
     .controller('MainCtrl', function($scope, $http) {
-        $scope.getFeatured = function() {
-            $http.get('/api/featured')
-                .success(function(res) {
-                    $scope.featuredSection = res;
-                    $scope.loadFeatured();
-                });
-        };
-        $scope.getFeatured();
+        $http.get('/api/featured')
+            .success(function(res) {
+                $scope.featuredSection = res;
+                $scope.loadFeatured();
+            });
 
         var texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', 'diag-striped-text', 'bg-img-text'],
             usedTexts = [],
             currentText = _.sample(texts);  // Load first random text
-        
+
         classie.removeClass( document.getElementById(currentText), 'hidden' );
-        usedTexts.push(_.remove( texts, _.partial(_.isEqual, currentText, _) ));
+        usedTexts.push(_.remove( texts, _.partial(_.isEqual, currentText) ));
 
         $scope.changeText = function() {
             // We've used all the styles; start over, using them all again
@@ -35,33 +32,31 @@ angular.module('aksiteApp')
         };
 
         $scope.loadFeatured = function() {
-            var data = $scope.featuredSection.items;
-
-            data.forEach(function(d, i) {
-                d.i = i % 10;
-                d.j = i / 10 | 0;
-            });
-
-            Math.seedrandom(+d3.time.hour(new Date));
-
-            d3.shuffle(data);
-
             var height = 460,
                 imageWidth = 200,
                 imageHeight = 200,
                 radius = 100,
-                depth = 4;
-
-            var currentFocus = [innerWidth / 2, height / 2],
+                depth = 4,
+                currentFocus = [innerWidth / 2, height / 2],
                 desiredFocus,
-                idle = true;
-
-            var style = document.body.style,
+                idle = true,
+                style = document.body.style,
                 transform = ("webkitTransform" in style ? "-webkit-"
                         : "MozTransform" in style ? "-moz-"
                         : "msTransform" in style ? "-ms-"
                         : "OTransform" in style ? "-o-"
-                        : "") + "transform";
+                        : "") + "transform",
+                data = $scope.featuredSection.items;
+
+            _.forEach(data, function(item, i) {
+                item.i = i % 10;
+                item.j = i / 10 | 0;
+            });
+
+            //Randomize the placement of the hexbins, changing every hour
+            Math.seedrandom(+d3.time.hour(new Date));
+
+            d3.shuffle(data);
 
             var hexbin = d3.hexbin()
                 .radius(radius);
@@ -69,24 +64,18 @@ angular.module('aksiteApp')
             if(!("ontouchstart" in document)) d3.select("#featured-photos")
                 .on("mousemove", mousemoved);
 
-            var deep = d3.select("#featured-photos-deep");
-
-            var canvas = deep.append("canvas")
-                .attr("height", height);
-
-            var context = canvas.node().getContext("2d");
-
-            var svg = deep.append("svg")
-                .attr("height", height);
-
-            var mesh = svg.append("path")
-                .attr("class", "photo-mesh");
-
-            var anchor = svg.append("g")
-                .attr("class", "photo-anchor")
-                .selectAll("a");
-
-            var graphic = deep.selectAll("svg,canvas");
+            var deep = d3.select("#featured-photos-deep"),
+                canvas = deep.append("canvas")
+                    .attr("height", height),
+                context = canvas.node().getContext("2d"),
+                svg = deep.append("svg")
+                    .attr("height", height),
+                mesh = svg.append("path")
+                    .attr("class", "photo-mesh"),
+                anchor = svg.append("g")
+                    .attr("class", "photo-anchor")
+                    .selectAll("a"),
+                graphic = deep.selectAll("svg,canvas");
 
             var image = new Image;
             image.src = "/api/upload/" + $scope.featuredSection.fileId + '.jpg';
@@ -131,7 +120,7 @@ angular.module('aksiteApp')
                     .attr("width", deepWidth)
                     .attr("height", deepHeight);
 
-                centers.forEach(function(center, i) {
+                _.forEach(centers, function(center) {
                     center.j = Math.round(center[1] / (radius * 1.5));
                     center.i = Math.round((center[0] - (center.j & 1) * radius * Math.sin(Math.PI / 3)) / (radius * 2 * Math.sin(Math.PI / 3)));
                     context.save();
@@ -142,26 +131,18 @@ angular.module('aksiteApp')
 
                 mesh.attr("d", hexbin.mesh);
 
-                anchor = anchor.data(centers, function(d) {
-                    return d.i + "," + d.j;
-                });
+                anchor = anchor.data(centers, d => d.i + "," + d.j);
 
                 anchor.exit().remove();
 
                 anchor.enter().append("a")
-                    .attr("xlink:href", function(d) {
-                        return d.photo.link;
-                    })
-                    .attr("xlink:title", function(d) {
-                        return d.photo.name;
-                    })
+                    .attr("xlink:href", d => d.photo.link)
+                    .attr("xlink:title", d => d.photo.name)
                     .append("path")
                     .attr("d", hexbin.hexagon());
 
                 anchor
-                    .attr("transform", function(d) {
-                        return "translate(" + d + ")";
-                    });
+                    .attr("transform", d => "translate(" + d + ")");
             }
 
             function mousemoved() {
@@ -176,16 +157,18 @@ angular.module('aksiteApp')
             }
 
             function moved() {
-                if(idle) d3.timer(function() {
-                    if(idle = Math.abs(desiredFocus[0] - currentFocus[0]) < .5 && Math.abs(desiredFocus[1] - currentFocus[1]) < .5)
-                        currentFocus = desiredFocus;
-                    else {
-                        currentFocus[0] += (desiredFocus[0] - currentFocus[0]) * .14;
-                        currentFocus[1] += (desiredFocus[1] - currentFocus[1]) * .14;
-                    }
-                    deep.style(transform, "translate(" + (innerWidth / 2 - currentFocus[0]) / depth + "px," + (height / 2 - currentFocus[1]) / depth + "px)");
-                    return idle;
-                });
+                if(idle) {
+                    d3.timer(function() {
+                        if(idle = Math.abs(desiredFocus[0] - currentFocus[0]) < .5 && Math.abs(desiredFocus[1] - currentFocus[1]) < .5)
+                            currentFocus = desiredFocus;
+                        else {
+                            currentFocus[0] += (desiredFocus[0] - currentFocus[0]) * .14;
+                            currentFocus[1] += (desiredFocus[1] - currentFocus[1]) * .14;
+                        }
+                        deep.style(transform, "translate(" + (innerWidth / 2 - currentFocus[0]) / depth + "px," + (height / 2 - currentFocus[1]) / depth + "px)");
+                        return idle;
+                    });
+                }
             }
         }
     });
