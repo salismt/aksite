@@ -27,15 +27,20 @@ exports.index = function(req, res) {
 
     Post.count({}, function(err, count) {
         if(err) return handleError(res, err);
-        Post.find()
+
+        let query;
+        if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin'))
+            query = Post.find({ hidden: false });
+        else
+            query = Post.find();
+
+        query
             .limit(pageSize)
             .sort('date')
             .skip((req.query.page-1) * pageSize || 0)//doesn't scale well, I'll worry about it later
             .exec(function(err, posts) {
                 if(err) return util.handleError(res, err);
-                if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
-                    _.remove(posts, 'hidden');
-                }
+
                 return res.status(200).json({
                     page: page,
                     pages: Math.ceil(count / pageSize),
