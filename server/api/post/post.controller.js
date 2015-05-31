@@ -207,83 +207,61 @@ exports.update = function(req, res) {
 
             console.log(file);
             console.log(fields);
+            var postModel = {};
 
-            //TODO
-            var sanitised = null;
-
-            if(sanitised !== null) {
-                return res.status(400).send(sanitised);
-            } else {
-                var postModel = {};
-                if(fields.title && typeof fields.title == 'string')
-                    postModel.title = fields.title;
-                if(fields.subheader && typeof fields.subheader == 'string')
-                    postModel.subheader = fields.subheader;
-                if(fields.alias && typeof fields.alias == 'string')
-                    postModel.alias = fields.alias;
-                if(!_.isNull(fields.hidden) || !_.isUndefined(fields.hidden))
-                    postModel.hidden = fields.hidden ? true : false;
-                if(fields.content && typeof fields.content == 'string')
-                    postModel.content = fields.content;
-                if(fields.categories)
-                    postModel.categories = fields.categories;
-                if(fields.date)
-                    postModel.date = new Date(fields.date);
-
-                if(fields.newImage) {
-                    if(post.imageId) {
-                        gfs.remove({_id: post.imageId}, function (err) {
-                            if (err) return util.handleError(err);
-                            else console.log('deleted imageId');
-                        });
-                        gfs.remove({_id: post.thumbnailId}, function (err) {
-                            if (err) return util.handleError(err);
-                            else console.log('deleted thumbnailId');
-                        });
-                    }
-
-                    postModel.imageId = file.id;
-
-                    // Thumbnail generation
-                    var stream = gfs.createReadStream({_id: file.id});
-                    stream.on('error', util.handleError(res));
-                    gm(stream, file.id)
-                        .size({bufferStream: true}, function(err, size) {
-                            postModel.width = size.width;
-                            postModel.height = size.height;
-                            this.resize(null, 400);
-                            this.quality(90);
-                            this.stream(function(err, outStream) {
-                                if(err) return res.status(500).end();
-                                else {
-                                    var writestream = gfs.createWriteStream({filename: file.name});
-                                    writestream.on('close', function(thumbFile) {
-                                        console.log(file.name+' -> (thumb)'+thumbFile._id);
-                                        postModel.thumbnailId = thumbFile._id;
-
-                                        var updated = _.assign(post, postModel);
-                                        return updated.save(function(err) {
-                                            if(err) {
-                                                return util.handleError(res, err);
-                                            } else {
-                                                return res.status(200).json(post);
-                                            }
-                                        });
-                                    });
-                                    outStream.pipe(writestream);
-                                }
-                            });
-                        });
-                } else {
-                    var updated = _.assign(post, postModel);
-                    return updated.save(function(err) {
-                        if(err) {
-                            return util.handleError(res, err);
-                        } else {
-                            return res.status(200).json(post);
-                        }
+            if(fields.newImage) {
+                if(post.imageId) {
+                    gfs.remove({_id: post.imageId}, function (err) {
+                        if (err) return util.handleError(err);
+                        else console.log('deleted imageId');
+                    });
+                    gfs.remove({_id: post.thumbnailId}, function (err) {
+                        if (err) return util.handleError(err);
+                        else console.log('deleted thumbnailId');
                     });
                 }
+
+                postModel.imageId = file.id;
+
+                // Thumbnail generation
+                var stream = gfs.createReadStream({_id: file.id});
+                stream.on('error', util.handleError(res));
+                gm(stream, file.id)
+                    .size({bufferStream: true}, function(err, size) {
+                        postModel.width = size.width;
+                        postModel.height = size.height;
+                        this.resize(null, 400);
+                        this.quality(90);
+                        this.stream(function(err, outStream) {
+                            if(err) return res.status(500).end();
+                            else {
+                                var writestream = gfs.createWriteStream({filename: file.name});
+                                writestream.on('close', function(thumbFile) {
+                                    console.log(file.name+' -> (thumb)'+thumbFile._id);
+                                    postModel.thumbnailId = thumbFile._id;
+
+                                    var updated = _.assign(post, postModel);
+                                    return updated.save(function(err) {
+                                        if(err) {
+                                            return util.handleError(res, err);
+                                        } else {
+                                            return res.status(200).json(post);
+                                        }
+                                    });
+                                });
+                                outStream.pipe(writestream);
+                            }
+                        });
+                    });
+            } else {
+                console.log(post);
+                console.log(postModel);
+                var updated = _.assign(post, postModel);
+                console.log(updated);
+                return updated.save(function(err) {
+                    if(err) return util.handleError(res, err);
+                    res.status(200).json(post);
+                });
             }
         });
     });
