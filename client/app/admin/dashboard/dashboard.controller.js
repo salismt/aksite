@@ -42,7 +42,6 @@ angular.module('aksiteApp')
                 });
         });
 
-        //Donut chart example
         React.render(<preloader />, document.getElementById('chart1'));
         React.render(<preloader />, document.getElementById('chart2'));
         React.render(<preloader />, document.getElementById('chart3'));
@@ -53,13 +52,8 @@ angular.module('aksiteApp')
 
             nv.addGraph(function () {
                 var chart = nv.models.pieChart()
-                        .x(function (d) {
-                            return d.label
-                        })
-                        .y(function (d) {
-                            return d.value
-                        })
-                    ;
+                    .x(d => d.label)
+                    .y(d => d.value);
 
                 chart.showLegend(_.has(options, 'showLegend') ?  options.showLegend : false);
                 chart.showLabels(_.has(options, 'showLabels') ?  options.showLabels : true);
@@ -82,16 +76,7 @@ angular.module('aksiteApp')
 
         }
 
-        function convertGAPItoD3(rows) {
-            var data = [];
-            _.forEach(rows, function(item) {
-                data.push({
-                    label: item[0],
-                    value: item[1]
-                });
-            });
-            return data;
-        }
+        var convertGAPItoD3 = _.partialRight(_.map, (item) => ({label: item[0], value: item[1]}) );
 
         gapi.analytics.ready(function () {
             var CLIENT_ID = '693903895035-1lk6sfgma8o270mk4icngumgnomuahob.apps.googleusercontent.com';
@@ -110,8 +95,8 @@ angular.module('aksiteApp')
             function query(params) {
                 return new Promise(function(resolve, reject) {
                     var data = new gapi.analytics.report.Data({query: params});
-                    data.once('success', function(response) { resolve(response); })
-                        .once('error', function(response) { reject(response); })
+                    data.once('success', resolve)
+                        .once('error', reject)
                         .execute();
                 });
             }
