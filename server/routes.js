@@ -13,7 +13,6 @@ module.exports = function(app) {
     // Insert routes below
     app.use('/api/gallery', require('./api/gallery'));
     app.use('/api/files', require('./api/file'));
-    app.use('/data', require('./api/data'));
     app.use('/api/upload', require('./api/upload'));
     app.use('/api/projects', require('./api/project'));
     app.use('/api/featured', require('./api/featured'));
