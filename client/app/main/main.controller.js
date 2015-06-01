@@ -37,7 +37,7 @@ angular.module('aksiteApp')
             masonry = new Masonry(vendorSection, {
                 transitionDuration: 0,
                 itemSelector: ".brick",
-                gutter: 10,
+                gutter: 20,
                 containerStyle: {"margin": "auto"},
                 isFitWidth: true
             });

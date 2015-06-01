@@ -173,5 +173,8 @@ $time-step: $time/$max;
 }
 
 .vendor-section a {
-    width: 250px;
+    width: 200px;
+    &.w2 {
+        width: 400px;
+    }
 }
