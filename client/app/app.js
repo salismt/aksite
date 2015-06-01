@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp', [
+    'ngAnimate',
     'ngCookies',
     'ngResource',
     'ngSanitize',

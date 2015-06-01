@@ -1,0 +1,10 @@
+$fadeOutAnimationFadeTime: 300ms;
+
+.fade-out.ng-leave {
+    opacity: 1;
+    @include transition(opacity $fadeOutAnimationFadeTime linear);
+    &.ng-leave-active {
+        opacity: 0;
+        @include transition(opacity $fadeOutAnimationFadeTime linear);
+    }
+}

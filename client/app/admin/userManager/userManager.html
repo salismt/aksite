@@ -7,8 +7,8 @@
     <div class="row">
         <md-content>
             <md-list>
-                <md-list-item class="md-2-line md-with-secondary md-clickable" ng-repeat="user in users" ng-class="{deleted: user.deleted}">
-                    <md-button class="md-no-style" ng-click="goToUser(user._id, $event)">
+                <md-list-item class="md-2-line md-with-secondary md-clickable fade-out" ng-repeat="user in users" ng-class="{deleted: user.deleted}">
+                    <md-button class="md-no-style" ng-click="goToUser(user._id)">
                         <div class="md-list-item-inner">
                             <img class="md-avatar" ng-src="/api/upload/{{user.imageId}}.jpg" alt="{{user.name}}">
                             <div class="md-list-item-text">
