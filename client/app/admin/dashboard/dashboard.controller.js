@@ -43,10 +43,13 @@ angular.module('aksiteApp')
         });
 
         //Donut chart example
+        React.render(<preloader />, document.getElementById('chart1'));
+        React.render(<preloader />, document.getElementById('chart2'));
+        React.render(<preloader />, document.getElementById('chart3'));
+        React.render(<preloader />, document.getElementById('chart4'));
+
         function addChart(chartNum, data, options) {
             options = options ? options : {};
-
-            var chartDiv = document.querySelector("#chart" + chartNum);
 
             nv.addGraph(function () {
                 var chart = nv.models.pieChart()
@@ -74,7 +77,7 @@ angular.module('aksiteApp')
                 return chart;
             });
 
-            classie.addClass(chartDiv, 'hide-preloader');
+            React.unmountComponentAtNode(document.getElementById('chart'+chartNum));
         }
 
         function convertGAPItoD3(rows) {

@@ -1,0 +1,13 @@
+preloader {
+    width: 128px;
+    height: 128px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    padding-top: 0 !important;
+    margin-bottom: 0 !important;
+    overflow: hidden;
+    background: url(../assets/images/rubiks_preloader.gif) center center no-repeat;
+    background-size: contain;
+}
