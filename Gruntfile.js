@@ -716,12 +716,4 @@ module.exports = function(grunt) {
         'test',
         'build'
     ]);
-
-    grunt.registerTask('mongod', function(target) {
-        if(target === 'windows') {
-            return grunt.task.run([
-                'mongod'
-            ]);
-        }
-    });
 };
