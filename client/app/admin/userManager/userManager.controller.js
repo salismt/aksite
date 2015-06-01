@@ -1,19 +1,28 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('UsermanagerCtrl', function($scope, $http, Auth, User, $state) {
+    .controller('UsermanagerCtrl', function($scope, $http, Auth, User, $state, $mdDialog) {
         $scope.users = User.query();
 
-        $scope.goToUser = function(id, event) {
+        $scope.goToUser = function(id) {
             $state.go('userEditor', {userId: id});
         };
 
-        $scope.deleteUser = function(user) {
-            User.remove({id: user._id});
-            angular.forEach($scope.users, function(u, i) {
-                if(u === user) {
-                    $scope.users.splice(i, 1);
-                }
-            });
+        $scope.deleteUser = function(user, ev) {
+            $mdDialog.show($mdDialog.confirm()
+                .title('Would you like to delete your debt?')
+                .content('All of the banks have agreed to forgive you your debts.')
+                .ariaLabel('Delete User?')
+                .ok('Delete')
+                .cancel('Cancel')
+                .targetEvent(ev))
+                .then(() => {
+                    User.remove({id: user._id});
+                    angular.forEach($scope.users, function(u, i) {
+                        if(u === user) {
+                            $scope.users.splice(i, 1);
+                        }
+                    });
+                });
         };
     });
