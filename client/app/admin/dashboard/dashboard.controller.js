@@ -69,6 +69,9 @@ angular.module('aksiteApp')
                 chart.donut(options.donut || false);
                 if(options.donut) chart.donutRatio(options.donutRatio || .35);
 
+                React.unmountComponentAtNode(document.getElementById('chart'+chartNum));
+                React.render(<svg></svg>, document.getElementById('chart'+chartNum));
+
                 d3.select("#chart" + chartNum + " svg")
                     .datum(data)
                     .transition().duration(350)
@@ -77,7 +80,6 @@ angular.module('aksiteApp')
                 return chart;
             });
 
-            React.unmountComponentAtNode(document.getElementById('chart'+chartNum));
         }
 
         function convertGAPItoD3(rows) {
