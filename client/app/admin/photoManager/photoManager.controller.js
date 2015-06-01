@@ -38,9 +38,7 @@ angular.module('aksiteApp')
                 $scope.galleryDeletions.push(gallery);
             } else {
                 gallery.deleted = false;
-                _.remove($scope.galleryDeletions, function(thisGallery) {
-                    return thisGallery._id === gallery._id;
-                });
+                _.remove($scope.galleryDeletions, (thisGallery) => thisGallery._id === gallery._id);
                 if($scope.galleryDeletions.length === 0) {
                     $scope.dirty = false;
                 }

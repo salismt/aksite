@@ -79,11 +79,9 @@ angular.module('aksiteApp')
         var convertGAPItoD3 = _.partialRight(_.map, (item) => ({label: item[0], value: item[1]}) );
 
         gapi.analytics.ready(function () {
-            var CLIENT_ID = '693903895035-1lk6sfgma8o270mk4icngumgnomuahob.apps.googleusercontent.com';
-
             gapi.analytics.auth.authorize({
                 container: 'auth-button',
-                clientid: CLIENT_ID
+                clientid: '693903895035-1lk6sfgma8o270mk4icngumgnomuahob.apps.googleusercontent.com'
             });
 
             /**
@@ -122,12 +120,9 @@ angular.module('aksiteApp')
             });
 
             // Hook up the components to work together.
-            gapi.analytics.auth.on('success', function (response) {
-                viewSelector.execute();
-            });
+            gapi.analytics.auth.on('success',(response) => viewSelector.execute());
 
             viewSelector.on('change', function (ids) {
-
                 var now = moment(),
                     monthAgo = moment(now).subtract(1, 'month');
 
