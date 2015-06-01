@@ -31,6 +31,18 @@ angular.module('aksiteApp')
             classie.removeClass( document.getElementById(currentText), 'hidden' );
         };
 
+        let vendorSection = document.getElementById('vendor-container');
+        var masonry;
+        imagesLoaded(vendorSection, function() {
+            masonry = new Masonry(vendorSection, {
+                transitionDuration: 0,
+                itemSelector: ".brick",
+                gutter: 10,
+                containerStyle: {"margin": "auto"},
+                isFitWidth: true
+            });
+        });
+
         $scope.loadFeatured = function() {
             var height = 460,
                 imageWidth = 200,
