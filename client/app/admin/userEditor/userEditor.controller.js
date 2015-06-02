@@ -61,7 +61,7 @@ angular.module('aksiteApp')
                             $scope.progress = undefined;
                             console.log(status);
                             console.log(data);
-                            $state.go('userManager');
+                            $state.go('admin.users');
                         })
                         .error(function(response, status) {
                             $scope.progress = undefined;
@@ -89,7 +89,7 @@ angular.module('aksiteApp')
                             $scope.progress = undefined;
                             console.log(status);
                             console.log(data);
-                            $state.go('userManager');
+                            $state.go('admin.users');
                         })
                         .error(function(response, status) {
                             $scope.progress = undefined;
@@ -108,6 +108,6 @@ angular.module('aksiteApp')
         $scope.cancel = function() {
             if($scope.upload)
                 $scope.upload.abort();
-            $state.go('userManager');
+            $state.go('admin.users');
         };
     });
