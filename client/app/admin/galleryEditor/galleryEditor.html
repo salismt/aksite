@@ -43,11 +43,13 @@
     <div class="row">
         <ul class="upload-grid">
             <li class="upload-grid-item" ng-repeat="photo in photos">
-                <div class="upload-grid-figure">
+                <div class="upload-grid-figure" ng-class="{selected: photo.selected}" ng-click="toggleSelect(photo)">
                     <progressbar ng-if="!photo.thumbnailId" class="progress-striped active" value="photo.progress">
                         <b>{{photo.progress}}%</b>
                     </progressbar>
-                    <img ng-if="photo.thumbnailId" ng-src="/api/upload/{{photo.thumbnailId}}" alt="photo.filename"/>
+                    <div class="box" ng-style="{'background-image': 'url(/api/upload/{{photo.thumbnailId}})'}">
+                        <i class="fa fa-3x fa-check"></i>
+                    </div>
                 </div>
                 <div class="upload-grid-caption">
                     <form action="">
