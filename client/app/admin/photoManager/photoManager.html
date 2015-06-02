@@ -1,34 +1,23 @@
 <div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <h1>Manage Galleries</h1>
-        </div>
+    <h1 class="page-header">Manage Galleries</h1>
 
-        <div>
-            <a href="" ng-show="dirty" ng-click="saveChanges()" class="btn btn-primary btn-lg">
-                <i class="fa fa-save"></i>
-                Save Changes
-            </a>
-            <a href="/admin/photos/gallery-editor" class="btn btn-primary btn-lg pull-right">
-                <i class="fa fa-plus"></i>
-                New Gallery
-            </a>
+    <div masonry='{
+                "transitionDuration" : "0.4s" ,
+                "itemSelector" : ".brick",
+                "gutter": 10,
+                "containerStyle": {"margin": "auto"},
+                "isFitWidth": true
+            }' id="masonry-container" style="position: relative;">
+        <div class="brick card md-whiteframe-z1" ng-repeat="gallery in galleries" md-ink-ripple ng-click="goToGallery(gallery._id)">
+            <div class="item">
+                <img ng-src="api/upload/{{gallery.featured.thumbnailId}}" class="" alt="{{gallery.name}}">
+            </div>
+            <!--<md-button class="md-fab pull-right md-fab-offset">X</md-button>-->
+            <div class="card-content">
+                <h3>{{gallery.name}}</h3>
+                <p>{{gallery.info}}</p>
+            </div>
         </div>
     </div>
 
-    <div class="row">
-        <ul class="upload-grid">
-            <li class="upload-grid-item" ng-class="{deleted: gallery.deleted}" ng-repeat="gallery in galleries">
-                <div class="upload-grid-figure">
-                    <a href="/admin/photos/gallery-editor/{{::gallery._id}}">
-                        <img ng-if="gallery.featured" ng-src="/api/upload/{{::gallery.featured.thumbnailId}}"/>
-                    </a>
-                </div>
-                <div class="upload-grid-caption">
-                    <a href="#" ng-click="toggleGalleryDeletion(gallery)"><i class="fa fa-trash fa-2x text-danger"></i></a>
-                    <h2>{{::gallery.name}}</h2>
-                </div>
-            </li>
-        </ul>
-    </div>
 </div>

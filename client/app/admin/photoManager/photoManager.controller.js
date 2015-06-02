@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('PhotomanagerCtrl', function($scope, $http) {
+    .controller('PhotomanagerCtrl', function($scope, $http, $state) {
         $scope.errors = [];
         $scope.loadingGalleries = true;
         $scope.galleries = [];
@@ -30,6 +30,10 @@ angular.module('aksiteApp')
             .finally(function() {
                 $scope.loadingGalleries = false;
             });
+
+        $scope.goToGallery = function(id, event) {
+            $state.go('galleryEditor', {galleryId: id});
+        };
 
         $scope.toggleGalleryDeletion = function(gallery) {
             if(!gallery.deleted) {
