@@ -13,5 +13,5 @@ angular.module('aksiteApp')
 
         $scope.goToGallery = function(id, event) {
             $state.go('gallery', {galleryId: id});
-        }
+        };
     });
