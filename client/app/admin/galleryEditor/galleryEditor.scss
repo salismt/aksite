@@ -1,23 +1,21 @@
-.upload-grid-figure {
-    outline: none;
-}
+$galleryEditorImageHeight: 200px;
+$galleryEditorInputHeight: 34px;
+$galleryEditorItemPadding: 10px;
 
 .selected .box {
     &:before {
-        display: block;
+        background-color: rgba(0,0,0,0.5);
     }
     i {
-        display: inline-block;
+        opacity: 1;
     }
 }
 
 .box {
     width: 300px;
-    height: 200px;
-    border: 1px solid grey;
+    height: $galleryEditorImageHeight;
     display: inline-block;
     vertical-align: top;
-    margin-top: 10px;
     position: relative;
     background-size: cover;
     &:before {
@@ -27,19 +25,112 @@
         left: 0;
         width: 100%;
         height: 100%;
-        display: none;
+        transition: background-color .3s;
         z-index: 0;
-        background-color: rgba(0,0,0,0.5);;
+        background-color: rgba(0,0,0,0);
     }
     * {
         position: relative;
     }
     i {
-        display: none;
+        opacity: 0;
         color: white;
         vertical-align: middle;
         line-height: 200px;
         width: 100%;
         text-align: center;
+        font-size: 50px;
+        transition: opacity .3s;
+        position: absolute;
+        top: 0;
+        left: 0;
+        &.outline {
+            font-size: 55px;
+            color: black;
+        }
+    }
+}
+
+.goo-grid-container {
+    position: relative;
+    margin: 0 auto;
+
+    .goo-container {
+        -webkit-filter: url("#goo");
+        filter: url("./galleryEditor.html#goo");
+        font-size: 0;
+        padding: 10px;
+        @include transform(translateZ(0));
+        .goo {
+            display: inline-block;
+            background: #736D6D;
+            opacity: 0;
+            @include transform(translateZ(0));
+            -webkit-transition: opacity .3s;
+            transition: opacity .3s;
+
+            height: $galleryEditorImageHeight + $galleryEditorInputHeight * 2 + 1px + $galleryEditorItemPadding * 2;
+            width: 300px + 20px;
+
+            &.selected {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.goo-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 0;
+    padding: 10px;
+    max-width: none;
+    .goo-grid-item {
+        display: inline-block;
+        float: left;
+        width: 300px;
+        overflow: hidden;
+        margin: 10px;
+        .goo-grid-figure {
+            height: 200px;
+            overflow: hidden;
+            cursor: pointer;
+            .progress {
+                width: 300px;
+                margin-top: 100px;
+            }
+            img {
+                width: 300px;
+            }
+        }
+        .md-fab md-icon {
+            font-size: 1.8em;
+        }
+        .goo-grid-caption {
+            padding-bottom: 1px;
+            overflow: hidden;
+            background-color: lightgray;
+            position: relative;
+            h2 {
+                padding: 5px;
+            }
+            form {
+                input {
+                    border-radius: 0;
+                    border-bottom: none;
+                    height: $galleryEditorInputHeight;
+                }
+            }
+            a {
+                position: absolute;
+                padding: 5px;
+                right: 0;
+                z-index: 100;
+                &:hover {
+                    opacity: .7;
+                }
+            }
+        }
     }
 }

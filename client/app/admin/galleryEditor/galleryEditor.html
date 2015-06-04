@@ -40,10 +40,13 @@
             </div>
         </form>
     </div>
-    <div class="row">
-        <ul class="upload-grid">
-            <li class="upload-grid-item" ng-repeat="photo in photos">
-                <div class="upload-grid-figure" ng-class="{selected: photo.selected}" ng-click="toggleSelect(photo)">
+    <div class="row goo-grid-container">
+        <ul class="goo-container">
+            <li class="goo" ng-class="{selected: photo.selected}" ng-repeat="photo in photos"></li>
+        </ul>
+        <ul class="goo-grid">
+            <li class="goo-grid-item" ng-repeat="photo in photos" ng-class="{selected: photo.selected}">
+                <div class="goo-grid-figure" ng-click="toggleSelect(photo)">
                     <progressbar ng-if="!photo.thumbnailId" class="progress-striped active" value="photo.progress">
                         <b>{{photo.progress}}%</b>
                     </progressbar>
@@ -51,7 +54,10 @@
                         <i class="fa fa-3x fa-check"></i>
                     </div>
                 </div>
-                <div class="upload-grid-caption">
+                <md-button class="md-fab pull-right md-fab-offset">
+                    <md-icon class="fa" md-font-icon="fa-pencil"></md-icon>
+                </md-button>
+                <div class="goo-grid-caption">
                     <form action="">
                         <input type="text" class="form-control" placeholder="{{photo.filename}}" ng-model="photo.name">
                         <input type="text" class="form-control" placeholder="Info" ng-model="photo.info">
@@ -61,5 +67,15 @@
         </ul>
     </div>
 </div>
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <defs>
+        <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blur"></feGaussianBlur>
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -6" result="goo"></feColorMatrix>
+            <feComposite in="SourceGraphic" in2="goo" operator="atop" result="goo"></feComposite>
+        </filter>
+    </defs>
+</svg>
 
 <div ng-include="'components/footer/footer.html'"></div>
