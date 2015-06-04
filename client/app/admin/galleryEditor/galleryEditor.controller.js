@@ -41,9 +41,17 @@ angular.module('aksiteApp')
             $state.go('admin.blog');
         };
 
+        $scope.toggleSelect = (photo) => photo.selected = !photo.selected;
+
         $scope.onFileSelect = function($files) {
             _.forEach($files, function(file) {
-                $scope.photos.push({name: file.name, filename: file.name, info: "", file: file, progress: 0});
+                $scope.photos.push({
+                    name: file.name,
+                    filename: file.name,
+                    info: "",
+                    file: file,
+                    progress: 0
+                });
             });
 
             // Kick off the first three uploads
