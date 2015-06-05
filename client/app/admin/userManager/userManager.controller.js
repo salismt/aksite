@@ -17,11 +17,7 @@ angular.module('aksiteApp')
                 .targetEvent(ev))
                 .then(() => {
                     User.remove({id: user._id});
-                    angular.forEach($scope.users, function(u, i) {
-                        if(u === user) {
-                            $scope.users.splice(i, 1);
-                        }
-                    });
+                    $scope.users.splice(this.$index, 1);
                 });
         };
     });
