@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('UsermanagerCtrl', function($scope, $http, Auth, User, $state, $mdDialog) {
+    .controller('UsermanagerCtrl', function($scope, $http, Auth, User, $state, $mdDialog, $mdToast, $animate) {
         $scope.users = User.query();
 
         $scope.goToUser = function(id) {
@@ -16,8 +16,17 @@ angular.module('aksiteApp')
                 .cancel('Cancel')
                 .targetEvent(ev))
                 .then(() => {
-                    User.remove({id: user._id});
-                    $scope.users.splice(this.$index, 1);
+                    User.remove({id: user._id}, function() {
+                            $scope.users.splice(this.$index, 1);
+                        }.bind(this),
+                        function() {
+                            $mdToast.show(
+                                $mdToast.simple()
+                                    .content('Deleting user failed')
+                                    .position('bottom right')
+                                    .hideDelay(10000)
+                            );
+                        });
                 });
         };
     });
