@@ -18,8 +18,7 @@ angular.module('aksiteApp')
                 .then(() => {
                     User.remove({id: user._id}, function() {
                             $scope.users.splice(this.$index, 1);
-                        }.bind(this),
-                        function() {
+                        }.bind(this), function() {
                             $mdToast.show(
                                 $mdToast.simple()
                                     .content('Deleting user failed')
