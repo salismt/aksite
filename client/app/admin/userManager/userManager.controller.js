@@ -10,8 +10,7 @@ angular.module('aksiteApp')
 
         $scope.deleteUser = function(user, ev) {
             $mdDialog.show($mdDialog.confirm()
-                .title('Would you like to delete your debt?')
-                .content('All of the banks have agreed to forgive you your debts.')
+                .title('Are you sure you would like to delete this user?')
                 .ariaLabel('Delete User?')
                 .ok('Delete')
                 .cancel('Cancel')
