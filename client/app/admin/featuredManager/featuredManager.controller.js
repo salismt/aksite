@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('FeaturedmanagerCtrl', function($scope, $http, $mdToast, $animate) {
+    .controller('FeaturedmanagerCtrl', function($scope, $http, $mdDialog, $mdToast, $animate) {
         $scope.loadingItems = true;
         $http.get('/api/featured/items')
             .success(function(data) {
@@ -33,8 +33,27 @@ angular.module('aksiteApp')
                 });
         };
 
-        $scope.deleteItem = function(item) {
-            //TODO
+        $scope.deleteItem = function(item, ev) {
+            $mdDialog.show($mdDialog.confirm()
+                .title('Are you sure you would like to delete this item?')
+                .ariaLabel('Delete Item?')
+                .ok('Delete')
+                .cancel('Cancel')
+                .targetEvent(ev))
+                .then(() => {
+                    $http.delete('/api/featured/'+item._id)
+                        .success(function() {
+                            $scope.items.splice(this.$index, 1);
+                        }.bind(this))
+                        .error(function() {
+                            $mdToast.show(
+                                $mdToast.simple()
+                                    .content('Deleting item failed')
+                                    .position('bottom right')
+                                    .hideDelay(10000)
+                            );
+                        });
+                });
         };
     })
     .directive('bgImg', function() {

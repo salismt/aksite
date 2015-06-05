@@ -14,7 +14,7 @@
                 </div>
             </md-toolbar>
             <md-list>
-                <md-list-item class="md-3-line md-with-secondary md-clickable" ng-repeat="item in items" ng-class="{deleted: item.deleted}">
+                <md-list-item class="md-3-line md-with-secondary md-clickable fade-out" ng-repeat="item in items" ng-class="{deleted: item.deleted}">
                     <md-button class="md-no-style">
                         <div class="md-list-item-inner">
                             <img class="md-avatar" ng-src="/api/upload/{{item.thumbnailId}}.jpg" alt="{{item.name}}">
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                     </md-button>
-                    <md-button class="md-secondary-container md-icon-button" aria-label="Delete Item" ng-click="deleteItem(item)">
+                    <md-button class="md-secondary-container md-icon-button" aria-label="Delete Item" ng-click="deleteItem(item, $event)">
                         <md-icon class="fa fa-2x md-warn" md-font-icon="fa-trash-o"></md-icon>
                     </md-button>
                 </md-list-item>
