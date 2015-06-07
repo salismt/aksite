@@ -178,3 +178,9 @@ $time-step: $time/$max;
         width: 400px;
     }
 }
+
+@media screen and (max-width: 24em) {
+    .vendor-section a.brick.w2 {
+        width: 100%;
+    }
+}
