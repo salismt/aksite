@@ -10,10 +10,13 @@
         <div class="col-sm-12">
             <h1>{{gallery.name}}</h1>
         </div>
-        <span class="btn btn-lg btn-primary btn-file pull-right">
-            <span class="fa fa-plus"></span> Add Photos
-            <input type="file" accept="images/*" id="file-input" name="myFiles[]" ng-file-select="onFileSelect($files)" multiple>
-        </span>
+
+        <md-button class="md-fab md-fab-bottom-right" style="position: fixed" aria-label="Add Photos">
+            <label for="file-input">
+                <md-icon class="fa fa-2x" md-font-icon="fa-plus"></md-icon>
+            </label>
+        </md-button>
+        <input id="file-input" type="file" accept="images/*" name="myFiles[]" ng-file-select="onFileSelect($files)" style="display: none;">
     </div>
     <br/>
     <div class="row">
