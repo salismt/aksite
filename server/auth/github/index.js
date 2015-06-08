@@ -6,8 +6,6 @@ var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var auth = require('../auth.service');
 var config = require('../../config/environment');
-var expressJwt = require('express-jwt');
-var validateJwt = expressJwt({secret: config.secrets.session});
 
 var router = express.Router();
 
