@@ -42,7 +42,7 @@ exports.config = {
     // Jasmine and Jasmine2 are fully supported as test and assertion frameworks.
     // Mocha and Cucumber have limited support. You will need to include your
     // own assertion framework (such as Chai) if working with Mocha.
-    framework: 'jasmine',
+    framework: 'jasmine2',
 
     // ----- Options to be passed to minijasminenode -----
     //
