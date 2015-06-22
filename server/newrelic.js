@@ -9,10 +9,12 @@ exports.config = {
      * Array of application names.
      */
     app_name: ['aksite'],
+
     /**
      * Your New Relic license key.
      */
     license_key: '731fb34b032418b1eaa2d61ed8b46904238a9526',
+
     logging: {
         /**
          * Level at which to log. 'trace' is most useful to New Relic when diagnosing
@@ -21,7 +23,14 @@ exports.config = {
          */
         level: 'info'
     },
+
     error_collector: {
         ignore_status_codes: [404, 410, 401]
+    },
+
+    rules : {
+        ignore : [
+            '^/api/upload/'
+        ]
     }
 };
