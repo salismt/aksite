@@ -17,7 +17,7 @@
     "angular-ui-router": "~0.2.10",
     "ng-file-upload": "~1.6.7",
     "d3": "~3.4.11",
-    "angular-material": "0.9.7",
+    "angular-material": "0.10.0",
     "angular-messages": ">=1.4.*",
     "classie": "~1.0.1",
     "imagesloaded": "~3.1.8",
