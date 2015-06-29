@@ -14,7 +14,6 @@ exports.setup = function(User, config) {
             passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {
-            console.log(config.linkedin);
             if(req.user) {
                 User.findById(req.user._id, function(err, user) {
                     if(user) {
