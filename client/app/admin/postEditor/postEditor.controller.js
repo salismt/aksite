@@ -26,7 +26,7 @@ angular.module('aksiteApp')
         } else {
             $http.get('/api/posts/'+$stateParams.postId)
                 .success(function(res) {
-                    console.log(res);
+                    res.categories = res.categories.join(', ');
                     $scope.post = res;
                     $scope.filename = $scope.post.imageId;
                     if($scope.post.hidden !== true || $scope.post.hidden !== false) {
@@ -73,12 +73,19 @@ angular.module('aksiteApp')
             $scope.submitted = true;
             console.log(form);
 
+            let saveData = $scope.post;
+            console.log(saveData.categories);
+            console.log(typeof saveData.categories);
+            saveData.categories = _.map(saveData.categories.split(','), _.trim);
+            console.log(saveData.categories);
+            console.log(typeof saveData.categories);
+
             if(form.$valid) {
                 if(!$scope.newPost && ($scope.filename === $scope.post.imageId || $scope.filename === null)) {
                     $scope.upload = $upload.upload({
                         url: 'api/posts/'+$scope.post._id,
                         method: 'PUT',
-                        data: $scope.post
+                        data: saveData
                     })
                         .progress(function(evt) {
                             $scope.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
@@ -100,7 +107,7 @@ angular.module('aksiteApp')
                             };
                         });
                 } else if(!$scope.newPost) {
-                    var updated = $scope.post;
+                    var updated = saveData;
                     updated.newImage = true;
                     $scope.upload = $upload.upload({
                         url: 'api/posts/'+$scope.post._id,
@@ -132,7 +139,7 @@ angular.module('aksiteApp')
                         url: 'api/posts',
                         method: 'POST',
                         file: $scope.fileToUpload,
-                        data: $scope.post
+                        data: saveData
                     })
                         .progress(function(evt) {
                             $scope.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
