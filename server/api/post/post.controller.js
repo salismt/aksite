@@ -187,7 +187,7 @@ exports.update = function(req, res) {
 
                 util.createThumbnail(file.id)
                     .then(thumbnail => {
-                        console.log(thumbnail.filename+' -> (thumb)'+thumbnail.id);
+                        console.log(thumbnail.filename + ' -> (thumb)' + thumbnail.id);
                         postModel.thumbnailId = thumbnail.id;
 
                         var updated = _.assign(post, postModel);
