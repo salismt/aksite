@@ -2,8 +2,33 @@
     font-family: $header-font-stack;
     letter-spacing: -1px;
     font-weight: 700;
+    font-size: 4em;
+    text-align: center;
 }
 
 .post-date {
     color: $text-muted;
+}
+
+.post iframe {
+    margin: 10px auto;
+    display: block;
+    height: 315px;
+    width: 100%;
+}
+
+@media (min-width: $screen-sm-min) {
+    .post iframe {
+        height: 375px;
+    }
+}
+@media (min-width: $screen-md-min) {
+    .post iframe {
+        height: 500px;
+    }
+}
+@media (min-width: $screen-lg-min) {
+    .post iframe {
+        height: 600px;
+    }
 }
