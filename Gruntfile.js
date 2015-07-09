@@ -621,9 +621,7 @@ module.exports = function(grunt) {
     grunt.registerTask('serve', function(target) {
         if(target === 'dist') {
             return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'express-keepalive']);
-        }
-
-        if(target === 'debug') {
+        } else if(target === 'debug') {
             return grunt.task.run([
                 'clean:server',
                 'env:all',
@@ -634,21 +632,21 @@ module.exports = function(grunt) {
                 'autoprefixer',
                 'concurrent:debug'
             ]);
+        } else {
+            return grunt.task.run([
+                'clean:server',
+                'env:all',
+                'injector:sass',
+                'concurrent:server',
+                'injector',
+                'wiredep',
+                'autoprefixer',
+                'express:dev',
+                'wait',
+                'open',
+                'watch'
+            ]);
         }
-
-        grunt.task.run([
-            'clean:server',
-            'env:all',
-            'injector:sass',
-            'concurrent:server',
-            'injector',
-            'wiredep',
-            'autoprefixer',
-            'express:dev',
-            'wait',
-            'open',
-            'watch'
-        ]);
     });
 
     grunt.registerTask('test', function(target) {
@@ -658,9 +656,7 @@ module.exports = function(grunt) {
                 'env:test',
                 'mochaTest'
             ]);
-        }
-
-        else if(target === 'client') {
+        } else if(target === 'client') {
             return grunt.task.run([
                 'clean:server',
                 'env:all',
@@ -670,9 +666,7 @@ module.exports = function(grunt) {
                 'autoprefixer',
                 'karma'
             ]);
-        }
-
-        else if(target === 'e2e') {
+        } else if(target === 'e2e') {
             return grunt.task.run([
                 'clean:server',
                 'env:all',
@@ -685,13 +679,12 @@ module.exports = function(grunt) {
                 'express:dev',
                 'protractor'
             ]);
-        }
-
-        else
+        } else {
             grunt.task.run([
                 'test:server',
                 'test:client'
             ]);
+        }
     });
 
     grunt.registerTask('build', [
