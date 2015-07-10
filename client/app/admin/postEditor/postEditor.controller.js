@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('PostEditorCtrl', function($scope, $http, $upload, $stateParams, $state, $sanitize, Auth) {
+    .controller('PostEditorCtrl', function($scope, $http, $upload, $stateParams, $state, $sce, Auth) {
         $scope.loadingPost = true;
         $scope.currentUser = Auth.getCurrentUser();
         if(!$stateParams.postId || $stateParams.postId === 'new') {
@@ -24,7 +24,7 @@ angular.module('aksiteApp')
             $scope.loadingPost = false;
             $scope.newPost = true;
         } else {
-            $http.get('/api/posts/'+$stateParams.postId)
+            $http.get('/api/posts/' + $stateParams.postId)
                 .success(function(res) {
                     res.categories = res.categories.join(', ');
                     $scope.post = res;
@@ -44,7 +44,7 @@ angular.module('aksiteApp')
 
         $scope.markedContent = function() {
             try {
-                return $sanitize(marked($scope.post.content || ''));
+                return $sce.trustAsHtml(marked($scope.post.content || ''));
             } catch(e) {
                 return '<h1 class=\"text-danger\">Parsing Error</h1>';
             }
