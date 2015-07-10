@@ -2,17 +2,31 @@
   "name": "aksite",
   "version": "0.0.0",
   "main": "server/app.js",
+  "homepage": "http://andrewkoroluk.com/",
+  "bugs": {
+    "url": "https://github.com/Awk34/aksite/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Awk34/aksite.git"
+  },
+  "author": {
+    "name": "Andrew Koroluk",
+    "email": "koroluka@gmail.com",
+    "url": "http://andrewkoroluk.com/"
+  },
+  "license": "MIT",
   "dependencies": {
     "body-parser": "~1.0.0",
     "composable-middleware": "^0.3.0",
     "compression": "~1.0.1",
-    "connect-mongo": "^0.4.1",
+    "connect-mongo": "^0.8.1",
     "connect-multiparty": "^1.2.4",
     "cookie-parser": "~1.0.1",
     "ejs": "~0.8.4",
     "errorhandler": "~1.0.0",
     "exif": "^0.4.0",
-    "express": "~4.0.0",
+    "express": "~4.13.1",
     "express-jwt": "^3.0.1",
     "express-session": "~1.0.2",
     "formidable": "^1.0.17",
@@ -25,7 +39,7 @@
     "method-override": "~1.0.0",
     "moment": "^2.8.4",
     "mongodb": "^1.4.17",
-    "mongoose": "~3.8.8",
+    "mongoose": "~4.0.3",
     "morgan": "~1.0.0",
     "newrelic": "^1.14.1",
     "passport": "~0.2.0",
@@ -38,7 +52,7 @@
     "q": "^1.1.2",
     "request": "^2.44.0",
     "socket.io": "~1.0.6",
-    "socketio-jwt": "^2.0.2",
+    "socketio-jwt": "^3.0.0",
     "static-favicon": "~1.0.1"
   },
   "devDependencies": {
