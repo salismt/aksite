@@ -2,6 +2,20 @@
   "name": "aksite",
   "version": "0.0.0",
   "main": "server/app.js",
+  "homepage": "http://andrewkoroluk.com/",
+  "bugs": {
+    "url": "https://github.com/Awk34/aksite/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Awk34/aksite.git"
+  },
+  "author": {
+    "name": "Andrew Koroluk",
+    "email": "koroluka@gmail.com",
+    "url": "http://andrewkoroluk.com/"
+  },
+  "license": "MIT",
   "dependencies": {
     "body-parser": "~1.13.2",
     "composable-middleware": "^0.3.0",
@@ -19,9 +33,10 @@
     "gm": "^1.16.0",
     "gridform": "^0.1.7",
     "gridfs-stream": "^0.5.1",
+    "lodash": "~3.10.0",
+    "grunt-nsp-package": "0.0.5",
     "jsonwebtoken": "^5.0.2",
     "markdown-it": "^4.3.0",
-    "lodash": "~3.10.0",
     "method-override": "~1.0.0",
     "moment": "^2.10.3",
     "mongodb": "^1.4.17",
@@ -48,7 +63,7 @@
     "grunt-asset-injector": "^0.1.0",
     "grunt-autoprefixer": "~0.7.2",
     "grunt-babel": "^5.0.0",
-    "grunt-build-control": "daftmonk/grunt-build-control",
+    "grunt-build-control": "~0.5.0",
     "grunt-concurrent": "~0.5.0",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-concat": "~0.4.0",
@@ -102,6 +117,5 @@
     "start": "node server/app.js",
     "test": "node --harmony ./node_modules/.bin/grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
-  },
-  "private": true
+  }
 }

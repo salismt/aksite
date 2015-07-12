@@ -38,9 +38,9 @@ angular.module('aksiteApp')
             }
         ];
 
-        $scope.toggleLeft = function () {
+        $scope.toggleLeft = function() {
             $mdSidenav('left').toggle()
-                .then(function () {
+                .then(function() {
                     //$log.debug("toggle left is done");
                 });
         };
@@ -48,7 +48,7 @@ angular.module('aksiteApp')
     .controller('LeftCtrl', function($scope, $timeout, $mdSidenav, $log) {
         $scope.close = function() {
             $mdSidenav('left').close()
-                .then(function(){
+                .then(function() {
                     //$log.debug("close LEFT is done");
                 });
         };
