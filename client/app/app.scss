@@ -178,6 +178,13 @@ md-list md-item {
     }
 }
 
+md-list md-list-item.md-with-secondary button md-icon.fa {
+    font-size: 2em;
+    line-height: 44px;
+    height: 44px;
+    vertical-align: middle;
+}
+
 .brick {
     display: block;
     width: 25%;
