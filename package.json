@@ -36,7 +36,7 @@
     "grunt-nsp-package": "0.0.5",
     "jsonwebtoken": "^5.0.2",
     "lodash": "~3.9.3",
-    "marked": "^0.3.3",
+    "markdown-it": "^4.3.0",
     "method-override": "~1.0.0",
     "moment": "^2.8.4",
     "mongodb": "^1.4.17",
