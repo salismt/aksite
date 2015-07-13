@@ -29,7 +29,7 @@ angular.module('aksiteApp')
                     res.categories = res.categories.join(', ');
                     $scope.post = res;
                     $scope.filename = $scope.post.imageId;
-                    if($scope.post.hidden !== true || $scope.post.hidden !== false) {
+                    if($scope.post.hidden !== true && $scope.post.hidden !== false) {
                         $scope.post.hidden = false;
                     }
                 })

@@ -18,7 +18,7 @@ angular.module('aksiteApp')
                 .success(function(res) {
                     $scope.project = res;
                     $scope.filename = $scope.project.coverId;
-                    if($scope.project.hidden !== true || $scope.project.hidden !== false) {
+                    if($scope.project.hidden !== true && $scope.project.hidden !== false) {
                         $scope.project.hidden = false;
                     }
                 })
