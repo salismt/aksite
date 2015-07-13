@@ -48,10 +48,10 @@
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">Hidden</label>
-
-                <div class="col-sm-10">
-                    <button type="button" class="btn btn-primary" ng-model="project.hidden" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">{{project.hidden}}</button>
-                </div>
+                <md-switch class="col-sm-10" style="width: 65%; position: relative;" ng-model="post.hidden" aria-label="Hidden">
+                    <span ng-show="!post.hidden">Visible</span>
+                    <span ng-show="post.hidden">Hidden</span>
+                </md-switch>
             </div>
 
             <div class="form-group">
