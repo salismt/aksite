@@ -39,13 +39,13 @@ module.exports = function(grunt) {
             },
             dev: {
                 options: {
-                    script: 'server/app.js',
+                    script: 'server',
                     debug: true
                 }
             },
             prod: {
                 options: {
-                    script: 'dist/server/app.js',
+                    script: 'dist/server',
                     port: 80
                 }
             }
@@ -62,7 +62,7 @@ module.exports = function(grunt) {
                     '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
                     '!<%= yeoman.client %>/{app,components}/**/*.mock.js',
                     '!<%= yeoman.client %>/app/app.js'],
-                tasks: ['injector:scripts']
+                tasks: ['newer:babel:client', 'injector:scripts']
             },
             injectCss: {
                 files: [
@@ -91,13 +91,6 @@ module.exports = function(grunt) {
                     '<%= yeoman.client %>/{app,components,assets/css}/**/*.{scss,sass}'],
                 tasks: ['sass', 'autoprefixer']
             },
-            babel: {
-                files: [
-                    '<%= yeoman.client %>/{app,components}/**/*.js',
-                    '!<%= yeoman.client %>/{app,components}/**/*.spec.js'
-                ],
-                tasks: ['babel']
-            },
             gruntfile: {
                 files: ['Gruntfile.js']
             },
@@ -105,7 +98,6 @@ module.exports = function(grunt) {
                 files: [
                     '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.css',
                     '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.html',
-                    '.tmp/{app,components}/**/*.js',
                     '!{.tmp,<%= yeoman.client %>}{app,components}/**/*.spec.js',
                     '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js',
                     '<%= yeoman.client %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
@@ -199,7 +191,7 @@ module.exports = function(grunt) {
         // Use nodemon to run server in debug mode with an initial breakpoint
         nodemon: {
             debug: {
-                script: 'server/app.js',
+                script: 'server',
                 options: {
                     nodeArgs: ['--debug-brk'],
                     env: {
@@ -424,12 +416,12 @@ module.exports = function(grunt) {
         // Run some tasks in parallel to speed up the build process
         concurrent: {
             server: [
-                'babel',
+                'newer:babel:client',
                 'sass'
             ],
             test: [
                 'sass',
-                'babel'
+                'newer:babel:client'
             ],
             debug: {
                 tasks: [
@@ -442,7 +434,7 @@ module.exports = function(grunt) {
             },
             dist: [
                 'sass',
-                'babel',
+                'newer:babel:client',
                 'imagemin',
                 'svgmin'
             ]
@@ -509,7 +501,7 @@ module.exports = function(grunt) {
             options: {
                 sourceMap: true
             },
-            server: {
+            client: {
                 files: [{
                     expand: true,
                     cwd: 'client',
