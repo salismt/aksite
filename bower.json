@@ -28,7 +28,7 @@
     "bourbon": "~4.2.3",
     "neat": "~1.7.2",
     "moment": "~2.9.0",
-    "photoswipe": "~4.0.0",
+    "photoswipe": "~4.1.0",
     "hammerjs": "~2.0.4",
     "nvd3": "~1.7.1",
     "es6-promise": "~2.0.1",
