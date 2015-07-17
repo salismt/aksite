@@ -88,7 +88,7 @@ export function saveFileFromUrl(url, options = {}) {
 
     var writestream = gfs.createWriteStream({
         filename: options.filename,
-        content_type: options.content_type
+        contentType: options.contentType
     });
     writestream.on('error', deferred.reject);
     writestream.on('close', function(file) {
@@ -109,7 +109,7 @@ export function saveFileFromFs(uri, options = {}) {
 
     var writestream = gfs.createWriteStream({
         filename: options.filename,
-        content_type: options.content_type
+        contentType: options.contentType
     });
     writestream.on('error', deferred.reject);
     writestream.on('close', function(file) {

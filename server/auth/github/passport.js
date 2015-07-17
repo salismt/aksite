@@ -48,7 +48,7 @@ exports.setup = function(User, config) {
 
                             util.saveFileFromUrl(profile._json.avatar_url, {
                                 filename: 'github_profile_picture_'+profile._json,
-                                content_type: 'image/jpeg'
+                                contentType: 'image/jpeg'
                             })
                                 .catch(done)
                                 .then(function(file) {

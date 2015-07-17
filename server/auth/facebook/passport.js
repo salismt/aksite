@@ -46,16 +46,16 @@ exports.setup = function(User, config) {
                                 facebook: profile._json
                             });
 
-                            util.saveFileFromUrl('https://graph.facebook.com/'+profile._json.id+'/picture?type=large', {
-                                filename: 'facebook_profile_picture_'+profile._json.id,
-                                content_type: 'image/jpeg'
+                            util.saveFileFromUrl('https://graph.facebook.com/' + profile._json.id + '/picture?type=large', {
+                                filename: 'facebook_profile_picture_' + profile._json.id,
+                                contentType: 'image/jpeg'
                             })
                                 .catch(done)
                                 .then(function(file) {
                                     console.log(file);
                                     newUser.imageId = file._id;
 
-                                    util.createThumbnail(file._id, {filename: 'facebook_profile_picture_'+profile._json.id+'_thumbnail'})
+                                    util.createThumbnail(file._id, {filename: 'facebook_profile_picture_' + profile._json.id + '_thumbnail'})
                                         .catch(done)
                                         .then(function(thumbnail) {
                                             console.log(thumbnail);

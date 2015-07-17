@@ -54,7 +54,7 @@ exports.setup = function(User, config) {
 
                             util.saveFileFromUrl(profilePic, {
                                 filename: picName,
-                                content_type: 'image/jpeg'
+                                contentType: 'image/jpeg'
                             })
                                 .catch(done)
                                 .then(function(file) {
