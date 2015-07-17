@@ -3,17 +3,16 @@
 /**
  * Server Utility Functions
  */
+import _ from 'lodash';
+import q from 'q';
+import request from 'request';
+import fs from 'fs';
+import config from './config/environment';
+import mongoose from 'mongoose';
+import gm from 'gm';
+import Grid from 'gridfs-stream';
 
-var _ = require('lodash'),
-    q = require('q'),
-    request = require('request'),
-    fs = require('fs'),
-    //path = require('path'),
-    config = require('./config/environment'),
-    mongoose = require('mongoose'),
-    gm = require('gm'),
-    Grid = require('gridfs-stream'),
-    gfs,
+var gfs,
     conn = mongoose.createConnection(config.mongo.uri);
 
 Grid.mongo = mongoose.mongo;
@@ -33,11 +32,10 @@ conn.once('open', function(err) {
  * @param {number} [options.quality=90] - The quality of the thumbnail
  * @param {string} [options.filename=''] - The filename to use
  */
-exports.createThumbnail = function(id, options) {
+export function createThumbnail(id, options = {}) {
     var deferred = q.defer(),
         thumbnail = {};
 
-    options = options ? options : {};
     _.defaults(options, {
         height: 200,
         width: 200,
@@ -78,17 +76,15 @@ exports.createThumbnail = function(id, options) {
         });
 
     return deferred.promise;
-};
+}
 
 /**
  * Makes a request for a file from a URL, and stores it in GridFS
  * @param {string} url
  * @param [options]
  */
-exports.saveFileFromUrl = function(url, options) {
+export function saveFileFromUrl(url, options = {}) {
     var deferred = q.defer();
-
-    options = options ? options : {};
 
     var writestream = gfs.createWriteStream({
         filename: options.filename,
@@ -101,17 +97,15 @@ exports.saveFileFromUrl = function(url, options) {
     request(url).pipe(writestream);
 
     return deferred.promise;
-};
+}
 
 /**
  * Stores a file from a filesystem path in GridFS
  * @param {string} uri
  * @param [options]
  */
-exports.saveFileFromFs = function(uri, options) {
+export function saveFileFromFs(uri, options = {}) {
     var deferred = q.defer();
-
-    options = options ? options : {};
 
     var writestream = gfs.createWriteStream({
         filename: options.filename,
@@ -124,14 +118,14 @@ exports.saveFileFromFs = function(uri, options) {
     fs.createReadStream(uri).pipe(writestream);
 
     return deferred.promise;
-};
+}
 
 /**
  * Removes a file from GridFS
  * @param options
  * @param {string|ObjectID} options._id
  */
-exports.deleteFile = function(options) {
+export function deleteFile(options = {}) {
     var deferred = q.defer();
 
     gfs.remove({_id: options._id}, function(err, document) {
@@ -140,22 +134,22 @@ exports.deleteFile = function(options) {
     });
 
     return deferred.promise;
-};
+}
 
 /**
  * Returns whether or not the given string is a valid ObjectID
  * @param {string} objectId
  * @returns {boolean}
  */
-exports.isValidObjectId = function(objectId) {
-    return new RegExp("^[0-9a-fA-F]{24}$").test(objectId);
-};
+export function isValidObjectId(objectId) {
+    return /^[0-9a-fA-F]{24}$/.test(objectId);
+}
 
 /**
  * Sends a 500 Internal Server Error
  * @param res
  * @param [err]
  */
-exports.handleError = function(res, err) {
+export function handleError(res, err) {
     res.status(500).send(err);
-};
+}
