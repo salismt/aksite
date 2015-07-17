@@ -4,8 +4,6 @@
         "client/bower_components/*"
     ],
     "requireCurlyBraces": [
-        "if",
-        "else",
         "for",
         "while",
         "do",
