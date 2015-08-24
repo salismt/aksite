@@ -12,9 +12,19 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 // injector
 @import '_animations.scss';
 @import '_variables.scss';
+@import 'admin/admin.scss';
+@import 'blog/blog.scss';
+@import 'main/main.scss';
+@import 'photos/photos.scss';
+@import 'projects/projects.scss';
+@import 'resume/resume.scss';
+@import 'settings/settings.scss';
+@import 'user/user.scss';
+@import '../components/footer/footer.scss';
+@import '../components/navbar/navbar.scss';
+@import '../components/preloader/preloader.scss';
 @import 'account/login/login.scss';
 @import 'account/signup/signup.scss';
-@import 'admin/admin.scss';
 @import 'admin/blogManager/blogManager.scss';
 @import 'admin/dashboard/dashboard.scss';
 @import 'admin/featuredManager/featuredManager.scss';
@@ -27,21 +37,11 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import 'admin/siteSettings/siteSettings.scss';
 @import 'admin/userEditor/userEditor.scss';
 @import 'admin/userManager/userManager.scss';
-@import 'blog/blog.scss';
 @import 'blog/post/post.scss';
-@import 'main/main.scss';
 @import 'photos/gallery/gallery.scss';
-@import 'photos/photos.scss';
 @import 'projects/project/project.scss';
-@import 'projects/projects.scss';
-@import 'resume/resume.scss';
-@import 'settings/dashboard/dashboard.scss';
 @import 'settings/profile/profile.scss';
-@import 'settings/settings.scss';
-@import 'user/user.scss';
-@import 'footer/footer.scss';
-@import 'navbar/navbar.scss';
-@import 'preloader/preloader.scss';
+@import 'settings/dashboard/dashboard.scss';
 // endinjector
 
 /**
