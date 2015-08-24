@@ -1,13 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('MainCtrl', function($scope, $http) {
-        $http.get('/api/featured')
-            .success(function(res) {
-                $scope.featuredSection = res;
-                $scope.loadFeatured();
-            });
-
+    .controller('MainCtrl', function($scope) {
         var texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', 'diag-striped-text', 'bg-img-text'],
             usedTexts = [],
             currentText = _.sample(texts);  // Load first random text
