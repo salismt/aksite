@@ -1,50 +1,65 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="container md-padding">
-    <div class="md-whiteframe-z1" style="background-color: rgb(63, 81, 181);">
-        <img src="assets/images/portrait_2014.jpg" style="height: 300px;" alt=""/>
-        <div class="text-white md-padding" style="display: inline-block;">
-            <h1>Andrew Koroluk</h1>
-            <h3>{{profile.headline}}</h3>
+<section layout="row" flex>
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="resume" md-is-locked-open="$mdMedia('gt-md')">
+        <md-toolbar class="md-theme-indigo" style="text-align: center;">
+            <h1 style="font-size: 30px; margin-bottom: 0;">Andrew Koroluk</h1>
+            <h4>Full-Stack Developer</h4>
+            <img src="assets/images/portrait_2014.jpg" style="height: 250px; width: 250px; border-radius: 50%; margin: 27px;" alt="">
+        </md-toolbar>
+        <md-content flex role="navigation">
+            <md-button style="width: 100%; margin: 0; padding: 3px;">Cover Letter</md-button>
+            <md-button style="width: 100%; margin: 0; padding: 3px;">Skills</md-button>
+            <md-button style="width: 100%; margin: 0; padding: 3px;">Experience</md-button>
+        </md-content>
+    </md-sidenav>
+
+    <md-content>
+        <div class="md-whiteframe-z1" style="background-color: rgb(63, 81, 181);">
+            <img src="assets/images/portrait_2014.jpg" style="height: 300px;" alt=""/>
+            <div class="text-white md-padding" style="display: inline-block;">
+                <h1>Andrew Koroluk</h1>
+                <h3>{{profile.headline}}</h3>
+            </div>
         </div>
-    </div>
-    <div class="md-whiteframe-z1">
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <h2>
-                    <span>Skills</span>
-                </h2>
-            </div>
-        </md-toolbar>
-        <md-content class="md-padding">
-            <md-chips class="md-chips-noline">
-                <md-chip ng-repeat="skill in profile.skills.values">{{skill.skill.name}}</md-chip>
-            </md-chips>
-        </md-content>
-    </div>
-    <div class="md-whiteframe-z1">
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <h2>
-                    <span>Certifications</span>
-                </h2>
-            </div>
-        </md-toolbar>
-        <md-content class="md-padding">
-            <md-list class="md-default-theme">
-                <md-list-item class="md-clickable" ng-repeat="cert in profile.certifications.values">
-                    <md-button class="md-no-style" ng-click="goToUser(user._id, $event)">
-                        <div class="md-list-item-inner">
-                            <img class="md-avatar" src="assets/images/codeschool_avatar.svg" alt="">
-                            <div class="md-list-item-text">
-                                <p>{{cert.name}}</p>
+        <div class="md-whiteframe-z1">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>
+                        <span>Skills</span>
+                    </h2>
+                </div>
+            </md-toolbar>
+            <md-content class="md-padding">
+                <md-chips class="md-chips-noline">
+                    <md-chip ng-repeat="skill in profile.skills.values">{{skill.skill.name}}</md-chip>
+                </md-chips>
+            </md-content>
+        </div>
+        <div class="md-whiteframe-z1">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>
+                        <span>Certifications</span>
+                    </h2>
+                </div>
+            </md-toolbar>
+            <md-content class="md-padding">
+                <md-list class="md-default-theme">
+                    <md-list-item class="md-clickable" ng-repeat="cert in profile.certifications.values">
+                        <md-button class="md-no-style" ng-click="goToUser(user._id, $event)">
+                            <div class="md-list-item-inner">
+                                <img class="md-avatar" src="assets/images/codeschool_avatar.svg" alt="">
+                                <div class="md-list-item-text">
+                                    <p>{{cert.name}}</p>
+                                </div>
                             </div>
-                        </div>
-                    </md-button>
-                </md-list-item>
-            </md-list>
-        </md-content>
-    </div>
-</div>
+                        </md-button>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </div>
+    </md-content>
+</section>
 
 <div ng-include="'components/footer/footer.html'"></div>
