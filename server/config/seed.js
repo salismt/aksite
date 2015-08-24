@@ -32,6 +32,9 @@ var _ = require('lodash'),
 
 Grid.mongo = mongoose.mongo;
 
+FeaturedSection.find({}).remove(function() {});
+FeaturedItem.find({}).remove(function() {});
+
 Thing.find({}).remove(function() {
     Thing.create({
         name: 'Thing 1',
@@ -56,7 +59,7 @@ Thing.find({}).remove(function() {
 
 conn.once('open', function(err) {
     if(err) return console.log(err);
-    gfs = Grid(conn.db);
+    gfs = new Grid(conn.db);
 
     // Delete all files in GridFS
     gridModel1.find({}, function(err, gridfiles) {
@@ -176,55 +179,25 @@ conn.once('open', function(err) {
                                             .then(function(results) {
                                                 console.log('finished populating photos');
 
-                                                FeaturedSection.find({}).remove(function() {
-                                                    FeaturedItem.find({}).remove(function() {
-                                                        Gallery.find({}).remove(function() {
-                                                            Photo.find(function(err, items) {
-                                                                if(err) return console.log(err);
-                                                                else {
-                                                                    _.forEach(items, function(item) {
-                                                                        var featuredItem = {
-                                                                            name: item.name,
-                                                                            thumbnailId: item.thumbnailId,
-                                                                            sqThumbnailId: item.sqThumbnailId,
-                                                                            link: '#',
-                                                                            type: 'photo'
-                                                                        };
-
-                                                                        FeaturedItem.create({
-                                                                            name: item.name,
-                                                                            thumbnailId: item.thumbnailId,
-                                                                            sqThumbnailId: item.sqThumbnailId,
-                                                                            link: '#',
-                                                                            type: 'photo'
-                                                                        });
-                                                                    });
-                                                                    console.log('finished populating featured items');
-
-                                                                    Gallery.create({
-                                                                        name: 'testGallery',
-                                                                        info: 'Test gallery',
-                                                                        photos: _.pluck(items, '_id'),
-                                                                        featuredId: items[0]._id,
-                                                                        date: new Date(),
-                                                                        hidden: false
-                                                                    }, function(err, gallery) {
-                                                                        if(err) {
-                                                                            console.log(err);
-                                                                        } else {
-                                                                            console.log('Gallery Created', gallery._id);
-                                                                        }
-                                                                    });
-
-                                                                    return setTimeout(function() {
-                                                                        FeaturedController.newFeatured({}, {
-                                                                            status: function() { return this; },
-                                                                            send: function() { return this; }
-                                                                        });
-                                                                    }, 100);
+                                                Gallery.find({}).remove(function() {
+                                                    Photo.find(function(err, items) {
+                                                        if(err) return console.log(err);
+                                                        else {
+                                                            Gallery.create({
+                                                                name: 'testGallery',
+                                                                info: 'Test gallery',
+                                                                photos: _.pluck(items, '_id'),
+                                                                featuredId: items[0]._id,
+                                                                date: new Date(),
+                                                                hidden: false
+                                                            }, function(err, gallery) {
+                                                                if(err) {
+                                                                    console.log(err);
+                                                                } else {
+                                                                    console.log('Gallery Created', gallery._id);
                                                                 }
                                                             });
-                                                        });
+                                                        }
                                                     });
                                                 });
                                             });
