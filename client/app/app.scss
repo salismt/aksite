@@ -1,7 +1,7 @@
 $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
 $fa-font-path: "/bower_components/font-awesome/fonts";
 
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,900|Roboto:500,700,900);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,900|Roboto:300,500,700,900);
 @import '../bower_components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
 @import '../bower_components/font-awesome/scss/font-awesome';
 
@@ -23,6 +23,7 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import '../components/footer/footer.scss';
 @import '../components/navbar/navbar.scss';
 @import '../components/preloader/preloader.scss';
+@import '../components/timeline/timeline.scss';
 @import 'account/login/login.scss';
 @import 'account/signup/signup.scss';
 @import 'admin/blogManager/blogManager.scss';

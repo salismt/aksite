@@ -1,0 +1,58 @@
+.timeline {
+    padding: 0;
+    margin: 0;
+}
+
+.timeline-item {
+    & > div {
+        //border-color: #2196f3;
+        display: block;
+        padding: 15px 0 15px 20px;
+        margin-left: 6em;
+        //border: #dddee0 solid;
+        border-color: #dddee0;
+        border-style: solid;
+        border-width: 0 0 0 2px;
+        &:before {
+            position: relative;
+            top: 100px;
+            float: left;
+            content: "";
+            box-shadow: 0 0 0 40px #fff;
+        }
+    }
+}
+
+.timeline-date {
+    font-family: $header-font-stack;
+    font-weight: 300;
+    position: relative;
+    display: block;
+    float: left;
+    width: 120px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.timeline-date-line1 {
+    @extend .timeline-date;
+    top: 65px;
+    font-size: 25px;
+    margin-left: -80px;
+}
+.timeline-date-line2 {
+    @extend .timeline-date;
+    top: 100px;
+    font-size: 20px;
+    margin-left: -120px;
+}
+
+.timeline-content {
+    position: relative;
+    display: inline-block;
+    padding: 10px;
+    height: 200px;
+    width: 80%;
+    margin-right: 50px;
+}
+
