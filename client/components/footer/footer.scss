@@ -5,4 +5,14 @@
             color: darken($lightTextColor, 20%);
         }
     }
+    .container {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+.flex-spacer {
+    flex-grow: 1;
 }
