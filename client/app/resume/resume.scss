@@ -1,0 +1,9 @@
+$resume-bg-color: rgb(237, 240, 242);
+
+.resume {
+    background-color: $resume-bg-color;
+
+    & > * {
+        background-color: transparent;
+    }
+}

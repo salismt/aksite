@@ -1,11 +1,11 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<section layout="row" flex>
+<section layout="row" flex class="resume">
     <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="resume" md-is-locked-open="$mdMedia('gt-md')">
         <md-toolbar class="md-theme-indigo" style="text-align: center;">
             <h1 style="font-size: 30px; margin-bottom: 0;">Andrew Koroluk</h1>
             <h4>Full-Stack Developer</h4>
-            <img src="assets/images/portrait_2014.jpg" style="height: 250px; width: 250px; border-radius: 50%; margin: 27px;" alt="">
+            <img src="assets/images/portrait_2014.jpg" style="height: 250px; width: 250px; border-radius: 50%; margin: 0 27px 15px 27px;" alt="">
         </md-toolbar>
         <md-content flex role="navigation">
             <md-button style="width: 100%; margin: 0; padding: 3px;">Cover Letter</md-button>
@@ -16,10 +16,7 @@
 
     <md-content>
         <div class="md-whiteframe-z1" style="background-color: rgb(63, 81, 181);">
-            <img src="assets/images/portrait_2014.jpg" style="height: 300px;" alt=""/>
             <div class="text-white md-padding" style="display: inline-block;">
-                <h1>Andrew Koroluk</h1>
-                <h3>{{profile.headline}}</h3>
             </div>
         </div>
         <div class="md-whiteframe-z1">
@@ -47,7 +44,7 @@
             <md-content class="md-padding">
                 <md-list class="md-default-theme">
                     <md-list-item class="md-clickable" ng-repeat="cert in profile.certifications.values">
-                        <md-button class="md-no-style" ng-click="goToUser(user._id, $event)">
+                        <md-button class="md-no-style">
                             <div class="md-list-item-inner">
                                 <img class="md-avatar" src="assets/images/codeschool_avatar.svg" alt="">
                                 <div class="md-list-item-text">
