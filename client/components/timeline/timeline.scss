@@ -18,7 +18,7 @@
             top: 100px;
             float: left;
             content: "";
-            box-shadow: 0 0 0 40px #fff;
+            box-shadow: 0 0 0 40px $resume-bg-color;
         }
     }
 }
@@ -47,12 +47,40 @@
     margin-left: -120px;
 }
 
-.timeline-content {
+.timeline-card {
     position: relative;
     display: inline-block;
-    padding: 10px;
     height: 200px;
     width: 80%;
     margin-right: 50px;
+    background-color: white;
+    overflow: hidden;
+    img {
+        height: 200px;
+    }
+    .md-button {
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        font-size: 2em;
+        margin: 6px;
+    }
 }
 
+.timeline-content {
+    padding: 30px;
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    font-family: $font-stack;
+    height: 200px;
+    margin: 0;
+    h2 {
+        margin: 0 0 10px 0;
+    }
+    p {
+        overflow: hidden;
+        line-height: 1.5em;
+        height: 4.5em;
+    }
+}

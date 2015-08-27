@@ -7,8 +7,18 @@
             <span class="timeline-date-line2 text-muted">
                 {{::item.dateLine2}}
             </span>
-            <div class="timeline-content md-whiteframe-z1">
-                Sample Text
+            <div class="timeline-card md-whiteframe-z1">
+                <img ng-class="{'pull-left': (item.imagePosition === 'left' || item.imagePosition === null || item.imagePosition === undefined), 'pull-right': item.imagePosition === 'right'}"
+                     ng-if="item.image"
+                     ng-src="{{::item.image}}"
+                     alt=""/>
+                <div class="timeline-content">
+                    <h2>{{::item.heading}}</h2>
+                    <p>{{::item.content}}</p>
+                </div>
+                <md-button class="md-icon-button" aria-label="More">
+                    <md-icon class="fa" md-font-icon="fa-angle-down"></md-icon>
+                </md-button>
             </div>
         </div>
     </li>
