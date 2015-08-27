@@ -57,6 +57,7 @@
     overflow: hidden;
     img {
         height: 200px;
+        width: 200px;
     }
     .md-button {
         bottom: 0;
@@ -68,7 +69,7 @@
 }
 
 .timeline-content {
-    padding: 30px;
+    padding: 25px 30px;
     overflow: hidden;
     white-space: normal;
     text-overflow: ellipsis;
@@ -82,5 +83,28 @@
         overflow: hidden;
         line-height: 1.5em;
         height: 4.5em;
+        margin: 0;
+    }
+    .badge-section {
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        height: 70px;
+        padding: 10px 30px 15px 30px;
+        line-height: 45px;
+        overflow: hidden;
+        margin-right: 40px;
+        display: flex;
+        flex-wrap: wrap;
+        img {
+            height: 45px;
+            width: 45px;
+            margin: 0 2.5px 5em 2.5px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            &:first-child {
+                margin-left: 0;
+            }
+        }
     }
 }
