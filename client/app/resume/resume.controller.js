@@ -8,26 +8,15 @@ angular.module('aksiteApp')
                 $scope.profile = data;
 
                 $scope.items = [{
-                    date: new Date(),
-                    dateLine1: moment(new Date()).format('MMM Do'),
-                    dateLine2: moment(new Date()).format('YYYY'),
-                    image: 'assets/images/portrait_2014.jpg',
-                    heading: 'Heading',
-                    content: 'Drumstick tenderloin hamburger swine tail. Cow porchetta hamburger, tongue ground round ball tip sausage corned beef pork chop beef spare ribs bresaola. Jowl tail pancetta pork landjaeger. Sausage chicken andouille meatball, ham hock doner short ribs. Picanha turducken porchetta pork belly boudin hamburger. Jowl beef ribs tenderloin, shankle short ribs ribeye hamburger porchetta andouille chicken ground round cow ball tip. Salami ground round cow, rump hamburger chuck pork loin landjaeger short loin doner alcatra ball tip.',
+                    date: moment('05-19-2014', 'MM-DD-YYYY'),
+                    dateLine1: moment('05-19-2014', 'MM-DD-YYYY').format('MMM YYYY'),
+                    dateLine2: 'to ' + moment('December 31, 2014', 'MMM DD, YYYY').format('MMM YYYY'),
+                    image: 'assets/images/inin.svg',
+                    heading: 'Interactive Intelligence',
+                    content: 'Software Engineer. Indianapolis, IN. Front-end web application development using AngularJS/KnockoutJS for Caas and PureCloud products.',
                     badges: [{
-                        src: 'assets/images/portrait_2014.jpg'
-                    }, {
-                        src: 'assets/images/portrait_2014.jpg'
-                    }, {
-                        src: 'assets/images/portrait_2014.jpg'
-                    }, {
-                        src: 'assets/images/portrait_2014.jpg'
-                    }, {
-                        src: 'assets/images/portrait_2014.jpg'
-                    }, {
-                        src: 'assets/images/portrait_2014.jpg'
-                    }, {
-                        src: 'assets/images/portrait_2014.jpg'
+                        alt: 'AngularJS',
+                        src: 'assets/images/angularjs.png'
                     }]
                 }];
             })
