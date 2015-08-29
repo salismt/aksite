@@ -24,10 +24,6 @@ angular.module('aksiteApp')
                 icon: 'fa-newspaper-o',
                 link: 'admin.blog'
             }, {
-                title: 'Featured',
-                icon: 'fa-star-o',
-                link: 'admin.featured'
-            }, {
                 title: 'Files',
                 icon: 'fa-files-o',
                 link: 'admin.files'
