@@ -76,47 +76,52 @@ $timelineCardOpenHeight: 500px;
 
 .timeline-content {
     padding: 25px 30px;
+    margin: 0;
     overflow: hidden;
     white-space: normal;
     text-overflow: ellipsis;
     font-family: $font-stack;
     height: $timelineCardHeight;
     transition: height $timelineBaseTransitionTime;
-    margin: 0;
     h2 {
         font-size: 2em;
         margin: 0 0 10px 0;
     }
     p {
-        overflow: hidden;
         font-size: 1.1em;
         letter-spacing: .1px;
         line-height: 1.5em;
+
         height: 4.5em;
-        transition: height $timelineBaseTransitionTime * .8;
+        overflow: hidden;
         margin: 0;
+
+        transition: height $timelineBaseTransitionTime * .8;
     }
     .badge-section {
-        $timelineBadgeSectionTransitionTime: $timelineBaseTransitionTime * 1.5;
-        transition: left $timelineBadgeSectionTransitionTime,
-            top $timelineBadgeSectionTransitionTime,
-            bottom $timelineBadgeSectionTransitionTime,
-            right $timelineBadgeSectionTransitionTime,
-            width $timelineBaseTransitionTime * .5,
-            height $timelineBadgeSectionTransitionTime,
-            padding $timelineBaseTransitionTime * .5;
         right: 0;
         top: $timelineCardHeight - 70px;
         position: absolute;
         height: 70px;
         padding: 10px 30px 15px 30px;
         line-height: 45px;
-        overflow: hidden;
         margin-right: 40px;
+        overflow: hidden;
+
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
         align-content: flex-start;
+
+        $timelineBadgeSectionTransitionTime: $timelineBaseTransitionTime * 1.5;
+        transition: left    $timelineBadgeSectionTransitionTime,
+                    top     $timelineBadgeSectionTransitionTime,
+                    bottom  $timelineBadgeSectionTransitionTime,
+                    right   $timelineBadgeSectionTransitionTime,
+                    width   $timelineBaseTransitionTime,
+                    height  $timelineBadgeSectionTransitionTime,
+                    padding $timelineBaseTransitionTime;
+
         img {
             height: 45px;
             width: 45px;
@@ -150,8 +155,6 @@ $timelineCardOpenHeight: 500px;
                 width: $timelineCardHeight;
                 height: $timelineCardOpenHeight - $timelineCardHeight;
                 padding: 10px;
-                bottom: auto;
-                right: auto;
                 justify-content: center;
                 img {
                     margin: 7px;
