@@ -6,6 +6,7 @@ angular.module('aksiteApp')
             .state('admin.files', {
                 url: '/files',
                 templateUrl: 'app/admin/fileManager/fileManager.html',
-                controller: 'FilemanagerCtrl'
+                controller: 'FileManagerController',
+                controllerAs: 'fileManager'
             });
     });

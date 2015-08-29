@@ -1,7 +1,34 @@
-<div class="container">
+]<div class="container">
     <div class="row">
         <div class="col-sm-12">
             <h1>Manage Files</h1>
         </div>
+    </div>
+    <div class="row">
+        <div>
+            <md-button href="" class="md-button-lg pull-right">
+                <i class="fa fa-plus"></i>
+                New File
+            </md-button>
+        </div>
+    </div>
+    <div class="row">
+        <md-content>
+            <md-list>
+                <md-list-item class="md-2-line md-with-secondary md-clickable" ng-repeat="file in fileManager.files">
+                    <md-button class="md-no-style" ng-click="fileManager.openFile(file, $event)">
+                        <div class="md-list-item-inner">
+                            <div class="md-avatar" bg-img="api/upload/{{file._id}}.jpg" style="width: 48px; height: 48px; border-radius: 50%; margin: 16px;"></div>
+                            <div class="md-list-item-text">
+                                <h3>{{file._id}}</h3>
+                            </div>
+                        </div>
+                    </md-button>
+                    <md-button class="md-secondary-container md-icon-button" aria-label="Delete File" ng-click="fileManager.deleteFile(file)">
+                        <md-icon class="fa md-warn" md-font-icon="fa-trash-o"></md-icon>
+                    </md-button>
+                </md-list-item>
+            </md-list>
+        </md-content>
     </div>
 </div>
