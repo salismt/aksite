@@ -26,7 +26,7 @@ exports.index = function(req, res) {
     var page = parseInt(req.query.page) || 0;
 
     Post.count({}, function(err, count) {
-        if(err) return handleError(res, err);
+        if(err) return util.handleError(res, err);
 
         let query;
         if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin'))
