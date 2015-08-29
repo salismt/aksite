@@ -17,7 +17,10 @@
                     <p>{{::item.content}}</p>
                     <div class="badge-section"
                          ng-class="{left: (item.image && (item.imagePosition === 'left' || !item.imagePosition)), right: (item.image && item.imagePosition === 'right')}">
-                        <img ng-repeat="badge in item.badges" ng-src="{{badge.src}}" alt="{{badge.alt}}"/>
+                        <span ng-repeat="badge in item.badges">
+                            <img ng-src="{{badge.src}}" alt="{{badge.alt}}"/>
+                            <md-tooltip>{{badge.alt}}</md-tooltip>
+                        </span>
                     </div>
                 </div>
                 <md-button class="md-icon-button md-button-toggle-rotate-180" aria-label="More" ng-click="toggleCardOpen(item)">
