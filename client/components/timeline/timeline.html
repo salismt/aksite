@@ -1,5 +1,5 @@
 <ul class="timeline">
-    <li class="timeline-item" ng-repeat="item in items">
+    <li class="timeline-item" ng-repeat="item in items" ng-class="{open: item.open}">
         <div class="clearfix">
             <span class="timeline-date-line1">
                 {{::item.dateLine1}}
@@ -16,11 +16,11 @@
                     <h2>{{::item.heading}}</h2>
                     <p>{{::item.content}}</p>
                     <div class="badge-section"
-                         ng-style="{left: (item.image && (item.imagePosition === 'left' || !item.imagePosition) ? '200px' : '0px')}">
-                        <img ng-repeat="badge in item.badges" ng-src="{{badge.src}}" alt=""/>
+                         ng-class="{left: (item.image && (item.imagePosition === 'left' || !item.imagePosition)), right: (item.image && item.imagePosition === 'right')}">
+                        <img ng-repeat="badge in item.badges" ng-src="{{badge.src}}" alt="{{badge.alt}}"/>
                     </div>
                 </div>
-                <md-button class="md-icon-button" aria-label="More">
+                <md-button class="md-icon-button" aria-label="More" ng-click="toggleCardOpen(item)">
                     <md-icon class="fa" md-font-icon="fa-angle-down"></md-icon>
                 </md-button>
             </div>

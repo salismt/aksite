@@ -1,3 +1,5 @@
+$timelineBaseTransitionTime: .5s;
+
 .timeline {
     padding: 0;
     margin: 0;
@@ -51,8 +53,10 @@
     position: relative;
     display: inline-block;
     height: 200px;
+    @include transition(height $timelineBaseTransitionTime);
     width: 80%;
     margin-right: 50px;
+    margin-left: 20px;
     background-color: white;
     overflow: hidden;
     img {
@@ -75,6 +79,7 @@
     text-overflow: ellipsis;
     font-family: $font-stack;
     height: 200px;
+    @include transition(height $timelineBaseTransitionTime);
     margin: 0;
     h2 {
         margin: 0 0 10px 0;
@@ -83,11 +88,20 @@
         overflow: hidden;
         line-height: 1.5em;
         height: 4.5em;
+        @include transition(height $timelineBaseTransitionTime * .8);
         margin: 0;
     }
     .badge-section {
-        bottom: 0;
+        $timelineBadgeSectionTransitionTime: $timelineBaseTransitionTime * 1.5;
+        transition: left $timelineBadgeSectionTransitionTime,
+            top $timelineBadgeSectionTransitionTime,
+            bottom $timelineBadgeSectionTransitionTime,
+            right $timelineBadgeSectionTransitionTime,
+            width $timelineBadgeSectionTransitionTime * .5,
+            height $timelineBadgeSectionTransitionTime,
+            padding $timelineBadgeSectionTransitionTime * .5;
         right: 0;
+        top: 200px - 70px;
         position: absolute;
         height: 70px;
         padding: 10px 30px 15px 30px;
@@ -104,6 +118,36 @@
             flex-shrink: 0;
             &:first-child {
                 margin-left: 0;
+            }
+        }
+        &.left {
+            left: 200px;
+        }
+        &.right {
+            left: 0;
+        }
+    }
+}
+
+.timeline-item.open {
+    .timeline-card {
+        height: 500px;
+        .timeline-content {
+            height: 500px;
+            p {
+                height: 350px;
+            }
+            .badge-section {
+                left: 0;
+                top: 200px;
+                width: 200px;
+                height: 300px;
+                padding: 10px;
+                bottom: auto;
+                right: auto;
+                img {
+                    margin: 7px;
+                }
             }
         }
     }
