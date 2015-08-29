@@ -1,4 +1,6 @@
 $timelineBaseTransitionTime: .5s;
+$timelineCardHeight: 200px;
+$timelineCardOpenHeight: 500px;
 
 .timeline {
     padding: 0;
@@ -52,7 +54,7 @@ $timelineBaseTransitionTime: .5s;
 .timeline-card {
     position: relative;
     display: inline-block;
-    height: 200px;
+    height: $timelineCardHeight;
     @include transition(height $timelineBaseTransitionTime);
     width: 80%;
     margin-right: 50px;
@@ -60,8 +62,8 @@ $timelineBaseTransitionTime: .5s;
     background-color: white;
     overflow: hidden;
     img {
-        height: 200px;
-        width: 200px;
+        height: $timelineCardHeight;
+        width: $timelineCardHeight;
     }
     .md-button {
         bottom: 0;
@@ -78,7 +80,7 @@ $timelineBaseTransitionTime: .5s;
     white-space: normal;
     text-overflow: ellipsis;
     font-family: $font-stack;
-    height: 200px;
+    height: $timelineCardHeight;
     @include transition(height $timelineBaseTransitionTime);
     margin: 0;
     h2 {
@@ -101,7 +103,7 @@ $timelineBaseTransitionTime: .5s;
             height $timelineBadgeSectionTransitionTime,
             padding $timelineBadgeSectionTransitionTime * .5;
         right: 0;
-        top: 200px - 70px;
+        top: $timelineCardHeight - 70px;
         position: absolute;
         height: 70px;
         padding: 10px 30px 15px 30px;
@@ -121,7 +123,7 @@ $timelineBaseTransitionTime: .5s;
             }
         }
         &.left {
-            left: 200px;
+            left: $timelineCardHeight;
         }
         &.right {
             left: 0;
@@ -131,17 +133,17 @@ $timelineBaseTransitionTime: .5s;
 
 .timeline-item.open {
     .timeline-card {
-        height: 500px;
+        height: $timelineCardOpenHeight;
         .timeline-content {
-            height: 500px;
+            height: $timelineCardOpenHeight;
             p {
                 height: 350px;
             }
             .badge-section {
                 left: 0;
-                top: 200px;
-                width: 200px;
-                height: 300px;
+                top: $timelineCardHeight;
+                width: $timelineCardHeight;
+                height: $timelineCardOpenHeight - $timelineCardHeight;
                 padding: 10px;
                 bottom: auto;
                 right: auto;
