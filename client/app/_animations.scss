@@ -2,10 +2,10 @@ $fadeOutAnimationFadeTime: 300ms;
 
 .fade-out.ng-leave {
     opacity: 1;
-    @include transition(opacity $fadeOutAnimationFadeTime linear);
+    transition: opacity $fadeOutAnimationFadeTime linear;
     &.ng-leave-active {
         opacity: 0;
-        @include transition(opacity $fadeOutAnimationFadeTime linear);
+        transition: opacity $fadeOutAnimationFadeTime linear;
     }
 }
 
@@ -14,9 +14,9 @@ $fadeOutAnimationFadeTime: 300ms;
     margin-left: auto;
     speak: none;
     vertical-align: middle;
-    @include transform(rotate(0deg));
-    @include transition(transform .5s ease-in-out);
+    transform: rotate(0deg);
+    transition: transform .5s ease-in-out;
 }
 .md-button-toggle-rotate-180 .md-toggle-icon.toggled {
-    @include transform(rotate(180deg));
+    transform: rotate(180deg);
 }

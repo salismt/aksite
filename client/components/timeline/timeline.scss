@@ -55,7 +55,7 @@ $timelineCardOpenHeight: 500px;
     position: relative;
     display: inline-block;
     height: $timelineCardHeight;
-    @include transition(height $timelineBaseTransitionTime);
+    transition: height $timelineBaseTransitionTime;
     width: 80%;
     margin-right: 50px;
     margin-left: 20px;
@@ -81,7 +81,7 @@ $timelineCardOpenHeight: 500px;
     text-overflow: ellipsis;
     font-family: $font-stack;
     height: $timelineCardHeight;
-    @include transition(height $timelineBaseTransitionTime);
+    transition: height $timelineBaseTransitionTime;
     margin: 0;
     h2 {
         margin: 0 0 10px 0;
@@ -90,7 +90,7 @@ $timelineCardOpenHeight: 500px;
         overflow: hidden;
         line-height: 1.5em;
         height: 4.5em;
-        @include transition(height $timelineBaseTransitionTime * .8);
+        transition: height $timelineBaseTransitionTime * .8;
         margin: 0;
     }
     .badge-section {
