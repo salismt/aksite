@@ -8,3 +8,15 @@ $fadeOutAnimationFadeTime: 300ms;
         @include transition(opacity $fadeOutAnimationFadeTime linear);
     }
 }
+
+.md-button-toggle-rotate-180 .md-toggle-icon {
+    display: block;
+    margin-left: auto;
+    speak: none;
+    vertical-align: middle;
+    @include transform(rotate(0deg));
+    @include transition(transform .5s ease-in-out);
+}
+.md-button-toggle-rotate-180 .md-toggle-icon.toggled {
+    @include transform(rotate(180deg));
+}
