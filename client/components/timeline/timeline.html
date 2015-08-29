@@ -20,8 +20,8 @@
                         <img ng-repeat="badge in item.badges" ng-src="{{badge.src}}" alt="{{badge.alt}}"/>
                     </div>
                 </div>
-                <md-button class="md-icon-button" aria-label="More" ng-click="toggleCardOpen(item)">
-                    <md-icon class="fa" md-font-icon="fa-angle-down"></md-icon>
+                <md-button class="md-icon-button md-button-toggle-rotate-180" aria-label="More" ng-click="toggleCardOpen(item)">
+                    <md-icon class="fa md-toggle-icon" md-font-icon="fa-angle-down" ng-class="{toggled: item.open}"></md-icon>
                 </md-button>
             </div>
         </div>

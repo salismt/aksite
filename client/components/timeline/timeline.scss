@@ -99,9 +99,9 @@ $timelineCardOpenHeight: 500px;
             top $timelineBadgeSectionTransitionTime,
             bottom $timelineBadgeSectionTransitionTime,
             right $timelineBadgeSectionTransitionTime,
-            width $timelineBadgeSectionTransitionTime * .5,
+            width $timelineBaseTransitionTime * .5,
             height $timelineBadgeSectionTransitionTime,
-            padding $timelineBadgeSectionTransitionTime * .5;
+            padding $timelineBaseTransitionTime * .5;
         right: 0;
         top: $timelineCardHeight - 70px;
         position: absolute;
@@ -112,6 +112,8 @@ $timelineCardOpenHeight: 500px;
         margin-right: 40px;
         display: flex;
         flex-wrap: wrap;
+        justify-content: flex-start;
+        align-content: flex-start;
         img {
             height: 45px;
             width: 45px;
@@ -147,6 +149,7 @@ $timelineCardOpenHeight: 500px;
                 padding: 10px;
                 bottom: auto;
                 right: auto;
+                justify-content: center;
                 img {
                     margin: 7px;
                 }
