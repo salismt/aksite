@@ -84,10 +84,13 @@ $timelineCardOpenHeight: 500px;
     transition: height $timelineBaseTransitionTime;
     margin: 0;
     h2 {
+        font-size: 2em;
         margin: 0 0 10px 0;
     }
     p {
         overflow: hidden;
+        font-size: 1.1em;
+        letter-spacing: .1px;
         line-height: 1.5em;
         height: 4.5em;
         transition: height $timelineBaseTransitionTime * .8;
