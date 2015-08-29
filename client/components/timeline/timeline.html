@@ -1,5 +1,5 @@
 <ul class="timeline">
-    <li class="timeline-item" ng-repeat="item in items" ng-class="{open: item.open}">
+    <li class="timeline-item" ng-repeat="item in items | orderBy:date:true" ng-class="{open: item.open}">
         <div class="clearfix">
             <span class="timeline-date-line1">
                 {{::item.dateLine1}}
