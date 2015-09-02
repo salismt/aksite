@@ -6,12 +6,8 @@ angular.module('aksiteApp')
         $scope.currentUser = Auth.getCurrentUser();
         if(!$stateParams.userId) {
             $scope.user = {
-                name: String,
-                email: {type: String, lowercase: true},
-                role: String,
-                imageId: Schema.ObjectId,
-                smallImageId: Schema.ObjectId,
-                provider: String
+                name: 'New User',
+                email: 'test@example.com',
             };
             $scope.loadingUser = false;
         } else {
