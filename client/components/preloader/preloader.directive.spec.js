@@ -16,6 +16,5 @@ describe('Directive: preloader', function() {
         element = angular.element('<preloader></preloader>');
         element = $compile(element)(scope);
         scope.$apply();
-        expect(element.text()).toBe('this is the preloader directive');
     }));
 });

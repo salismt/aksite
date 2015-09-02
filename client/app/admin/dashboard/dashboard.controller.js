@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('DashboardCtrl', function($scope, $http) {
+    .controller('DashboardCtrl', function($scope, $http, $timeout) {
         var apiItems = [
             {
                 path: 'upload',
@@ -42,10 +42,12 @@ angular.module('aksiteApp')
                 });
         });
 
-        React.render(<preloader />, document.getElementById('chart1'));
-        React.render(<preloader />, document.getElementById('chart2'));
-        React.render(<preloader />, document.getElementById('chart3'));
-        React.render(<preloader />, document.getElementById('chart4'));
+        $timeout(function () {
+            React.render(<preloader></preloader>, document.getElementById('chart1'))
+            React.render(<preloader></preloader>, document.getElementById('chart2'));
+            React.render(<preloader></preloader>, document.getElementById('chart3'));
+            React.render(<preloader></preloader>, document.getElementById('chart4'));
+        });
 
         function addChart(chartNum, data, options) {
             options = options ? options : {};
@@ -73,10 +75,19 @@ angular.module('aksiteApp')
 
                 return chart;
             });
-
         }
 
         var convertGAPItoD3 = _.partialRight(_.map, (item) => ({label: item[0], value: item[1]}) );
+
+        // FIXME: Temp fix for unit tests
+        var gapi = window.gapi;
+        if(!gapi) {
+            gapi = {
+                analytics: {
+                    ready: function() {}
+                }
+            };
+        }
 
         gapi.analytics.ready(function () {
             gapi.analytics.auth.authorize({

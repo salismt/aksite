@@ -214,12 +214,25 @@ module.exports = function(grunt) {
             }
         },
 
-        // Automatically inject Bower components into the app
+        // Automatically inject Bower components into the app and karma.conf.js
         wiredep: {
-            target: {
+            options: {
+                exclude: [
+                    /bootstrap.js/,
+                    '/json3/',
+                    '/es5-shim/',
+                    /font-awesome\.css/,
+                    /bootstrap\.css/,
+                    /bootstrap-sass-official/
+                ]
+            },
+            client: {
                 src: '<%= yeoman.client %>/index.html',
-                ignorePath: '<%= yeoman.client %>/',
-                exclude: [/bootstrap-sass-official/, /bootstrap.js/, '/json3/', '/es5-shim/', /bootstrap.css/, /font-awesome.css/]
+                ignorePath: '<%= yeoman.client %>/'
+            },
+            test: {
+                src: './karma.conf.js',
+                devDependencies: true
             }
         },
 
@@ -451,9 +464,53 @@ module.exports = function(grunt) {
 
         mochaTest: {
             options: {
-                reporter: 'spec'
+                reporter: 'spec',
+                require: 'mocha.conf.js',
+                timeout: 5000 // set default mocha spec timeout
             },
-            src: ['server/**/*.spec.js']
+            unit: {
+                src: ['server/**/*.spec.js']
+            },
+            integration: {
+                src: ['server/**/*.integration.js']
+            }
+        },
+
+        mocha_istanbul: {
+            unit: {
+                options: {
+                    excludes: ['**/*.{spec,mock,integration}.js'],
+                    reporter: 'spec',
+                    require: ['mocha.conf.js'],
+                    mask: '**/*.spec.js',
+                    coverageFolder: 'coverage/server/unit'
+                },
+                src: 'server'
+            },
+            integration: {
+                options: {
+                    excludes: ['**/*.{spec,mock,integration}.js'],
+                    reporter: 'spec',
+                    require: ['mocha.conf.js'],
+                    mask: '**/*.integration.js',
+                    coverageFolder: 'coverage/server/integration'
+                },
+                src: 'server'
+            }
+        },
+
+        istanbul_check_coverage: {
+            default: {
+                options: {
+                    coverageFolder: 'coverage/**',
+                    check: {
+                        lines: 80,
+                        statements: 80,
+                        branches: 80,
+                        functions: 80
+                    }
+                }
+            }
         },
 
         protractor: {
@@ -621,7 +678,7 @@ module.exports = function(grunt) {
                 'injector:sass',
                 'concurrent:server',
                 'injector',
-                'wiredep',
+                'wiredep:client',
                 'autoprefixer',
                 'concurrent:debug'
             ]);
@@ -632,7 +689,7 @@ module.exports = function(grunt) {
                 'injector:sass',
                 'concurrent:server',
                 'injector',
-                'wiredep',
+                'wiredep:client',
                 'autoprefixer',
                 'express:dev',
                 'wait',
@@ -647,7 +704,8 @@ module.exports = function(grunt) {
             return grunt.task.run([
                 'env:all',
                 'env:test',
-                'mochaTest'
+                'mochaTest:unit',
+                'mochaTest:integration'
             ]);
         } else if(target === 'client') {
             return grunt.task.run([
@@ -657,21 +715,32 @@ module.exports = function(grunt) {
                 'concurrent:test',
                 'injector',
                 'autoprefixer',
+                'wiredep:test',
                 'karma'
             ]);
         } else if(target === 'e2e') {
-            return grunt.task.run([
-                'clean:server',
-                'env:all',
-                'env:test',
-                'injector:sass',
-                'concurrent:test',
-                'injector',
-                'wiredep',
-                'autoprefixer',
-                'express:dev',
-                'protractor'
-            ]);
+            if (option === 'prod') {
+                return grunt.task.run([
+                    'build',
+                    'env:all',
+                    'env:prod',
+                    'express:prod',
+                    'protractor'
+                ]);
+            } else {
+                return grunt.task.run([
+                    'clean:server',
+                    'env:all',
+                    'env:test',
+                    'injector:sass',
+                    'concurrent:test',
+                    'injector',
+                    'wiredep:client',
+                    'autoprefixer',
+                    'express:dev',
+                    'protractor'
+                ]);
+            }
         } else {
             grunt.task.run([
                 'test:server',
@@ -686,7 +755,7 @@ module.exports = function(grunt) {
         'injector:sass',
         'concurrent:dist',
         'injector',
-        'wiredep',
+        'wiredep:client',
         'useminPrepare',
         'autoprefixer',
         'ngtemplates',

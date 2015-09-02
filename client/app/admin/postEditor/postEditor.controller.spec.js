@@ -10,12 +10,12 @@ describe('Controller: PostEditorCtrl', function() {
     // Initialize the controller and a mock scope
     beforeEach(inject(function($controller, $rootScope) {
         scope = $rootScope.$new();
-        PosteditorCtrl = $controller('PosteditorCtrl', {
+        PosteditorCtrl = $controller('PostEditorCtrl', {
             $scope: scope
         });
     }));
 
     it('should ...', function() {
-        expect(1).toEqual(1);
+        expect(1).to.equal(1);
     });
 });

@@ -10,12 +10,12 @@ describe('Controller: UserEditorCtrl', function() {
     // Initialize the controller and a mock scope
     beforeEach(inject(function($controller, $rootScope) {
         scope = $rootScope.$new();
-        UsereditorCtrl = $controller('UsereditorCtrl', {
+        UsereditorCtrl = $controller('UserEditorCtrl', {
             $scope: scope
         });
     }));
 
     it('should ...', function() {
-        expect(1).toEqual(1);
+        expect(1).to.equal(1);
     });
 });

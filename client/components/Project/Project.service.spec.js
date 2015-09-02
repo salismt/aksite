@@ -12,7 +12,7 @@ describe('Service: Project', function () {
     }));
 
     it('should do something', function () {
-        expect(!!Project).toBe(true);
+        expect(!!Project).to.be.true;
     });
 
 });

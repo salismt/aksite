@@ -10,12 +10,12 @@ describe('Controller: GalleryEditorCtrl', function() {
     // Initialize the controller and a mock scope
     beforeEach(inject(function($controller, $rootScope) {
         scope = $rootScope.$new();
-        GalleryeditorCtrl = $controller('GalleryeditorCtrl', {
+        GalleryeditorCtrl = $controller('GalleryEditorCtrl', {
             $scope: scope
         });
     }));
 
     it('should ...', function() {
-        expect(1).toEqual(1);
+        expect(1).to.equal(1);
     });
 });

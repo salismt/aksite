@@ -12,7 +12,7 @@ describe('Service: Upload', function() {
     }));
 
     it('should do something', function() {
-        expect(!!Upload).toBe(true);
+        expect(!!Upload).to.be.true;
     });
 
 });

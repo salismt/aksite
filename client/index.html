@@ -50,6 +50,15 @@
     <script src="bower_components/json3/lib/json3.min.js"></script>
 <![endif]-->
 
+<script>
+    (function(w,d,s,g,js,fjs){
+        g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(cb){this.q.push(cb)}};
+        js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];
+        js.src='https://apis.google.com/js/platform.js';
+        fjs.parentNode.insertBefore(js,fjs);js.onload=function(){g.load('analytics')};
+    }(window,document,'script'));
+</script>
+
 <script src="socket.io/socket.io.js"></script>
 <script src="bower_components/ng-file-upload/angular-file-upload-shim.js"></script>
 <script src="bower_components/marked/lib/marked.js"></script>
@@ -100,49 +109,17 @@
     <script src="bower_components/react/react.js"></script>
     <!-- endbower -->
 <!-- endbuild -->
-<script src="assets/js/d3.hexbin.v0.min.js"></script>
 <script src="assets/js/highlight.pack.js"></script>
 <script src="assets/js/seedrandom.js"></script>
 
 <!-- build:js(.tmp) app/app.js -->
 <script src="app/app.js"></script>
     <!-- injector:js -->
-    <script src="app/app.js"></script>
     <script src="app/account/account.js"></script>
-    <script src="app/admin/admin.controller.js"></script>
-    <script src="app/admin/admin.js"></script>
-    <script src="app/blog/blog.controller.js"></script>
-    <script src="app/blog/blog.js"></script>
-    <script src="app/main/main.controller.js"></script>
-    <script src="app/main/main.js"></script>
-    <script src="app/photos/photos.controller.js"></script>
-    <script src="app/photos/photos.js"></script>
-    <script src="app/projects/projects.controller.js"></script>
-    <script src="app/projects/projects.js"></script>
-    <script src="app/resume/resume.controller.js"></script>
-    <script src="app/resume/resume.js"></script>
-    <script src="app/user/user.controller.js"></script>
-    <script src="app/user/user.js"></script>
-    <script src="app/settings/settings.controller.js"></script>
-    <script src="app/settings/settings.js"></script>
-    <script src="components/Project/Project.service.js"></script>
-    <script src="components/Upload/Upload.service.js"></script>
-    <script src="components/auth/auth.service.js"></script>
-    <script src="components/auth/user.service.js"></script>
-    <script src="components/footer/footer.controller.js"></script>
-    <script src="components/gallery/gallery.service.js"></script>
-    <script src="components/mongoose-error/mongoose-error.directive.js"></script>
-    <script src="components/navbar/navbar.controller.js"></script>
-    <script src="components/photo/photo.service.js"></script>
-    <script src="components/preloader/preloader.directive.js"></script>
-    <script src="components/socket/socket.mock.js"></script>
-    <script src="components/socket/socket.service.js"></script>
-    <script src="components/timeline/timeline.directive.js"></script>
-    <script src="assets/js/d3.hexbin.v0.min.js"></script>
-    <script src="assets/js/highlight.pack.js"></script>
-    <script src="assets/js/seedrandom.js"></script>
     <script src="app/account/login/login.controller.js"></script>
     <script src="app/account/signup/signup.controller.js"></script>
+    <script src="app/admin/admin.controller.js"></script>
+    <script src="app/admin/admin.js"></script>
     <script src="app/admin/blogManager/blogManager.controller.js"></script>
     <script src="app/admin/blogManager/blogManager.js"></script>
     <script src="app/admin/dashboard/dashboard.controller.js"></script>
@@ -167,16 +144,42 @@
     <script src="app/admin/userEditor/userEditor.js"></script>
     <script src="app/admin/userManager/userManager.controller.js"></script>
     <script src="app/admin/userManager/userManager.js"></script>
+    <script src="app/blog/blog.controller.js"></script>
+    <script src="app/blog/blog.js"></script>
     <script src="app/blog/post/post.controller.js"></script>
     <script src="app/blog/post/post.js"></script>
+    <script src="app/main/main.controller.js"></script>
+    <script src="app/main/main.js"></script>
     <script src="app/photos/gallery/gallery.controller.js"></script>
     <script src="app/photos/gallery/gallery.js"></script>
+    <script src="app/photos/photos.controller.js"></script>
+    <script src="app/photos/photos.js"></script>
     <script src="app/projects/project/project.controller.js"></script>
     <script src="app/projects/project/project.js"></script>
-    <script src="app/settings/profile/profile.controller.js"></script>
-    <script src="app/settings/profile/profile.js"></script>
+    <script src="app/projects/projects.controller.js"></script>
+    <script src="app/projects/projects.js"></script>
+    <script src="app/resume/resume.controller.js"></script>
+    <script src="app/resume/resume.js"></script>
     <script src="app/settings/dashboard/dashboard.controller.js"></script>
     <script src="app/settings/dashboard/dashboard.js"></script>
+    <script src="app/settings/profile/profile.controller.js"></script>
+    <script src="app/settings/profile/profile.js"></script>
+    <script src="app/settings/settings.controller.js"></script>
+    <script src="app/settings/settings.js"></script>
+    <script src="app/user/user.controller.js"></script>
+    <script src="app/user/user.js"></script>
+    <script src="components/Project/Project.service.js"></script>
+    <script src="components/Upload/Upload.service.js"></script>
+    <script src="components/auth/auth.service.js"></script>
+    <script src="components/auth/user.service.js"></script>
+    <script src="components/footer/footer.controller.js"></script>
+    <script src="components/gallery/gallery.service.js"></script>
+    <script src="components/mongoose-error/mongoose-error.directive.js"></script>
+    <script src="components/navbar/navbar.controller.js"></script>
+    <script src="components/photo/photo.service.js"></script>
+    <script src="components/preloader/preloader.directive.js"></script>
+    <script src="components/socket/socket.service.js"></script>
+    <script src="components/timeline/timeline.directive.js"></script>
     <!-- endinjector -->
 <!-- endbuild -->
 </body>
