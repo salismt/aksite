@@ -32,6 +32,7 @@
         "PhotoSwipe": true,
         "PhotoSwipeUI_Default": true,
         "Masonry": true,
-        "imagesLoaded": true
+        "imagesLoaded": true,
+        "React": true
     }
 }
