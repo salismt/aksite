@@ -19,7 +19,7 @@ Grid.mongo = mongoose.mongo;
 
 conn.once('open', function(err) {
     if(err) console.log(err);
-    else gfs = Grid(conn.db);
+    else gfs = new Grid(conn.db);
 });
 
 /**
