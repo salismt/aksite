@@ -145,7 +145,13 @@ gulp.task('inject:scss', () => {
         .pipe(plugins.inject(gulp.src(_.union(paths.client.styles, ['!' + paths.client.mainStyle]), {read: false}), {
             starttag: '// injector',
             endtag: '// endinjector',
-            transform: (filepath) => '@import \'' + filepath.replace('/client/app/', '').replace('/client/components/', '../components/') + '\';'
+            transform: (filepath) => {
+                let newPath = filepath
+                    .replace('/client/app/', '')
+                    .replace('/client/components/', '../components/')
+                    .replace(/_(.*).scss/, (match, p1, offset, string) => p1);
+                return `@import '${newPath}';`
+            }
         }))
         .pipe(gulp.dest('client/app'));
 });
