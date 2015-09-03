@@ -31,7 +31,7 @@
     "express-session": "~1.11.2",
     "formidable": "^1.0.17",
     "gm": "^1.16.0",
-    "gridform": "^0.1.7",
+    "gridform": "https://github.com/Awk34/gridform.git",
     "gridfs-stream": "^1.1.1",
     "grunt-nsp-package": "0.0.5",
     "jsonwebtoken": "^5.0.2",
