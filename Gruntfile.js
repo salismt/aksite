@@ -750,7 +750,7 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('build', [
-        'validate-package',
+        //'validate-package',
         'clean:dist',
         'injector:sass',
         'concurrent:dist',
