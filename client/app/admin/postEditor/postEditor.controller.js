@@ -76,7 +76,9 @@ angular.module('aksiteApp')
             let saveData = $scope.post;
             console.log(saveData.categories);
             console.log(typeof saveData.categories);
-            saveData.categories = _.map(saveData.categories.split(','), _.trim);
+            if(typeof saveData.categories === 'string') {
+                    saveData.categories = _.map(saveData.categories.split(','), _.trim);
+            }
             console.log(saveData.categories);
             console.log(typeof saveData.categories);
 
