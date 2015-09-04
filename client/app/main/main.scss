@@ -172,7 +172,7 @@ $time-step: $time/$max;
     stroke-width: 5;
 }
 
-.vendor-section a {
+.masonry-brick {
     width: 200px;
     &.w2 {
         width: 400px;
@@ -180,7 +180,7 @@ $time-step: $time/$max;
 }
 
 @media screen and (max-width: 24em) {
-    .vendor-section a.brick.w2 {
+    .masonry-brick.w2 {
         width: 100%;
     }
 }

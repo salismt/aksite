@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="styled-home-text">
-        <svg viewBox="0 0 600 100" ng-click="changeText()" id="bg-img-text" class="hidden">
+        <svg viewBox="0 0 600 100" ng-click="main.changeText()" id="bg-img-text" class="hidden">
             <symbol id="s-text">
                 <text text-anchor="middle" x="50%" y="50%" dy=".35em" class="text">
                     Andrew Koroluk
@@ -17,11 +17,10 @@
                 <image xlink:href="../assets/images/low_poly_texture.jpg" width="1500" height="350" x="-75%" y="-50%"></image>
             </g>
         </svg>
-        <svg viewBox="0 0 600 100" ng-click="changeText()" id="dashed-stroke-text" class="hidden">
+        <svg viewBox="0 0 600 100" ng-click="main.changeText()" id="dashed-stroke-text" class="hidden">
             <!-- Symbol -->
             <symbol id="s-text">
-                <text text-anchor="middle"
-                      x="50%" y="50%" dy=".35em">
+                <text text-anchor="middle" x="50%" y="50%" dy=".35em">
                     Andrew Koroluk
                 </text>
             </symbol>
@@ -33,14 +32,13 @@
             <use xlink:href="#s-text" class="dashed-stroke-text"></use>
             <use xlink:href="#s-text" class="dashed-stroke-text"></use>
         </svg>
-        <svg viewBox="0 0 600 100" ng-click="changeText()" id="gradient-text" class="hidden">
+        <svg viewBox="0 0 600 100" ng-click="main.changeText()" id="gradient-text" class="hidden">
             <text text-anchor="middle"
-                  x="50%"
-                  y="50%"
-                  dy=".35em"
-                  class="text"
-                  fill="url(#gr-simple)"
-                >
+                x="50%"
+                y="50%"
+                dy=".35em"
+                class="text"
+                fill="url(#gr-simple)">
                 Andrew Koroluk
             </text>
             <linearGradient id="gr-simple" x1="0" y1="0" x2="100%" y2="100%">
@@ -48,13 +46,12 @@
                 <stop stop-color="hsl(320, 100%, 50%)" offset="90%"></stop>
             </linearGradient>
         </svg>
-        <svg viewBox="0 0 600 100" ng-click="changeText()" id="pattern-text" class="hidden">
+        <svg viewBox="0 0 600 100" ng-click="main.changeText()" id="pattern-text" class="hidden">
             <text text-anchor="middle"
-                  x="50%"
-                  y="50%"
-                  dy=".35em"
-                  class="patterned-text"
-                >
+            x="50%"
+            y="50%"
+            dy=".35em"
+            class="patterned-text">
                 Andrew Koroluk
             </text>
             <pattern
@@ -62,8 +59,7 @@
                 viewBox="0 0 80 80"
                 patternUnits="userSpaceOnUse"
                 width="60" height="60"
-                x="5" y="5"
-                >
+                x="5" y="5">
                 <g class="g-spots">
                     <circle r="5" cx="10" cy="10"></circle>
                     <circle r="7" cx="30" cy="30"></circle>
@@ -77,20 +73,21 @@
                 </g>
             </pattern>
         </svg>
-        <svg viewBox="0 0 600 100" ng-click="changeText()" id="diag-striped-text" class="hidden">
+        <svg viewBox="0 0 600 100" ng-click="main.changeText()" id="diag-striped-text" class="hidden">
             <!-- Symbol with text -->
             <symbol id="s-text">
                 <text text-anchor="middle"
-                      x="50%" y="50%" dy=".35em"
-                      class="text--line"
+                    x="50%" y="50%" dy=".35em"
+                    class="text--line"
                     >
                     Andrew Koroluk
                 </text>
             </symbol>
             <clippath id="cp-text">
                 <text text-anchor="middle"
-                      x="50%" y="50%" dy=".35em"
-                      class="text--line">
+                    x="50%" y="50%"
+                    dy=".35em"
+                    class="text--line">
                     Andrew Koroluk
                 </text>
             </clippath>
@@ -98,26 +95,26 @@
                 <circle r="70%"
                         cx="300"
                         cy="150"
-                        class="c-fill--color"></circle>
+                        class="c-fill--color">
+                </circle>
                 <circle r="70%"
                         cx="300"
                         cy="150"
-                        class="c-fill"></circle>
+                        class="c-fill">
+                </circle>
             </g>
             <pattern
                 id="p-lines"
                 width="40"
                 height="50"
                 viewBox="0 0 40 50"
-                patternUnits="userSpaceOnUse"
-                >
+                patternUnits="userSpaceOnUse">
                 <rect
                     width="100%"
                     height="100%"
                     fill="hsl(199, 98%, 48%)"></rect>
 
-                <g stroke="rgba(255,255,255,.4)"
-                   stroke-width="20">
+                <g stroke="rgba(255,255,255,.4)" stroke-width="20">
                     <path d="M25,0 25,100"></path>
                 </g>
             </pattern>
@@ -131,13 +128,13 @@
                 <circle r="70%"
                         cx="300"
                         cy="150"
-                        class="c-fill--color"
-                    ></circle>
+                        class="c-fill--color">
+                </circle>
                 <circle r="70%"
                         cx="300"
                         cy="150"
-                        class="c-fill"
-                    ></circle>
+                        class="c-fill">
+                </circle>
             </g>
         </svg>
     </div>
@@ -172,24 +169,16 @@
     <div class="row">
         <div class="col-lg-12 vendor-section">
             <h1 class="page-header">Powered by:</h1>
-            <div id="vendor-container" style="position: relative;">
-                <a class="brick" href="https://angular.io/"><img src="assets/images/angular.png" alt="angular"/></a>
-                <a class="brick" href="http://d3js.org/"><img src="assets/images/d3.svg" alt="d3"/></a>
-                <a class="brick" href="https://facebook.github.io/react/"><img src="assets/images/react.svg" alt="react"/></a>
-                <a class="brick" href="https://karma-runner.github.io"><img src="assets/images/karma.png" alt="karma"/></a>
-                <a class="brick" href="https://lodash.com/"><img src="assets/images/lodash.png" alt="lodash"/></a>
-                <a class="brick" href="http://gruntjs.com/"><img src="assets/images/grunt.svg" alt="grunt"/></a>
-                <a class="brick" href="https://jasmine.github.io/"><img src="assets/images/jasmine.svg" alt="jasmine"/></a>
-                <a class="brick" href="http://mochajs.org/"><img src="assets/images/mocha.svg" alt="mocha"/></a>
-                <a class="brick" href="http://sass-lang.com/"><img src="assets/images/sass.svg" alt="sass"/></a>
-                <a class="brick w2" href="https://babeljs.io/"><img src="assets/images/babel.png" alt="babel"/></a>
-                <a class="brick w2" href="http://bourbon.io/"><img src="assets/images/bourbon.png" alt="bourbon"/></a>
-                <a class="brick w2" href="https://www.mongodb.org/"><img src="assets/images/mongodb.svg" alt="mongodb"/></a>
-                <a class="brick w2" href="https://newrelic.com/"><img src="assets/images/newrelic.svg" alt="newrelic"/></a>
-                <a class="brick w2" href="https://nodejs.org/"><img src="assets/images/nodejs.svg" alt="nodejs"/></a>
-                <a class="brick w2" href="http://expressjs.com/"><img src="assets/images/express.png" alt="express"/></a>
-                <a class="brick w2" href="http://socket.io/"><img src="assets/images/socketio.svg" alt="socketio"/></a>
-            </div>
+            <masonry style="display: block; position: relative; width: 100%; min-height: 500px;" reload-on-show ng-show="main.showMasonry" masonry-options="{
+                gutter: 20,
+                containerStyle: {'margin': 'auto'},
+                isFitWidth: true}">
+                <div class="masonry-brick" ng-class="{w2: item.wide}" ng-repeat="item in main.vendorImages">
+                    <a ng-href="{{item.href}}" style="width: inherit;">
+                        <img ng-src="{{item.src}}" alt="{{item.alt}}" style="width: inherit;">
+                    </a>
+                </div>
+            </masonry>
         </div>
     </div>
 </div>
