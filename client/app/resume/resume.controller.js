@@ -17,6 +17,18 @@ angular.module('aksiteApp')
                     badges: [{
                         alt: 'AngularJS',
                         src: 'assets/images/angularjs.png'
+                    }, {
+                        alt: 'KnockoutJS',
+                        src: 'assets/images/knockoutjs.png'
+                    }, {
+                        alt: 'Grunt',
+                        src: 'assets/images/grunt.png'
+                    }, {
+                        alt: 'LESS',
+                        src: 'assets/images/less.png'
+                    }, {
+                        alt: 'Node.js',
+                        src: 'assets/images/nodejs_square.png'
                     }]
                 }, {
                     date: moment('01-25-2015', 'MM-DD-YYYY'),
@@ -39,6 +51,12 @@ angular.module('aksiteApp')
                     badges: [{
                         alt: 'AngularJS',
                         src: 'assets/images/angularjs.png'
+                    }, {
+                        alt: 'KnockoutJS',
+                        src: 'assets/images/knockoutjs.png'
+                    }, {
+                        alt: 'LESS',
+                        src: 'assets/images/less.png'
                     }]
                 }];
             })
