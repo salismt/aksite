@@ -80,8 +80,10 @@ export function createThumbnail(id, options = {}) {
 
 /**
  * Makes a request for a file from a URL, and stores it in GridFS
- * @param {string} url
- * @param [options]
+ * @param {String} url
+ * @param {Object} [options]
+ * @param {String} [options.filename]
+ * @param {String} [options.contentType]
  */
 export function saveFileFromUrl(url, options = {}) {
     var deferred = q.defer();
@@ -101,8 +103,10 @@ export function saveFileFromUrl(url, options = {}) {
 
 /**
  * Stores a file from a filesystem path in GridFS
- * @param {string} uri
- * @param [options]
+ * @param {String} uri
+ * @param {Object} [options]
+ * @param {String} [options.filename]
+ * @param {String} [options.contentType]
  */
 export function saveFileFromFs(uri, options = {}) {
     var deferred = q.defer();
@@ -122,7 +126,7 @@ export function saveFileFromFs(uri, options = {}) {
 
 /**
  * Removes a file from GridFS
- * @param options
+ * @param {Object} options
  * @param {string|ObjectID} options._id
  */
 export function deleteFile(options = {}) {
