@@ -1,9 +1,10 @@
 'use strict';
 
-var express = require('express'),
-    controller = require('./file.controller'),
-    auth = require('../../auth/auth.service'),
-    router = express.Router();
+import controller from './file.controller';
+import * as auth from '../../auth/auth.service';
+import {Router} from 'express';
+
+let router = new Router();
 
 router.get('/', auth.appendUser(), controller.index);
 router.get('/count', auth.hasRole('admin'), controller.count);
