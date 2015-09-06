@@ -89,7 +89,7 @@ module.exports = function(grunt) {
             sass: {
                 files: [
                     '<%= yeoman.client %>/{app,components,assets/css}/**/*.{scss,sass}'],
-                tasks: ['sass', 'autoprefixer']
+                tasks: ['sass', 'postcss']
             },
             gruntfile: {
                 files: ['Gruntfile.js']
@@ -679,7 +679,7 @@ module.exports = function(grunt) {
                 'concurrent:server',
                 'injector',
                 'wiredep:client',
-                'autoprefixer',
+                'postcss',
                 'concurrent:debug'
             ]);
         } else {
@@ -690,7 +690,7 @@ module.exports = function(grunt) {
                 'concurrent:server',
                 'injector',
                 'wiredep:client',
-                'autoprefixer',
+                'postcss',
                 'express:dev',
                 'wait',
                 'open',
@@ -714,7 +714,7 @@ module.exports = function(grunt) {
                 'injector:sass',
                 'concurrent:test',
                 'injector',
-                'autoprefixer',
+                'postcss',
                 'wiredep:test',
                 'karma'
             ]);
@@ -736,7 +736,7 @@ module.exports = function(grunt) {
                     'concurrent:test',
                     'injector',
                     'wiredep:client',
-                    'autoprefixer',
+                    'postcss',
                     'express:dev',
                     'protractor'
                 ]);
@@ -757,7 +757,7 @@ module.exports = function(grunt) {
         'injector',
         'wiredep:client',
         'useminPrepare',
-        'autoprefixer',
+        'postcss',
         'ngtemplates',
         'concat',
         'ngAnnotate',
