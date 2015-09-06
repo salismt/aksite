@@ -163,20 +163,20 @@ module.exports = function(grunt) {
             server: '.tmp'
         },
 
-        // Add vendor prefixed styles
-        autoprefixer: {
+        postcss: {
             options: {
-                browsers: ['last 1 version']
+                map: true,
+                processors: [
+                    require('autoprefixer')({browsers: ['last 1 version']})
+                ]
             },
             dist: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: '.tmp/',
-                        src: '{,*/}*.css',
-                        dest: '.tmp/'
-                    }
-                ]
+                files: [{
+                    expand: true,
+                    cwd: '.tmp/',
+                    src: '{,*/}*.css',
+                    dest: '.tmp/'
+                }]
             }
         },
 
