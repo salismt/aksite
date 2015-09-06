@@ -11,6 +11,7 @@ import config from './config/environment';
 import mongoose from 'mongoose';
 import gm from 'gm';
 import Grid from 'gridfs-stream';
+import BufferStream from './components/BufferStream';
 
 var gfs;
 var conn = mongoose.createConnection(config.mongo.uri);
@@ -120,6 +121,29 @@ export function saveFileFromFs(uri, options = {}) {
         deferred.resolve(file);
     });
     fs.createReadStream(uri).pipe(writestream);
+
+    return deferred.promise;
+}
+
+/**
+ * Stores a file from a filesystem path in GridFS
+ * @param buffer {ArrayBuffer}
+ * @param {Object} [options]
+ * @param {String} [options.filename]
+ * @param {String} [options.contentType]
+ */
+export function saveFileFromBuffer(buffer, options = {}) {
+    var deferred = q.defer();
+
+    var writestream = gfs.createWriteStream({
+        filename: options.filename,
+        contentType: options.contentType
+    });
+    writestream.on('error', deferred.reject);
+    writestream.on('close', function(file) {
+        deferred.resolve(file);
+    });
+    new BufferStream(buffer).pipe(writestream);
 
     return deferred.promise;
 }
