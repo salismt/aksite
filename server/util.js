@@ -128,6 +128,10 @@ export function saveFileFromFs(uri, options = {}) {
 export function deleteFile(options = {}) {
     var deferred = q.defer();
 
+    if(!options._id) {
+        return deferred.reject('options._id is required');
+    }
+
     gfs.remove({_id: options._id}, function(err, document) {
         if(err) return deferred.reject(err);
         deferred.resolve(document);
