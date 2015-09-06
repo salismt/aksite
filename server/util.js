@@ -12,8 +12,8 @@ import mongoose from 'mongoose';
 import gm from 'gm';
 import Grid from 'gridfs-stream';
 
-var gfs,
-    conn = mongoose.createConnection(config.mongo.uri);
+var gfs;
+var conn = mongoose.createConnection(config.mongo.uri);
 
 Grid.mongo = mongoose.mongo;
 
