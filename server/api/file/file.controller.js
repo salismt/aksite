@@ -1,6 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
+import * as util from '../../util';
 import config from '../../config/environment';
 import mongoose from 'mongoose';
 import gridform from 'gridform';
@@ -11,6 +12,7 @@ import auth from '../../auth/auth.service';
 
 let Schema = mongoose.Schema;
 
+const DEFAULT_PAGESIZE = 25;
 const MAX_PAGESIZE = 100;
 
 let gfs;
@@ -29,31 +31,23 @@ exports.index = function(req, res) {
     var pageSize = (req.query.pagesize && req.query.pagesize <= MAX_PAGESIZE && req.query.pagesize > 0) ? req.query.pagesize : DEFAULT_PAGESIZE;
     var page = parseInt(req.query.page) || 0;
 
-    File.find()
-        .limit(MAX_PAGESIZE)
-        .sort('date')
-        .skip((req.query.page-1) * pageSize || 0)//doesn't scale well, I'll worry about it later
-        .exec(function(err, posts) {
-            if(err) return handleError(res, err);
-            if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
-                _.remove(posts, 'hidden');
-            }
-            return res.status(200).json({
-                page: page,
-                pages: Math.ceil(count / pageSize),
-                items: posts,
-                numItems: count
+    File.count({}, function(err, count) {
+        if(err) return util.handleError(res, err);
+
+        File.find()
+            .limit(pageSize)
+            .sort('date')
+            .skip((req.query.page-1) * pageSize || 0)//doesn't scale well, I'll worry about it later
+            .exec(function(err, files) {
+                if(err) return util.handleError(res, err);
+
+                return res.status(200).json({
+                    page: page,
+                    pages: Math.ceil(count / pageSize),
+                    items: files,
+                    numItems: count
+                });
             });
-        });
-    File.find(function(err, files) {
-        if(err) {
-            return handleError(res, err);
-        } else {
-            if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
-                _.remove(files, 'hidden');
-            }
-            return res.status(200).json(files);
-        }
     });
 };
 
