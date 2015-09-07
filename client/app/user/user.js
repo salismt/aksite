@@ -6,6 +6,7 @@ angular.module('aksiteApp')
             .state('user', {
                 url: '/user/:id',
                 templateUrl: 'app/user/user.html',
-                controller: 'UserCtrl'
+                controller: 'UserController',
+                controllerAs: 'vm'
             });
     });

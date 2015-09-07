@@ -1,8 +1,12 @@
 'use strict';
 
-angular.module('aksiteApp')
-    .controller('UserCtrl', function($scope, $stateParams, User) {
-        $scope.id = $stateParams.id;
+class UserController {
+    constructor($scope, $stateParams, User) {
+        this.id = $stateParams.id;
 
-        $scope.user = User.get({id: $scope.id});
-    });
+        this.user = User.get({id: this.id});
+    }
+}
+
+angular.module('aksiteApp')
+    .controller('UserController', UserController);

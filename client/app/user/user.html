@@ -1,9 +1,9 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-    <h1 class="page-header">{{user.name}}</h1>
+    <h1 class="page-header">{{vm.user.name}}</h1>
 
-    <img ng-src="/api/upload/{{user.imageId}}.jpg" alt="" class="img-circle" style="height: 200px; width: 200px;" />
+    <img ng-src="/api/upload/{{vm.user.imageId}}.jpg" alt="" class="img-circle" style="height: 200px; width: 200px;" />
 </div>
 
 <div ng-include="'components/footer/footer.html'"></div>
