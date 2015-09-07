@@ -1,42 +1,42 @@
 'use strict';
 
-var _ = require('lodash'),
-    q = require('q'),
-    util = require('../../util'),
-    path = require('path'),
-    Photo = require('../photo/photo.model'),
-    Gallery = require('../gallery/gallery.model'),
-    Project = require('../project/project.model'),
-    User = require('../user/user.model'),
-    FeaturedSection = require('../featured/featuredSection.model'),
-    config = require('../../config/environment'),
-    mongoose = require('mongoose'),
-    fs = require('fs'),
-    gridform = require('gridform'),
-    ExifImage = require('exif').ExifImage,
-    gm = require('gm'),
-    Schema = mongoose.Schema,
-    Grid = require('gridfs-stream'),
-    gridSchema = new Schema({}, {strict: false}),
-    gridModel = mongoose.model("gridModel", gridSchema, "fs.files"),
-    gfs,
-    conn = mongoose.createConnection(config.mongo.uri);
+import _ from 'lodash';
+import q from 'q';
+import * as util from '../../util';
+import path from 'path';
+import Photo from '../photo/photo.model';
+import Gallery from '../gallery/gallery.model';
+import Project from '../project/project.model';
+import User from '../user/user.model';
+import FeaturedSection from '../featured/featuredSection.model';
+import config from '../../config/environment';
+import mongoose from 'mongoose';
+import fs from 'fs';
+import gridform from 'gridform';
+import {ExifImage} from 'exif';
+import gm from 'gm';
+import {Schema} from 'mongoose';
+import Grid from 'gridfs-stream';
+import Formaline from 'formaline';
+
+let gridSchema = new Schema({}, {strict: false});
+let gridModel = mongoose.model('gridModel', gridSchema, 'fs.files');
+let gfs;
+let conn = mongoose.createConnection(config.mongo.uri);
 
 gridform.mongo = mongoose.mongo;
 Grid.mongo = mongoose.mongo;
 
 conn.once('open', function(err) {
-    if(err) {
-        util.handleError(err);
-    } else {
-        gfs = Grid(conn.db);
-        gridform.db = conn.db;
-    }
+    if(err) return util.handleError(err);
+
+    gfs = Grid(conn.db);
+    gridform.db = conn.db;
 });
 
-const DEFAULT_PAGESIZE = 10,
-    MIN_PAGESIZE = 5,
-    MAX_PAGESIZE = 25;
+const DEFAULT_PAGESIZE = 10;
+const MIN_PAGESIZE = 5;
+const MAX_PAGESIZE = 25;
 
 // Get list of files
 exports.index = function(req, res) {
