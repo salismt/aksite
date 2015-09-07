@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('PostEditorCtrl', function($scope, $http, $upload, $stateParams, $state, $sce, Auth) {
+    .controller('PostEditorCtrl', function($scope, $http, $stateParams, $state, $sce, Upload, Auth) {
         $scope.loadingPost = true;
         $scope.currentUser = Auth.getCurrentUser();
         if(!$stateParams.postId || $stateParams.postId === 'new') {
@@ -85,9 +85,9 @@ angular.module('aksiteApp')
             if(form.$valid) {
                 if(!$scope.newPost && ($scope.filename === $scope.post.imageId || $scope.filename === null)) {
                     $scope.upload = $upload.upload({
-                        url: 'api/posts/'+$scope.post._id,
+                        url: 'api/posts/' + $scope.post._id,
                         method: 'PUT',
-                        data: saveData
+                        fields: saveData
                     })
                         .progress(function(evt) {
                             $scope.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
@@ -111,11 +111,14 @@ angular.module('aksiteApp')
                 } else if(!$scope.newPost) {
                     var updated = saveData;
                     updated.newImage = true;
-                    $scope.upload = $upload.upload({
-                        url: 'api/posts/'+$scope.post._id,
+                    $scope.upload = Upload.upload({
+                        url: 'api/posts/' + $scope.post._id,
                         method: 'PUT',
                         file: $scope.fileToUpload,
-                        data: updated
+                        fields: updated,
+                        headers: {
+                            'Content-Type': $scope.fileToUpload.type
+                        }
                     })
                         .progress(function(evt) {
                             $scope.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
@@ -137,11 +140,14 @@ angular.module('aksiteApp')
                             };
                         });
                 } else {
-                    $scope.upload = $upload.upload({
+                    $scope.upload = Upload.upload({
                         url: 'api/posts',
                         method: 'POST',
                         file: $scope.fileToUpload,
-                        data: saveData
+                        fields: saveData,
+                        headers: {
+                            'Content-Type': photo.file.type
+                        }
                     })
                         .progress(function(evt) {
                             $scope.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('ProjectEditorCtrl', function($scope, $http, $upload, $stateParams, $state, $sanitize) {
+    .controller('ProjectEditorCtrl', function($scope, $http, $stateParams, $state, $sanitize, Upload) {
         $scope.loadingProject = true;
         if(!$stateParams.projectId || $stateParams.projectId === 'new') {
             $scope.project = {
@@ -63,10 +63,10 @@ angular.module('aksiteApp')
 
             if(form.$valid) {
                 if(!$scope.newProject && ($scope.filename === $scope.project.coverId || $scope.filename === null)) {
-                    $scope.upload = $upload.upload({
+                    $scope.upload = Upload.upload({
                         url: 'api/projects/'+$scope.project._id,
                         method: 'PUT',
-                        data: $scope.project
+                        fields: $scope.project
                     })
                         .progress(function(evt) {
                             $scope.progress = (100.0 * (evt.position / evt.total)).toFixed(1);
@@ -94,12 +94,15 @@ angular.module('aksiteApp')
                         url: 'api/projects/'+$scope.project._id,
                         method: 'PUT',
                         file: $scope.fileToUpload,
-                        data: {
+                        fields: {
                             name: $scope.project.name,
                             info: $scope.project.info,
                             content: $scope.project.content,
                             hidden: $scope.project.hidden,
                             newImage: true
+                        },
+                        headers: {
+                            'Content-Type': $scope.fileToUpload.type
                         }
                     })
                         .progress(function(evt) {
@@ -122,15 +125,18 @@ angular.module('aksiteApp')
                             };
                         });
                 } else {
-                    $scope.upload = $upload.upload({
+                    $scope.upload = Upload.upload({
                         url: 'api/projects',
                         method: 'POST',
                         file: $scope.fileToUpload,
-                        data: {
+                        fields: {
                             name: $scope.project.name,
                             info: $scope.project.info,
                             content: $scope.project.content,
                             hidden: $scope.project.hidden
+                        },
+                        headers: {
+                            'Content-Type': $scope.fileToUpload.type
                         }
                     })
                         .progress(function(evt) {
@@ -154,29 +160,6 @@ angular.module('aksiteApp')
                             };
                         });
                 }
-                //if($scope.newProject) {
-                //    $http.post('/api/projects', $scope.project)
-                //        .success(function(response, status) {
-                //            console.log(status);
-                //            console.log(response);
-                //            $state.go('projectManager');
-                //        })
-                //        .error(function(response, status) {
-                //            console.log(status);
-                //            console.log(response);
-                //        });
-                //} else {
-                //    $http.put('/api/projects/'+$stateParams.projectId, $scope.project)
-                //        .success(function(response, status) {
-                //            console.log(status);
-                //            console.log(response);
-                //            $state.go('projectManager');
-                //        })
-                //        .error(function(response, status) {
-                //            console.log(status);
-                //            console.log(response);
-                //        });
-                //}
             }
         };
     });

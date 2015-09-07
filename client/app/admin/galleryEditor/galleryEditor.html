@@ -16,7 +16,7 @@
                 <md-icon class="fa fa-2x" md-font-icon="fa-plus"></md-icon>
             </label>
         </md-button>
-        <input id="file-input" type="file" accept="images/*" name="myFiles[]" ng-file-select="onFileSelect($files)" style="display: none;">
+        <input id="file-input" accept="image/*" multiple ngf-select="onFileSelect($files)" style="display: none;">
     </div>
     <br/>
     <div class="row">
@@ -53,7 +53,7 @@
                     <progressbar ng-if="!photo.thumbnailId" class="progress-striped active" value="photo.progress">
                         <b>{{photo.progress}}%</b>
                     </progressbar>
-                    <div class="box" ng-style="{'background-image': 'url(/api/upload/{{photo.thumbnailId}})'}">
+                    <div class="box" ng-if="photo.thumbnailId" ng-style="{'background-image': 'url(/api/upload/{{photo.thumbnailId}})'}">
                         <i class="fa fa-3x fa-check"></i>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('GalleryEditorCtrl', function($scope, $http, $upload, $stateParams, $state) {
+    .controller('GalleryEditorCtrl', function($scope, $http, $stateParams, $state, Upload) {
         $scope.photos = [];
         $scope.loadingGallery = true;
         if(!$stateParams.galleryId || $stateParams.galleryId === 'new') {
@@ -43,12 +43,12 @@ angular.module('aksiteApp')
 
         $scope.toggleSelect = (photo) => photo.selected = !photo.selected;
 
-        $scope.onFileSelect = function($files) {
-            _.forEach($files, function(file) {
+        $scope.onFileSelect = function(files) {
+            _.forEach(files, function(file) {
                 $scope.photos.push({
                     name: file.name,
                     filename: file.name,
-                    info: "",
+                    info: '',
                     file: file,
                     progress: 0
                 });
@@ -70,14 +70,16 @@ angular.module('aksiteApp')
         };
 
         $scope.uploadPhoto = function(photo) {
-            //TODO: have gallery API take care of this
-            $scope.upload = $upload.upload({
+            $scope.upload = Upload.upload({
                 url: 'api/upload',
                 method: 'POST',
                 file: photo.file,
-                data: {
+                fields: {
                     name: photo.name,
                     purpose: 'photo'
+                },
+                headers: {
+                    'Content-Type': photo.file.type
                 }
             })
                 .progress(function(evt) {
@@ -85,9 +87,11 @@ angular.module('aksiteApp')
                 })
                 .success(function(data) {
                     photo.thumbnailId = data.thumbnailId;
+
                     if($scope.photos[nextPhoto]) {
                         $scope.uploadPhoto($scope.photos[nextPhoto++]);
                     }
+
                     $scope.gallery.photos.push(data._id);
                 })
                 .error(function(response, status) {
