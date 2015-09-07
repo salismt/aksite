@@ -8,7 +8,7 @@ angular.module('aksiteApp', [
     'btford.socket-io',
     'ui.router',
     'ui.bootstrap',
-    'angularFileUpload',
+    'ngFileUpload',
     'ngMaterial',
     'ngMessages',
     'masonry',
