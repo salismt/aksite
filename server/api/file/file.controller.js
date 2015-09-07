@@ -1,19 +1,21 @@
 'use strict';
 
-var _ = require('lodash'),
-    config = require('../../config/environment'),
-    mongoose = require('mongoose'),
-    gridform = require('gridform'),
-    File = require('./file.model'),
-    Schema = mongoose.Schema,
-    Grid = require('gridfs-stream'),
-    gm = require('gm'),
-    auth = require('../../auth/auth.service');
+import _ from 'lodash';
+import config from '../../config/environment';
+import mongoose from 'mongoose';
+import gridform from 'gridform';
+import File from './file.model';
+import Grid from 'gridfs-stream';
+import gm from 'gm';
+import auth from '../../auth/auth.service';
 
-var MAX_PAGESIZE = 50;
+let Schema = mongoose.Schema;
 
-var gfs,
-    conn = mongoose.createConnection(config.mongo.uri);
+const MAX_PAGESIZE = 100;
+
+let gfs;
+let conn = mongoose.createConnection(config.mongo.uri);
+
 conn.once('open', function(err) {
     if(err) return handleError(err);
     gfs = Grid(conn.db);
