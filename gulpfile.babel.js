@@ -14,7 +14,8 @@ import runSequence from 'run-sequence';
 var plugins = gulpLoadPlugins();
 var config;
 
-var paths = {
+const paths = {
+    appPath: require('./bower.json').appPath || 'client',
     client: {
         scripts: [
             'client/**/*.js',
@@ -225,11 +226,11 @@ gulp.task('watch', () => {
         .pipe(lintServerScripts())
         .pipe(plugins.livereload());
 
-    gulp.watch('bower.json', ['bower']);
+    gulp.watch('bower.json', ['wiredep:client']);
 });
 
 gulp.task('serve', cb => {
-    runSequence(['clean:tmp', 'lint:scripts', 'inject', 'bower'],
+    runSequence(['clean:tmp', 'lint:scripts', 'inject', 'wiredep:client'],
         ['transpile', 'styles'],
         ['start:server', 'start:client'],
         'watch',
@@ -252,12 +253,36 @@ gulp.task('test:client', () => {
 });
 
 // inject bower components
-gulp.task('bower', () => {
+gulp.task('wiredep:client', () => {
     gulp.src(paths.views.main)
         .pipe(wiredep({
-            exclude: [/bootstrap-sass-official/, /bootstrap.js/, '/json3/', '/es5-shim/', /bootstrap.css/, /font-awesome.css/ ]
+            exclude: [
+                /bootstrap-sass-official/,
+                /bootstrap.js/,
+                '/json3/',
+                '/es5-shim/',
+                /bootstrap.css/,
+                /font-awesome.css/
+            ],
+            ignorePath: paths.appPath
         }))
         .pipe(gulp.dest('client/'));
+});
+
+gulp.task('wiredep:test', () => {
+    gulp.src(paths.karma)
+        .pipe(wiredep({
+            exclude: [
+                /bootstrap-sass-official/,
+                /bootstrap.js/,
+                '/json3/',
+                '/es5-shim/',
+                /bootstrap.css/,
+                /font-awesome.css/
+            ],
+            devDependencies: true
+        }))
+        .pipe(gulp.dest('./'));
 });
 
 /********************
@@ -267,7 +292,7 @@ gulp.task('bower', () => {
 //FIXME: looks like font-awesome isn't getting loaded
 gulp.task('build', cb => {
     runSequence(
-        ['clean:dist', 'inject', 'bower'],
+        ['clean:dist', 'inject', 'wiredep:client'],
         [
             'build:images',
             'copy:extras',
