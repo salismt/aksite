@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: UserCtrl', function() {
+describe('Controller: UserController', function() {
 
     // load the controller's module
     beforeEach(module('aksiteApp'));
 
-    var UserCtrl, scope;
+    var UserController, scope;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function($controller, $rootScope) {
         scope = $rootScope.$new();
-        UserCtrl = $controller('UserCtrl', {
+        UserController = $controller('UserController', {
             $scope: scope
         });
     }));
