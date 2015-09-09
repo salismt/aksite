@@ -17,7 +17,6 @@ import {ExifImage} from 'exif';
 import gm from 'gm';
 import {Schema} from 'mongoose';
 import Grid from 'gridfs-stream';
-import Formaline from 'formaline';
 
 let gridSchema = new Schema({}, {strict: false});
 let gridModel = mongoose.model('gridModel', gridSchema, 'fs.files');
