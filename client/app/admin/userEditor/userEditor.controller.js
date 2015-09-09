@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('UserEditorCtrl', function($scope, $http, $upload, $stateParams, $state, $sanitize, Auth) {
+    .controller('UserEditorCtrl', function($scope, $http, $stateParams, $state, $sanitize, Upload, Auth) {
         $scope.loadingUser = true;
         $scope.currentUser = Auth.getCurrentUser();
         if(!$stateParams.userId) {
@@ -45,10 +45,10 @@ angular.module('aksiteApp')
 
             if(form.$valid) {
                 if($scope.filename === $scope.user.imageId || $scope.filename === null) {
-                    $scope.upload = $upload.upload({
+                    $scope.upload = Upload.upload({
                         url: 'api/users/'+$scope.user._id,
                         method: 'PUT',
-                        data: $scope.user
+                        fields: $scope.user
                     })
                         .progress(function(evt) {
                             $scope.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
@@ -72,11 +72,11 @@ angular.module('aksiteApp')
                 } else {
                     var updated = $scope.user;
                     updated.newImage = true;
-                    $scope.upload = $upload.upload({
+                    $scope.upload = Upload.upload({
                         url: 'api/users/'+$scope.user._id,
                         method: 'PUT',
                         file: $scope.fileToUpload,
-                        data: updated
+                        fields: updated
                     })
                         .progress(function(evt) {
                             $scope.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
