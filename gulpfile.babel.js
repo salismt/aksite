@@ -107,7 +107,9 @@ let styles = lazypipe()
 
 let transpile = lazypipe()
     .pipe(plugins.sourcemaps.init)
-    .pipe(plugins.babel)
+    .pipe(plugins.babel, {
+        ignore: paths.client.assets.all
+    })
     .pipe(plugins.sourcemaps.write, '.');
 
 /********************
