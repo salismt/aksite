@@ -42,7 +42,7 @@ angular.module('aksiteApp')
                 options,
                 vscroll = document.body.scrollTop;
 
-            if(!items || items.length == 0) {
+            if(!items || items.length === 0) {
                 items = parseThumbnailElements(galleryElement);
             }
 
