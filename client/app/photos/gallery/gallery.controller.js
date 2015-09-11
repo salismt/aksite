@@ -9,12 +9,15 @@ angular.module('aksiteApp')
         var galleryElement = document.getElementById('masonry-container');
         var items = [];
 
-        $http.get('/api/gallery/'+$stateParams.galleryId)
+        $http.get('/api/gallery/' + $stateParams.galleryId)
             .success(function(gallery) {
                 $scope.gallery = gallery;
                 $rootScope.title += ' | ' + gallery.name;
 
-                if($scope.gallery.photos.length < 1) return $scope.noPhotos = true;
+                if($scope.gallery.photos.length < 1) {
+                    $scope.noPhotos = true;
+                    return;
+                }
 
                 _.each(gallery.photos, function(photo) {
                     $http.get('api/photos/'+photo)
@@ -58,7 +61,7 @@ angular.module('aksiteApp')
                 options.hideAnimationDuration = options.showAnimationDuration = 0;
             }
 
-            gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+            gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
             gallery.init();
             gallery.listen('destroy', function() {
                 // Temporary workaround for PhotoSwipe scroll-to-top on close bug
@@ -111,6 +114,6 @@ angular.module('aksiteApp')
                 w: photo.width,
                 h: photo.height,
                 index: index
-            }
+            };
         }
     });

@@ -25,7 +25,7 @@ angular.module('aksiteApp')
                 $scope.loadingPosts = false;
             });
 
-        $scope.goToPost = function(id, event) {
+        $scope.goToPost = function(id/*, event*/) {
             $state.go('postEditor', {postId: id});
         };
 
