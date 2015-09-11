@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('aksiteApp')
-    .controller('ProfileSettingsCtrl', function($scope, $http) {
+class ProfileSettingsController {
+    constructor() {}
+}
 
-    });
+angular.module('aksiteApp')
+    .controller('ProfileSettingsCtrl', ProfileSettingsController);
