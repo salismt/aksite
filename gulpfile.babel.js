@@ -172,7 +172,7 @@ gulp.task('transpile', () => {
 gulp.task('lint:scripts', cb => runSequence(['lint:scripts:client', 'lint:scripts:server'], cb));
 
 gulp.task('lint:scripts:client', () => {
-    gulp.src(_.union(paths.client.scripts, _.map(paths.client.test, blob => '!' + blob), '!client/assets/**/*'))
+    gulp.src(_.union(paths.client.scripts, _.map(paths.client.test, blob => '!' + blob), ['!client/assets/**/*']))
         .pipe(lintClientScripts());
 });
 
@@ -237,10 +237,17 @@ gulp.task('serve', cb => {
         cb);
 });
 
+gulp.task('test', cb => {
+    runSequence('test:server', 'test:client', cb);
+});
+
 gulp.task('test:server', () => {
-    process.env.NODE_ENV = 'test';
-    return gulp.src(paths.server.test)
-        .pipe(plugins.mocha({reporter: 'spec'}));
+    runSequence(
+        'env:all',
+        'env:test',
+        'mocha:unit',
+        'mocha:coverage',
+        cb);
 });
 
 gulp.task('test:client', () => {
