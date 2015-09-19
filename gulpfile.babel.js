@@ -107,7 +107,9 @@ let styles = lazypipe()
 
 let transpile = lazypipe()
     .pipe(plugins.sourcemaps.init)
-    .pipe(plugins.babel)
+    .pipe(plugins.babel, {
+        ignore: paths.client.assets.all
+    })
     .pipe(plugins.sourcemaps.write, '.');
 
 /********************
@@ -181,7 +183,10 @@ gulp.task('lint:scripts:server', () => {
         .pipe(lintServerScripts());
 });
 
-gulp.task('clean:tmp', () => gulp.src('.tmp', {read: false}).pipe(plugins.clean()));
+gulp.task('clean:tmp', () => {
+    return gulp.src('.tmp', {read: false})
+        .pipe(plugins.clean())
+});
 
 gulp.task('start:client', cb => {
     whenServerReady(() => {
@@ -205,10 +210,10 @@ gulp.task('watch', () => {
 
     plugins.watch(paths.client.styles, () => {
         gulp.src(paths.client.mainStyle)
-        .pipe(plugins.plumber())
-        .pipe(styles())
-        .pipe(gulp.dest('.tmp/app'))
-        .pipe(plugins.livereload());
+            .pipe(plugins.plumber())
+            .pipe(styles())
+            .pipe(gulp.dest('.tmp/app'))
+            .pipe(plugins.livereload());
     });
 
     plugins.watch(paths.views.files)

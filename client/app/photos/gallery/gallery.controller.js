@@ -9,7 +9,7 @@ angular.module('aksiteApp')
         var galleryElement = document.getElementById('masonry-container');
         var items = [];
 
-        $http.get('/api/gallery/'+$stateParams.galleryId)
+        $http.get('/api/gallery/' + $stateParams.galleryId)
             .success(function(gallery) {
                 $scope.gallery = gallery;
                 $rootScope.title += ' | ' + gallery.name;
