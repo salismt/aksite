@@ -6,7 +6,7 @@
 
 var File = require('./file.model');
 
-exports.register = function(socket) {
+export function register(socket) {
     File.schema.post('save', function(doc) {
         onSave(socket, doc);
     });

@@ -20,12 +20,10 @@ gridform.mongo = mongoose.mongo;
 Grid.mongo = mongoose.mongo;
 
 conn.once('open', function(err) {
-    if(err) {
-        util.handleError(err);
-    } else {
-        gfs = Grid(conn.db);
-        gridform.db = conn.db;
-    }
+    if(err) return util.handleError(err);
+
+    gfs = Grid(conn.db);
+    gridform.db = conn.db;
 });
 
 /**
@@ -105,11 +103,11 @@ export function update(req, res) {
                 console.log(fields);
 
                 var userModel = {};
-                if(fields.name && typeof fields.name == 'string')
+                if(fields.name && typeof fields.name === 'string')
                     userModel.name = fields.name;
-                if(fields.email && typeof fields.email == 'string')
+                if(fields.email && typeof fields.email === 'string')
                     userModel.email = fields.email;
-                if(fields.role && typeof fields.role == 'string')
+                if(fields.role && typeof fields.role === 'string')
                     userModel.role = fields.role;
 
                 if(fields.newImage || (!user.imageId && file)) {

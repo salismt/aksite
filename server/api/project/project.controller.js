@@ -1,5 +1,6 @@
 'use strict';
 
+import * as util from '../../util';
 var _ = require('lodash'),
     Project = require('./project.model'),
     config = require('../../config/environment'),
@@ -17,12 +18,10 @@ gridform.mongo = mongoose.mongo;
 Grid.mongo = mongoose.mongo;
 
 conn.once('open', function(err) {
-    if(err) {
-        handleError(err);
-    } else {
-        gfs = Grid(conn.db);
-        gridform.db = conn.db;
-    }
+    if(err) return util.handleError(err);
+
+    gfs = new Grid(conn.db);
+    gridform.db = conn.db;
 });
 
 // Get list of projects
@@ -194,13 +193,13 @@ exports.update = function(req, res) {
 
                 if(sanitised === null) {
                     var projectModel = {};
-                    if(fields.name && typeof fields.name == 'string')
+                    if(fields.name && typeof fields.name === 'string')
                         projectModel.name = fields.name;
-                    if(fields.info && typeof fields.info == 'string')
+                    if(fields.info && typeof fields.info === 'string')
                         projectModel.info = fields.info;
                     if(!_.isNull(fields.hidden) || !_.isUndefined(fields.hidden))
                         projectModel.hidden = fields.hidden ? true : false;
-                    if(fields.content && typeof fields.content == 'string')
+                    if(fields.content && typeof fields.content === 'string')
                         projectModel.content = fields.content;
                     if( fields.date && ( fields.date instanceof Date || isNaN(fields.date.valueOf()) ) )
                         projectModel.date = fields.date;

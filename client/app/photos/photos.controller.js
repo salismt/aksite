@@ -2,7 +2,7 @@
 
 angular.module('aksiteApp')
     .controller('PhotosCtrl', function($scope, $http, Photo, Gallery, $state) {
-        $scope.galleries = Gallery.query(function(val) {
+        $scope.galleries = Gallery.query(function() {
             _.forEach($scope.galleries, function(gallery) {
                 $http.get('/api/photos/'+gallery.featuredId)
                     .success(function(photo) {
@@ -11,7 +11,7 @@ angular.module('aksiteApp')
             });
         });
 
-        $scope.goToGallery = function(id, event) {
+        $scope.goToGallery = function(id/*, event*/) {
             $state.go('gallery', {galleryId: id});
         };
     });

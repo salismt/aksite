@@ -31,7 +31,7 @@ angular.module('aksiteApp')
                 $scope.loadingGalleries = false;
             });
 
-        $scope.goToGallery = function(id, event) {
+        $scope.goToGallery = function(id/*, event*/) {
             $state.go('galleryEditor', {galleryId: id});
         };
 

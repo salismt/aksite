@@ -99,7 +99,7 @@ class MainController {
         usedTexts.push(_.remove(texts, _.partial(_.isEqual, currentText)));
         // Show the new text
         classie.removeClass(document.getElementById(currentText), 'hidden');
-    };
+    }
 }
 
 angular.module('aksiteApp')

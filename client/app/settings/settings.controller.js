@@ -7,17 +7,15 @@ angular.module('aksiteApp')
             height: (window.innerHeight - 70 - 66)
         };
 
-        $scope.sections = [
-            {
-                title: 'Dashboard',
-                icon: 'fa-home',
-                link: 'settings.dashboard'
-            }, {
-                title: 'Profile',
-                icon: 'fa-user',
-                link: 'settings.profile'
-            }
-        ];
+        $scope.sections = [{
+            title: 'Dashboard',
+            icon: 'fa-home',
+            link: 'settings.dashboard'
+        }, {
+            title: 'Profile',
+            icon: 'fa-user',
+            link: 'settings.profile'
+        }];
 
         $scope.toggleLeft = function () {
             $mdSidenav('left').toggle()
@@ -26,7 +24,7 @@ angular.module('aksiteApp')
                 });
         };
     })
-    .controller('SettingsSidebarCtrl', function($scope, $timeout, $mdSidenav, $log) {
+    .controller('SettingsSidebarCtrl', function($scope, $timeout, $mdSidenav) {
         $scope.close = function() {
             $mdSidenav('left').close()
                 .then(function(){

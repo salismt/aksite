@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('UsermanagerCtrl', function($scope, $http, Auth, User, $state, $mdDialog, $mdToast, $animate) {
+    .controller('UsermanagerCtrl', function($scope, $http, Auth, User, $state, $mdDialog, $mdToast) {
         $scope.users = User.query();
 
         $scope.goToUser = function(id) {

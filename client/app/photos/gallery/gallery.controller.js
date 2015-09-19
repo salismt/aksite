@@ -14,10 +14,12 @@ angular.module('aksiteApp')
                 $scope.gallery = gallery;
                 $rootScope.title += ' | ' + gallery.name;
 
-                if($scope.gallery.photos.length < 1) return $scope.noPhotos = true;
+                if($scope.gallery.photos.length < 1) {
+                    return $scope.noPhotos = true;
+                }
 
                 _.each(gallery.photos, function(photo) {
-                    $http.get('api/photos/'+photo)
+                    $http.get('api/photos/' + photo)
                         .success(function(photo) {
                             photo.index = $scope.photos.length;
                             $scope.photos.push(photo);
@@ -39,7 +41,7 @@ angular.module('aksiteApp')
                 options,
                 vscroll = document.body.scrollTop;
 
-            if(!items || items.length == 0) {
+            if(!items || items.length === 0) {
                 items = parseThumbnailElements(galleryElement);
             }
 
@@ -58,7 +60,7 @@ angular.module('aksiteApp')
                 options.hideAnimationDuration = options.showAnimationDuration = 0;
             }
 
-            gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+            gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
             gallery.init();
             gallery.listen('destroy', function() {
                 // Temporary workaround for PhotoSwipe scroll-to-top on close bug
@@ -111,6 +113,6 @@ angular.module('aksiteApp')
                 w: photo.width,
                 h: photo.height,
                 index: index
-            }
+            };
         }
     });

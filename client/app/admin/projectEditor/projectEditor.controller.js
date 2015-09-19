@@ -31,8 +31,7 @@ angular.module('aksiteApp')
         }
 
         $scope.cancel = function() {
-            if($scope.upload)
-                $scope.upload.abort();
+            if($scope.upload) $scope.upload.abort();
             $state.go('admin.projects');
         };
 
@@ -90,7 +89,7 @@ angular.module('aksiteApp')
                 } else if(!$scope.newProject) {
                     var updated = $scope.project;
                     updated.newImage = true;
-                    $scope.upload = $upload.upload({
+                    $scope.upload = Upload.upload({
                         url: 'api/projects/'+$scope.project._id,
                         method: 'PUT',
                         file: $scope.fileToUpload,

@@ -18,7 +18,7 @@ angular.module('aksiteApp')
                     $scope.numItems = response.numItems;
                     $scope.posts = response.items;
                     _.forEach($scope.posts, function(post) {
-                        post.date = moment(post.date).format("LL");
+                        post.date = moment(post.date).format('LL');
                         post.subheader = marked(post.subheader);
                     });
                     $scope.noItems = response.items.length <= 0;
@@ -33,17 +33,20 @@ angular.module('aksiteApp')
         function getterString() {
             var str = 'api/posts';
             var queryParams = [];
-            if($scope.page)
-                queryParams.push('page='+$scope.page);
-            if($stateParams.pagesize)
-                queryParams.push('pagesize='+$stateParams.pagesize);
+            if($scope.page) {
+                queryParams.push('page=' + $scope.page);
+            }
+            if($stateParams.pagesize) {
+                queryParams.push('pagesize=' + $stateParams.pagesize);
+            }
             if(queryParams.length > 0) {
                 str += '?';
                 _.forEach(queryParams, function(param, index) {
                     str += param;
-                    if(index < queryParams.length-1)
+                    if(index < queryParams.length-1) {
                         str += '&';
-                })
+                    }
+                });
             }
             return str;
         }
