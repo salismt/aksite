@@ -24,9 +24,9 @@ const vendorImages = [{
     src: 'assets/images/lodash.png',
     alt: 'lodash'
 }, {
-    href: 'http://gruntjs.com/',
-    src: 'assets/images/grunt.svg',
-    alt: 'grunt'
+    href: 'http://gulpjs.com/',
+    src: 'assets/images/gulp.png',
+    alt: 'gulp'
 }, {
     href: 'https://jasmine.github.io/',
     src: 'assets/images/jasmine.svg',
