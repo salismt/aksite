@@ -1,50 +1,61 @@
 'use strict';
 
-angular.module('aksiteApp')
-    .controller('BlogCtrl', function($scope, $http, $stateParams, $state) {
+function getterString(page, pagesize) {
+    var str = 'api/posts';
+    var queryParams = [];
+    if(page)
+        queryParams.push('page=' + page);
+    if(pagesize)
+        queryParams.push('pagesize=' + pagesize);
+    if(queryParams.length > 0) {
+        str += '?';
+        _.forEach(queryParams, function(param, index) {
+            str += param;
+            if(index < queryParams.length-1)
+                str += '&';
+        })
+    }
+    return str;
+}
+
+class BlogController {
+    noItems = false;
+    page = 0;
+    pagesize = 10;
+    posts = [];
+
+    constructor($http, $stateParams, $state) {
+        this.$http = $http;
+        this.$stateParams = $stateParams;
+        this.$state = $state;
+
+        this.page = this.$stateParams.page || 1;
+        this.pagesize = this.$stateParams.pagesize || 10;
+
         $state.reloadOnSearch = false;
 
-        $scope.loadingItems = true;
-        $scope.noItems = false;
-        $scope.page = $stateParams.page || 1;
-        $scope.pagesize = $stateParams.pagesize || 10;
-        $scope.posts = [];
+        this.pageChanged();
+    }
 
-        $scope.pageChanged = function() {
-            $http.get(getterString())
-                .success(function(response) {
-                    $scope.currentPage = response.page;
-                    $scope.pages = response.pages;
-                    $scope.numItems = response.numItems;
-                    $scope.posts = response.items;
-                    _.forEach($scope.posts, function(post) {
-                        post.date = moment(post.date).format("LL");
-                        post.subheader = marked(post.subheader);
-                    });
-                    $scope.noItems = response.items.length <= 0;
-                    document.body.scrollTop = document.documentElement.scrollTop = 0;
-                })
-                .error(function(err) {
-                    console.log(err);
+    pageChanged() {
+        this.$http.get(getterString(this.page, this.$stateParams.pagesize))
+            .success(response => {
+                //this.currentPage = response.page;
+                this.pages = response.pages;
+                this.numItems = response.numItems;
+                this.posts = response.items;
+                _.forEach(this.posts, post => {
+                    post.date = moment(post.date).format("LL");
+                    post.subheader = marked(post.subheader);
                 });
-        };
-        $scope.pageChanged();
+                this.noItems = response.items.length <= 0;
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+            })
+            .error(function(err) {
+                console.log(err);
+            });
+    };
+}
 
-        function getterString() {
-            var str = 'api/posts';
-            var queryParams = [];
-            if($scope.page)
-                queryParams.push('page='+$scope.page);
-            if($stateParams.pagesize)
-                queryParams.push('pagesize='+$stateParams.pagesize);
-            if(queryParams.length > 0) {
-                str += '?';
-                _.forEach(queryParams, function(param, index) {
-                    str += param;
-                    if(index < queryParams.length-1)
-                        str += '&';
-                })
-            }
-            return str;
-        }
-    });
+angular.module('aksiteApp')
+    .controller('BlogCtrl', BlogController);

@@ -108,7 +108,10 @@ let styles = lazypipe()
 let transpile = lazypipe()
     .pipe(plugins.sourcemaps.init)
     .pipe(plugins.babel, {
-        ignore: paths.client.assets.all
+        ignore: paths.client.assets.all,
+        optional: [
+            'es7.classProperties'
+        ]
     })
     .pipe(plugins.sourcemaps.write, '.');
 
