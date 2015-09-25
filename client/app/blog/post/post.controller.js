@@ -1,20 +1,24 @@
 'use strict';
 
-angular.module('aksiteApp')
-    .controller('PostCtrl', function($rootScope, $scope, $stateParams, $http, $sce) {
-        $scope.postId = $stateParams.postId;
+class PostController {
+    constructor($rootScope, $stateParams, $http, $sce) {
+        this.postId = $stateParams.postId;
 
-        $http.get('api/posts/' + $scope.postId)
-            .success(function(post) {
-                $scope.post = post;
+        $http.get('api/posts/' + this.postId)
+            .success(post => {
+                this.post = post;
 
                 $rootScope.title += ' | ' + post.title;
 
-                $scope.post.content = $sce.trustAsHtml(marked($scope.post.content));
-                $scope.post.date = moment($scope.post.date).format('LL');
+                this.post.content = $sce.trustAsHtml(marked(this.post.content));
+                this.post.date = moment(this.post.date).format('LL');
             })
-            .error(function(err) {
+            .error(err => {
                 console.log(err);
-                $scope.error = err;
+                this.error = err;
             });
-    });
+    }
+}
+
+angular.module('aksiteApp')
+    .controller('PostCtrl', PostController);
