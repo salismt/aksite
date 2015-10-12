@@ -6,7 +6,8 @@ angular.module('aksiteApp')
             .state('blog', {
                 url: '/blog?page&pagesize',
                 templateUrl: 'app/blog/blog.html',
-                controller: 'BlogCtrl',
+                controller: 'BlogController',
+                controllerAs: 'vm',
                 onEnter: function($rootScope) {
                     $rootScope.title = $rootScope.titleRoot + ' | Blog';
                 }

@@ -4,7 +4,7 @@
     <alert ng-if="noItems">No Items</alert>
 
     <div class="container post-list">
-        <div class="post-block" ng-repeat="post in posts">
+        <div class="post-block" ng-repeat="post in vm.posts">
             <a ng-if="::post.imageId" ng-href="/blog/post/{{::post._id}}" class="block-image" ng-style="{'background-image':'url(/api/upload/{{::post.imageId}})'}"></a>
 
             <a ng-href="/blog/post/{{::post._id}}">
@@ -36,7 +36,19 @@
         </div>
     </div>
 
-    <pagination ng-change="pageChanged()" items-per-page="pagesize" boundary-links="true" total-items="numItems" ng-model="page" class="center-block" style="margin-bottom: 100px;" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+    <pagination
+        ng-change="vm.pageChanged()"
+        items-per-page="vm.pagesize"
+        boundary-links="true"
+        total-items="vm.numItems"
+        ng-model="vm.page"
+        class="center-block"
+        style="margin-bottom: 100px;"
+        previous-text="&lsaquo;"
+        next-text="&rsaquo;"
+        first-text="&laquo;"
+        last-text="&raquo;">
+    </pagination>
 </div>
 
 <div ng-include="'components/footer/footer.html'"></div>
