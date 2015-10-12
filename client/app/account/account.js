@@ -6,7 +6,8 @@ angular.module('aksiteApp')
             .state('login', {
                 url: '/login',
                 templateUrl: 'app/account/login/login.html',
-                controller: 'LoginCtrl',
+                controller: 'LoginController',
+                controllerAs: 'vm',
                 onEnter: function($rootScope) {
                     $rootScope.title = $rootScope.titleRoot + ' | Login';
                 }
@@ -14,7 +15,8 @@ angular.module('aksiteApp')
             .state('signup', {
                 url: '/signup',
                 templateUrl: 'app/account/signup/signup.html',
-                controller: 'SignupCtrl',
+                controller: 'SignupController',
+                controllerAs: 'vm',
                 onEnter: function($rootScope) {
                     $rootScope.title = $rootScope.titleRoot + ' | Signup';
                 }
