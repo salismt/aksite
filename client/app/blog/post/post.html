@@ -6,23 +6,23 @@
     </div>
 
     <div ng-if="!error" class="container post">
-        <h2 class="post-header">{{post.title}} <small ng-show="post.hidden">Hidden</small></h2>
-        <h5 class="post-date">{{post.date}}</h5>
+        <h2 class="post-header">{{vm.post.title}} <small ng-show="vm.post.hidden">Hidden</small></h2>
+        <h5 class="post-date">{{vm.post.date}}</h5>
 
         <div class="block-author">
             <div class="block-meta">
                 <div class="meta-avatar">
-                    <a ng-href="/users/{{::post.author.id}}" class="avatar avatar--small" title="Go to {{::post.author.name}}'s profile">
-                        <img ng-src="/api/upload/{{::post.author.imageId}}" class="img-circle" title="{{::post.author.name}}">
+                    <a ng-href="/users/{{::vm.post.author.id}}" class="avatar avatar--small" title="Go to {{::vm.post.author.name}}'s profile">
+                        <img ng-src="/api/upload/{{::vm.post.author.imageId}}" class="img-circle" title="{{::vm.post.author.name}}">
                     </a>
                 </div>
                 <div class="meta-summary">
                     by
-                    <a ng-href="/users/{{::post.author.id}}" title="Go to {{::post.author.name}}'s profile" class="link">
-                        {{::post.author.name}}
+                    <a ng-href="/users/{{::vm.post.author.id}}" title="Go to {{::vm.post.author.name}}'s profile" class="link">
+                        {{::vm.post.author.name}}
                     </a>
                     <span class="metaInline metaInline--supplemental">
-                        {{post.date}}
+                        {{vm.post.date}}
                     </span>
                 </div>
             </div>
@@ -30,7 +30,7 @@
 
         <br/>
 
-        <div class="lead" ng-bind-html="post.content"></div>
+        <div class="lead" ng-bind-html="vm.post.content"></div>
     </div>
 
     <div class="row">

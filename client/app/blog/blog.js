@@ -15,6 +15,7 @@ angular.module('aksiteApp')
             .state('blog.post', {
                 url: '/:postId',
                 templateUrl: 'app/blog/post/post.html',
-                controller: 'PostCtrl'
+                controller: 'PostController',
+                controllerAs: 'vm'
             });
     });
