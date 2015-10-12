@@ -10,22 +10,11 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 
 // Component styles are injected through grunt
 // injector
-@import 'animations';
-@import 'variables';
-@import 'admin/admin.scss';
-@import 'blog/blog.scss';
-@import 'main/main.scss';
-@import 'photos/photos.scss';
-@import 'projects/projects.scss';
-@import 'resume/resume.scss';
-@import 'settings/settings.scss';
-@import 'user/user.scss';
-@import '../components/footer/footer.scss';
-@import '../components/navbar/navbar.scss';
-@import '../components/preloader/preloader.scss';
-@import '../components/timeline/timeline.scss';
+@import '_animations.scss';
+@import '_variables.scss';
 @import 'account/login/login.scss';
 @import 'account/signup/signup.scss';
+@import 'admin/admin.scss';
 @import 'admin/blogManager/blogManager.scss';
 @import 'admin/dashboard/dashboard.scss';
 @import 'admin/featuredManager/featuredManager.scss';
@@ -38,11 +27,22 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import 'admin/siteSettings/siteSettings.scss';
 @import 'admin/userEditor/userEditor.scss';
 @import 'admin/userManager/userManager.scss';
+@import 'blog/blog.scss';
 @import 'blog/post/post.scss';
+@import 'main/main.scss';
 @import 'photos/gallery/gallery.scss';
+@import 'photos/photos.scss';
 @import 'projects/project/project.scss';
-@import 'settings/profile/profile.scss';
+@import 'projects/projects.scss';
+@import 'resume/resume.scss';
 @import 'settings/dashboard/dashboard.scss';
+@import 'settings/profile/profile.scss';
+@import 'settings/settings.scss';
+@import 'user/user.scss';
+@import '../components/footer/footer.scss';
+@import '../components/navbar/navbar.scss';
+@import '../components/preloader/preloader.scss';
+@import '../components/timeline/timeline.scss';
 // endinjector
 
 /**
