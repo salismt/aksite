@@ -1,17 +1,23 @@
 'use strict';
 
-angular.module('aksiteApp')
-    .controller('PhotosCtrl', function($scope, $http, Photo, Gallery, $state) {
-        $scope.galleries = Gallery.query(function() {
-            _.forEach($scope.galleries, function(gallery) {
-                $http.get('/api/photos/'+gallery.featuredId)
-                    .success(function(photo) {
+class PhotoController {
+    constructor($http, Gallery, $state) {
+        this.$state = $state;
+
+        this.galleries = Gallery.query(() => {
+            _.forEach(this.galleries, gallery => {
+                $http.get('/api/photos/' + gallery.featuredId)
+                    .success(photo => {
                         gallery.featuredImgId = photo.thumbnailId;
                     });
             });
         });
+    }
 
-        $scope.goToGallery = function(id/*, event*/) {
-            $state.go('gallery', {galleryId: id});
-        };
-    });
+    goToGallery(id) {
+        this.$state.go('gallery', {galleryId: id});
+    };
+}
+
+angular.module('aksiteApp')
+    .controller('PhotoController', PhotoController);
