@@ -1,7 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
-import util from '../../util';
+import * as util from '../../util';
 import User from './user.model';
 import passport from 'passport';
 import config from '../../config/environment';
