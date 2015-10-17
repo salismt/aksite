@@ -6,7 +6,7 @@
 
 var Photo = require('./photo.model');
 
-exports.register = function(socket) {
+export function register(socket) {
     Photo.schema.post('save', function(doc) {
         onSave(socket, doc);
     });

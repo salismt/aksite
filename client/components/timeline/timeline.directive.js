@@ -8,7 +8,7 @@ angular.module('aksiteApp')
             },
             templateUrl: 'components/timeline/timeline.html',
             restrict: 'EA',
-            link: function(scope, element/*, attrs*/) {
+            link: function(scope/*, element, attrs*/) {
                 let openedCard = null;
 
                 scope.toggleCardOpen = function(card) {

@@ -15,12 +15,11 @@ angular.module('aksiteApp')
                 $rootScope.title += ' | ' + gallery.name;
 
                 if($scope.gallery.photos.length < 1) {
-                    $scope.noPhotos = true;
-                    return;
+                    return $scope.noPhotos = true;
                 }
 
                 _.each(gallery.photos, function(photo) {
-                    $http.get('api/photos/'+photo)
+                    $http.get('api/photos/' + photo)
                         .success(function(photo) {
                             photo.index = $scope.photos.length;
                             $scope.photos.push(photo);

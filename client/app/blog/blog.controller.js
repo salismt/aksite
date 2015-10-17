@@ -1,26 +1,9 @@
 'use strict';
 
-function getterString(page, pagesize) {
-    var str = 'api/posts';
-    var queryParams = [];
-    if(page)
-        queryParams.push('page=' + page);
-    if(pagesize)
-        queryParams.push('pagesize=' + pagesize);
-    if(queryParams.length > 0) {
-        str += '?';
-        _.forEach(queryParams, function(param, index) {
-            str += param;
-            if(index < queryParams.length-1)
-                str += '&';
-        })
-    }
-    return str;
-}
-
 class BlogController {
+    loadingItems = true;
     noItems = false;
-    page = 0;
+    page = 1;
     pagesize = 10;
     posts = [];
 
@@ -29,23 +12,23 @@ class BlogController {
         this.$stateParams = $stateParams;
         this.$state = $state;
 
-        this.page = this.$stateParams.page || 1;
-        this.pagesize = this.$stateParams.pagesize || 10;
-
         $state.reloadOnSearch = false;
+
+        this.page = $stateParams.page || 1;
+        this.pagesize = $stateParams.pagesize || 10;
 
         this.pageChanged();
     }
 
     pageChanged() {
-        this.$http.get(getterString(this.page, this.$stateParams.pagesize))
+        this.$http.get(this.getterString())
             .success(response => {
-                //this.currentPage = response.page;
+                this.currentPage = response.page;
                 this.pages = response.pages;
                 this.numItems = response.numItems;
                 this.posts = response.items;
                 _.forEach(this.posts, post => {
-                    post.date = moment(post.date).format("LL");
+                    post.date = moment(post.date).format('LL');
                     post.subheader = marked(post.subheader);
                 });
                 this.noItems = response.items.length <= 0;
@@ -54,8 +37,29 @@ class BlogController {
             .error(function(err) {
                 console.log(err);
             });
-    };
+    }
+
+    getterString() {
+        var str = 'api/posts';
+        var queryParams = [];
+        if(this.page) {
+            queryParams.push('page=' + this.page);
+        }
+        if(this.$stateParams.pagesize) {
+            queryParams.push('pagesize=' + this.$stateParams.pagesize);
+        }
+        if(queryParams.length > 0) {
+            str += '?';
+            _.forEach(queryParams, function(param, index) {
+                str += param;
+                if(index < queryParams.length-1) {
+                    str += '&';
+                }
+            });
+        }
+        return str;
+    }
 }
 
 angular.module('aksiteApp')
-    .controller('BlogCtrl', BlogController);
+    .controller('BlogController', BlogController);

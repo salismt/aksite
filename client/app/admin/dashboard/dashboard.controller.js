@@ -43,7 +43,7 @@ angular.module('aksiteApp')
         });
 
         $timeout(function () {
-            React.render(<preloader></preloader>, document.getElementById('chart1'))
+            React.render(<preloader></preloader>, document.getElementById('chart1'));
             React.render(<preloader></preloader>, document.getElementById('chart2'));
             React.render(<preloader></preloader>, document.getElementById('chart3'));
             React.render(<preloader></preloader>, document.getElementById('chart4'));

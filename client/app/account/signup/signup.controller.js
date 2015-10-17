@@ -1,27 +1,36 @@
 'use strict';
 
-angular.module('aksiteApp')
-    .controller('SignupCtrl', function($scope, Auth, $location, $window) {
-        $scope.user = {};
-        $scope.errors = {};
+class SignupController {
+    user = {};
+    errors = {};
+    submitted = false;
 
-        $scope.register = function() {
-            $scope.submitted = true;
+    constructor(Auth, $location, $window) {
+        this.Auth = Auth;
+        this.$location = $location;
+        this.$window = $window;
+    }
 
-            Auth.createUser({
-                name: $scope.user.name,
-                email: $scope.user.email,
-                password: $scope.user.password
+    register() {
+        this.submitted = true;
+
+        this.Auth.createUser({
+                name: this.user.name,
+                email: this.user.email,
+                password: this.user.password
             })
-                .then(function() {
-                    $location.path('/');
-                })
-                .catch(function(err) {
-                    $scope.errors = err;
-                });
-        };
+            .then(() => {
+                this.$location.path('/');
+            })
+            .catch(err => {
+                this.errors = err;
+            });
+    };
 
-        $scope.loginOauth = function(provider) {
-            $window.location.href = '/auth/' + provider;
-        };
-    });
+    loginOauth(provider) {
+        this.$window.location.href = '/auth/' + provider;
+    };
+}
+
+angular.module('aksiteApp')
+    .controller('SignupController', SignupController);

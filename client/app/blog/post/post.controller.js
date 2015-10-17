@@ -21,4 +21,4 @@ class PostController {
 }
 
 angular.module('aksiteApp')
-    .controller('PostCtrl', PostController);
+    .controller('PostController', PostController);

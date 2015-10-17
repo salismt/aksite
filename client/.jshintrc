@@ -33,6 +33,8 @@
         "PhotoSwipeUI_Default": true,
         "Masonry": true,
         "imagesLoaded": true,
-        "React": true
+        "React": true,
+        "hljs": true,
+        "classie": true
     }
 }

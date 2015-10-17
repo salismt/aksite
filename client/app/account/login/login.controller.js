@@ -1,27 +1,36 @@
 'use strict';
 
-angular.module('aksiteApp')
-    .controller('LoginCtrl', function($scope, Auth, $location, $window) {
-        $scope.user = {};
-        $scope.errors = {};
+class LoginController {
+    user = {};
+    errors = {};
+    submitted = false;
 
-        $scope.login = function() {
-            $scope.submitted = true;
+    constructor(Auth, $location, $window) {
+        this.Auth = Auth;
+        this.$location = $location;
+        this.$window = $window;
+    }
 
-            Auth.login({
-                email: $scope.user.email,
-                password: $scope.user.password
+    login() {
+        this.submitted = true;
+
+        this.Auth.login({
+            email: this.user.email,
+            password: this.user.password
+        })
+            .then(() => {
+                // Logged in, redirect to home
+                this.$location.path('/');
             })
-                .then(function() {
-                    // Logged in, redirect to home
-                    $location.path('/');
-                })
-                .catch(function(err) {
-                    $scope.errors.other = err.message;
-                });
-        };
+            .catch(err => {
+                this.errors.other = err.message;
+            });
+    };
 
-        $scope.loginOauth = function(provider) {
-            $window.location.href = '/auth/' + provider;
-        };
-    });
+    loginOauth(provider) {
+        this.$window.location.href = '/auth/' + provider;
+    };
+}
+
+angular.module('aksiteApp')
+    .controller('LoginController', LoginController);

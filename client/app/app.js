@@ -65,8 +65,8 @@ angular.module('aksiteApp', [
     });
 
 var myRenderer = new marked.Renderer();
-if (typeof hljs != 'undefined') {
-    myRenderer.code = function(code, lang, escaped) {
+if(typeof hljs !== 'undefined') {
+    myRenderer.code = function(code, lang/*, escaped*/) {
         if (lang && _.contains(hljs.listLanguages(), lang)) {
             try {
                 code = hljs.highlight(lang, code).value;

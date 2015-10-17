@@ -36,7 +36,19 @@
         </div>
     </div>
 
-    <pagination ng-change="vm.pageChanged()" items-per-page="vm.pagesize" boundary-links="true" total-items="vm.numItems" ng-model="vm.page" class="center-block" style="margin-bottom: 100px;" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+    <pagination
+        ng-change="vm.pageChanged()"
+        items-per-page="vm.pagesize"
+        boundary-links="true"
+        total-items="vm.numItems"
+        ng-model="vm.page"
+        class="center-block"
+        style="margin-bottom: 100px;"
+        previous-text="&lsaquo;"
+        next-text="&rsaquo;"
+        first-text="&laquo;"
+        last-text="&raquo;">
+    </pagination>
 </div>
 
 <div ng-include="'components/footer/footer.html'"></div>

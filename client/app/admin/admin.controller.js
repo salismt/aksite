@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('aksiteApp')
-    .controller('AdminCtrl', function($scope, $mdSidenav, $timeout, $log) {
+    .controller('AdminCtrl', function($scope, $mdSidenav) {
         $scope.sections = [
             {
                 title: 'Home',
@@ -41,7 +41,7 @@ angular.module('aksiteApp')
                 });
         };
     })
-    .controller('LeftCtrl', function($scope, $timeout, $mdSidenav, $log) {
+    .controller('LeftCtrl', function($scope, $timeout, $mdSidenav) {
         $scope.close = function() {
             $mdSidenav('left').close()
                 .then(function() {

@@ -29,7 +29,7 @@ Grid.mongo = mongoose.mongo;
 conn.once('open', function(err) {
     if(err) return util.handleError(err);
 
-    gfs = Grid(conn.db);
+    gfs = new Grid(conn.db);
     gridform.db = conn.db;
 });
 

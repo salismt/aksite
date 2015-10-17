@@ -6,7 +6,7 @@
 
 var Gallery = require('./gallery.model');
 
-exports.register = function(socket) {
+export function register(socket) {
     Gallery.schema.post('save', function(doc) {
         onSave(socket, doc);
     });

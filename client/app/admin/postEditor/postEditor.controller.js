@@ -51,8 +51,7 @@ angular.module('aksiteApp')
         };
 
         $scope.cancel = function() {
-            if($scope.upload)
-                $scope.upload.abort();
+            if($scope.upload) $scope.upload.abort();
             $state.go('admin.blog');
         };
 
@@ -84,7 +83,7 @@ angular.module('aksiteApp')
 
             if(form.$valid) {
                 if(!$scope.newPost && ($scope.filename === $scope.post.imageId || $scope.filename === null)) {
-                    $scope.upload = $upload.upload({
+                    $scope.upload = Upload.upload({
                         url: 'api/posts/' + $scope.post._id,
                         method: 'PUT',
                         fields: saveData
@@ -146,7 +145,7 @@ angular.module('aksiteApp')
                         file: $scope.fileToUpload,
                         fields: saveData,
                         headers: {
-                            'Content-Type': photo.file.type
+                            'Content-Type': $scope.fileToUpload.type
                         }
                     })
                         .progress(function(evt) {

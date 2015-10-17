@@ -6,7 +6,7 @@ angular.module('aksiteApp')
             .state('blog', {
                 url: '/blog?page&pagesize',
                 templateUrl: 'app/blog/blog.html',
-                controller: 'BlogCtrl',
+                controller: 'BlogController',
                 controllerAs: 'vm',
                 onEnter: function($rootScope) {
                     $rootScope.title = $rootScope.titleRoot + ' | Blog';
@@ -15,6 +15,7 @@ angular.module('aksiteApp')
             .state('blog.post', {
                 url: '/:postId',
                 templateUrl: 'app/blog/post/post.html',
-                controller: 'PostCtrl'
+                controller: 'PostController',
+                controllerAs: 'vm'
             });
     });

@@ -6,7 +6,7 @@ angular.module('aksiteApp')
             .state('post', {
                 url: '/blog/post/:postId',
                 templateUrl: 'app/blog/post/post.html',
-                controller: 'PostCtrl',
+                controller: 'PostController',
                 controllerAs: 'vm',
                 onEnter: function($rootScope) {
                     $rootScope.title = $rootScope.titleRoot + ' | Blog';

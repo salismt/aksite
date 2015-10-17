@@ -14,11 +14,11 @@ angular.module('aksiteApp')
             $scope.newGallery = true;
         } else {
             $http.get('/api/gallery/'+$stateParams.galleryId)
-                .success(function(res, status) {
+                .success(function(res) {
                     $scope.gallery = res;
                     _.forEach($scope.gallery.photos, function(photoId) {
                         $http.get('/api/photos/'+photoId)
-                            .success(function(res, status) {
+                            .success(function(res) {
                                 $scope.photos.push(res);
                             })
                             .error(function(res, status) {
@@ -36,8 +36,7 @@ angular.module('aksiteApp')
         var nextPhoto = 0;
 
         $scope.cancel = function() {
-            if($scope.upload)
-                $scope.upload.abort();
+            if($scope.upload) $scope.upload.abort();
             $state.go('admin.blog');
         };
 

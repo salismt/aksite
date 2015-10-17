@@ -51,7 +51,7 @@ class BufferStream extends stream.Readable {
         if(this._offset >= this._length) {
             this.push(null);
         }
-    };
+    }
 }
 
 export default BufferStream;
