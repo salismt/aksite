@@ -116,6 +116,32 @@ let transpile = lazypipe()
     .pipe(plugins.sourcemaps.write, '.');
 
 /********************
+ * Env
+ ********************/
+
+gulp.task('env:all', () => {
+    let localConfig;
+    try {
+        localConfig = require('./server/config/local.env');
+    } catch(e) {
+        localConfig = {};
+    }
+    plugins.env({
+        vars: localConfig
+    });
+});
+gulp.task('env:test', () => {
+    plugins.env({
+        vars: {NODE_ENV: 'test'}
+    });
+});
+gulp.task('env:prod', () => {
+    plugins.env({
+        vars: {NODE_ENV: 'production'}
+    });
+});
+
+/********************
  * Tasks
  ********************/
 
@@ -254,26 +280,47 @@ gulp.task('serve', cb => {
 });
 
 gulp.task('test', cb => {
+    process.env.NODE_ENV = 'test';
     runSequence('test:server', 'test:client', cb);
 });
 
-gulp.task('test:server', () => {
+gulp.task('test:server', cb => {
     runSequence(
         'env:all',
         'env:test',
         'mocha:unit',
-        'mocha:coverage',
+        //'mocha:coverage',
         cb);
 });
 
 gulp.task('test:client', () => {
-    var testFiles = _.union(paths.client.testRequire, paths.client.test);
-    return gulp.src(testFiles)
+    return gulp.src(paths.client.test)
         .pipe(plugins.karma({
             configFile: paths.karma,
-            action: 'watch'
-        }));
+            action: 'run'
+        }))
+        .on('error', function(err) {
+            // Make sure failed tests cause gulp to exit non-zero
+            throw err;
+        });
 });
+
+gulp.task('mocha:unit', () => {
+    return gulp.src(paths.server.test)
+        .pipe(plugins.mocha({
+            reporter: 'spec',
+            require: [
+                './mocha.conf'
+            ]
+        }))
+        .once('end', function () {
+            process.exit();
+        });
+});
+
+gulp.task('test:e2e', () => {});
+
+gulp.task('test:coverage', () => {});
 
 // inject bower components
 gulp.task('wiredep:client', () => {
