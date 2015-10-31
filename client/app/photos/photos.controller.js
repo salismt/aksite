@@ -16,7 +16,7 @@ class PhotoController {
 
     goToGallery(id) {
         this.$state.go('gallery', {galleryId: id});
-    };
+    }
 }
 
 angular.module('aksiteApp')

@@ -15,16 +15,14 @@ class SignupController {
         this.submitted = true;
 
         this.Auth.createUser({
-                name: this.user.name,
-                email: this.user.email,
-                password: this.user.password
-            })
-            .then(() => {
-                this.$location.path('/');
-            })
-            .catch(err => {
-                this.errors = err;
-            });
+            name: this.user.name,
+            email: this.user.email,
+            password: this.user.password
+        }).then(() => {
+            this.$location.path('/');
+        }).catch(err => {
+            this.errors = err;
+        });
     };
 
     loginOauth(provider) {
