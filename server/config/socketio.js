@@ -20,7 +20,6 @@ function onConnect(socket) {
     // Insert sockets below
     require('../api/gallery/gallery.socket').register(socket);
     require('../api/file/file.socket').register(socket);
-    require('../api/featured/featured.socket').register(socket);
     require('../api/project/project.socket').register(socket);
     require('../api/post/post.socket').register(socket);
     require('../api/photo/photo.socket').register(socket);
