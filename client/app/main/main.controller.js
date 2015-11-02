@@ -1,5 +1,7 @@
 'use strict';
 
+import classie from '../../bower_components/classie/classie';
+
 let texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', 'diag-striped-text', 'bg-img-text'];
 let usedTexts = [];
 let currentText = _.sample(texts);  // Load first random text
@@ -76,7 +78,7 @@ const vendorImages = [{
     alt: 'socketio'
 }];
 
-class MainController {
+export default class MainController {
     constructor($timeout) {
         this.vendorImages = vendorImages;
         classie.removeClass(document.getElementById(currentText), 'hidden');
@@ -102,5 +104,5 @@ class MainController {
     }
 }
 
-angular.module('aksiteApp')
-    .controller('MainController', MainController);
+//angular.module('aksiteApp')
+//    .controller('MainController', MainController);
