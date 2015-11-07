@@ -1,7 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
-//import angular from 'angular';
+import angular from 'angular';
 import ngCookies from 'angular-cookies';
 
 /**
@@ -14,7 +14,7 @@ function safeCb(cb) {
     return _.isFunction(cb) ? cb : _.noop;
 }
 
-export default class Auth {
+class Auth {
     constructor($http, User) {
         this.$http = $http;
         this.currentUser = {};
@@ -185,5 +185,6 @@ export default class Auth {
     }
 }
 
-//export default angular.module('aksiteApp')
-//    .factory('Auth', Auth);
+export default angular.module('services.auth', [])
+    .service('auth', Auth)
+    .name;
