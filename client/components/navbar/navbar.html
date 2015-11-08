@@ -8,7 +8,7 @@
                 <img class="img-circle" src="assets/images/portrait_2014.jpg" alt="AK"/>
             </a>
         </div>
-        <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+        <div uib-collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
                 <li ng-repeat="item in vm.menu" ng-class="{active: vm.isActive(item.link)}">
                     <md-button ng-href="{{::item.link}}" aria-label="{{::item.title}}">{{::item.title}}</md-button>
