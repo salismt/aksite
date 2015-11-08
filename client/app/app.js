@@ -10,7 +10,8 @@ import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
 import ngMaterial from 'angular-material';
 import ngMessages from 'angular-messages';
-import Auth from '../components/auth/auth.service';
+import _Auth from '../components/auth/auth.service';
+import User from '../components/auth/user.service';
 
 import routing from './app.config';
 
@@ -33,10 +34,11 @@ angular.module('aksiteApp', [
     ngMessages,
     //'masonry',
     //'wu.masonry'
-    main
+    main,
+    _Auth,
+    User
 ])
     .config(routing)
-    .service('Auth', Auth)
     .factory('authInterceptor', function($rootScope, $q, $cookies, $injector) {
         var state;
         return {
@@ -63,20 +65,20 @@ angular.module('aksiteApp', [
             }
         };
     })
-    //.run(function($rootScope, $location, Auth) {
-    //    // Redirect to login if route requires auth and you're not logged in
-    //    $rootScope.$on('$stateChangeStart', function(event, next) {
-    //        $rootScope.title = 'Andrew Koroluk';
-    //        Auth.isLoggedInAsync(function(loggedIn) {
-    //            if(next.authenticate && !loggedIn) {
-    //                $location.path('/login');
-    //            }
-    //        });
-    //    });
-    //
-    //    $rootScope.titleRoot = 'AK';
-    //    $rootScope.title = 'Andrew Koroluk';
-    //});
+    .run(function($rootScope, $location, Auth) {
+        // Redirect to login if route requires auth and you're not logged in
+        $rootScope.$on('$stateChangeStart', function(event, next) {
+            $rootScope.title = 'Andrew Koroluk';
+            Auth.isLoggedInAsync(function(loggedIn) {
+                if(next.authenticate && !loggedIn) {
+                    $location.path('/login');
+                }
+            });
+        });
+
+        $rootScope.titleRoot = 'AK';
+        $rootScope.title = 'Andrew Koroluk';
+    });
 
 //var myRenderer = new marked.Renderer();
 //if(typeof hljs !== 'undefined') {
