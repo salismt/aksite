@@ -4,6 +4,8 @@ import _ from 'lodash';
 import angular from 'angular';
 import ngCookies from 'angular-cookies';
 
+import _User from './user.service';
+
 /**
  * Return a callback or noop function
  *
@@ -15,11 +17,15 @@ function safeCb(cb) {
 }
 
 class Auth {
-    constructor($http, User) {
+    currentUser = {};
+
+    constructor($http, User, $cookies) {
         this.$http = $http;
-        this.currentUser = {};
-        if(ngCookies.get('token')) {
-            this.this.currentUser = User.get();
+        this.User = User;
+        this.$cookies = $cookies;
+
+        if($cookies.get('token')) {
+            this.currentUser = User.get();
         }
     }
 
@@ -35,8 +41,9 @@ class Auth {
             email: user.email,
             password: user.password
         }).then(res => {
-            ngCookies.put('token', res.data.token);
-            this.currentUser = User.get();
+            this.$cookies.put('token', res.data.token);
+            this.currentUser = this.User.get();
+            console.log(this.currentUser);
             return this.currentUser.$promise;
         }).then(user => {
             safeCb(callback)(null, user);
@@ -52,7 +59,7 @@ class Auth {
      * Delete access token and user info
      */
     logout() {
-        ngCookies.remove('token');
+        this.$cookies.remove('token');
         this.currentUser = {};
     }
 
@@ -64,10 +71,10 @@ class Auth {
      * @return {Promise}
      */
     createUser(user, callback) {
-        return User.save(user,
+        return this.User.save(user,
             function(data) {
-                ngCookies.put('token', data.token);
-                this.currentUser = User.get();
+                this.$cookies.put('token', data.token);
+                this.currentUser = this.User.get();
                 return safeCb(callback)(null, user);
             },
             function(err) {
@@ -85,7 +92,7 @@ class Auth {
      * @return {Promise}
      */
     changePassword(oldPassword, newPassword, callback) {
-        return User.changePassword({ id: this.currentUser._id }, {
+        return this.User.changePassword({ id: this.currentUser._id }, {
             oldPassword: oldPassword,
             newPassword: newPassword
         }, function() {
@@ -130,7 +137,7 @@ class Auth {
             return this.currentUser.hasOwnProperty('role');
         }
 
-        return this.getthis.currentUser(null)
+        return this.getCurrentUser(null)
             .then(function(user) {
                 var is = user.hasOwnProperty('role');
                 safeCb(callback)(is);
@@ -163,16 +170,15 @@ class Auth {
      * @return {Boolean|Promise}
      */
     isAdmin(callback) {
-        if (arguments.length === 0) {
+        if(arguments.length === 0) {
             return this.currentUser.role === 'admin';
         }
 
-        return this.getthis.currentUser(null)
-            .then(function(user) {
-                var is = user.role === 'admin';
-                safeCb(callback)(is);
-                return is;
-            });
+        return this.getCurrentUser().then(function(user) {
+            var is = user.role === 'admin';
+            safeCb(callback)(is);
+            return is;
+        });
     }
 
     /**
@@ -181,10 +187,10 @@ class Auth {
      * @return {String} - a token string used for authenticating
      */
     getToken() {
-        return ngCookies.get('token');
+        return this.$cookies.get('token');
     }
 }
 
-export default angular.module('services.auth', [])
-    .service('auth', Auth)
+export default angular.module('services.Auth', [_User, ngCookies])
+    .service('Auth', Auth)
     .name;
