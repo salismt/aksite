@@ -3,12 +3,16 @@
  */
 
 import angular from 'angular';
-import uirouter from 'angular-ui-router';
 
-import routing from './main.routes';
-import MainController from './main.controller';
+import Auth from '../auth/auth.service'
 
-export default angular.module('aksiteApp.main', [uirouter])
-    .config(routing)
-    .controller('MainController', MainController)
+import NavbarController from './navbar.controller';
+
+export default angular.module('directives.navbar', [Auth])
+    .directive('navbar', () => ({
+        template: require('./navbar.html'),
+        restrict: 'E',
+        controller: NavbarController,
+        controllerAs: 'vm'
+    }))
     .name;

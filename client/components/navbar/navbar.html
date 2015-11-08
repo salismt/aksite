@@ -1,7 +1,7 @@
-<div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
+<div class="navbar navbar-default navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <button class="navbar-toggle fa fa-bars" type="button" ng-click="isCollapsed = !isCollapsed">
+            <button class="navbar-toggle fa fa-bars" type="button" ng-click="vm.isCollapsed = !vm.isCollapsed">
                 <span class="sr-only">Toggle navigation</span>
             </button>
             <a class="logo-portrait" href="/">
@@ -10,27 +10,27 @@
         </div>
         <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
-                <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
+                <li ng-repeat="item in vm.menu" ng-class="{active: vm.isActive(item.link)}">
                     <md-button ng-href="{{::item.link}}" aria-label="{{::item.title}}">{{::item.title}}</md-button>
                 </li>
-                <li ng-show="isAdmin()" ng-class="{active: isActive('/admin')}">
+                <li ng-show="vm.isAdmin()" ng-class="{active: vm.isActive('/admin')}">
                     <md-button href="/admin" aria-label="Admin">Admin</md-button>
                 </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 <!--<li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup">Sign up</a></li>-->
-                <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}">
+                <li ng-hide="vm.isLoggedIn()" ng-class="{active: isActive('/login')}">
                     <md-button href="/login" aria-label="Login">Login</md-button>
                 </li>
-                <li ng-if="isLoggedIn()" style="margin-left: 5px; margin-right: 5px;">
-                    <a ng-href="/user/{{getCurrentUser()._id}}" style="padding: 0"><span class="user-image" ng-style="{'background-image':'url(/api/upload/{{getCurrentUser().imageId}}.jpg)'}"></span></a>
+                <li ng-if="vm.isLoggedIn()" style="margin-left: 5px; margin-right: 5px;">
+                    <a ng-href="/user/{{vm.getCurrentUser()._id}}" style="padding: 0"><span class="user-image" ng-style="{'background-image':'url(/api/upload/{{vm.getCurrentUser().imageId}}.jpg)'}"></span></a>
                 </li>
-                <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}">
-                    <md-button href="/settings" aria-label="Settings"><i class="fa fa-cog"></i></md-button>
+                <li ng-show="vm.isLoggedIn()" ng-class="{active: vm.isActive('/settings')}">
+                    <md-button ui-sref="admin.settings" aria-label="Settings"><i class="fa fa-cog"></i></md-button>
                 </li>
-                <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}">
-                    <md-button href="" ng-click="logout()" aria-label="Logout">Logout</md-button>
+                <li ng-show="vm.isLoggedIn()" ng-class="{active: vm.isActive('/logout')}">
+                    <md-button href="" ng-click="vm.logout()" aria-label="Logout">Logout</md-button>
                 </li>
             </ul>
         </div>
