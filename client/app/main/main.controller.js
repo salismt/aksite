@@ -103,6 +103,3 @@ export default class MainController {
         classie.removeClass(document.getElementById(currentText), 'hidden');
     }
 }
-
-//angular.module('aksiteApp')
-//    .controller('MainController', MainController);
