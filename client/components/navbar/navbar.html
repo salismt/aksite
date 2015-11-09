@@ -21,7 +21,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <!--<li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup">Sign up</a></li>-->
                 <li ng-hide="vm.isLoggedIn()" ng-class="{active: isActive('/login')}">
-                    <md-button href="/login" aria-label="Login">Login</md-button>
+                    <md-button ui-sref="login" aria-label="Login">Login</md-button>
                 </li>
                 <li ng-if="vm.isLoggedIn()" style="margin-left: 5px; margin-right: 5px;">
                     <a ng-href="/user/{{vm.getCurrentUser()._id}}" style="padding: 0"><span class="user-image" ng-style="{'background-image':'url(/api/upload/{{vm.getCurrentUser().imageId}}.jpg)'}"></span></a>
