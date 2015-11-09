@@ -17,7 +17,6 @@ Andrew Koroluk
 5. Install Bower globally
 
 	`npm install -g bower`
-	> **Note:** On *nix Operating systems, global NPM installations must be run with `sudo`
 
 6. Install Grunt globally
 
