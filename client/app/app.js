@@ -16,9 +16,10 @@ import User from '../components/auth/user.service';
 import routing from './app.config';
 
 import main from './main';
+import account from './account';
 
-//import '!raw!sass!./app.scss';
-require('!style!css!sass!./app.scss');
+import '!style!css!sass!../../node_modules/angular-material/angular-material.scss';
+import '!style!css!sass!./app.scss';
 
 angular.module('aksiteApp', [
     ngAnimate,
@@ -36,7 +37,8 @@ angular.module('aksiteApp', [
     //'wu.masonry'
     main,
     _Auth,
-    User
+    User,
+    account
 ])
     .config(routing)
     .factory('authInterceptor', function($rootScope, $q, $cookies, $injector) {

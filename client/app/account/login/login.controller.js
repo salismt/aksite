@@ -1,6 +1,6 @@
 'use strict';
 
-class LoginController {
+export default class LoginController {
     user = {};
     errors = {};
     submitted = false;
@@ -31,6 +31,3 @@ class LoginController {
         this.$window.location.href = '/auth/' + provider;
     };
 }
-
-angular.module('aksiteApp')
-    .controller('LoginController', LoginController);
