@@ -8,9 +8,9 @@ Andrew Koroluk
 ##Building Locally
 1. [Install Git](http://www.git-scm.com/downloads)
 
-2. [Install MongoDB](https://www.mongodb.org/downloads)
+2. [Install MongoDB](https://www.mongodb.org/downloads) and have a running daemon
 	
-3. [Install Node.js & NPM](http://nodejs.org/download/)
+3. [Install Node.js & NPM](http://nodejs.org/download/) (Node ^4.2.2, npm ^2.0.0)
 
 4. [Install GraphicsMagick](http://www.graphicsmagick.org/) and make sure it is added to your PATH
 
@@ -18,9 +18,9 @@ Andrew Koroluk
 
 	`npm install -g bower`
 
-6. Install Grunt globally
+6. Install Gulp globally
 
-	`npm install -g grunt`
+	`npm install -g gulp`
 
 7. Download the source files
     1. Download ZIP: [https://github.com/Awk34/aksite/archive/master.zip]
@@ -39,12 +39,10 @@ Andrew Koroluk
 	
 10.  Run the local server under the development environment
 
-	`grunt serve`
+	`gulp serve`
 
 =====
 
 ##Testing
-
-Install `grunt-cli` locally (`npm install grunt-cli`)
 
 From the project root, run `npm test`
