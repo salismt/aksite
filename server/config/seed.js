@@ -12,9 +12,6 @@ var _ = require('lodash'),
     Post = require('../api/post/post.model'),
     Photo = require('../api/photo/photo.model'),
     Project = require('../api/project/project.model'),
-    FeaturedItem = require('../api/featured/featuredItem.model.js'),
-    FeaturedSection = require('../api/featured/featuredSection.model.js'),
-    FeaturedController = require('../api/featured/featured.controller.js'),
     Gallery = require('../api/gallery/gallery.model.js'),
     config = require('./environment'),
     util = require('../util'),
@@ -31,9 +28,6 @@ var _ = require('lodash'),
     conn = mongoose.createConnection(config.mongo.uri);
 
 Grid.mongo = mongoose.mongo;
-
-FeaturedSection.find({}).remove(function() {});
-FeaturedItem.find({}).remove(function() {});
 
 Thing.find({}).remove(function() {
     Thing.create({

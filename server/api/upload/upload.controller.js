@@ -8,7 +8,6 @@ import Photo from '../photo/photo.model';
 import Gallery from '../gallery/gallery.model';
 import Project from '../project/project.model';
 import User from '../user/user.model';
-import FeaturedSection from '../featured/featuredSection.model';
 import config from '../../config/environment';
 import mongoose from 'mongoose';
 import fs from 'fs';
@@ -216,19 +215,18 @@ exports.destroy = function(req, res) {
 // Finds and cleans orphaned GridFS files
 exports.clean = function(req, res) {
     /**
-     * This baby plucks all of the GridFS document IDs from all Photos, Projects,
-     * Users, and FeaturedSections. It then compares that list to a list of all documents
+     * This baby plucks all of the GridFS document IDs from all Photos, Projects, and Users.
+     * It then compares that list to a list of all documents
      * in GridFS. If the GridFS document isn't used in the first list, it gets deleted.
      */
     q.all([
         getIds(gridModel, ['_id']),
         getIds(Photo, ['fileId', 'thumbnailId', 'sqThumbnailId']),
         getIds(Project, ['thumbnailId', 'coverId']),
-        getIds(User, ['imageId', 'smallImageId']),
-        getIds(FeaturedSection, ['fileId'])
+        getIds(User, ['imageId', 'smallImageId'])
     ])
-        .spread(function(fileIds, photoIds, projectIds, userIds, featSectionIds) {
-            _.forEach(_.difference(_.invoke(fileIds, 'toString'), _.invoke(_.union(photoIds, projectIds, userIds, featSectionIds), 'toString')), function(id) {
+        .spread(function(fileIds, photoIds, projectIds, userIds) {
+            _.forEach(_.difference(_.invoke(fileIds, 'toString'), _.invoke(_.union(photoIds, projectIds, userIds), 'toString')), function(id) {
                 gfs.remove({_id: id}, function(err) {
                     if(err) return console.log(err);
                     console.log('Delete file', id);

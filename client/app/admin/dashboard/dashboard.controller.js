@@ -22,9 +22,6 @@ angular.module('aksiteApp')
                 path: 'users',
                 title: 'Users'
             }, {
-                path: 'featured',
-                title: 'Featured Items'
-            }, {
                 path: 'projects',
                 title: 'Projects'
             }
