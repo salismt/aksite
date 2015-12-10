@@ -13,6 +13,6 @@ export default angular.module('directives.navbar', [Auth])
         template: require('./navbar.html'),
         restrict: 'E',
         controller: NavbarController,
-        controllerAs: 'vm'
+        controllerAs: 'nav'
     }))
     .name;
