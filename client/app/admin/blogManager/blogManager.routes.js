@@ -5,6 +5,7 @@ export default function routes($stateProvider) {
         .state('admin.blog', {
             url: '/blog',
             template: require('./blogManager.html'),
-            controller: 'BlogManagerController'
+            controller: 'BlogManagerController',
+            controllerAs: 'vm'
         });
 }

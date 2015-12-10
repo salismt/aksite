@@ -1,61 +1,66 @@
 'use strict';
 
-export default function($scope, $http, $state) {
-    $scope.errors = [];
-    $scope.loadingPosts = true;
-    $scope.posts = [];
-    $scope.postDeletions = [];
-    $scope.postChanges = [];
-    $scope.dirty = false;
+export default class BlogManagerController {
+    errors = [];
+    loadingPosts = true;
+    posts = [];
+    postDeletions = [];
+    postChanges = [];
+    dirty = false;
 
-    $http.get('/api/posts')
-        .success(function(res) {
-            $scope.posts = res.items;
-            $scope.page = res.page;
-            $scope.pages = res.pages;
-            $scope.items = res.numItems;
-            console.log(res);
-        })
-        .error(function(res, status) {
-            console.log(res);
-            console.log(status);
-        })
-        .finally(function() {
-            $scope.loadingPosts = false;
-        });
+    constructor($http, $state) {
+        this.$http = $http;
+        this.$state = $state;
 
-    $scope.goToPost = function(id/*, event*/) {
-        $state.go('postEditor', {postId: id});
+        $http.get('/api/posts')
+            .success(res => {
+                this.posts = res.items;
+                this.page = res.page;
+                this.pages = res.pages;
+                this.items = res.numItems;
+                console.log(res);
+            })
+            .error((res, status) => {
+                console.log(res);
+                console.log(status);
+            })
+            .finally(() => {
+                this.loadingPosts = false;
+            });
+    }
+
+    goToPost(id/*, event*/) {
+        this.$state.go('postEditor', {postId: id});
     };
 
     //TODO: remove strange toggling, change to immediately delete, but show a 'Post Deleted' toast with an 'UNDO' button
-    $scope.togglePostDeletion = function(post) {
+    togglePostDeletion(post) {
         if(!post.deleted) {
             post.deleted = true;
-            $scope.dirty = true;
-            $scope.postDeletions.push(post);
+            this.dirty = true;
+            this.postDeletions.push(post);
         } else {
             post.deleted = false;
-            _.remove($scope.postDeletions, function(thisPost) {
+            _.remove(this.postDeletions, function(thisPost) {
                 return thisPost._id === post._id;
             });
-            if($scope.postDeletions.length === 0) {
-                $scope.dirty = false;
+            if(this.postDeletions.length === 0) {
+                this.dirty = false;
             }
         }
     };
 
-    $scope.saveChanges = function() {
+    saveChanges() {
         // Delete posts
-        _.forEach($scope.postDeletions, function(post) {
-            $http.delete('/api/posts/'+post._id)
-                .success(function(res, status) {
-                    _.remove($scope.posts, post);
-                    $scope.dirty = false;
+        _.forEach(this.postDeletions, post => {
+            this.$http.delete('/api/posts/' + post._id)
+                .success((res, status) => {
+                    _.remove(this.posts, post);
+                    this.dirty = false;
                     console.log(res);
                     console.log(status);
                 })
-                .error(function(res, status) {
+                .error((res, status) => {
                     console.log(res);
                     console.log(status);
                 });
