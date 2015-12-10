@@ -4,6 +4,7 @@ import uirouter from 'angular-ui-router';
 import SidenavController from './sidenav.controller';
 
 import dashboard from './dashboard';
+import blogManager from './blogManager';
 
 import routing from './admin.routes';
 import AdminController from './admin.controller';
@@ -15,7 +16,8 @@ import navbar from '../../components/navbar';
 export default angular.module('aksiteApp.admin', [
     uirouter,
     navbar,
-    dashboard
+    dashboard,
+    blogManager,
 ])
     .config(routing)
     .controller('SidenavController', SidenavController)
