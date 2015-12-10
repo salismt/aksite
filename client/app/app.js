@@ -17,6 +17,7 @@ import routing from './app.config';
 
 import main from './main';
 import account from './account';
+import blog from './blog';
 
 import '!style!css!sass!../../node_modules/angular-material/angular-material.scss';
 import '!style!css!sass!./app.scss';
@@ -38,7 +39,8 @@ angular.module('aksiteApp', [
     main,
     _Auth,
     User,
-    account
+    account,
+    blog
 ])
     .config(routing)
     .factory('authInterceptor', function($rootScope, $q, $cookies, $injector) {

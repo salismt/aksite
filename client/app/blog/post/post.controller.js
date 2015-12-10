@@ -1,6 +1,6 @@
 'use strict';
 
-class PostController {
+export default class PostController {
     constructor($rootScope, $stateParams, $http, $sce) {
         this.postId = $stateParams.postId;
 
@@ -19,6 +19,3 @@ class PostController {
             });
     }
 }
-
-angular.module('aksiteApp')
-    .controller('PostController', PostController);
