@@ -18,6 +18,7 @@ import routing from './app.config';
 import main from './main';
 import account from './account';
 import blog from './blog';
+import admin from './admin';
 
 import '!style!css!sass!../../node_modules/angular-material/angular-material.scss';
 import '!style!css!sass!./app.scss';
@@ -40,9 +41,20 @@ angular.module('aksiteApp', [
     _Auth,
     User,
     account,
-    blog
+    blog,
+    admin
 ])
     .config(routing)
+    .config($httpProvider => {
+        //FIXME: temporary webpack workaround
+        $httpProvider.interceptors.push(() => ({
+            request: function(config) {
+                config.url = 'http://localhost:9050' + (config.url.charAt(0) === '/' ? '' : '/') + config.url;
+
+                return config;
+            }
+        }));
+    })
     .factory('authInterceptor', function($rootScope, $q, $cookies, $injector) {
         var state;
         return {
