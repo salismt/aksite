@@ -5,6 +5,7 @@ import SidenavController from './sidenav.controller';
 
 import dashboard from './dashboard';
 import blogManager from './blogManager';
+import fileManager from './fileManager';
 
 import routing from './admin.routes';
 import AdminController from './admin.controller';
@@ -18,6 +19,7 @@ export default angular.module('aksiteApp.admin', [
     navbar,
     dashboard,
     blogManager,
+    fileManager,
 ])
     .config(routing)
     .controller('SidenavController', SidenavController)

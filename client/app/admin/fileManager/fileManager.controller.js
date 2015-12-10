@@ -1,6 +1,6 @@
 'use strict';
 
-class FileManagerController {
+export default class FileManagerController {
     constructor($http) {
         $http.get('/api/upload')
             .then(res => {
@@ -19,6 +19,3 @@ class FileManagerController {
         console.log(file);
     }
 }
-
-angular.module('aksiteApp')
-    .controller('FileManagerController', FileManagerController);
