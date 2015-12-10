@@ -9,6 +9,7 @@ import fileManager from './fileManager';
 import photoManager from './photoManager';
 import projectManager from './projectManager';
 import userManager from './userManager';
+import siteSettings from './siteSettings';
 
 import routing from './admin.routes';
 import AdminController from './admin.controller';
@@ -26,6 +27,7 @@ export default angular.module('aksiteApp.admin', [
     photoManager,
     projectManager,
     userManager,
+    siteSettings
 ])
     .config(routing)
     .controller('SidenavController', SidenavController)
