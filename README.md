@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/Awk34/aksite.svg)](https://travis-ci.org/Awk34/aksite)
+![Build Status](https://codeship.com/projects/63c8f830-8803-0133-06c0-2eae657aa6d0/status?branch=master)
 [![Dependency Status](https://david-dm.org/awk34/aksite.svg)](https://david-dm.org/awk34/aksite)
 [![devDependency Status](https://david-dm.org/awk34/aksite/dev-status.svg)](https://david-dm.org/awk34/aksite#info=devDependencies)
 
