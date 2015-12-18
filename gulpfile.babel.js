@@ -10,9 +10,12 @@ import lazypipe from 'lazypipe';
 import {stream as wiredep} from 'wiredep';
 import nodemon from 'nodemon';
 import runSequence from 'run-sequence';
+import webpack from 'webpack';
+import makeWebpackConfig from './webpack.make';
 
 var plugins = gulpLoadPlugins();
 var config;
+let webpackDevConfig = makeWebpackConfig({ DEV: true });
 
 const paths = {
     appPath: require('./bower.json').appPath || 'client',
@@ -49,7 +52,8 @@ const paths = {
         files: ['client/{app,components}/**/*.html']
     },
     karma: 'karma.conf.js',
-    dist: 'dist'
+    dist: 'dist',
+    temp: '.tmp'
 };
 
 /********************
@@ -208,6 +212,13 @@ gulp.task('transpile', () => {
         .pipe(gulp.dest('.tmp'));
 });
 
+gulp.task('webpack:dev', function() {
+    return gulp.src(webpackDevConfig.entry.app)
+        .pipe(plugins.webpack(webpackDevConfig))
+        .pipe(gulp.dest(paths.temp))
+        .pipe(plugins.livereload());
+});
+
 gulp.task('lint:scripts', cb => runSequence(['lint:scripts:client', 'lint:scripts:server'], cb));
 
 gulp.task('lint:scripts:client', () => {
@@ -245,35 +256,23 @@ gulp.task('watch', () => {
 
     plugins.livereload.listen();
 
-    plugins.watch(paths.client.styles, () => {
-        gulp.src(paths.client.mainStyle)
-            .pipe(plugins.plumber())
-            .pipe(styles())
-            .pipe(gulp.dest('.tmp/app'))
-            .pipe(plugins.livereload());
-    });
-
-    plugins.watch(paths.views.files)
-        .pipe(plugins.plumber())
-        .pipe(plugins.livereload());
-
-    plugins.watch(paths.client.scripts, ['inject:js'])
-        .pipe(plugins.plumber())
-        .pipe(transpile())
-        .pipe(gulp.dest('.tmp'))
-        .pipe(plugins.livereload());
+    gulp.watch(`${paths.appPath}/**/*.{html,js,scss}`, ['webpack:dev']);
 
     plugins.watch(_.union(paths.server.scripts, testFiles))
         .pipe(plugins.plumber())
-        .pipe(lintServerScripts())
-        .pipe(plugins.livereload());
+        .pipe(lintServerScripts());
 
     gulp.watch('bower.json', ['wiredep:client']);
 });
 
 gulp.task('serve', cb => {
-    runSequence(['clean:tmp', 'lint:scripts', 'inject', 'wiredep:client'],
-        ['transpile', 'styles'],
+    runSequence([
+            'clean:tmp',
+            'lint:scripts',
+            'inject',
+            'wiredep:client'
+        ],
+        ['webpack:dev'],
         ['start:server', 'start:client'],
         'watch',
         cb);
