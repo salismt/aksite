@@ -12,7 +12,12 @@ import mongoose from 'mongoose';
 import config from './config/environment';
 
 if(config.env === 'production') {
-    require('newrelic');
+    //require('newrelic');
+    const opbeat = require('opbeat').start({
+        organizationId: config.opbeat.orgId,
+        appId: config.opbeat.appId,
+        secretToken: config.opbeat.secret
+    });
 }
 
 // Connect to database

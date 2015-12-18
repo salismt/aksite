@@ -24,6 +24,10 @@ module.exports = {
     GITHUB_ID: 'app-id',
     GITHUB_SECRET: 'secret',
 
+    OPBEAT_ORGANIZATION_ID: 'org-id',
+    OPBEAT_APP_ID: 'app-id',
+    OPBEAT_SECRET_TOKEN: 'secret',
+
     // Control debug level for modules using visionmedia/debug
     DEBUG: ''
 };

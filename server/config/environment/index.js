@@ -76,6 +76,12 @@ var all = {
         clientID: process.env.GITHUB_ID || 'id',
         clientSecret: process.env.GITHUB_SECRET || 'secret',
         callbackURL: (process.env.DOMAIN || '') + '/auth/github/callback'
+    },
+
+    opbeat: {
+        orgId: process.env.OPBEAT_ORGANIZATION_ID || '',
+        appId: process.env.OPBEAT_APP_ID || '',
+        secret: process.env.OPBEAT_SECRET_TOKEN || ''
     }
 };
 
