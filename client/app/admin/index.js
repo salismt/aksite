@@ -7,6 +7,7 @@ import dashboard from './dashboard';
 import blogManager from './blogManager';
 import fileManager from './fileManager';
 import photoManager from './photoManager';
+import galleryEditor from './galleryEditor';
 import projectManager from './projectManager';
 import userManager from './userManager';
 import siteSettings from './siteSettings';
@@ -25,6 +26,7 @@ export default angular.module('aksiteApp.admin', [
     blogManager,
     fileManager,
     photoManager,
+    galleryEditor,
     projectManager,
     userManager,
     siteSettings

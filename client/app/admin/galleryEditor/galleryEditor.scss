@@ -57,7 +57,7 @@ $galleryEditorItemPadding: 10px;
 
     .goo-container {
         -webkit-filter: url("#goo");
-        filter: url("./galleryEditor.html#goo");
+        filter: url("#goo");
         font-size: 0;
         padding: 10px;
         @include transform(translateZ(0));
