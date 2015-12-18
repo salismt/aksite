@@ -212,7 +212,8 @@ exports.update = function(req, res) {
 
 // Deletes a post from the DB.
 exports.destroy = function(req, res) {
-    if(!util.isvalidobjectId(req.params.id)) return res.status(400).send('Invalid ID');
+    if(!util.isValidObjectId(req.params.id)) return res.status(400).send('Invalid ID');
+
     Post.findById(req.params.id, function(err, post) {
         if(err) return util.handleError(res, err);
         if(!post) return res.send(404);
