@@ -10,7 +10,7 @@ import lazypipe from 'lazypipe';
 import {stream as wiredep} from 'wiredep';
 import nodemon from 'nodemon';
 import runSequence from 'run-sequence';
-import webpack from 'webpack';
+import webpack from 'webpack-stream';
 import makeWebpackConfig from './webpack.make';
 
 var plugins = gulpLoadPlugins();
@@ -214,7 +214,7 @@ gulp.task('transpile', () => {
 
 gulp.task('webpack:dev', function() {
     return gulp.src(webpackDevConfig.entry.app)
-        .pipe(plugins.webpack(webpackDevConfig))
+        .pipe(webpack(webpackDevConfig))
         .pipe(gulp.dest(paths.temp))
         .pipe(plugins.livereload());
 });
