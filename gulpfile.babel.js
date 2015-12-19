@@ -15,7 +15,7 @@ var plugins = gulpLoadPlugins();
 var config;
 
 const paths = {
-    appPath: require('./bower.json').appPath || 'client',
+    appPath: 'client',
     client: {
         scripts: [
             'client/**/*.js',
