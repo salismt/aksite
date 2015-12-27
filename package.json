@@ -173,7 +173,7 @@
   },
   "scripts": {
     "start": "node server",
-    "test": "karma start",
+    "test": "gulp test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
     "build": "webpack --config webpack.build.js --bail -p",
     "dev": "webpack-dev-server --history-api-fallback --inline --progress",
