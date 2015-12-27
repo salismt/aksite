@@ -278,7 +278,8 @@ gulp.task('serve', cb => {
             'lint:scripts',
             'inject',
             'wiredep:client',
-            'env:all'
+            'env:all',
+            'copy:fonts:dev'
         ],
         'webpack:dev',
         ['start:server', 'start:client'],
@@ -377,7 +378,6 @@ gulp.task('build', cb => {
             'copy:fonts',
             'copy:server',
             'webpack:dist'
-            //'build:client'
         ],
         cb);
 });
@@ -443,16 +443,28 @@ gulp.task('copy:assets', () => {
         .pipe(gulp.dest(paths.dist + '/client/assets'));
 });
 
-gulp.task('copy:fonts:bootstrap', () => {
+gulp.task('copy:fonts:bootstrap:dev', () => {
+    gulp.src('node_modules/bootstrap/fonts/*')
+        .pipe(gulp.dest('client/assets/fonts/bootstrap'));
+});
+gulp.task('copy:fonts:fontAwesome:dev', () => {
+    gulp.src('node_modules/font-awesome/fonts/*')
+        .pipe(gulp.dest('client/assets/fonts/font-awesome'));
+});
+gulp.task('copy:fonts:dev', cb => {
+    return runSequence(['copy:fonts:bootstrap:dev', 'copy:fonts:fontAwesome:dev'], cb);
+});
+
+gulp.task('copy:fonts:bootstrap:dist', () => {
     gulp.src('node_modules/bootstrap/fonts/*')
         .pipe(gulp.dest(paths.dist + '/client/assets/fonts/bootstrap'));
 });
-gulp.task('copy:fonts:fontAwesome', () => {
+gulp.task('copy:fonts:fontAwesome:dist', () => {
     gulp.src('node_modules/font-awesome/fonts/*')
         .pipe(gulp.dest(paths.dist + '/client/assets/fonts/font-awesome'));
 });
-gulp.task('copy:fonts', cb => {
-    return runSequence(['copy:fonts:bootstrap', 'copy:fonts:fontAwesome'], cb);
+gulp.task('copy:fonts:dist', cb => {
+    return runSequence(['copy:fonts:bootstrap:dist', 'copy:fonts:fontAwesome:dist'], cb);
 });
 
 gulp.task('copy:server', () => {
