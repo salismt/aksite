@@ -20,8 +20,8 @@ import account from './account';
 import blog from './blog';
 import admin from './admin';
 
-import '!style!css!sass!../../node_modules/angular-material/angular-material.scss';
-import '!style!css!sass!./app.scss';
+import '../../node_modules/angular-material/angular-material.scss';
+import './app.scss';
 
 angular.module('aksiteApp', [
     ngAnimate,

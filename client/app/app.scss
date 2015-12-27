@@ -1,12 +1,12 @@
-$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
-$fa-font-path: "/bower_components/font-awesome/fonts";
+$icon-font-path: "/assets/fonts/bootstrap/";
+$fa-font-path: "/assets/fonts/font-awesome/";
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,900|Roboto:300,500,700,900);
-@import '../bower_components/bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
-@import '../bower_components/font-awesome/scss/font-awesome';
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+@import '../../node_modules/font-awesome/scss/font-awesome';
 
-@import '../bower_components/bourbon/app/assets/stylesheets/bourbon';
-@import '../bower_components/neat/app/assets/stylesheets/neat';
+@import 'bourbon';
+@import '../../node_modules/bourbon-neat/app/assets/stylesheets/neat';
 
 // Component styles are injected through grunt
 // injector
