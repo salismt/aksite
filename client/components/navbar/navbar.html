@@ -14,7 +14,7 @@
                     <md-button ng-href="{{::item.link}}" aria-label="{{::item.title}}">{{::item.title}}</md-button>
                 </li>
                 <li ng-show="nav.isAdmin()" ng-class="{active: nav.isActive('/admin')}">
-                    <md-button href="/admin" aria-label="Admin">Admin</md-button>
+                    <md-button ui-sref="admin" aria-label="Admin">Admin</md-button>
                 </li>
             </ul>
 
