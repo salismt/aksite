@@ -219,6 +219,13 @@ gulp.task('webpack:dev', function() {
         .pipe(plugins.livereload());
 });
 
+let webpackDistConfig = makeWebpackConfig({ BUILD: true });
+gulp.task('webpack:dist', function() {
+    return gulp.src(webpackDistConfig.entry.app)
+        .pipe(webpack(webpackDistConfig))
+        .pipe(gulp.dest(paths.dist + '/client'));
+});
+
 gulp.task('lint:scripts', cb => runSequence(['lint:scripts:client', 'lint:scripts:server'], cb));
 
 gulp.task('lint:scripts:client', () => {
@@ -368,7 +375,8 @@ gulp.task('build', cb => {
             'copy:assets',
             'copy:fonts',
             'copy:server',
-            'build:client'
+            'webpack:dist'
+            //'build:client'
         ],
         cb);
 });
