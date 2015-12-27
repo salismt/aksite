@@ -51,7 +51,7 @@ module.exports = function makeWebpackConfig(options) {
   } else {
     config.output = {
       // Absolute output directory
-      path: __dirname + '/.tmp/',
+      path: BUILD ? __dirname + '/dist/client/' : __dirname + '/.tmp/',
 
       // Output path from the view of the page
       // Uses webpack-dev-server in development
