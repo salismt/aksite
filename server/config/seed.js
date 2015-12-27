@@ -80,7 +80,7 @@ conn.once('open', function(err) {
                     provider: 'local',
                     providers: { local: true },
                     name: 'Test User',
-                    email: 'test@test.com',
+                    email: 'test@example.com',
                     password: 'test',
                     imageId: userImgFile._id,
                     smallImageId: userImgFile._id
@@ -89,7 +89,7 @@ conn.once('open', function(err) {
                     providers: { local: true },
                     role: 'admin',
                     name: 'Admin',
-                    email: 'admin@admin.com',
+                    email: 'admin@example.com',
                     password: 'admin',
                     imageId: userImgFile._id,
                     smallImageId: userImgFile._id

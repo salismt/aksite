@@ -1,6 +1,9 @@
 'use strict';
 
-class BlogController {
+import moment from 'moment';
+import marked from 'marked';
+
+export default class BlogController {
     loadingItems = true;
     noItems = false;
     page = 1;
@@ -60,6 +63,3 @@ class BlogController {
         return str;
     }
 }
-
-angular.module('aksiteApp')
-    .controller('BlogController', BlogController);

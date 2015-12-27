@@ -1,6 +1,6 @@
 'use strict';
 
-class SignupController {
+export default class SignupController {
     user = {};
     errors = {};
     submitted = false;
@@ -29,6 +29,3 @@ class SignupController {
         this.$window.location.href = '/auth/' + provider;
     };
 }
-
-angular.module('aksiteApp')
-    .controller('SignupController', SignupController);

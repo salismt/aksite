@@ -10,9 +10,12 @@ import lazypipe from 'lazypipe';
 import {stream as wiredep} from 'wiredep';
 import nodemon from 'nodemon';
 import runSequence from 'run-sequence';
+import webpack from 'webpack-stream';
+import makeWebpackConfig from './webpack.make';
 
 var plugins = gulpLoadPlugins();
 var config;
+let webpackDevConfig = makeWebpackConfig({ DEV: true });
 
 const paths = {
     appPath: 'client',
@@ -49,7 +52,8 @@ const paths = {
         files: ['client/{app,components}/**/*.html']
     },
     karma: 'karma.conf.js',
-    dist: 'dist'
+    dist: 'dist',
+    temp: '.tmp'
 };
 
 /********************
@@ -208,6 +212,20 @@ gulp.task('transpile', () => {
         .pipe(gulp.dest('.tmp'));
 });
 
+gulp.task('webpack:dev', function() {
+    return gulp.src(webpackDevConfig.entry.app)
+        .pipe(webpack(webpackDevConfig))
+        .pipe(gulp.dest(paths.temp))
+        .pipe(plugins.livereload());
+});
+
+let webpackDistConfig = makeWebpackConfig({ BUILD: true });
+gulp.task('webpack:dist', function() {
+    return gulp.src(webpackDistConfig.entry.app)
+        .pipe(webpack(webpackDistConfig))
+        .pipe(gulp.dest(paths.dist + '/client'));
+});
+
 gulp.task('lint:scripts', cb => runSequence(['lint:scripts:client', 'lint:scripts:server'], cb));
 
 gulp.task('lint:scripts:client', () => {
@@ -245,35 +263,24 @@ gulp.task('watch', () => {
 
     plugins.livereload.listen();
 
-    plugins.watch(paths.client.styles, () => {
-        gulp.src(paths.client.mainStyle)
-            .pipe(plugins.plumber())
-            .pipe(styles())
-            .pipe(gulp.dest('.tmp/app'))
-            .pipe(plugins.livereload());
-    });
-
-    plugins.watch(paths.views.files)
-        .pipe(plugins.plumber())
-        .pipe(plugins.livereload());
-
-    plugins.watch(paths.client.scripts, ['inject:js'])
-        .pipe(plugins.plumber())
-        .pipe(transpile())
-        .pipe(gulp.dest('.tmp'))
-        .pipe(plugins.livereload());
+    gulp.watch(`${paths.appPath}/**/*.{html,js,scss}`, ['webpack:dev']);
 
     plugins.watch(_.union(paths.server.scripts, testFiles))
         .pipe(plugins.plumber())
-        .pipe(lintServerScripts())
-        .pipe(plugins.livereload());
+        .pipe(lintServerScripts());
 
     gulp.watch('bower.json', ['wiredep:client']);
 });
 
 gulp.task('serve', cb => {
-    runSequence(['clean:tmp', 'lint:scripts', 'inject', 'wiredep:client', 'env:all'],
-        ['transpile', 'styles'],
+    runSequence([
+            'clean:tmp',
+            'lint:scripts',
+            'inject',
+            'wiredep:client',
+            'env:all'
+        ],
+        'webpack:dev',
         ['start:server', 'start:client'],
         'watch',
         cb);
@@ -367,8 +374,10 @@ gulp.task('build', cb => {
             'build:images',
             'copy:extras',
             'copy:assets',
+            'copy:fonts',
             'copy:server',
-            'build:client'
+            'webpack:dist'
+            //'build:client'
         ],
         cb);
 });
@@ -390,7 +399,7 @@ gulp.task('build:client', ['transpile', 'styles', 'html'], () => {
                 .pipe(plugins.concat('app\\app.js'))
             .pipe(appFilter.restore())
             .pipe(jsFilter)
-                .pipe(plugins.ngmin())
+                .pipe(plugins.ngAnnotate())
                 .pipe(plugins.uglify())
             .pipe(jsFilter.restore())
             .pipe(cssFilter)
@@ -400,7 +409,7 @@ gulp.task('build:client', ['transpile', 'styles', 'html'], () => {
         .pipe(assets.restore())
         .pipe(plugins.revReplace())
         .pipe(plugins.useref())
-        .pipe(gulp.dest(paths.dist + '/public'));
+        .pipe(gulp.dest(paths.dist + '/client'));
 });
 
 gulp.task('html', function () {
@@ -418,7 +427,7 @@ gulp.task('build:images', () => {
             progressive: true,
             interlaced: true
         })))
-        .pipe(gulp.dest(paths.dist + '/public/assets/images'));
+        .pipe(gulp.dest(paths.dist + '/client/assets/images'));
 });
 
 gulp.task('copy:extras', () => {
@@ -426,12 +435,24 @@ gulp.task('copy:extras', () => {
         'client/favicon.ico',
         'client/robots.txt'
     ], { dot: true })
-        .pipe(gulp.dest(paths.dist + '/public'));
+        .pipe(gulp.dest(paths.dist + '/client'));
 });
 
 gulp.task('copy:assets', () => {
     gulp.src([paths.client.assets.all, '!' + paths.client.assets.images])
-        .pipe(gulp.dest(paths.dist + '/fonts'));
+        .pipe(gulp.dest(paths.dist + '/client/assets'));
+});
+
+gulp.task('copy:fonts:bootstrap', () => {
+    gulp.src('node_modules/bootstrap/fonts/*')
+        .pipe(gulp.dest(paths.dist + '/client/assets/fonts/bootstrap'));
+});
+gulp.task('copy:fonts:fontAwesome', () => {
+    gulp.src('node_modules/font-awesome/fonts/*')
+        .pipe(gulp.dest(paths.dist + '/client/assets/fonts/font-awesome'));
+});
+gulp.task('copy:fonts', cb => {
+    return runSequence(['copy:fonts:bootstrap', 'copy:fonts:fontAwesome'], cb);
 });
 
 gulp.task('copy:server', () => {

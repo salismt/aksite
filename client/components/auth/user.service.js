@@ -1,22 +1,27 @@
 'use strict';
 
-angular.module('aksiteApp')
-    .factory('User', function($resource) {
-        return $resource('/api/users/:id/:controller', {
-                id: '@_id'
-            },
-            {
-                changePassword: {
-                    method: 'PUT',
-                    params: {
-                        controller: 'password'
-                    }
-                },
-                get: {
-                    method: 'GET',
-                    params: {
-                        id: 'me'
-                    }
-                }
-            });
+import angular from 'angular';
+import ngResource from 'angular-resource';
+
+function User($resource) {
+    return $resource('/api/users/:id/:controller', {
+        id: '@_id'
+    }, {
+        changePassword: {
+            method: 'PUT',
+            params: {
+                controller: 'password'
+            }
+        },
+        get: {
+            method: 'GET',
+            params: {
+                id: 'me'
+            }
+        }
     });
+}
+
+export default angular.module('factories.User', [ngResource])
+    .factory('User', User)
+    .name;
