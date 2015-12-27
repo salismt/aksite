@@ -366,6 +366,7 @@ gulp.task('build', cb => {
             'build:images',
             'copy:extras',
             'copy:assets',
+            'copy:fonts',
             'copy:server',
             'build:client'
         ],
@@ -430,7 +431,19 @@ gulp.task('copy:extras', () => {
 
 gulp.task('copy:assets', () => {
     gulp.src([paths.client.assets.all, '!' + paths.client.assets.images])
-        .pipe(gulp.dest(paths.dist + '/fonts'));
+        .pipe(gulp.dest(paths.dist + '/client/assets'));
+});
+
+gulp.task('copy:fonts:bootstrap', () => {
+    gulp.src('node_modules/bootstrap/fonts/*')
+        .pipe(gulp.dest(paths.dist + '/client/assets/fonts/bootstrap'));
+});
+gulp.task('copy:fonts:fontAwesome', () => {
+    gulp.src('node_modules/font-awesome/fonts/*')
+        .pipe(gulp.dest(paths.dist + '/client/assets/fonts/font-awesome'));
+});
+gulp.task('copy:fonts', cb => {
+    return runSequence(['copy:fonts:bootstrap', 'copy:fonts:fontAwesome'], cb);
 });
 
 gulp.task('copy:server', () => {
