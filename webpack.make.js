@@ -121,8 +121,17 @@ module.exports = function makeWebpackConfig(options) {
       // Allow loading html through js
       test: /\.html$/,
       loader: 'raw'
+    }, {
+        // SASS LOADER
+        // Reference: https://github.com/jtangelder/sass-loaderj
+        test: /\.scss$/,
+        loaders: ['style', 'css', 'sass']
     }]
   };
+
+    config.sassLoader = {
+        includePaths: require('bourbon').includePaths
+    };
 
   // ISPARTA LOADER
   // Reference: https://github.com/ColCh/isparta-instrumenter-loader
