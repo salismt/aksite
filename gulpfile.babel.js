@@ -400,7 +400,7 @@ gulp.task('build:client', ['transpile', 'styles', 'html'], () => {
         .pipe(assets.restore())
         .pipe(plugins.revReplace())
         .pipe(plugins.useref())
-        .pipe(gulp.dest(paths.dist + '/public'));
+        .pipe(gulp.dest(paths.dist + '/client'));
 });
 
 gulp.task('html', function () {
@@ -418,7 +418,7 @@ gulp.task('build:images', () => {
             progressive: true,
             interlaced: true
         })))
-        .pipe(gulp.dest(paths.dist + '/public/assets/images'));
+        .pipe(gulp.dest(paths.dist + '/client/assets/images'));
 });
 
 gulp.task('copy:extras', () => {
@@ -426,7 +426,7 @@ gulp.task('copy:extras', () => {
         'client/favicon.ico',
         'client/robots.txt'
     ], { dot: true })
-        .pipe(gulp.dest(paths.dist + '/public'));
+        .pipe(gulp.dest(paths.dist + '/client'));
 });
 
 gulp.task('copy:assets', () => {
