@@ -45,16 +45,6 @@ angular.module('aksiteApp', [
     admin
 ])
     .config(routing)
-    .config($httpProvider => {
-        //FIXME: temporary webpack workaround
-        $httpProvider.interceptors.push(() => ({
-            request: function(config) {
-                config.url = 'http://localhost:9050' + (config.url.charAt(0) === '/' ? '' : '/') + config.url;
-
-                return config;
-            }
-        }));
-    })
     .factory('authInterceptor', function($rootScope, $q, $cookies, $injector) {
         var state;
         return {
