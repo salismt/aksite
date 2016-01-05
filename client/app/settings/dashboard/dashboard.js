@@ -6,6 +6,6 @@ angular.module('aksiteApp')
             .state('settings.dashboard', {
                 url: '',
                 templateUrl: 'app/settings/dashboard/dashboard.html',
-                controller: 'SettingsDashboardCtrl'
+                controller: 'SettingsDashboardController'
             });
     });
