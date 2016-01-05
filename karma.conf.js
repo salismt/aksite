@@ -1,5 +1,12 @@
 // Karma configuration
-// http://karma-runner.github.io/0.10/config/configuration-file.html
+// http://karma-runner.github.io/0.13/config/configuration-file.html
+
+import _ from 'lodash';
+import path from 'path';
+
+let include = [
+    path.resolve('./client')
+];
 
 module.exports = function(config) {
     config.set({
@@ -8,70 +15,18 @@ module.exports = function(config) {
 
         // testing framework to use (jasmine/mocha/qunit/...)
         frameworks: ['mocha', 'chai', 'sinon-chai', 'chai-as-promised', 'chai-things'],
+        reporters: ['mocha'],
 
-        // list of files / patterns to load in the browser
         files: [
-            //'client/socket.io/socket.io.js',
-            'client/bower_components/ng-file-upload/angular-file-upload-shim.js',
-            'client/bower_components/marked/lib/marked.js',
-            'client/bower_components/photoswipe/dist/photoswipe.js',
-            'client/bower_components/photoswipe/dist/photoswipe-ui-default.min.js',
-            'client/assets/js/highlight.pack.js',
-            'client/assets/js/seedrandom.js',
-            // bower:js
-            'client/bower_components/modernizr/modernizr.js',
-            'client/bower_components/angular/angular.js',
-            'client/bower_components/angular-animate/angular-animate.js',
-            'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-            'client/bower_components/angular-cookies/angular-cookies.js',
-            'client/bower_components/get-style-property/get-style-property.js',
-            'client/bower_components/get-size/get-size.js',
-            'client/bower_components/eventie/eventie.js',
-            'client/bower_components/doc-ready/doc-ready.js',
-            'client/bower_components/eventEmitter/EventEmitter.js',
-            'client/bower_components/matches-selector/matches-selector.js',
-            'client/bower_components/outlayer/item.js',
-            'client/bower_components/outlayer/outlayer.js',
-            'client/bower_components/masonry/masonry.js',
-            'client/bower_components/imagesloaded/imagesloaded.js',
-            'client/bower_components/angular-masonry-directive/src/angular-masonry-directive.js',
-            'client/bower_components/angular-mocks/angular-mocks.js',
-            'client/bower_components/angular-aria/angular-aria.js',
-            'client/bower_components/angular-material/angular-material.js',
-            'client/bower_components/angular-messages/angular-messages.js',
-            'client/bower_components/angular-resource/angular-resource.js',
-            'client/bower_components/angular-sanitize/angular-sanitize.js',
-            'client/bower_components/angular-socket-io/socket.js',
-            'client/bower_components/angular-ui-router/release/angular-ui-router.js',
-            'client/bower_components/classie/classie.js',
-            'client/bower_components/d3/d3.js',
-            'client/bower_components/es6-promise/promise.js',
-            'client/bower_components/hammerjs/hammer.js',
-            'client/bower_components/isotope/js/item.js',
-            'client/bower_components/isotope/js/layout-mode.js',
-            'client/bower_components/isotope/js/isotope.js',
-            'client/bower_components/isotope/js/layout-modes/vertical.js',
-            'client/bower_components/isotope/js/layout-modes/fit-rows.js',
-            'client/bower_components/isotope/js/layout-modes/masonry.js',
-            'client/bower_components/lodash/lodash.js',
-            'client/bower_components/moment/moment.js',
-            'client/bower_components/ng-file-upload/angular-file-upload.js',
-            'client/bower_components/nvd3/build/nv.d3.js',
-            'client/bower_components/photoswipe/dist/photoswipe.js',
-            'client/bower_components/photoswipe/dist/photoswipe-ui-default.js',
-            'client/bower_components/react/react.js',
-            // endbower
-            'node_modules/socket.io/node_modules/socket.io-client/socket.io.js',
-            'client/app/app.js',
-            'client/app/**/*.js',
-            'client/components/**/*.js',
-            'client/app/**/*.html',
-            'client/components/**/*.html'
+            //'client/**/*.spec.js'
+            'spec.js'
         ],
 
         preprocessors: {
             '**/*.html': 'html2js',
-            'client/{app,components}/**/*.js': 'babel'
+            'client/{app,components}/**/*.js': ['webpack'],
+            'client/{app,components}/**/*.{spec}.js': ['webpack'],
+            'spec.js': ['webpack', 'sourcemap']
         },
 
         ngHtml2JsPreprocessor: {
@@ -80,7 +35,10 @@ module.exports = function(config) {
 
         babelPreprocessor: {
             options: {
-                sourceMap: 'inline'
+                sourceMap: 'inline',
+                optional: [
+                    'es7.classProperties'
+                ]
             },
             filename: function (file) {
                 return file.originalPath.replace(/\.js$/, '.es5.js');
@@ -89,6 +47,86 @@ module.exports = function(config) {
                 return file.originalPath;
             }
         },
+
+        //TODO: move all to webpack.make.js
+        webpack: {
+            // karma watches the test entry points
+            // (you don't need to specify the entry option)
+            // webpack watches dependencies
+
+            // webpack configuration
+            resolve: {
+                modulesDirectories: [
+                    'node_modules'
+                ],
+                extensions: ['', '.js', '.ts']
+            },
+            devtool: 'inline-source-map',
+            module: {
+                loaders: [
+                    {test: /\.html$/, loader: 'raw'},
+                    {test: /\.js$/, loader: 'babel', exclude: /(node_modules)/, include, query: {
+                        //presets: ['es2015'],
+                        optional: [
+                            'runtime',
+                            'es7.classProperties'
+                        ]
+                    }},
+                    {test: /\.js$/, loader: 'ng-annotate?single_quotes'},
+                    // Process all non-test code with Isparta
+                    //{test: /\.js$/, loader: 'isparta', include: include, exclude: /\.spec\.js$/},
+                    //{test: /\.(png|woff|ttf)(\?.*)?$/, loader: 'url-loader?limit=1000000'},
+                    {test: /\.scss$/, loaders: ['style', 'css', 'sass']},
+                    {
+                        // ASSET LOADER
+                        // Reference: https://github.com/webpack/file-loader
+                        // Copy png, jpg, jpeg, gif, svg, woff, woff2, ttf, eot files to output
+                        // Rename the file using the asset hash
+                        // Pass along the updated reference to your code
+                        // You can add here any file extension you want to get copied to your output
+                        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+                        loader: 'file'
+                    }
+                ]
+            },
+
+            // Sass loader configuration to tell webpack where to find the additional SASS files
+            // https://github.com/jtangelder/sass-loader#sass-options
+            sassLoader: {
+                includePaths: _.union(
+                    [path.resolve(__dirname, 'node_modules', 'client')],
+                    require('bourbon').includePaths
+                )
+            },
+            stats: {colors: true, reasons: true},
+            debug: false
+        },
+
+        webpackMiddleware: {
+            // webpack-dev-middleware configuration
+            // i. e.
+            noInfo: true
+        },
+
+        plugins: [
+            require('karma-babel-preprocessor'),
+            require('karma-chai-plugins'),
+            require('karma-chrome-launcher'),
+            require('karma-coverage'),
+            require('karma-firefox-launcher'),
+            require('karma-html2js-preprocessor'),
+            require('karma-jasmine'),
+            require('karma-mocha'),
+            require('karma-mocha-reporter'),
+            require('karma-ng-html2js-preprocessor'),
+            require('karma-ng-scenario'),
+            require('karma-phantomjs-launcher'),
+            require('karma-requirejs'),
+            require('karma-script-launcher'),
+            require('karma-sourcemap-loader'),
+            require('karma-spec-reporter'),
+            require('karma-webpack'),
+        ],
 
         // list of files / patterns to exclude
         exclude: [],
