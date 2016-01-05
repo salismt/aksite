@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: UserEditorCtrl', function() {
+describe('Controller: ProfileSettingsCtrl', function() {
 
     // load the controller's module
-    beforeEach(module('aksiteApp'));
+    beforeEach(() => angular.mock.module('aksiteApp'));
 
-    var UsereditorCtrl, scope;
+    var DashboardCtrl, scope;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function($controller, $rootScope) {
         scope = $rootScope.$new();
-        UsereditorCtrl = $controller('UserEditorCtrl', {
+        DashboardCtrl = $controller('DashboardCtrl', {
             $scope: scope
         });
     }));

@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: SettingsDashboardCtrl', function() {
+describe('Controller: GalleryCtrl', function() {
 
     // load the controller's module
-    beforeEach(module('aksiteApp'));
+    beforeEach(() => angular.mock.module('aksiteApp'));
 
-    var DashboardCtrl, scope;
+    var GalleryCtrl, scope;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function($controller, $rootScope) {
         scope = $rootScope.$new();
-        DashboardCtrl = $controller('DashboardCtrl', {
+        GalleryCtrl = $controller('GalleryCtrl', {
             $scope: scope
         });
     }));

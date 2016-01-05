@@ -1,19 +1,30 @@
 'use strict';
 
-describe('Controller: ProjectmanagerCtrl', function() {
+describe('Controller: ProjectManagerController', function() {
 
-    // load the controller's module
-    beforeEach(module('aksiteApp'));
+    var ProjectManagerController,
+        scope,
+        sandbox,
+        $http;
 
-    var ProjectmanagerCtrl, scope;
+    beforeEach(() => {
+        angular.mock.module('aksiteApp');
 
-    // Initialize the controller and a mock scope
-    beforeEach(inject(function($controller, $rootScope) {
-        scope = $rootScope.$new();
-        ProjectmanagerCtrl = $controller('ProjectmanagerCtrl', {
-            $scope: scope
+        sandbox = sinon.sandbox.create();
+
+        inject(function(_$controller_, _$rootScope_, _$http_) {
+            scope = _$rootScope_.$new();
+            $http = _$http_;
+            ProjectManagerController = _$controller_('ProjectManagerController', {
+                $scope: scope,
+                $http: _$http_
+            });
         });
-    }));
+    });
+
+    afterEach(() => {
+        sandbox.restore();
+    });
 
     it('should ...', function() {
         expect(1).to.equal(1);

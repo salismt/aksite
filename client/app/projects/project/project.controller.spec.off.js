@@ -3,7 +3,7 @@
 describe('Controller: ProjectCtrl', function () {
 
     // load the controller's module
-    beforeEach(module('aksiteApp'));
+    beforeEach(() => angular.mock.module('aksiteApp'));
 
     var ProjectCtrl, scope;
 

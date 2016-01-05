@@ -1,19 +1,30 @@
 'use strict';
 
-describe('Controller: SitesettingsCtrl', function() {
+describe('Controller: SiteSettingsController', function() {
 
-    // load the controller's module
-    beforeEach(module('aksiteApp'));
+    var SiteSettingsController,
+        scope,
+        sandbox,
+        $http;
 
-    var SitesettingsCtrl, scope;
+    beforeEach(() => {
+        angular.mock.module('aksiteApp');
 
-    // Initialize the controller and a mock scope
-    beforeEach(inject(function($controller, $rootScope) {
-        scope = $rootScope.$new();
-        SitesettingsCtrl = $controller('SitesettingsCtrl', {
-            $scope: scope
+        sandbox = sinon.sandbox.create();
+
+        inject(function(_$controller_, _$rootScope_, _$http_) {
+            scope = _$rootScope_.$new();
+            $http = _$http_;
+            SiteSettingsController = _$controller_('SiteSettingsController', {
+                $scope: scope,
+                $http: _$http_
+            });
         });
-    }));
+    });
+
+    afterEach(() => {
+        sandbox.restore();
+    });
 
     it('should ...', function() {
         expect(1).to.equal(1);

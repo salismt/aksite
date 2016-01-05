@@ -3,9 +3,9 @@
 describe('Controller: MainCtrl', function() {
 
     // load the controller's module
-    beforeEach(module('aksiteApp'));
-    beforeEach(module('stateMock'));
-    beforeEach(module('socketMock'));
+    beforeEach(() => angular.mock.module('aksiteApp'));
+    beforeEach(() => angular.mock.module('stateMock'));
+    beforeEach(() => angular.mock.module('socketMock'));
 
     var MainCtrl;
     var scope;

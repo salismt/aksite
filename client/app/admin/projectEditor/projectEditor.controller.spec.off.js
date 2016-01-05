@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: ProjectsCtrl', function() {
+describe('Controller: ProjectEditorCtrl', function() {
 
     // load the controller's module
-    beforeEach(module('aksiteApp'));
+    beforeEach(() => angular.mock.module('aksiteApp'));
 
-    var ProjectsCtrl, scope;
+    var ProjecteditorCtrl, scope;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function($controller, $rootScope) {
         scope = $rootScope.$new();
-        ProjectsCtrl = $controller('ProjectsCtrl', {
+        ProjecteditorCtrl = $controller('ProjectEditorCtrl', {
             $scope: scope
         });
     }));

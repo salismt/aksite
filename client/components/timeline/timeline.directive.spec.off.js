@@ -3,8 +3,8 @@
 describe('Directive: timeline', function() {
 
     // load the directive's module and view
-    beforeEach(module('aksiteApp'));
-    beforeEach(module('components/timeline/timeline.html'));
+    beforeEach(() => angular.mock.module('aksiteApp'));
+    beforeEach(() => angular.mock.module('components/timeline/timeline.html'));
 
     var element, scope;
 

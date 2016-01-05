@@ -3,7 +3,7 @@
 describe('Controller: UserController', function() {
 
     // load the controller's module
-    beforeEach(module('aksiteApp'));
+    beforeEach(() => angular.mock.module('aksiteApp'));
 
     var UserController, scope;
 

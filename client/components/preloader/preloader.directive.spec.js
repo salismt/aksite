@@ -2,15 +2,15 @@
 
 describe('Directive: preloader', function() {
 
-    // load the directive's module and view
-    beforeEach(module('aksiteApp'));
-    beforeEach(module('components/preloader/preloader.html'));
+    var scope, element;
 
-    var element, scope;
+    beforeEach(() => {
+        angular.mock.module('aksiteApp');
 
-    beforeEach(inject(function($rootScope) {
-        scope = $rootScope.$new();
-    }));
+        inject(function(_$rootScope_) {
+            scope = _$rootScope_.$new();
+        });
+    });
 
     it('should make hidden element visible', inject(function($compile) {
         element = angular.element('<preloader></preloader>');
