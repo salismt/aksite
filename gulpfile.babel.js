@@ -408,7 +408,16 @@ gulp.task('test:client', (done) => {
     new KarmaServer({
         configFile: `${__dirname}/${paths.karma}`,
         singleRun: true
-    }, done).start();
+    }, function(code) {
+        if(code === 1) {
+            plugins.util.log('Unit Test failures, exiting process');
+            done('Unit Test Failures');
+            process.exit(1);
+        } else {
+            plugins.util.log('Unit Tests passed');
+            done();
+        }
+    }).start();
 });
 
 gulp.task('coverage:unit', () => {
