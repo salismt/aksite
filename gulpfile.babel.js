@@ -414,14 +414,14 @@ gulp.task('test:client', (done) => {
 gulp.task('coverage:unit', () => {
     return gulp.src(paths.server.test.unit)
         .pipe(mocha())
-        .pipe(istanbul())
+        .pipe(istanbul());
     // Creating the reports after tests ran
 });
 
 gulp.task('coverage:integration', () => {
     return gulp.src(paths.server.test.integration)
         .pipe(mocha())
-        .pipe(istanbul())
+        .pipe(istanbul());
     // Creating the reports after tests ran
 });
 
