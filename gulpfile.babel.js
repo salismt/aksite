@@ -8,8 +8,8 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 import http from 'http';
 import open from 'open';
 import lazypipe from 'lazypipe';
-import {stream as wiredep} from 'wiredep';
 import nodemon from 'nodemon';
+import {Server as KarmaServer} from 'karma';
 import runSequence from 'run-sequence';
 import {protractor, webdriver_update} from 'gulp-protractor';
 import webpack from 'webpack-stream';
@@ -355,8 +355,6 @@ gulp.task('watch', () => {
         .pipe(plugins.plumber())
         .pipe(lintServerScripts())
         .pipe(plugins.livereload());
-
-    gulp.watch('bower.json', ['wiredep:client']);
 });
 
 gulp.task('serve', cb => {
@@ -364,7 +362,6 @@ gulp.task('serve', cb => {
             'clean:tmp',
             'lint:scripts',
             'inject',
-            'wiredep:client',
             'env:all',
             'copy:fonts:dev'
         ],
@@ -383,7 +380,7 @@ gulp.task('serve:dist', cb => {
         cb);
 });
 
-gulp.task('test', ['wiredep:test'], cb => {
+gulp.task('test', cb => {
     return runSequence('test:server', 'test:client', cb);
 });
 
@@ -451,39 +448,6 @@ gulp.task('test:e2e', ['env:all', 'env:test', 'start:server', 'webdriver_update'
     });
 });
 
-// inject bower components
-gulp.task('wiredep:client', () => {
-    gulp.src(paths.client.mainView)
-        .pipe(wiredep({
-            exclude: [
-                /bootstrap-sass-official/,
-                /bootstrap.js/,
-                '/json3/',
-                '/es5-shim/',
-                /bootstrap.css/,
-                /font-awesome.css/
-            ],
-            ignorePath: clientPath
-        }))
-        .pipe(gulp.dest(`${clientPath}/`));
-});
-
-gulp.task('wiredep:test', () => {
-    gulp.src(paths.karma)
-        .pipe(wiredep({
-            exclude: [
-                /bootstrap-sass-official/,
-                /bootstrap.js/,
-                '/json3/',
-                '/es5-shim/',
-                /bootstrap.css/,
-                /font-awesome.css/
-            ],
-            devDependencies: true
-        }))
-        .pipe(gulp.dest('./'));
-});
-
 /********************
  * Build
  ********************/
@@ -494,8 +458,7 @@ gulp.task('build', cb => {
         [
             'clean:dist',
             'clean:tmp',
-            'inject',
-            'wiredep:client'
+            'inject'
         ], [
             'build:images',
             'copy:extras',
