@@ -10,8 +10,10 @@ import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
 import ngMaterial from 'angular-material';
 import ngMessages from 'angular-messages';
+
 import _Auth from '../components/auth/auth.service';
 import User from '../components/auth/user.service';
+import Preloader from '../components/preloader/preloader.directive';
 
 import routing from './app.config';
 
@@ -84,7 +86,8 @@ angular.module('aksiteApp', [
 
         $rootScope.titleRoot = 'AK';
         $rootScope.title = 'Andrew Koroluk';
-    });
+    })
+    .directive('preloader', Preloader);
 
 //var myRenderer = new marked.Renderer();
 //if(typeof hljs !== 'undefined') {
