@@ -1,5 +1,8 @@
 'use strict';
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 export default function($scope, $http, $timeout) {
     var apiItems = [{
         path: 'upload',
@@ -36,13 +39,12 @@ export default function($scope, $http, $timeout) {
             });
     });
 
-    //FIXME: I haven't gotten React + webpack yet, and I'm on a plan, so..
-    //$timeout(function () {
-    //    React.render(<preloader></preloader>, document.getElementById('chart1'));
-    //    React.render(<preloader></preloader>, document.getElementById('chart2'));
-    //    React.render(<preloader></preloader>, document.getElementById('chart3'));
-    //    React.render(<preloader></preloader>, document.getElementById('chart4'));
-    //});
+    $timeout(function () {
+        ReactDOM.render(<preloader></preloader>, document.getElementById('chart1'));
+        ReactDOM.render(<preloader></preloader>, document.getElementById('chart2'));
+        ReactDOM.render(<preloader></preloader>, document.getElementById('chart3'));
+        ReactDOM.render(<preloader></preloader>, document.getElementById('chart4'));
+    });
 
     function addChart(chartNum, data, options) {
         options = options ? options : {};
@@ -61,7 +63,7 @@ export default function($scope, $http, $timeout) {
             if(options.donut) chart.donutRatio(options.donutRatio || .35);
 
             React.unmountComponentAtNode(document.getElementById('chart'+chartNum));
-            React.render(<svg></svg>, document.getElementById('chart'+chartNum));
+            ReactDOM.render(<svg></svg>, document.getElementById('chart'+chartNum));
 
             d3.select("#chart" + chartNum + " svg")
                 .datum(data)
