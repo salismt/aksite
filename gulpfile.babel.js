@@ -349,7 +349,7 @@ gulp.task('watch', () => {
 
     plugins.livereload.listen();
 
-    gulp.watch(`${paths.appPath}/**/*.{html,js,scss}`, ['webpack:dev']);
+    gulp.watch('client/**/*.{html,js,scss}', ['webpack:dev']);
 
     plugins.watch(_.union(paths.server.scripts, testFiles))
         .pipe(plugins.plumber())
