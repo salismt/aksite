@@ -1,6 +1,7 @@
 'use strict';
 
 export default class FileManagerController {
+    /*@ngInject*/
     constructor($http) {
         $http.get('/api/upload')
             .then(res => {

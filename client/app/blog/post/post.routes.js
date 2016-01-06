@@ -1,6 +1,7 @@
 'use strict';
 
 export default function routes($stateProvider) {
+    'ngInject';
     $stateProvider
         .state('post', {
             url: '/blog/post/:postId',

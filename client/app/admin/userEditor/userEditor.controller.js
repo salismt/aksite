@@ -1,6 +1,7 @@
 'use strict';
 
 export default function UserEditorController($scope, $http, $stateParams, $state, $sanitize, Upload, Auth) {
+    'ngInject';
     $scope.loadingUser = true;
     $scope.currentUser = Auth.getCurrentUser();
     if(!$stateParams.userId) {

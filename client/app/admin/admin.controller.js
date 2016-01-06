@@ -1,6 +1,7 @@
 'use strict';
 
 function AdminController($scope, $mdSidenav) {
+    'ngInject';
     $scope.sections = [{
         title: 'Home',
         icon: 'fa-home',

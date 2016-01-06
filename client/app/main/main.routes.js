@@ -1,6 +1,8 @@
 'use strict';
 
 export default function routes($stateProvider) {
+    'ngInject';
+    'ngInject';
     $stateProvider
         .state('main', {
             url: '/',

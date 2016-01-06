@@ -1,6 +1,7 @@
 'use strict';
 
 class PhotoController {
+    /*@ngInject*/
     constructor($http, Gallery, $state) {
         this.$state = $state;
 

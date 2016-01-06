@@ -1,6 +1,7 @@
 'use strict';
 
 export default function($scope, $http) {
+    'ngInject';
     $scope.errors = [];
     $scope.loadingProjects = true;
     $scope.projects = [];

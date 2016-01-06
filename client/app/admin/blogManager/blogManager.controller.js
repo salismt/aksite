@@ -8,6 +8,7 @@ export default class BlogManagerController {
     postChanges = [];
     dirty = false;
 
+    /*@ngInject*/
     constructor($http, $state) {
         this.$http = $http;
         this.$state = $state;

@@ -19,6 +19,7 @@ export default class NavbarController {
         'link': '/blog'
     }];
 
+    /*@ngInject*/
     constructor($location, Auth) {
         this.isCollapsed = true;
         this.isLoggedIn = (...args) => Auth.isLoggedIn(...args);

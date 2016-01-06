@@ -10,6 +10,7 @@ export default class BlogController {
     pagesize = 10;
     posts = [];
 
+    /*@ngInject*/
     constructor($http, $stateParams, $state) {
         this.$http = $http;
         this.$stateParams = $stateParams;

@@ -79,6 +79,7 @@ const vendorImages = [{
 }];
 
 export default class MainController {
+    /*@ngInject*/
     constructor($timeout) {
         this.vendorImages = vendorImages;
         classie.removeClass(document.getElementById(currentText), 'hidden');

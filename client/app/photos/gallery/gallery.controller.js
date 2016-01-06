@@ -1,5 +1,6 @@
 'use strict';
 
+/*@ngInject*/
 angular.module('aksiteApp')
     .controller('GalleryCtrl', function($rootScope, $scope, $stateParams, $http) {
         $scope.galleryId = $stateParams.galleryId;

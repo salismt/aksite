@@ -5,6 +5,7 @@ export default class LoginController {
     errors = {};
     submitted = false;
 
+    /*@ngInject*/
     constructor(Auth, $location, $window) {
         this.Auth = Auth;
         this.$location = $location;

@@ -1,6 +1,7 @@
 'use strict';
 
 export default function GalleryEditorController($scope, $http, $stateParams, $state, Upload) {
+    'ngInject';
     $scope.photos = [];
     $scope.loadingGallery = true;
     if(!$stateParams.galleryId || $stateParams.galleryId === 'new') {

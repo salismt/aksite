@@ -3,6 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+/*@ngInject*/
 export default function($scope, $http, $timeout) {
     var apiItems = [{
         path: 'upload',

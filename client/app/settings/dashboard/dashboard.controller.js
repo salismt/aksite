@@ -1,5 +1,6 @@
 'use strict';
 
+/*@ngInject*/
 angular.module('aksiteApp')
     .controller('SettingsDashboardController', function($scope, Auth, $mdToast) {
         $scope.changePassword = function(form) {

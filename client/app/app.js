@@ -45,6 +45,7 @@ angular.module('aksiteApp', [
 ])
     .config(routing)
     .factory('authInterceptor', function($rootScope, $q, $cookies, $injector) {
+        'ngInject';
         var state;
         return {
             // Add authorization token to headers
@@ -71,6 +72,7 @@ angular.module('aksiteApp', [
         };
     })
     .run(function($rootScope, $location, Auth) {
+        'ngInject';
         // Redirect to login if route requires auth and you're not logged in
         $rootScope.$on('$stateChangeStart', function(event, next) {
             $rootScope.title = 'Andrew Koroluk';

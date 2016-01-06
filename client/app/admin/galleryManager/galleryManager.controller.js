@@ -1,6 +1,7 @@
 'use strict';
 
 export default function GalleryManagerController($scope, $http, $state) {
+    'ngInject';
     $scope.errors = [];
     $scope.loadingGalleries = true;
     $scope.galleries = [];

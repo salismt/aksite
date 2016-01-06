@@ -16,6 +16,7 @@ function safeCb(cb) {
     return _.isFunction(cb) ? cb : _.noop;
 }
 
+/*@ngInject*/
 class Auth {
     currentUser = {};
 

@@ -1,6 +1,7 @@
 'use strict';
 
 export default function ProjectEditorController($scope, $http, $stateParams, $state, $sanitize, Upload) {
+    'ngInject';
     $scope.loadingProject = true;
     if(!$stateParams.projectId || $stateParams.projectId === 'new') {
         $scope.project = {

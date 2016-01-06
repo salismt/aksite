@@ -1,6 +1,7 @@
 'use strict';
 
 export default function PostEditorController($scope, $http, $stateParams, $state, $sce, Upload, Auth) {
+    'ngInject';
     $scope.loadingPost = true;
     $scope.currentUser = Auth.getCurrentUser();
     if(!$stateParams.postId || $stateParams.postId === 'new') {

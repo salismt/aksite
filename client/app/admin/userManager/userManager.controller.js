@@ -1,6 +1,7 @@
 'use strict';
 
 export default function($scope, $http, Auth, User, $state, $mdDialog, $mdToast) {
+    'ngInject';
     $scope.users = User.query();
 
     $scope.goToUser = function(id) {

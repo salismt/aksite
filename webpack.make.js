@@ -148,6 +148,11 @@ module.exports = function makeWebpackConfig(options) {
     })
   }
 
+    config.module.postLoaders = [{
+        test: /\.js$/,
+        loader: 'ng-annotate?single_quotes'
+    }];
+
   // CSS LOADER
   // Reference: https://github.com/webpack/css-loader
   // Allow loading css through js

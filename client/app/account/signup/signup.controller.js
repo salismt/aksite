@@ -5,6 +5,7 @@ export default class SignupController {
     errors = {};
     submitted = false;
 
+    /*@ngInject*/
     constructor(Auth, $location, $window) {
         this.Auth = Auth;
         this.$location = $location;

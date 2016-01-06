@@ -3,6 +3,7 @@
 import angular from 'angular';
 import ngResource from 'angular-resource';
 
+/*@ngInject*/
 function User($resource) {
     return $resource('/api/users/:id/:controller', {
         id: '@_id'
