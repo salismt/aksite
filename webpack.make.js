@@ -200,7 +200,7 @@ module.exports = function makeWebpackConfig(options) {
   ];
 
   // Skip rendering index.html in test mode
-  if(!TEST) {
+  if(!TEST && !DEV) {
     // Reference: https://github.com/ampedandwired/html-webpack-plugin
     // Render index.html
     config.plugins.push(
