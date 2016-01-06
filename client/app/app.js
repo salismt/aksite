@@ -1,5 +1,4 @@
 'use strict';
-
 import angular from 'angular';
 import ngAnimate from 'angular-animate';
 import ngCookies from 'angular-cookies';
@@ -8,6 +7,7 @@ import ngSanitize from 'angular-sanitize';
 import ngSocketio from 'angular-socket-io';
 import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
+import ngFileUpload from 'ng-file-upload';
 import ngMaterial from 'angular-material';
 import ngMessages from 'angular-messages';
 
@@ -30,15 +30,12 @@ angular.module('aksiteApp', [
     ngCookies,
     ngResource,
     ngSanitize,
-    //ngSocketio,
     'btford.socket-io',
     uiRouter,
     uiBootstrap,
-    //'ngFileUpload',
+    ngFileUpload,
     ngMaterial,
     ngMessages,
-    //'masonry',
-    //'wu.masonry'
     main,
     _Auth,
     User,
