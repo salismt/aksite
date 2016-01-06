@@ -47,6 +47,11 @@ $fa-font-path: "/assets/fonts/font-awesome/";
  * App-wide Styles
  */
 
+html {
+    // always show a scroll bar, so we don't get annoyed by in constantly popping up / going away
+    overflow-y: scroll;
+}
+
 html, body {
     height: 100%;
     font-family: $font-stack;
