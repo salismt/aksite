@@ -281,6 +281,7 @@ gulp.task('transpile:server', () => {
 
 gulp.task('webpack:dev', function() {
     return gulp.src(webpackDevConfig.entry.app)
+        .pipe(plugins.plumber())
         .pipe(webpack(webpackDevConfig))
         .pipe(gulp.dest(paths.temp))
         .pipe(plugins.livereload());
