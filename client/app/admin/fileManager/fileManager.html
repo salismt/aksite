@@ -18,7 +18,13 @@
                 <md-list-item class="md-2-line md-with-secondary md-clickable" ng-repeat="file in fileManager.files">
                     <md-button class="md-no-style" ng-click="fileManager.openFile(file, $event)">
                         <div class="md-list-item-inner">
-                            <div class="md-avatar" bg-img="api/upload/{{file._id}}.jpg" style="width: 48px; height: 48px; border-radius: 50%; margin: 16px;"></div>
+                            <div class="md-avatar" style="
+                                width: 48px;
+                                height: 48px;
+                                border-radius: 50%;
+                                margin: 16px;
+                                background: #000 url('api/upload/{{file._id}}.jpg') no-repeat center;
+                                background-size: cover;"></div>
                             <div class="md-list-item-text">
                                 <h3>{{file._id}}</h3>
                             </div>
