@@ -88,6 +88,14 @@ angular.module('aksiteApp', [
     })
     .directive('preloader', Preloader);
 
+angular
+    .element(document)
+    .ready(() => {
+        angular.bootstrap(document, ['aksiteApp'], {
+            strictDi: true
+        });
+    });
+
 //var myRenderer = new marked.Renderer();
 //if(typeof hljs !== 'undefined') {
 //    myRenderer.code = function(code, lang/*, escaped*/) {
