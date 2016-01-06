@@ -134,7 +134,7 @@
     "istanbul": "~0.4.1",
     "jasmine-core": "^2.3.4",
     "jshint-stylish": "~2.1.0",
-    "karma": "~0.13.14",
+    "karma": "~0.13.18",
     "karma-babel-preprocessor": "^5.2.1",
     "karma-chai-plugins": "^0.6.0",
     "karma-chrome-launcher": "~0.2.0",
