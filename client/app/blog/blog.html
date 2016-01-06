@@ -1,7 +1,7 @@
 <navbar></navbar>
 
 <div class="container">
-    <alert ng-if="vm.noItems">No Items</alert>
+    <uib-alert ng-if="vm.noItems">No Items</uib-alert>
 
     <div class="container post-list">
         <div class="post-block" ng-repeat="post in vm.posts">
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <pagination
+    <uib-pagination
         ng-change="vm.pageChanged()"
         items-per-page="vm.pagesize"
         boundary-links="true"
@@ -48,7 +48,7 @@
         next-text="&rsaquo;"
         first-text="&laquo;"
         last-text="&raquo;">
-    </pagination>
+    </uib-pagination>
 </div>
 
 <!--<div ng-include="'components/footer/footer.html'"></div>-->
