@@ -30,7 +30,7 @@ class BufferStream extends stream.Readable {
         this._length = source.length;
 
         // When the stream has ended, try to clean up the memory references.
-        this.on("end", this._destroy);
+        this.on('end', this._destroy);
     }
 
     _destroy() {
