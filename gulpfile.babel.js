@@ -389,14 +389,22 @@ gulp.task('test:server', cb => {
         'env:all',
         'env:test',
         'mocha:unit',
-        'mocha:integration',
+        //'mocha:integration',
         //'mocha:coverage',
         cb);
 });
 
-gulp.task('mocha:unit', () => {
+gulp.task('mocha:unit', done => {
     return gulp.src(paths.server.test.unit)
-        .pipe(mocha());
+        .pipe(mocha())
+        .once('error', () => {
+            done('Server Unit Test Failed');
+            process.exit(1);
+        })
+        .once('end', () => {
+            done();
+            process.exit(0);
+        });
 });
 
 gulp.task('mocha:integration', () => {
