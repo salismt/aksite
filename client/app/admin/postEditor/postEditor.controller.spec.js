@@ -1,8 +1,8 @@
 'use strict';
 
-describe('Controller: PostEditorCtrl', function() {
+describe('Controller: PostEditorController', function() {
 
-    var PostEditorCtrl,
+    var PostEditorController,
         scope,
         sandbox,
         $http,
@@ -25,7 +25,7 @@ describe('Controller: PostEditorCtrl', function() {
             $sce = _$sce_;
             Upload = _Upload_;
             Auth = _Auth_;
-            PostEditorCtrl = _$controller_('PostEditorCtrl', {
+            PostEditorController = _$controller_('PostEditorController', {
                 $scope: scope,
                 $http: _$http_,
                 $state: _$state_,
