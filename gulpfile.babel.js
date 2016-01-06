@@ -346,16 +346,17 @@ gulp.task('start:server', () => {
 });
 
 gulp.task('watch', () => {
-    var testFiles = _.union(paths.client.test, paths.server.test);
-
     plugins.livereload.listen();
 
-    gulp.watch('client/**/*.{html,js,scss}', ['webpack:dev']);
+    gulp.watch('client/**/!(*.spec).{html,js,scss}', ['webpack:dev']);
 
-    plugins.watch(_.union(paths.server.scripts, testFiles))
+    plugins.watch(paths.server.scripts)
         .pipe(plugins.plumber())
-        .pipe(lintServerScripts())
-        .pipe(plugins.livereload());
+        .pipe(lintServerScripts());
+
+    plugins.watch([paths.server.test.unit, paths.server.test.integration])
+        .pipe(plugins.plumber())
+        .pipe(lintServerTestScripts());
 });
 
 gulp.task('serve', cb => {
