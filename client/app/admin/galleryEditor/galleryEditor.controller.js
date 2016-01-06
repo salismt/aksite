@@ -110,7 +110,7 @@ export default function GalleryEditorController($scope, $http, $stateParams, $st
                 .success(function(response, status) {
                     console.log(status);
                     console.log(response);
-                    $state.go('admin.photos');
+                    $state.go('admin.galleries');
                 })
                 .error(function(response, status) {
                     console.log(status);
@@ -121,7 +121,7 @@ export default function GalleryEditorController($scope, $http, $stateParams, $st
                 .success(function(response, status) {
                     console.log(status);
                     console.log(response);
-                    $state.go('admin.photos');
+                    $state.go('admin.galleries');
                 })
                 .error(function(response, status) {
                     console.log(status);

@@ -10,9 +10,9 @@ function AdminController($scope, $mdSidenav) {
         icon: 'fa-user',
         link: 'admin.users'
     }, {
-        title: 'Photos',
+        title: 'Galleries',
         icon: 'fa-photo',
-        link: 'admin.photos'
+        link: 'admin.galleries'
     }, {
         title: 'Projects',
         icon: 'fa-briefcase',

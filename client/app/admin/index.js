@@ -6,9 +6,9 @@ import SidenavController from './sidenav.controller';
 import dashboard from './dashboard';
 import blogManager from './blogManager';
 import fileManager from './fileManager';
-import photoManager from './photoManager';
-import postEditor from './postEditor';
 import galleryEditor from './galleryEditor';
+import galleryManager from './galleryManager';
+import postEditor from './postEditor';
 import projectEditor from './projectEditor';
 import projectManager from './projectManager';
 import userEditor from './userEditor';
@@ -28,9 +28,9 @@ export default angular.module('aksiteApp.admin', [
     dashboard,
     blogManager,
     fileManager,
-    photoManager,
-    postEditor,
     galleryEditor,
+    galleryManager,
+    postEditor,
     projectEditor,
     projectManager,
     userEditor,

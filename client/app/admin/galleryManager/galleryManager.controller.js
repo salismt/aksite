@@ -1,6 +1,6 @@
 'use strict';
 
-export default function($scope, $http, $state) {
+export default function GalleryManagerController($scope, $http, $state) {
     $scope.errors = [];
     $scope.loadingGalleries = true;
     $scope.galleries = [];

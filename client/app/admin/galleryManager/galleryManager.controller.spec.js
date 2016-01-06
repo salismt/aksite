@@ -1,8 +1,8 @@
 'use strict';
 
-describe('Controller: PhotoManagerController', function() {
+describe('Controller: GalleryManagerController', function() {
 
-    var PhotoManagerController,
+    var GalleryManagerController,
         scope,
         sandbox,
         $http,
@@ -17,7 +17,7 @@ describe('Controller: PhotoManagerController', function() {
             scope = _$rootScope_.$new();
             $http = _$http_;
             $state = _$state_;
-            PhotoManagerController = _$controller_('PhotoManagerController', {
+            GalleryManagerController = _$controller_('GalleryManagerController', {
                 $scope: scope,
                 $http: _$http_,
                 $state: _$state_
