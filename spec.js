@@ -7,7 +7,7 @@ require('angular-mocks');
 
 require('./client/app/app');
 
-testsContext = require.context('./client', true, /(?!bower_components)\.spec\.js$/);
+testsContext = require.context('./client', true, /\.spec\.js$/);
 
 // I SUCK AT REGEX SO I'M DOING THIS SHIT MANUALLY
 var keys = testsContext.keys();
