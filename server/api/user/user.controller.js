@@ -54,7 +54,7 @@ export function create(req, res, next) {
     newUser.providers.local = true;
     newUser.role = 'user';
 
-    util.saveFileFromFs(config.root + config.client + '/assets/images/default_user.jpg', { filename: 'default_user.jpg' })
+    util.saveFileFromFs(config.root + '/server/components/images/default_user.jpg', { filename: 'default_user.jpg' })
         .then(userImgFile => {
             newUser.imageId = userImgFile._id;
             newUser.save(function(err, user) {
