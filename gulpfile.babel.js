@@ -288,8 +288,8 @@ gulp.task('webpack:dev', function() {
         .pipe(plugins.livereload());
 });
 
-let webpackDistConfig = makeWebpackConfig({ BUILD: true });
 gulp.task('webpack:dist', function() {
+    let webpackDistConfig = makeWebpackConfig({ BUILD: true });
     return gulp.src(webpackDistConfig.entry.app)
         .pipe(webpack(webpackDistConfig))
         .pipe(gulp.dest(paths.dist + '/client'));
@@ -479,14 +479,16 @@ gulp.task('build', cb => {
             'clean:dist',
             'clean:tmp',
             'inject'
-        ], [
-            'build:images',
+        ],
+        'build:images',
+        [
             'copy:extras',
             'copy:assets',
-            'copy:fonts',
+            'copy:fonts:dist',
             'copy:server',
             'webpack:dist'
         ],
+        'revReplaceWebpack',
         cb);
 });
 
@@ -532,7 +534,7 @@ gulp.task('html', function () {
 });
 
 gulp.task('build:images', () => {
-    return gulp.src(paths.client.images)
+    return gulp.src(paths.client.assets.images)
         .pipe(plugins.cache(plugins.imagemin({
             optimizationLevel: 5,
             progressive: true,
@@ -547,6 +549,12 @@ gulp.task('build:images', () => {
         .pipe(gulp.dest(`${paths.dist}/${clientPath}/assets`));
 });
 
+gulp.task('revReplaceWebpack', () => {
+    return gulp.src('dist/client/app.*.js')
+        .pipe(plugins.revReplace({manifest: gulp.src(paths.client.assets.revManifest)}))
+        .pipe(gulp.dest('dist/client'));
+});
+
 gulp.task('copy:extras', () => {
     gulp.src([
         'client/favicon.ico',
@@ -556,7 +564,7 @@ gulp.task('copy:extras', () => {
 });
 
 gulp.task('copy:assets', () => {
-    return gulp.src([paths.client.assets, '!' + paths.client.images])
+    return gulp.src([paths.client.assets.all, '!' + paths.client.assets.images])
         .pipe(gulp.dest(`${paths.dist}/${clientPath}/assets`));
 });
 
