@@ -6,11 +6,9 @@ import post from './post';
 import routing from './blog.routes';
 import BlogController from './blog.controller';
 
-import navbar from '../../components/navbar';
-
 //import '!raw!sass!./blog.scss'
 
-export default angular.module('aksiteApp.blog', [uirouter, navbar, post])
+export default angular.module('aksiteApp.blog', [uirouter, post])
     .config(routing)
     .controller('BlogController', BlogController)
     .name;

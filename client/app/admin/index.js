@@ -18,13 +18,10 @@ import siteSettings from './siteSettings';
 import routing from './admin.routes';
 import AdminController from './admin.controller';
 
-import navbar from '../../components/navbar';
-
 //import '!raw!sass!./admin.scss'
 
 export default angular.module('aksiteApp.admin', [
     uirouter,
-    navbar,
     dashboard,
     blogManager,
     fileManager,
