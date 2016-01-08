@@ -1,6 +1,6 @@
 'use strict';
 
-import classie from '../../bower_components/classie/classie';
+import classie from 'classie';
 
 let texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', 'diag-striped-text', 'bg-img-text'];
 let usedTexts = [];

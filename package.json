@@ -35,6 +35,7 @@
     "bootstrap-sass": "^3.3.6",
     "bourbon": "^4.2.6",
     "bourbon-neat": "^1.7.2",
+    "classie": "^1.0.0",
     "composable-middleware": "^0.3.0",
     "compression": "~1.5.1",
     "connect-mongo": "^0.8.1",
