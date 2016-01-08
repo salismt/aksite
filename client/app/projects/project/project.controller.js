@@ -1,18 +1,20 @@
 'use strict';
 
-angular.module('aksiteApp')
-    .controller('ProjectCtrl', function ($rootScope, $scope, $http, $stateParams) {
-        $scope.projectId = $stateParams.projectId;
+import marked from 'marked';
 
-        $http.get('/api/projects/'+$stateParams.projectId)
-            .success(function(project) {
-                $scope.project = project;
+export default function ProjectController($rootScope, $scope, $http, $stateParams) {
+    'ngInject';
+    $scope.projectId = $stateParams.projectId;
 
-                $rootScope.title += ' | ' + project.name;
+    $http.get('/api/projects/' + $stateParams.projectId)
+        .success(function(project) {
+            $scope.project = project;
 
-                $scope.content = marked(project.content);
-            })
-            .error(function(data, status) {
-                $scope.error = status;
-            });
-    });
+            $rootScope.title += ' | ' + project.name;
+
+            $scope.content = marked(project.content);
+        })
+        .error(function(data, status) {
+            $scope.error = status;
+        });
+}
