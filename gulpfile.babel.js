@@ -46,7 +46,8 @@ const paths = {
         assets: {
             all: 'client/assets/**/*',
             fonts: 'client/assets/fonts/**/*',
-            images: 'client/assets/images/**/*'
+            images: 'client/assets/images/**/*',
+            revManifest: `dist/${clientPath}/assets/rev-manifest.json`
         }
     },
     server: {
@@ -492,7 +493,7 @@ gulp.task('build', cb => {
 gulp.task('clean:dist', () => del([`${paths.dist}/!(.git*|.openshift|Procfile)**`], {dot: true}));
 
 gulp.task('build:client', ['transpile:client', 'styles', 'html'], () => {
-    var manifest = gulp.src(`${paths.dist}/${clientPath}/assets/rev-manifest.json`);
+    var manifest = gulp.src(paths.client.assets.revManifest);
 
     var appFilter = plugins.filter('**/app.js');
     var jsFilter = plugins.filter('**/*.js');
@@ -539,7 +540,7 @@ gulp.task('build:images', () => {
         })))
         .pipe(plugins.rev())
         .pipe(gulp.dest(`${paths.dist}/${clientPath}/assets/images`))
-        .pipe(plugins.rev.manifest(`${paths.dist}/${clientPath}/assets/rev-manifest.json`, {
+        .pipe(plugins.rev.manifest(paths.client.assets.revManifest, {
             base: `${paths.dist}/${clientPath}/assets`,
             merge: true
         }))
