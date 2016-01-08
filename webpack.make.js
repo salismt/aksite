@@ -1,10 +1,9 @@
 'use strict';
-
-// Modules
 var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var fs = require('fs');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var env = require('./server/config/environment');
@@ -123,7 +122,7 @@ module.exports = function makeWebpackConfig(options) {
       loader: 'raw'
     }, {
         // SASS LOADER
-        // Reference: https://github.com/jtangelder/sass-loaderj
+        // Reference: https://github.com/jtangelder/sass-loader
         test: /\.scss$/,
         loaders: ['style', 'css', 'sass']
     }]
@@ -210,7 +209,7 @@ module.exports = function makeWebpackConfig(options) {
     // Render index.html
     config.plugins.push(
       new HtmlWebpackPlugin({
-        template: './client/index.html',
+        templateContent: fs.readFileSync('./client/index.html').toString().replace('<script src="app.bundle.js"></script>', ''),
         inject: 'body'
       })
     )
