@@ -19,30 +19,19 @@ var plugins = gulpLoadPlugins();
 var config;
 let webpackDevConfig = makeWebpackConfig({ DEV: true });
 
-const clientPath = require('./bower.json').appPath || 'client';
+const clientPath = 'client';
 const serverPath = 'server';
 const paths = {
     client: {
-        appPath: require('./bower.json').appPath || 'client',
+        appPath: 'client',
         scripts: [
-            `${clientPath}/**/!(*.spec|*.mock).js`,
-            `!${clientPath}/bower_components/**/*.js`
+            `${clientPath}/**/!(*.spec|*.mock).js`
         ],
         styles: [`${clientPath}/{app,components}/**/*.scss`],
         mainStyle: `${clientPath}/app/app.scss`,
         views: `${clientPath}/{app,components}/**/*.html`,
         mainView: `${clientPath}/index.html`,
         test: [`${clientPath}/{app,components}/**/*.{spec,mock}.js`],
-        bower: `${clientPath}/bower_components/`,
-        testRequire: [
-            'client/bower_components/angular/angular.js',
-            'client/bower_components/angular-mocks/angular-mocks.js',
-            'client/bower_components/angular-resource/angular-resource.js',
-            'client/bower_components/angular-cookies/angular-cookies.js',
-            'client/bower_components/angular-sanitize/angular-sanitize.js',
-            'client/bower_components/angular-route/angular-route.js',
-            'client/**/*.spec.js'
-        ],
         assets: {
             all: 'client/assets/**/*',
             fonts: 'client/assets/fonts/**/*',
@@ -472,7 +461,6 @@ gulp.task('test:e2e', ['env:all', 'env:test', 'start:server', 'webdriver_update'
  * Build
  ********************/
 
-//FIXME: looks like font-awesome isn't getting loaded
 gulp.task('build', cb => {
     runSequence(
         [
@@ -493,45 +481,6 @@ gulp.task('build', cb => {
 });
 
 gulp.task('clean:dist', () => del([`${paths.dist}/!(.git*|.openshift|Procfile)**`], {dot: true}));
-
-gulp.task('build:client', ['transpile:client', 'styles', 'html'], () => {
-    var manifest = gulp.src(paths.client.assets.revManifest);
-
-    var appFilter = plugins.filter('**/app.js');
-    var jsFilter = plugins.filter('**/*.js');
-    var cssFilter = plugins.filter('**/*.css');
-    var htmlBlock = plugins.filter(['**/*.!(html)']);
-
-    return gulp.src(paths.client.mainView)
-        .pipe(plugins.useref())
-            .pipe(appFilter)
-                .pipe(plugins.addSrc.append('.tmp/templates.js'))
-                .pipe(plugins.concat('app/app.js'))
-            .pipe(appFilter.restore())
-            .pipe(jsFilter)
-                .pipe(plugins.ngAnnotate())
-                .pipe(plugins.uglify())
-            .pipe(jsFilter.restore())
-            .pipe(cssFilter)
-                .pipe(plugins.minifyCss({
-                    cache: true,
-                    processImportFrom: ['!fonts.googleapis.com']
-                }))
-            .pipe(cssFilter.restore())
-            .pipe(htmlBlock)
-                .pipe(plugins.rev())
-            .pipe(htmlBlock.restore())
-        .pipe(plugins.revReplace({manifest}))
-        .pipe(gulp.dest(`${paths.dist}/${clientPath}`));
-});
-
-gulp.task('html', function () {
-    return gulp.src(`${clientPath}/{app,components}/**/*.html`)
-        .pipe(plugins.angularTemplatecache({
-            module: 'testApp'
-        }))
-        .pipe(gulp.dest('.tmp'));
-});
 
 gulp.task('build:images', () => {
     return gulp.src(paths.client.assets.images)
@@ -595,8 +544,6 @@ gulp.task('copy:fonts:dist', cb => {
 gulp.task('copy:server', () => {
     gulp.src([
         'package.json',
-        'bower.json',
-        '.bowerrc',
         'server/**/*'
     ], {cwdbase: true})
         .pipe(gulp.dest(paths.dist));
