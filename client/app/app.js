@@ -21,6 +21,7 @@ import routing from './app.config';
 
 import main from './main';
 import account from './account';
+import resume from './resume';
 import blog from './blog';
 import projects from './projects';
 import admin from './admin';
@@ -45,6 +46,7 @@ angular.module('aksiteApp', [
     Project,
     navbar,
     account,
+    resume,
     blog,
     projects,
     admin
