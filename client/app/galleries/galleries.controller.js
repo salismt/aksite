@@ -1,6 +1,6 @@
 'use strict';
 
-class PhotoController {
+export default class GalleriesController {
     /*@ngInject*/
     constructor($http, Gallery, $state) {
         this.$state = $state;
@@ -19,6 +19,3 @@ class PhotoController {
         this.$state.go('gallery', {galleryId: id});
     }
 }
-
-angular.module('aksiteApp')
-    .controller('PhotoController', PhotoController);

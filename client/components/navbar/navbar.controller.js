@@ -13,7 +13,7 @@ export default class NavbarController {
         'link': '/projects'
     }, {
         'title': 'Photography',
-        'link': '/photos'
+        'link': '/galleries'
     }, {
         'title': 'Blog',
         'link': '/blog'

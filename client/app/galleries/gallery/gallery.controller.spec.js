@@ -1,8 +1,8 @@
 'use strict';
 
-describe('Controller: ProjectController', function () {
+describe('Controller: GalleryController', function() {
 
-    var ProjectController,
+    var GalleryController,
         sandbox,
         $rootScope,
         scope,
@@ -19,7 +19,7 @@ describe('Controller: ProjectController', function () {
             scope = _$rootScope_.$new();
             $stateParams = _$stateParams_;
             $http = _$http_;
-            ProjectController = _$controller_('ProjectController', {
+            GalleryController = _$controller_('GalleryController', {
                 $rootScope: _$rootScope_,
                 $scope: scope,
                 $stateParams,
@@ -32,7 +32,7 @@ describe('Controller: ProjectController', function () {
         sandbox.restore();
     });
 
-    it('should ...', function () {
+    it('should ...', function() {
         expect(1).to.equal(1);
     });
 });

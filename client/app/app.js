@@ -14,6 +14,7 @@ import ngMessages from 'angular-messages';
 import _Auth from '../components/auth/auth.service';
 import User from '../components/auth/user.service';
 import Project from '../components/Project/Project.service';
+import Gallery from '../components/gallery/gallery.service';
 import navbar from '../components/navbar';
 import Preloader from '../components/preloader/preloader.directive';
 
@@ -24,6 +25,7 @@ import account from './account';
 import resume from './resume';
 import blog from './blog';
 import projects from './projects';
+import galleries from './galleries';
 import admin from './admin';
 
 import '../../node_modules/angular-material/angular-material.scss';
@@ -44,11 +46,13 @@ angular.module('aksiteApp', [
     _Auth,
     User,
     Project,
+    Gallery,
     navbar,
     account,
     resume,
     blog,
     projects,
+    galleries,
     admin
 ])
     .config(routing)
