@@ -15,17 +15,13 @@ module.exports = function(config) {
 
         // testing framework to use (jasmine/mocha/qunit/...)
         frameworks: ['mocha', 'chai', 'sinon-chai', 'chai-as-promised', 'chai-things'],
-        reporters: ['mocha'],
+        reporters: ['mocha', 'coverage'],
 
         files: [
-            //'client/**/*.spec.js'
             'spec.js'
         ],
 
         preprocessors: {
-            '**/*.html': 'html2js',
-            'client/{app,components}/**/*.js': ['webpack'],
-            'client/{app,components}/**/*.{spec}.js': ['webpack'],
             'spec.js': ['webpack', 'sourcemap']
         },
 
@@ -87,7 +83,13 @@ module.exports = function(config) {
                         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
                         loader: 'file'
                     }
-                ]
+                ],
+                postLoaders: [{
+                    //delays coverage til after tests are run, fixing transpiled source coverage error
+                    test: /\.js$/,
+                    exclude: /(node_modules)/,
+                    loader: 'istanbul-instrumenter'
+                }]
             },
 
             // Sass loader configuration to tell webpack where to find the additional SASS files
@@ -106,6 +108,18 @@ module.exports = function(config) {
             // webpack-dev-middleware configuration
             // i. e.
             noInfo: true
+        },
+
+        coverageReporter: {
+            reporters: [{
+                type: 'html', //produces a html document after code is run
+                subdir: 'client'
+            }, {
+                type: 'json',
+                subdir: '.',
+                file: 'client-coverage.json'
+            }],
+            dir: 'coverage/' //path to created html doc
         },
 
         plugins: [
