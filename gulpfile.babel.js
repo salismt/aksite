@@ -12,6 +12,7 @@ import nodemon from 'nodemon';
 import {Server as KarmaServer} from 'karma';
 import runSequence from 'run-sequence';
 import {protractor, webdriver_update} from 'gulp-protractor';
+import {Instrumenter} from 'isparta';
 import webpack from 'webpack-stream';
 import makeWebpackConfig from './webpack.make';
 
@@ -159,8 +160,15 @@ let mocha = lazypipe()
     });
 
 let istanbul = lazypipe()
-    .pipe(plugins.babelIstanbul.writeReports)
-    .pipe(plugins.babelIstanbul.enforceThresholds, {
+    .pipe(plugins.istanbul.writeReports, {
+        dir: './coverage',
+        reporters: ['json', 'html'],
+        reporterOpts: {
+            json: { dir: '.', file: 'server-coverage.json' },
+            html: { dir: 'server' }
+        }
+    })
+    .pipe(plugins.istanbulEnforcer, {
         thresholds: {
             global: {
                 lines: 80,
@@ -168,7 +176,9 @@ let istanbul = lazypipe()
                 branches: 80,
                 functions: 80
             }
-        }
+        },
+        coverageDirectory: './coverage',
+        rootDirectory : ''
     });
 
 /********************
@@ -382,7 +392,7 @@ gulp.task('test:server', cb => {
         'env:test',
         'mocha:unit',
         //'mocha:integration',
-        //'mocha:coverage',
+        'mocha:coverage',
         cb);
 });
 
@@ -420,14 +430,25 @@ gulp.task('test:client', (done) => {
     }).start();
 });
 
-gulp.task('coverage:unit', () => {
+gulp.task('coverage:pre', () => {
+    return gulp.src(paths.server.scripts)
+        // Covering files
+        .pipe(plugins.istanbul({
+            instrumenter: Instrumenter, // Use the isparta instrumenter (code coverage for ES6)
+            includeUntested: true
+        }))
+        // Force `require` to return covered files
+        .pipe(plugins.istanbul.hookRequire());
+});
+
+gulp.task('coverage:unit', cb => {
     return gulp.src(paths.server.test.unit)
         .pipe(mocha())
         .pipe(istanbul());
     // Creating the reports after tests ran
 });
 
-gulp.task('coverage:integration', () => {
+gulp.task('coverage:integration', cb => {
     return gulp.src(paths.server.test.integration)
         .pipe(mocha())
         .pipe(istanbul());
