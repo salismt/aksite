@@ -26,8 +26,13 @@
                 </div>
             </md-toolbar>
             <md-content class="md-padding">
-                <md-chips class="md-chips-noline">
-                    <md-chip ng-repeat="skill in profile.skills.values">{{skill.skill.name}}</md-chip>
+                <md-chips class="md-chips-noline"
+                          ng-model="profile.skills.values"
+                          readonly="true"
+                          placeholder="Skill">
+                    <md-chip-template>
+                        <strong>{{$chip.skill.name}}</strong>
+                    </md-chip-template>
                 </md-chips>
             </md-content>
         </div>
@@ -42,14 +47,16 @@
             <md-content class="md-padding">
                 <md-list class="md-default-theme">
                     <md-list-item class="md-clickable" ng-repeat="cert in profile.certifications.values">
-                        <md-button class="md-no-style">
-                            <div class="md-list-item-inner">
-                                <img class="md-avatar" src="assets/images/codeschool_avatar.svg" alt="">
-                                <div class="md-list-item-text">
-                                    <p>{{cert.name}}</p>
-                                </div>
-                            </div>
-                        </md-button>
+                        <img class="md-avatar" src="assets/images/codeschool_avatar.svg" alt="">
+                        <div class="md-list-item-text" layout="column">
+                            <h4 style="color: black;">{{cert.name}}</h4>
+                            <p style="color: black;">{{cert.authority.name}}</p>
+                        </div>
+                        <md-icon md-svg-icon="communication:messenger"
+                                 ng-click="doSecondaryAction($event)"
+                                 aria-label="Open Chat"
+                                 class="md-secondary md-hue-3"
+                                 ng-class="{'md-primary': person.newMessage}"></md-icon>
                     </md-list-item>
                 </md-list>
             </md-content>
