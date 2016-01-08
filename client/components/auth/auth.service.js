@@ -73,15 +73,15 @@ class Auth {
      */
     createUser(user, callback) {
         return this.User.save(user,
-            function(data) {
+            data => {
                 this.$cookies.put('token', data.token);
                 this.currentUser = this.User.get();
                 return safeCb(callback)(null, user);
             },
-            function(err) {
+            err => {
                 this.logout();
                 return safeCb(callback)(err);
-            }.bind(this)).$promise;
+            }).$promise;
     }
 
     /**
