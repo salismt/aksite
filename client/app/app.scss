@@ -198,7 +198,7 @@ md-list md-list-item.md-with-secondary button md-icon.fa {
     vertical-align: middle;
 }
 
-.masonry-brick {
+.brick {
     display: block;
     width: 25%;
     float: left;
@@ -211,19 +211,19 @@ md-list md-list-item.md-with-secondary button md-icon.fa {
 /* Media queries (reduce number of columns and change slideshow layout) */
 @media screen and (max-width: 60em) {
     /* responsive columns; see "Element sizing" on http://masonry.desandro.com/options.html */
-    .masonry-brick {
+    .brick {
         width: 33.3%;
     }
 }
 
 @media screen and (max-width: 35em) {
-    .masonry-brick {
+    .brick {
         width: 50%;
     }
 }
 
 @media screen and (max-width: 24em) {
-    .masonry-brick {
+    .brick {
         width: 100%;
     }
 }

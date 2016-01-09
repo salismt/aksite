@@ -47,7 +47,7 @@ export default function GalleryController($rootScope, $scope, $stateParams, $htt
                 photo.index = $scope.photos.length;
 
                 let div = angular.element('<div></div>');
-                div.attr('class', 'masonry-brick');
+                div.attr('class', 'brick');
                 div.attr('data-size', `${photo.width}x${photo.height}`);
                 div.attr('id', `/api/upload/${photo.fileId}.jpg`);
 
@@ -62,7 +62,7 @@ export default function GalleryController($rootScope, $scope, $stateParams, $htt
 
                 if(i === 0) {
                     msnry = new Masonry(masonryContainerElement, {
-                        itemSelector: '.masonry-brick',
+                        itemSelector: '.brick',
                         transitionDuration: '0.4s'
                     });
                 } else {
