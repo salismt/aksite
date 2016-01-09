@@ -23,7 +23,7 @@ import classie from 'classie';
 let texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', 'diag-striped-text', 'bg-img-text'];
 let usedTexts = [];
 let currentText = _.sample(texts);  // Load first random text
-const vendorImages = [{
+let vendorImages = [{
     href: 'https://angular.io/',
     src: 'assets/images/angular.png',
     alt: 'angular'
@@ -48,12 +48,12 @@ const vendorImages = [{
     src: 'assets/images/gulp.png',
     alt: 'gulp'
 }, {
-    href: 'https://jasmine.github.io/',
-    src: 'assets/images/jasmine.svg',
-    alt: 'jasmine'
+    href: 'https://webpack.github.io',
+    src: 'assets/images/webpack.png',
+    alt: 'webpack'
 }, {
     href: 'http://mochajs.org/',
-    src: 'assets/images/mocha.svg',
+    src: 'assets/images/mocha.png',
     alt: 'mocha'
 }, {
     href: 'http://sass-lang.com/',
@@ -66,11 +66,6 @@ const vendorImages = [{
     alt: 'babel'
 }, {
     wide: true,
-    href: 'http://bourbon.io/',
-    src: 'assets/images/bourbon.png',
-    alt: 'bourbon'
-}, {
-    wide: true,
     href: 'https://www.mongodb.org/',
     src: 'assets/images/mongodb.svg',
     alt: 'mongodb'
@@ -79,6 +74,15 @@ const vendorImages = [{
     href: 'https://newrelic.com/',
     src: 'assets/images/newrelic.svg',
     alt: 'newrelic'
+}, {
+    wide: true,
+    href: 'https://opbeat.com',
+    src: 'assets/images/opbeat.png',
+    alt: 'opbeat'
+}, {
+    href: 'https://codeship.com/',
+    src: 'assets/images/codeship.png',
+    alt: 'codeship'
 }, {
     wide: true,
     href: 'https://nodejs.org/',
@@ -94,11 +98,21 @@ const vendorImages = [{
     href: 'http://socket.io/',
     src: 'assets/images/socketio.svg',
     alt: 'socketio'
+}, {
+    href: 'https://www.npmjs.com/',
+    src: 'assets/images/npm.svg',
+    alt: 'npm'
+}, {
+    wide: true,
+    href: 'http://github.com/',
+    src: 'assets/images/github.png',
+    alt: 'github'
 }];
 
 export default class MainController {
     /*@ngInject*/
     constructor() {
+        vendorImages = _.shuffle(vendorImages);
         classie.removeClass(document.getElementById(currentText), 'hidden');
         usedTexts.push(_.remove(texts, _.partial(_.isEqual, currentText)));
 
@@ -130,7 +144,10 @@ export default class MainController {
                     itemSelector: '.masonry-brick',
                     transitionDuration: '0.4s',
                     gutter: 20,
-                    containerStyle: {'margin': 'auto'},
+                    containerStyle: {
+                        'margin': 'auto',
+                        'margin-bottom': '100px'
+                    },
                     isFitWidth: true
                 });
             } else {
