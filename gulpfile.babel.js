@@ -94,25 +94,6 @@ function whenServerReady(cb) {
         100);
 }
 
-function sortModulesFirst(a, b) {
-    var module = /\.module\.js$/;
-    var aMod = module.test(a.path);
-    var bMod = module.test(b.path);
-    // inject *.module.js first
-    if (aMod === bMod) {
-        // either both modules or both non-modules, so just sort normally
-        if (a.path < b.path) {
-            return -1;
-        }
-        if (a.path > b.path) {
-            return 1;
-        }
-        return 0;
-    } else {
-        return (aMod ? -1 : 1);
-    }
-}
-
 /********************
  * Reusable pipelines
  ********************/
@@ -210,56 +191,6 @@ gulp.task('env:prod', () => {
 /********************
  * Tasks
  ********************/
-
-gulp.task('inject', cb => {
-    runSequence(['inject:js', 'inject:css', 'inject:scss'], cb);
-});
-
-gulp.task('inject:js', () => {
-    return gulp.src(paths.client.mainView)
-        .pipe(plugins.inject(
-            gulp.src(_.union(paths.client.scripts, [`!${clientPath}/**/*.{spec,mock}.js`, `!${clientPath}/app/app.js`]), {read: false})
-                .pipe(plugins.sort(sortModulesFirst))
-            , {
-                starttag: '<!-- injector:js -->',
-                endtag: '<!-- endinjector -->',
-                transform: (filepath) => '<script src="' + filepath.replace(`/${clientPath}/`, '') + '"></script>'
-            }))
-        .pipe(gulp.dest(clientPath));
-});
-
-gulp.task('inject:css', () => {
-    return gulp.src(paths.client.mainView)
-        .pipe(plugins.inject(
-            gulp.src(`/${clientPath}/{app,components}/**/*.css`, {read: false})
-                .pipe(plugins.sort())
-            , {
-                starttag: '<!-- injector:css -->',
-                endtag: '<!-- endinjector -->',
-                transform: (filepath) => '<link rel="stylesheet" href="' + filepath.replace(`/${clientPath}/`, '').replace('/.tmp/', '') + '">'
-            }))
-        .pipe(gulp.dest(clientPath));
-});
-
-gulp.task('inject:scss', () => {
-    return gulp.src(paths.client.mainStyle)
-        .pipe(plugins.inject(
-            gulp.src(_.union(paths.client.styles, ['!' + paths.client.mainStyle]), {read: false})
-                .pipe(plugins.sort())
-            , {
-                starttag: '// injector',
-                endtag: '// endinjector',
-                transform: (filepath) => {
-                    let newPath = filepath
-                        .replace(`/${clientPath}/app/`, '')
-                        .replace(`/${clientPath}/components/`, '../components/')
-                        .replace(/_(.*).scss/, (match, p1, offset, string) => p1)
-                        .replace('.scss', '');
-                    return `@import '${newPath}';`;
-                }
-            }))
-        .pipe(gulp.dest(`${clientPath}/app`));
-});
 
 gulp.task('styles', () => {
     return gulp.src(paths.client.mainStyle)
@@ -363,7 +294,6 @@ gulp.task('serve', cb => {
     runSequence([
             'clean:tmp',
             'lint:scripts',
-            'inject',
             'env:all',
             'copy:fonts:dev'
         ],
@@ -486,8 +416,7 @@ gulp.task('build', cb => {
     runSequence(
         [
             'clean:dist',
-            'clean:tmp',
-            'inject'
+            'clean:tmp'
         ],
         'build:images',
         [
