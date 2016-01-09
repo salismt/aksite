@@ -4,6 +4,8 @@ $fa-font-path: "/assets/fonts/font-awesome/";
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,900|Roboto:300,500,700,900);
 @import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
 @import '../../node_modules/font-awesome/scss/font-awesome';
+@import '../../node_modules/photoswipe/dist/photoswipe.css';
+@import '../../node_modules/photoswipe/dist/default-skin/default-skin.css';
 
 @import 'bourbon';
 
@@ -27,8 +29,8 @@ $fa-font-path: "/assets/fonts/font-awesome/";
 @import 'admin/userManager/userManager';
 @import 'blog/blog';
 @import 'blog/post/post';
-@import 'galleries/gallery/gallery';
 @import 'galleries/galleries';
+@import 'galleries/gallery/gallery';
 @import 'main/main';
 @import 'projects/project/project';
 @import 'projects/projects';
@@ -196,7 +198,7 @@ md-list md-list-item.md-with-secondary button md-icon.fa {
     vertical-align: middle;
 }
 
-.brick {
+.masonry-brick {
     display: block;
     width: 25%;
     float: left;
@@ -209,19 +211,19 @@ md-list md-list-item.md-with-secondary button md-icon.fa {
 /* Media queries (reduce number of columns and change slideshow layout) */
 @media screen and (max-width: 60em) {
     /* responsive columns; see "Element sizing" on http://masonry.desandro.com/options.html */
-    .brick {
+    .masonry-brick {
         width: 33.3%;
     }
 }
 
 @media screen and (max-width: 35em) {
-    .brick {
+    .masonry-brick {
         width: 50%;
     }
 }
 
 @media screen and (max-width: 24em) {
-    .brick {
+    .masonry-brick {
         width: 100%;
     }
 }

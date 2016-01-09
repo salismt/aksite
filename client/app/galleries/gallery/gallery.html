@@ -9,14 +9,7 @@
     <h1 class="page-header">{{gallery.name}}</h1>
     <h5 class="text-center">{{gallery.info}}</h5>
 
-    <div masonry='{
-                "transitionDuration" : "0.4s" ,
-                "itemSelector" : ".brick"
-            }' id="masonry-container">
-        <div masonry-tile ng-repeat="photo in photos" class="brick" data-size="{{photo.width}}x{{photo.height}}" id="/api/upload/{{::photo.fileId}}.jpg">
-            <img ng-src="/api/upload/{{::photo.thumbnailId}}.jpg" alt="" ng-click="onThumbnailsClick(photo.index)">
-        </div>
-    </div>
+    <div class="masonry gallery" id="masonry-container"></div>
 
     <br/>
 

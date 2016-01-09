@@ -125,6 +125,9 @@ module.exports = function makeWebpackConfig(options) {
         // Reference: https://github.com/jtangelder/sass-loader
         test: /\.scss$/,
         loaders: ['style', 'css', 'sass']
+    }, {
+        test: /(jquery|jquery-bridget|desandro-get-style-property|get-size|wolfy87-eventemitter|eventie|doc-ready|desandro-matches-selector|fizzy-ui-utils|outlayer|masonry-layout|imagesloaded|photoswipe)/,
+        loader: 'imports?define=>false&this=>window'
     }]
   };
 
