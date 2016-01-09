@@ -1,18 +1,12 @@
-/**
- * Created by Awk34 on 11/1/2015.
- */
-
+'use strict';
 import angular from 'angular';
 
-import Auth from '../auth/auth.service'
+import FooterController from './footer.controller'
 
-import NavbarController from './navbar.controller';
-
-export default angular.module('directives.navbar', [Auth])
-    .directive('navbar', () => ({
-        template: require('./navbar.html'),
+export default angular.module('directives.footer', [])
+    .directive('footer', () => ({
+        template: require('./footer.html'),
         restrict: 'E',
-        controller: NavbarController,
-        controllerAs: 'nav'
+        controller: FooterController
     }))
     .name;
