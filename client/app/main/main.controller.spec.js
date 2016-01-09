@@ -1,32 +1,28 @@
 'use strict';
 
-describe('Controller: MainCtrl', function() {
+describe('Controller: MainController', function() {
+    var MainController,
+        scope,
+        sandbox;
 
-    // load the controller's module
-    beforeEach(() => angular.mock.module('aksiteApp'));
-    beforeEach(() => angular.mock.module('stateMock'));
-    beforeEach(() => angular.mock.module('socketMock'));
+    beforeEach(() => {
+        angular.mock.module('aksiteApp');
 
-    var MainCtrl;
-    var scope;
-    var state;
-    var $httpBackend;
+        sandbox = sinon.sandbox.create();
 
-    // Initialize the controller and a mock scope
-    beforeEach(inject(function(_$httpBackend_, $controller, $rootScope, $state) {
-        $httpBackend = _$httpBackend_;
-        //$httpBackend.expectGET('/api/things')
-        //    .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);
-
-        scope = $rootScope.$new();
-        state = $state;
-        MainCtrl = $controller('MainCtrl', {
-            $scope: scope
+        inject(function(_$controller_, _$rootScope_) {
+            scope = _$rootScope_.$new();
+            MainController = _$controller_('MainController', {
+                $scope: scope
+            });
         });
-    }));
+    });
 
-    //it('should attach a list of things to the scope', function() {
-    //    $httpBackend.flush();
-    //    scope.awesomeThings.length.should.equal(4);
-    //});
+    afterEach(() => {
+        sandbox.restore();
+    });
+
+    it('should ...', function() {
+        expect(1).to.equal(1);
+    });
 });

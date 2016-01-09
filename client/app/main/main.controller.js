@@ -1,4 +1,22 @@
 'use strict';
+import _ from 'lodash';
+import angular from 'angular';
+
+import jquery from 'jquery';
+import jqueryBridget from 'jquery-bridget';
+import getStyleProperty from 'desandro-get-style-property/get-style-property';
+import getSize from 'get-size/get-size';
+import EventEmitter from 'wolfy87-eventemitter/EventEmitter';
+import eventie from 'eventie/eventie';
+import docReady from 'doc-ready/doc-ready';
+import matchesSelector from 'desandro-matches-selector/matches-selector';
+import utils from 'fizzy-ui-utils/utils';
+import item from 'outlayer/item'
+import outlayer from 'outlayer/outlayer';
+import Masonry from 'masonry-layout';
+import imagesLoaded from 'imagesloaded/imagesloaded';
+
+import MiniDaemon from '../../components/minidaemon';
 
 import classie from 'classie';
 
@@ -80,12 +98,51 @@ const vendorImages = [{
 
 export default class MainController {
     /*@ngInject*/
-    constructor($timeout) {
-        this.vendorImages = vendorImages;
+    constructor() {
         classie.removeClass(document.getElementById(currentText), 'hidden');
         usedTexts.push(_.remove(texts, _.partial(_.isEqual, currentText)));
 
-        $timeout(() => this.showMasonry = true);
+        var masonryContainerElement = document.getElementById('masonry-container');
+        var msnry;
+
+        let i = 0;
+        let addPhoto = function(photo, i) {
+            let div = document.createElement('div');
+            div.setAttribute('class', `masonry-brick${photo.wide ? ' w2' : ''}`);
+            div.setAttribute('id', photo.src);
+
+            let a = document.createElement('a');
+            a.setAttribute('href', photo.href);
+            a.setAttribute('style', 'width: inherit;');
+
+            let img = document.createElement('img');
+            img.setAttribute('src', photo.src);
+            img.setAttribute('style', 'width: inherit;');
+            img.setAttribute('alt', '');
+
+            a.appendChild(img);
+            div.appendChild(a);
+
+            document.getElementById('masonry-container').appendChild(div);
+
+            if(i === 0) {
+                msnry = new Masonry(masonryContainerElement, {
+                    itemSelector: '.masonry-brick',
+                    transitionDuration: '0.4s',
+                    gutter: 20,
+                    containerStyle: {'margin': 'auto'},
+                    isFitWidth: true
+                });
+            } else {
+                msnry.appended(div);
+                msnry.layout();
+            }
+        };
+
+        let daemon = new MiniDaemon(this, () => {
+            addPhoto(vendorImages[i], i++);
+        }, 50, vendorImages.length);
+        daemon.start();
     }
 
     changeText() {

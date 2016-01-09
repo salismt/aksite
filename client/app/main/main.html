@@ -161,16 +161,7 @@
     <div class="row">
         <div class="col-lg-12 vendor-section">
             <h1 class="page-header">Powered by:</h1>
-            <masonry style="display: block; position: relative; width: 100%; min-height: 500px;" reload-on-show ng-show="main.showMasonry" masonry-options="{
-                gutter: 20,
-                containerStyle: {'margin': 'auto'},
-                isFitWidth: true}">
-                <div class="masonry-brick" ng-class="{w2: item.wide}" ng-repeat="item in main.vendorImages">
-                    <a ng-href="{{item.href}}" style="width: inherit;">
-                        <img ng-src="{{item.src}}" alt="{{item.alt}}" style="width: inherit;">
-                    </a>
-                </div>
-            </masonry>
+            <div style="display: block; position: relative; width: 100%; min-height: 500px;" class="masonry gallery" id="masonry-container"></div>
         </div>
     </div>
 </div>
