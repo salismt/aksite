@@ -1,8 +1,6 @@
 'use strict';
 
-class ProfileSettingsController {
+export default class ProfileSettingsController {
+    /*@ngInject;*/
     constructor() {}
 }
-
-angular.module('aksiteApp')
-    .controller('ProfileSettingsCtrl', ProfileSettingsController);

@@ -1,34 +1,26 @@
 'use strict';
 
-angular.module('aksiteApp')
-    .controller('SettingsCtrl', function($scope, $mdSidenav, Auth) {
-        $scope.currentUser = Auth.getCurrentUser();
-        $scope.heightStyle = {
-            height: (window.innerHeight - 70 - 66)
-        };
+export default function SettingsController($scope, $mdSidenav, Auth) {
+    'ngInject';
+    $scope.currentUser = Auth.getCurrentUser();
+    $scope.heightStyle = {
+        height: (window.innerHeight - 70 - 66)
+    };
 
-        $scope.sections = [{
-            title: 'Dashboard',
-            icon: 'fa-home',
-            link: 'settings.dashboard'
-        }, {
-            title: 'Profile',
-            icon: 'fa-user',
-            link: 'settings.profile'
-        }];
+    $scope.sections = [{
+        title: 'Dashboard',
+        icon: 'fa-home',
+        link: 'settings.dashboard'
+    }, {
+        title: 'Profile',
+        icon: 'fa-user',
+        link: 'settings.profile'
+    }];
 
-        $scope.toggleLeft = function () {
-            $mdSidenav('left').toggle()
-                .then(function() {
-                    //$log.debug("toggle left is done");
-                });
-        };
-    })
-    .controller('SettingsSidebarCtrl', function($scope, $timeout, $mdSidenav) {
-        $scope.close = function() {
-            $mdSidenav('left').close()
-                .then(function(){
-                    //$log.debug("close LEFT is done");
-                });
-        };
-    });
+    $scope.toggleLeft = function () {
+        $mdSidenav('left').toggle()
+            .then(function() {
+                //$log.debug("toggle left is done");
+            });
+    };
+}

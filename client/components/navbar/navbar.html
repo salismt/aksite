@@ -27,7 +27,7 @@
                     <a ng-href="/user/{{nav.getCurrentUser()._id}}" style="padding: 0"><span class="user-image" ng-style="{'background-image':'url(/api/upload/{{nav.getCurrentUser().imageId}}.jpg)'}"></span></a>
                 </li>
                 <li ng-show="nav.isLoggedIn()" ng-class="{active: nav.isActive('/settings')}">
-                    <md-button ui-sref="admin.settings" aria-label="Settings"><i class="fa fa-cog"></i></md-button>
+                    <md-button ui-sref="settings.dashboard" aria-label="Settings"><i class="fa fa-cog"></i></md-button>
                 </li>
                 <li ng-show="nav.isLoggedIn()" ng-class="{active: nav.isActive('/logout')}">
                     <md-button href="" ng-click="nav.logout()" aria-label="Logout">Logout</md-button>
