@@ -4,15 +4,15 @@
             <span>Overview</span>
         </h2>
     </md-toolbar>
-    <md-content style="padding: 10px;">
-        <img ng-src="/api/upload/{{currentUser.imageId}}.jpg" alt="Current User Image" class="settings-profile-img" />
+    <md-content class="md-padding" style="min-height: 300px;">
+        <img ng-src="/api/upload/{{settings.currentUser.imageId}}.jpg" alt="Current User Image" class="settings-profile-img" />
     </md-content>
     <md-toolbar class="md-theme-light">
         <h2 class="md-toolbar-tools">
             <span>Change Password</span>
         </h2>
     </md-toolbar>
-    <md-content class="md-padding">
+    <md-content class="md-padding" style="min-height: 300px;">
         <form name="userForm" ng-submit="changePassword(userForm)">
             <md-input-container flex>
                 <label>Old Password</label>

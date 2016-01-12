@@ -8,6 +8,7 @@ export default function routes($stateProvider) {
             url: '/settings',
             template: require('./settings.html'),
             controller: 'SettingsController',
+            controllerAs: 'settings',
             onEnter: function($rootScope) {
                 $rootScope.title = $rootScope.titleRoot + ' | Settings';
             }
