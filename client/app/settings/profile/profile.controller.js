@@ -1,6 +1,6 @@
 'use strict';
 
 export default class ProfileSettingsController {
-    /*@ngInject;*/
+    /*@ngInject*/
     constructor() {}
 }

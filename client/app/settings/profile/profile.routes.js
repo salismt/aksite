@@ -6,6 +6,7 @@ export default function routes($stateProvider) {
         .state('settings.profile', {
             url: '/profile',
             template: require('./profile.html'),
-            controller: 'ProfileSettingsController'
+            controller: 'ProfileSettingsController',
+            controllerAs: 'prof'
         });
 }
