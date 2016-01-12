@@ -1,5 +1,7 @@
 'use strict';
 
+import marked from 'marked';
+
 export default function ProjectEditorController($scope, $http, $stateParams, $state, $sanitize, Upload) {
     'ngInject';
     $scope.loadingProject = true;
