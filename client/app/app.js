@@ -30,6 +30,7 @@ import blog from './blog';
 import projects from './projects';
 import galleries from './galleries';
 import admin from './admin';
+import user from './user';
 
 import '../../node_modules/angular-material/angular-material.scss';
 import './app.scss';
@@ -57,7 +58,8 @@ angular.module('aksiteApp', [
     blog,
     projects,
     galleries,
-    admin
+    admin,
+    user
 ])
     .config(routing)
     .factory('authInterceptor', function($rootScope, $q, $cookies, $injector) {
