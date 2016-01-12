@@ -1,5 +1,7 @@
 'use strict';
 import angular from 'angular';
+import 'reflect-metadata';
+import {bootstrap} from 'ng-forward';
 import ngAnimate from 'angular-animate';
 import ngCookies from 'angular-cookies';
 import ngResource from 'angular-resource';

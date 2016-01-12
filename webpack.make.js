@@ -101,7 +101,8 @@ module.exports = function makeWebpackConfig(options) {
           //presets: ['es2015'],
           optional: [
               'runtime',
-              'es7.classProperties'
+              'es7.classProperties',
+              'es7.decorators'
           ]
       },
       exclude: /node_modules/
