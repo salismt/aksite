@@ -1,6 +1,6 @@
 'use strict';
 
-import controller from './file.controller';
+import * as controller from './file.controller';
 import * as auth from '../../auth/auth.service';
 import {Router} from 'express';
 import multer from 'multer';

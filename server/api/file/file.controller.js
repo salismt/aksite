@@ -8,7 +8,7 @@ import gridform from 'gridform';
 import File from './file.model';
 import Grid from 'gridfs-stream';
 import gm from 'gm';
-import auth from '../../auth/auth.service';
+import * as auth from '../../auth/auth.service';
 
 let Schema = mongoose.Schema;
 
@@ -25,7 +25,7 @@ conn.once('open', function(err) {
 });
 
 // Get list of files
-exports.index = function(req, res) {
+export function index(req, res) {
     if(req.query.page && req.query.page < 1) return res.status(400).send('Invalid page');
 
     var pageSize = (req.query.pagesize && req.query.pagesize <= MAX_PAGESIZE && req.query.pagesize > 0) ? req.query.pagesize : DEFAULT_PAGESIZE;
@@ -49,10 +49,10 @@ exports.index = function(req, res) {
                 });
             });
     });
-};
+}
 
 // Get a single file
-exports.show = function(req, res) {
+export function show(req, res) {
     if(!isValidObjectId(req.params.id)) {
         return res.status(400).send('Invalid ID');
     }
@@ -71,18 +71,18 @@ exports.show = function(req, res) {
             }
         }
     });
-};
+}
 
 // Get the number of files
-exports.count = function(req, res) {
+export function count(req, res) {
     File.count({}, function(err, count) {
         if(err) handleError(res, err);
         else res.status(200).json(count);
     });
-};
+}
 
 // Creates a new file in the DB.
-exports.create = function(req, res) {
+export function create(req, res) {
     if(_.isEmpty(req.files)) {
         return res.status(400).send('No files given. Send a form-data request with files on the "files" key.');
     }
@@ -194,10 +194,10 @@ exports.create = function(req, res) {
     //
     //    //console.log(file.id);
     //});
-};
+}
 
 // Updates an existing file in the DB.
-exports.update = function(req, res) {
+export function update(req, res) {
     if(!isValidObjectId(req.params.id)) {
         return res.status(400).send('Invalid ID');
     }
@@ -219,10 +219,10 @@ exports.update = function(req, res) {
             return res.status(200).json(file);
         });
     });
-};
+}
 
 // Deletes a file from the DB.
-exports.destroy = function(req, res) {
+export function destroy(req, res) {
     if(!isValidObjectId(req.params.id)) {
         return res.status(400).send('Invalid ID');
     }
@@ -234,7 +234,7 @@ exports.destroy = function(req, res) {
             res.status(200).end();
         });
     }
-};
+}
 
 function handleError(res, err) {
     return res.status(500).send(err);
