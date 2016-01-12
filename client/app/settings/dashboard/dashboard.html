@@ -1,4 +1,4 @@
-<div layout="column" flex layout-fill style="position: absolute;" id="">
+<div layout="column" flex layout-fill style="position: absolute;">
     <md-toolbar class="md-theme-light">
         <h2 class="md-toolbar-tools">
             <span>Overview</span>
@@ -13,19 +13,19 @@
         </h2>
     </md-toolbar>
     <md-content class="md-padding" style="min-height: 300px;">
-        <form name="userForm" ng-submit="changePassword(userForm)">
+        <form name="dash.userForm" ng-submit="dash.changePassword(dash.userForm)">
             <md-input-container flex>
                 <label>Old Password</label>
-                <input ng-model="user.oldPassword" name="oldPassword" type="password">
-                <div ng-messages="userForm.oldPassword.$error">
+                <input ng-model="dash.user.oldPassword" name="oldPassword" type="password">
+                <div ng-messages="dash.userForm.oldPassword.$error">
                     <div ng-message="wrongPassword">Incorrect password</div>
                 </div>
             </md-input-container>
 
             <md-input-container flex>
                 <label>New Password</label>
-                <input ng-model="user.newPassword" name="newPassword" type="password" minlength="3">
-                <div ng-messages="userForm.newPassword.$error">
+                <input ng-model="dash.user.newPassword" name="newPassword" type="password" minlength="3">
+                <div ng-messages="dash.userForm.newPassword.$error">
                     <div ng-message="minlength">Your password has to be at least 3 characters long.</div>
                 </div>
             </md-input-container>

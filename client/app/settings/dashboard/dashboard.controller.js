@@ -1,23 +1,39 @@
 'use strict';
 
-export default function SettingsDashboardController($scope, Auth, $mdToast) {
-    'ngInject';
-    $scope.changePassword = function(form) {
-        $scope.submitted = true;
+export default class SettingsDashboardController {
+    submitted = false;
+    user = {
+        oldPassword: undefined,
+        newPassword: undefined
+    };
+
+    /*@ngInject*/
+    constructor(Auth, $mdToast, $scope) {
+        this.Auth = Auth;
+        this.$mdToast = $mdToast;
+
+        // un-mark password as wrong when changed
+        $scope.$watch(() => this.userForm.oldPassword.$modelValue, () => {
+            this.userForm.oldPassword.$setValidity('wrongPassword', true);
+        })
+    }
+
+    changePassword(form) {
+        this.submitted = true;
         if(form.$valid) {
-            Auth.changePassword($scope.user.oldPassword, $scope.user.newPassword)
-                .then(function() {
-                    $scope.showSimpleToast('Password Updated');
+            this.Auth.changePassword(this.user.oldPassword, this.user.newPassword)
+                .then(() => {
+                    this.showSimpleToast('Password Updated');
                 })
-                .catch(function() {
-                    $scope.userForm.oldPassword.$setValidity('wrongPassword', false);
+                .catch(() => {
+                    this.userForm.oldPassword.$setValidity('wrongPassword', false);
                 });
         }
     };
 
-    $scope.showSimpleToast = function(text) {
-        $mdToast.show(
-            $mdToast.simple()
+    showSimpleToast(text) {
+        this.$mdToast.show(
+            this.$mdToast.simple()
                 .content(text)
                 .position('bottom right')
                 .hideDelay(3000)

@@ -6,6 +6,7 @@ export default function routes($stateProvider) {
         .state('settings.dashboard', {
             url: '',
             template: require('./dashboard.html'),
-            controller: 'SettingsDashboardController'
+            controller: 'SettingsDashboardController',
+            controllerAs: 'dash'
         });
 }
