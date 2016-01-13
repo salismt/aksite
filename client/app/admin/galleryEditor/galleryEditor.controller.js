@@ -24,7 +24,7 @@ export default class GalleryEditorController {
             $http.get('/api/gallery/' + $stateParams.galleryId)
                 .then(({data}) => {
                     this.gallery = data;
-                    this.nextPhoto = this.gallery.photos.length + 1;
+                    this.nextPhoto = this.gallery.photos.length;
                     _.forEach(this.gallery.photos, photoId => {
                         $http.get('/api/photos/' + photoId)
                             .then(res => {
@@ -57,6 +57,8 @@ export default class GalleryEditorController {
 
     // FIXME: works when first creating a gallery, but not when adding photos when we already have some
     onFileSelect(files) {
+        if(!files || !files.length) return;
+
         _.forEach(files, file => {
             this.photos.push({
                 name: file.name,
@@ -68,15 +70,15 @@ export default class GalleryEditorController {
         });
 
         // Kick off the first three uploads
-        if(this.photos.length > 0) {
-            this.uploadPhoto(this.photos[0]);
-            this.nextPhoto = 1;
-            if(this.photos.length > 1) {
-                this.uploadPhoto(this.photos[1]);
-                this.nextPhoto = 2;
-                if(this.photos.length > 2) {
-                    this.uploadPhoto(this.photos[2]);
-                    this.nextPhoto = 3;
+        if(files.length > 0) {
+            this.uploadPhoto(this.photos[this.nextPhoto]);
+            this.nextPhoto++;
+            if(files.length > 1) {
+                this.uploadPhoto(this.photos[this.nextPhoto]);
+                this.nextPhoto++;
+                if(files.length > 2) {
+                    this.uploadPhoto(this.photos[this.nextPhoto]);
+                    this.nextPhoto++;
                 }
             }
         }
