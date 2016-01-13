@@ -1,50 +1,64 @@
 'use strict';
 
-export default function GalleryEditorController($scope, $http, $stateParams, $state, Upload) {
-    'ngInject';
-    $scope.photos = [];
-    $scope.loadingGallery = true;
-    if(!$stateParams.galleryId || $stateParams.galleryId === 'new') {
-        $scope.gallery = {
-            name: 'Untitled Gallery',
-            info: '',
-            photos: []
-        };
-        $scope.loadingGallery = false;
-        $scope.newGallery = true;
-    } else {
-        $http.get('/api/gallery/'+$stateParams.galleryId)
-            .success(function(res) {
-                $scope.gallery = res;
-                _.forEach($scope.gallery.photos, function(photoId) {
-                    $http.get('/api/photos/'+photoId)
-                        .success(function(res) {
-                            $scope.photos.push(res);
-                        })
-                        .error(function(res, status) {
-                            $scope.error = {status: status, res: res};
-                        });
-                });
-            })
-            .error(function(res, status) {
-                $scope.error = {status: status, res: res};
-            })
-            .finally(function() {
-                $scope.loadingGallery = true;
-            });
-    }
-    var nextPhoto = 0;
+export default class GalleryEditorController {
+    photos = [];
+    loadingGallery = true;
+    nextPhoto = 0;
 
-    $scope.cancel = function() {
-        if($scope.upload) $scope.upload.abort();
-        $state.go('admin.blog');
+    /*@ngInject*/
+    constructor($scope, $http, $stateParams, $state, Upload) {
+        this.$http = $http;
+        this.$stateParams = $stateParams;
+        this.$state = $state;
+        this.Upload = Upload;
+
+        if(!$stateParams.galleryId || $stateParams.galleryId === 'new') {
+            this.gallery = {
+                name: 'Untitled Gallery',
+                info: '',
+                photos: []
+            };
+            this.loadingGallery = false;
+            this.newGallery = true;
+        } else {
+            $http.get('/api/gallery/' + $stateParams.galleryId)
+                .then(({data}) => {
+                    this.gallery = data;
+                    this.nextPhoto = this.gallery.photos.length + 1;
+                    _.forEach(this.gallery.photos, photoId => {
+                        $http.get('/api/photos/' + photoId)
+                            .then(res => {
+                                this.photos.push(res.data);
+                            })
+                            .catch(res => {
+                                this.error = {status: res.status, data: res.data};
+                            });
+                    });
+                })
+                .catch(res => {
+                    this.error = {status: res.status, data: res.data};
+                })
+                .finally(() => {
+                    this.loadingGallery = false;
+                });
+        }
+    }
+
+    cancel() {
+        if(this.upload) {
+            this.upload.abort();
+        }
+        this.$state.go('admin.galleries');
     };
 
-    $scope.toggleSelect = (photo) => photo.selected = !photo.selected;
+    toggleSelect(photo) {
+        photo.selected = !photo.selected;
+    }
 
-    $scope.onFileSelect = function(files) {
-        _.forEach(files, function(file) {
-            $scope.photos.push({
+    // FIXME: works when first creating a gallery, but not when adding photos when we already have some
+    onFileSelect(files) {
+        _.forEach(files, file => {
+            this.photos.push({
                 name: file.name,
                 filename: file.name,
                 info: '',
@@ -54,22 +68,22 @@ export default function GalleryEditorController($scope, $http, $stateParams, $st
         });
 
         // Kick off the first three uploads
-        if($scope.photos.length > 0) {
-            $scope.uploadPhoto($scope.photos[0]);
-            nextPhoto = 1;
-            if($scope.photos.length > 1) {
-                $scope.uploadPhoto($scope.photos[1]);
-                nextPhoto = 2;
-                if($scope.photos.length > 2) {
-                    $scope.uploadPhoto($scope.photos[2]);
-                    nextPhoto = 3;
+        if(this.photos.length > 0) {
+            this.uploadPhoto(this.photos[0]);
+            this.nextPhoto = 1;
+            if(this.photos.length > 1) {
+                this.uploadPhoto(this.photos[1]);
+                this.nextPhoto = 2;
+                if(this.photos.length > 2) {
+                    this.uploadPhoto(this.photos[2]);
+                    this.nextPhoto = 3;
                 }
             }
         }
     };
 
-    $scope.uploadPhoto = function(photo) {
-        $scope.upload = Upload.upload({
+    uploadPhoto(photo) {
+        this.upload = this.Upload.upload({
             url: 'api/upload',
             method: 'POST',
             file: photo.file,
@@ -81,52 +95,52 @@ export default function GalleryEditorController($scope, $http, $stateParams, $st
                 'Content-Type': photo.file.type
             }
         })
-            .progress(function(evt) {
+            .progress(evt => {
                 photo.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
             })
-            .success(function(data) {
+            .success(data => {
                 photo.thumbnailId = data.thumbnailId;
 
-                if($scope.photos[nextPhoto]) {
-                    $scope.uploadPhoto($scope.photos[nextPhoto++]);
+                if(this.photos[this.nextPhoto]) {
+                    this.uploadPhoto(this.photos[this.nextPhoto++]);
                 }
 
-                $scope.gallery.photos.push(data._id);
+                this.gallery.photos.push(data._id);
             })
-            .error(function(response, status) {
+            .error((response, status) => {
                 photo.err = {status: status, response: response};
                 //TODO: retry, show error
             })
-            .xhr(function(xhr) {
+            .xhr(xhr => {
                 photo.cancel = function() {
                     xhr.abort();
                 };
             });
     };
 
-    $scope.saveGallery = function() {
+    saveGallery() {
         //TODO: also send requests to save $dirty photo names, info
-        if($scope.newGallery) {
-            $http.post('/api/gallery', $scope.gallery)
-                .success(function(response, status) {
+        if(this.newGallery) {
+            this.$http.post('/api/gallery', this.gallery)
+                .then(({data, status}) => {
                     console.log(status);
-                    console.log(response);
-                    $state.go('admin.galleries');
+                    console.log(data);
+                    this.$state.go('admin.galleries');
                 })
-                .error(function(response, status) {
+                .catch(({data, status}) => {
                     console.log(status);
-                    console.log(response);
+                    console.log(data);
                 });
         } else {
-            $http.put('/api/gallery/'+$stateParams.galleryId, $scope.gallery)
-                .success(function(response, status) {
+            this.$http.put('/api/gallery/' + this.$stateParams.galleryId, this.gallery)
+                .then(({data, status}) => {
                     console.log(status);
-                    console.log(response);
-                    $state.go('admin.galleries');
+                    console.log(data);
+                    this.$state.go('admin.galleries');
                 })
-                .error(function(response, status) {
+                .catch(({data, status}) => {
                     console.log(status);
-                    console.log(response);
+                    console.log(data);
                 });
         }
     };

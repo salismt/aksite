@@ -6,7 +6,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <h1>{{gallery.name}}</h1>
+            <h1>{{ge.gallery.name}}</h1>
         </div>
 
         <md-button class="md-fab md-fab-bottom-right" style="position: fixed" aria-label="Add Photos">
@@ -14,28 +14,28 @@
                 <md-icon class="fa fa-2x" md-font-icon="fa-plus"></md-icon>
             </label>
         </md-button>
-        <input id="file-input" accept="image/*" multiple ngf-select="onFileSelect($files)" style="display: none;">
+        <input id="file-input" accept="image/*" multiple ngf-select="ge.onFileSelect($files)" style="display: none;">
     </div>
     <br/>
     <div class="row">
-        <form class="form-horizontal" name="form" ng-submit="saveGallery(form)">
+        <form class="form-horizontal" name="form" ng-submit="ge.saveGallery(form)">
             <div class="form-group">
                 <label for="name" class="col-sm-1 control-label">Name</label>
 
-                <div class="col-sm-11"><input type="text" name="name" id="name" class="form-control" ng-model="gallery.name" required></div>
+                <div class="col-sm-11"><input type="text" name="name" id="name" class="form-control" ng-model="ge.gallery.name" required></div>
             </div>
 
             <div class="form-group">
                 <label for="info" class="col-sm-1 control-label">Info</label>
 
-                <div class="col-sm-11"><input type="text" name="info" id="info" class="form-control" ng-model="gallery.info"></div>
+                <div class="col-sm-11"><input type="text" name="info" id="info" class="form-control" ng-model="ge.gallery.info"></div>
             </div>
 
             <div>
                 <md-button class="md-primary md-button-lg" aria-label="Save" type="submit">
                     Save
                 </md-button>
-                <md-button class="md-button-lg" aria-label="Cancel" ng-click="cancel()">
+                <md-button class="md-button-lg" aria-label="Cancel" ng-click="ge.cancel()">
                     Cancel
                 </md-button>
             </div>
@@ -43,14 +43,14 @@
     </div>
     <div class="row goo-grid-container">
         <ul class="goo-container">
-            <li class="goo" ng-class="{selected: photo.selected}" ng-repeat="photo in photos"></li>
+            <li class="goo" ng-class="{selected: photo.selected}" ng-repeat="photo in ge.photos"></li>
         </ul>
         <ul class="goo-grid">
-            <li class="goo-grid-item" ng-repeat="photo in photos" ng-class="{selected: photo.selected}">
-                <div class="goo-grid-figure" ng-click="toggleSelect(photo)">
-                    <progressbar ng-if="!photo.thumbnailId" class="progress-striped active" value="photo.progress">
+            <li class="goo-grid-item" ng-repeat="photo in ge.photos" ng-class="{selected: photo.selected}">
+                <div class="goo-grid-figure" ng-click="ge.toggleSelect(photo)">
+                    <uib-progressbar ng-if="!photo.thumbnailId" class="progress-striped active" value="photo.progress">
                         <b>{{photo.progress}}%</b>
-                    </progressbar>
+                    </uib-progressbar>
                     <div class="box" ng-if="photo.thumbnailId" ng-style="{'background-image': 'url(/api/upload/{{photo.thumbnailId}})'}">
                         <i class="fa fa-3x fa-check"></i>
                     </div>

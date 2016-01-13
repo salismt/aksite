@@ -6,11 +6,13 @@ export default function routes($stateProvider) {
         .state('newGallery', {
             url: '/admin/photos/gallery-editor',
             template: require('./galleryEditor.html'),
-            controller: 'GalleryEditorController'
+            controller: 'GalleryEditorController',
+            controllerAs: 'ge'
         })
         .state('galleryEditor', {
             url: '/admin/photos/gallery-editor/:galleryId',
             template: require('./galleryEditor.html'),
-            controller: 'GalleryEditorController'
+            controller: 'GalleryEditorController',
+            controllerAs: 'ge'
         });
 }
