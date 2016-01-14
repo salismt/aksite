@@ -6,7 +6,7 @@ export default class GalleryEditorController {
     nextPhoto = 0;
 
     /*@ngInject*/
-    constructor($scope, $http, $stateParams, $state, Upload) {
+    constructor($http, $stateParams, $state, Upload) {
         this.$http = $http;
         this.$stateParams = $stateParams;
         this.$state = $state;
