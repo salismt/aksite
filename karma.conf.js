@@ -25,25 +25,6 @@ module.exports = function(config) {
             'spec.js': ['webpack', 'sourcemap']
         },
 
-        ngHtml2JsPreprocessor: {
-            stripPrefix: 'client/'
-        },
-
-        babelPreprocessor: {
-            options: {
-                sourceMap: 'inline',
-                optional: [
-                    'es7.classProperties'
-                ]
-            },
-            filename: function (file) {
-                return file.originalPath.replace(/\.js$/, '.es5.js');
-            },
-            sourceFileName: function (file) {
-                return file.originalPath;
-            }
-        },
-
         //TODO: move all to webpack.make.js
         webpack: {
             // karma watches the test entry points
@@ -123,22 +104,16 @@ module.exports = function(config) {
         },
 
         plugins: [
-            require('karma-babel-preprocessor'),
             require('karma-chai-plugins'),
             require('karma-chrome-launcher'),
             require('karma-coverage'),
             require('karma-firefox-launcher'),
-            require('karma-html2js-preprocessor'),
-            require('karma-jasmine'),
             require('karma-mocha'),
             require('karma-mocha-reporter'),
-            require('karma-ng-html2js-preprocessor'),
-            require('karma-ng-scenario'),
             require('karma-phantomjs-launcher'),
-            require('karma-requirejs'),
+            require('karma-phantomjs-shim'),
             require('karma-script-launcher'),
             require('karma-sourcemap-loader'),
-            require('karma-spec-reporter'),
             require('karma-webpack'),
         ],
 
