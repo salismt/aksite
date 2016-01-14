@@ -44,8 +44,8 @@ const paths = {
         scripts: [`${serverPath}/**/!(*.spec|*.integration).js`],
         json: [`${serverPath}/**/*.json`],
         test: {
-            integration: `${serverPath}/**/*.integration.js`,
-            unit: `${serverPath}/**/*.spec.js`
+            integration: [`${serverPath}/**/*.integration.js`, 'mocha.global.js'],
+            unit: [`${serverPath}/**/*.spec.js`, 'mocha.global.js']
         }
     },
     e2e: ['e2e/**/*.spec.js'],
@@ -279,7 +279,7 @@ gulp.task('start:server', () => {
 gulp.task('watch', () => {
     plugins.livereload.listen();
 
-    gulp.watch('client/**/!(*.spec).{html,js,scss}', ['webpack:dev']);
+    gulp.watch('client/**/!(*.spec|*.mock).{html,js,scss}', ['webpack:dev']);
 
     plugins.watch(paths.server.scripts)
         .pipe(plugins.plumber())
@@ -326,17 +326,9 @@ gulp.task('test:server', cb => {
         cb);
 });
 
-gulp.task('mocha:unit', done => {
+gulp.task('mocha:unit', () => {
     return gulp.src(paths.server.test.unit)
-        .pipe(mocha())
-        .once('error', () => {
-            done('Server Unit Test Failed');
-            process.exit(1);
-        })
-        .once('end', () => {
-            done();
-            process.exit(0);
-        });
+        .pipe(mocha());
 });
 
 gulp.task('mocha:integration', () => {
