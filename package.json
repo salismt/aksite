@@ -170,7 +170,6 @@
     "karma-phantomjs-shim": "^1.2.0",
     "karma-requirejs": "~0.2.2",
     "karma-script-launcher": "~0.1.0",
-    "karma-sourcemap-loader": "^0.3.6",
     "karma-spec-reporter": "~0.0.21",
     "karma-webpack": "^1.7.0",
     "lazypipe": "^0.2.4",

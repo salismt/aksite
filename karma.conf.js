@@ -17,7 +17,7 @@ module.exports = function(config) {
         ],
 
         preprocessors: {
-            'spec.js': ['webpack', 'sourcemap']
+            'spec.js': ['webpack']
         },
 
         webpack: makeWebpackConfig({ TEST: true }),
@@ -50,7 +50,6 @@ module.exports = function(config) {
             require('karma-phantomjs-launcher'),
             require('karma-phantomjs-shim'),
             require('karma-script-launcher'),
-            require('karma-sourcemap-loader'),
             require('karma-webpack'),
         ],
 
