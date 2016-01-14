@@ -1,5 +1,6 @@
 'use strict';
 
+// FIXME: `document.getElementById` is always returning `undefined` when running this test
 describe('Controller: MainController', function() {
     var MainController,
         sandbox,
