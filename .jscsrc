@@ -1,7 +1,6 @@
 {
     "excludeFiles": [
-        "node_modules/*",
-        "client/bower_components/*"
+        "node_modules/*"
     ],
     "requireCurlyBraces": [
         "for",
