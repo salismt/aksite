@@ -1,7 +1,7 @@
 'use strict';
 
-import d3 from 'd3/d3.min';
-import nv from 'nvd3';
+//import d3 from 'd3/d3.min';
+//import nv from 'nvd3';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
