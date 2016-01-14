@@ -2,8 +2,8 @@
 
 describe('Controller: MainController', function() {
     var MainController,
-        scope,
-        sandbox;
+        sandbox,
+        rootScope;
 
     beforeEach(() => {
         angular.mock.module('aksiteApp');
@@ -11,9 +11,9 @@ describe('Controller: MainController', function() {
         sandbox = sinon.sandbox.create();
 
         inject(function(_$controller_, _$rootScope_) {
-            scope = _$rootScope_.$new();
+            rootScope = _$rootScope_;
             MainController = _$controller_('MainController', {
-                $scope: scope
+                $rootScope: _$rootScope_
             });
         });
     });

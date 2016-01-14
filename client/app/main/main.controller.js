@@ -111,7 +111,7 @@ let vendorImages = [{
 
 export default class MainController {
     /*@ngInject*/
-    constructor() {
+    constructor($rootScope) {
         vendorImages = _.shuffle(vendorImages);
         classie.removeClass(document.getElementById(currentText), 'hidden');
         usedTexts.push(_.remove(texts, _.partial(_.isEqual, currentText)));
@@ -155,6 +155,13 @@ export default class MainController {
                 msnry.layout();
             }
         };
+
+        $rootScope.$on('$stateChangeStart', () => {
+            if(msnry) {
+                msnry.destroy();
+            }
+            addPhoto = function() {};
+        });
 
         let daemon = new MiniDaemon(this, () => {
             addPhoto(vendorImages[i], i++);
