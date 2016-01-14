@@ -4,6 +4,7 @@ var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var fs = require('fs');
+var path = require('path');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var env = require('./server/config/environment');
@@ -66,6 +67,15 @@ module.exports = function makeWebpackConfig(options) {
       chunkFilename: BUILD ? '[name].[hash].js' : '[name].bundle.js'
     }
   }
+
+    if(TEST) {
+        config.resolve = {
+            modulesDirectories: [
+                'node_modules'
+            ],
+            extensions: ['', '.js']
+        }
+    }
 
   /**
    * Devtool
@@ -136,25 +146,26 @@ module.exports = function makeWebpackConfig(options) {
         includePaths: require('bourbon').includePaths
     };
 
-  // ISPARTA LOADER
-  // Reference: https://github.com/ColCh/isparta-instrumenter-loader
-  // Instrument JS files with Isparta for subsequent code coverage reporting
-  // Skips node_modules and files that end with .test.js
-  if(TEST) {
-    config.module.preLoaders.push({
-      test: /\.js$/,
-      exclude: [
-        /node_modules/,
-        /\.test\.js$/
-      ],
-      loader: 'isparta-instrumenter'
-    })
-  }
-
     config.module.postLoaders = [{
         test: /\.js$/,
         loader: 'ng-annotate?single_quotes'
     }];
+
+    // ISPARTA INSTRUMENTER LOADER
+    // Reference: https://github.com/ColCh/isparta-instrumenter-loader
+    // Instrument JS files with Isparta for subsequent code coverage reporting
+    // Skips node_modules and spec files
+    // Using version 0.2.1, since 0.2.2 uses Isparta 4, which in turn uses Babel 6
+    if(TEST) {
+        config.module.preLoaders.push({
+            //delays coverage til after tests are run, fixing transpiled source coverage error
+            test: /\.js$/, exclude: /(node_modules|spec\.js|mock\.js)/, loader: 'isparta-instrumenter', query: {
+                babel: {
+                    optional: ['runtime', 'es7.classProperties', 'es7.decorators']
+                }
+            }
+        });
+    }
 
   // CSS LOADER
   // Reference: https://github.com/webpack/css-loader
@@ -243,6 +254,14 @@ module.exports = function makeWebpackConfig(options) {
       })
     )
   }
+
+    if(TEST) {
+        config.stats = {
+            colors: true,
+            reasons: true
+        };
+        config.debug = false;
+    }
 
   /**
    * Dev server configuration

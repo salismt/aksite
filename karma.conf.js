@@ -1,12 +1,7 @@
 // Karma configuration
 // http://karma-runner.github.io/0.13/config/configuration-file.html
 
-import _ from 'lodash';
-import path from 'path';
-
-let include = [
-    path.resolve('./client')
-];
+import makeWebpackConfig from './webpack.make';
 
 module.exports = function(config) {
     config.set({
@@ -25,69 +20,7 @@ module.exports = function(config) {
             'spec.js': ['webpack', 'sourcemap']
         },
 
-        //TODO: move all to webpack.make.js
-        webpack: {
-            // karma watches the test entry points
-            // (you don't need to specify the entry option)
-            // webpack watches dependencies
-
-            // webpack configuration
-            resolve: {
-                modulesDirectories: [
-                    'node_modules'
-                ],
-                extensions: ['', '.js', '.ts']
-            },
-            devtool: 'inline-source-map',
-            module: {
-                loaders: [
-                    {test: /\.html$/, loader: 'raw'},
-                    {test: /\.js$/, loader: 'babel', exclude: /(node_modules)/, include, query: {
-                        //presets: ['es2015'],
-                        optional: [
-                            'runtime',
-                            'es7.classProperties',
-                            'es7.decorators'
-                        ]
-                    }},
-                    {test: /\.js$/, loader: 'ng-annotate?single_quotes'},
-                    // Process all non-test code with Isparta
-                    //{test: /\.js$/, loader: 'isparta', include: include, exclude: /\.spec\.js$/},
-                    //{test: /\.(png|woff|ttf)(\?.*)?$/, loader: 'url-loader?limit=1000000'},
-                    {test: /\.scss$/, loaders: ['style', 'css', 'sass']},
-                    {
-                        // ASSET LOADER
-                        // Reference: https://github.com/webpack/file-loader
-                        // Copy png, jpg, jpeg, gif, svg, woff, woff2, ttf, eot files to output
-                        // Rename the file using the asset hash
-                        // Pass along the updated reference to your code
-                        // You can add here any file extension you want to get copied to your output
-                        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
-                        loader: 'file'
-                    }, {
-                        test: /(jquery|jquery-bridget|desandro-get-style-property|get-size|wolfy87-eventemitter|eventie|doc-ready|desandro-matches-selector|fizzy-ui-utils|outlayer|masonry-layout|imagesloaded|photoswipe)/,
-                        loader: 'imports?define=>false&this=>window'
-                    }
-                ],
-                postLoaders: [{
-                    //delays coverage til after tests are run, fixing transpiled source coverage error
-                    test: /\.js$/,
-                    exclude: /(node_modules)/,
-                    loader: 'istanbul-instrumenter'
-                }]
-            },
-
-            // Sass loader configuration to tell webpack where to find the additional SASS files
-            // https://github.com/jtangelder/sass-loader#sass-options
-            sassLoader: {
-                includePaths: _.union(
-                    [path.resolve(__dirname, 'node_modules', 'client')],
-                    require('bourbon').includePaths
-                )
-            },
-            stats: {colors: true, reasons: true},
-            debug: false
-        },
+        webpack: makeWebpackConfig({ TEST: true }),
 
         webpackMiddleware: {
             // webpack-dev-middleware configuration
