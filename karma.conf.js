@@ -14,7 +14,7 @@ module.exports = function(config) {
         basePath: '',
 
         // testing framework to use (jasmine/mocha/qunit/...)
-        frameworks: ['mocha', 'chai', 'sinon-chai', 'chai-as-promised', 'chai-things'],
+        frameworks: ['mocha', 'chai', 'sinon-chai', 'chai-as-promised', 'chai-things', 'phantomjs-shim'],
         reporters: ['mocha', 'coverage'],
 
         files: [
@@ -46,7 +46,8 @@ module.exports = function(config) {
                         //presets: ['es2015'],
                         optional: [
                             'runtime',
-                            'es7.classProperties'
+                            'es7.classProperties',
+                            'es7.decorators'
                         ]
                     }},
                     {test: /\.js$/, loader: 'ng-annotate?single_quotes'},
@@ -63,6 +64,9 @@ module.exports = function(config) {
                         // You can add here any file extension you want to get copied to your output
                         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
                         loader: 'file'
+                    }, {
+                        test: /(jquery|jquery-bridget|desandro-get-style-property|get-size|wolfy87-eventemitter|eventie|doc-ready|desandro-matches-selector|fizzy-ui-utils|outlayer|masonry-layout|imagesloaded|photoswipe)/,
+                        loader: 'imports?define=>false&this=>window'
                     }
                 ],
                 postLoaders: [{
