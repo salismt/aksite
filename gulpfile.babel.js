@@ -313,7 +313,10 @@ gulp.task('serve:dist', cb => {
 });
 
 gulp.task('test', cb => {
-    return runSequence('test:server', 'test:client', cb);
+    return runSequence('test:server', 'test:client', function() {
+        cb(arguments['0']);
+        process.exit(arguments['0']);
+    });
 });
 
 gulp.task('test:server', cb => {
