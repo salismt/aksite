@@ -1,9 +1,12 @@
 'use strict';
 
-export default function ProjectsController($scope, Project) {
-    'ngInject';
-    $scope.loadingProjects = true;
-    $scope.projects = Project.query(function() {
-        $scope.loadingProjects = false;
-    });
+export default class ProjectsController {
+    loadingProjects = true;
+
+    /*@ngInject*/
+    constructor(Project) {
+        this.projects = Project.query(() => {
+            this.loadingProjects = false;
+        });
+    }
 }

@@ -5,11 +5,11 @@
 </div>
 
 <div class="container">
-    <div ng-if="loadingProjects" class="spinner">
+    <div ng-if="vm.loadingProjects" class="spinner">
         <i class="fa fa-spinner fa-spin"></i>
     </div>
-    <alert ng-if="!loadingProjects && projects.length === 0" type="info">No Projects</alert>
-    <div ng-if="projects.length > 0" class="row masonry-cards-container">
+    <alert ng-if="!vm.loadingProjects && vm.projects.length === 0" type="info">No Projects</alert>
+    <div ng-if="vm.projects.length > 0" class="row masonry-cards-container">
         <div masonry='{
                 "transitionDuration" : "0.4s" ,
                 "itemSelector" : ".brick",
@@ -18,7 +18,7 @@
                 "isFitWidth": true
             }'
              id="masonry-container" style="position: relative;">
-            <a masonry-tile class="brick" ng-repeat="project in projects" ng-href="/projects/{{project._id}}">
+            <a masonry-tile class="brick" ng-repeat="project in vm.projects" ng-href="/projects/{{project._id}}">
                 <md-card>
                     <img ng-src="api/upload/{{project.coverId}}" class="md-card-image" alt="">
                     <md-card-content>
