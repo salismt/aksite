@@ -1,13 +1,13 @@
 <div class="container">
     <div ng-if="error" class="row">
-        <alert type="danger">Error: {{error}}</alert>
+        <alert type="danger">Error: {{vm.error}}</alert>
     </div>
     <div ng-if="noPhotos" class="row">
         <alert type="warning">No Photos</alert>
     </div>
 
-    <h1 class="page-header">{{gallery.name}}</h1>
-    <h5 class="text-center">{{gallery.info}}</h5>
+    <h1 class="page-header">{{vm.gallery.name}}</h1>
+    <h5 class="text-center">{{vm.gallery.info}}</h5>
 
     <div class="masonry gallery" id="masonry-container"></div>
 

@@ -21,108 +21,140 @@ import PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default';
 
 import MiniDaemon from '../../../components/minidaemon';
 
-export default function GalleryController($rootScope, $scope, $stateParams, $http, $timeout, $compile) {
-    'ngInject';
-    $scope.galleryId = $stateParams.galleryId;
-    $scope.errors = [];
-    $scope.photos = [];
-    $scope.pswpPhotos = [];
-    var masonryContainerElement = document.getElementById('masonry-container');
-    var items = [];
-
-    var msnry;
-
-    $http.get('/api/gallery/' + $stateParams.galleryId)
-        .then(function(res) {
-            let gallery = res.data;
-            $scope.gallery = gallery;
-            $rootScope.title += ' | ' + gallery.name;
-
-            if($scope.gallery.photos.length < 1) {
-                return $scope.noPhotos = true;
-            }
-            let i = 0;
-
-            let addPhoto = function(photo, i) {
-                photo.index = $scope.photos.length;
-
-                let div = angular.element('<div></div>');
-                div.attr('class', 'brick');
-                div.attr('data-size', `${photo.width}x${photo.height}`);
-                div.attr('id', `/api/upload/${photo.fileId}.jpg`);
-
-                let img = angular.element('<img>');
-                img.attr('src', `/api/upload/${photo.thumbnailId}.jpg`);
-                img.attr('alt', '');
-                img.attr('ng-click', `onThumbnailsClick(${photo.index})`);
-                img = $compile(img)($scope);
-                div.append(img);
-
-                angular.element(document.getElementById('masonry-container')).append(div);
-
-                if(i === 0) {
-                    msnry = new Masonry(masonryContainerElement, {
-                        itemSelector: '.brick',
-                        transitionDuration: '0.4s'
-                    });
-                } else {
-                    msnry.appended(document.getElementById(`/api/upload/${photo.fileId}.jpg`));
-                    msnry.layout();
-                }
-
-                $scope.photos.push(photo);
-                $scope.pswpPhotos.push(photoToPSWP(photo, $scope.photos.length-1));
-            };
-
-            $http.get('api/photos/' + gallery.photos[0])
-                .then(res => addPhoto(res.data, i++))
-                .then(() => {
-                    let promises = [];
-                    _.each(gallery.photos, function(photo, index) {
-                        if(index === 0) return;
-                        promises.push($http.get('api/photos/' + photo));
-                    });
-
-                    let daemon = new MiniDaemon(this, () => {
-                        promises.pop().then(res => addPhoto(res.data, i++));
-                    }, 50, promises.length);
-                    daemon.start();
-                });
-        })
-        .catch(function(res) {
-            $scope.errors.push(res);
-        });
-
-    $scope.onThumbnailsClick = function(index) {
-        openPhotoSwipe(index);
+function photoToPSWP(photo, index) {
+    return {
+        src: 'api/upload/' + photo.fileId,
+        msrc: 'api/upload/' + photo.thumbnailId,
+        w: photo.width,
+        h: photo.height,
+        index
     };
+}
 
-    var openPhotoSwipe = function(index, disableAnimation) {
-        var pswpElement = document.querySelectorAll('.pswp')[0],
-            gallery,
-            options,
-            vscroll = document.body.scrollTop;
+export default class GalleryController {
+    galleryId;
+    errors = [];
+    photos = [];
+    pswpPhotos = [];
+    masonryContainerElement;
+    items = [];
+    msnry;
 
-        if(!items || items.length === 0) {
-            items = parseThumbnailElements(masonryContainerElement);
-        }
+    /*@ngInject*/
+    constructor($rootScope, $scope, $stateParams, $http, $compile) {
+        this.masonryContainerElement = document.getElementById('masonry-container');
+        this.galleryId = $stateParams.galleryId;
 
-        options = {
-            index: index,
-            getThumbBoundsFn: function(index) {
-                // See Options->getThumbBoundsFn section of docs for more info
-                var thumbnail = items[index].el.children[0],
-                    pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
-                    rect = thumbnail.getBoundingClientRect();
-                return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
+        let addPhoto = (photo, i) => {
+            photo.index = this.photos.length;
+
+            let div = angular.element('<div></div>');
+            div.attr('class', 'brick');
+            div.attr('data-size', `${photo.width}x${photo.height}`);
+            div.attr('id', `/api/upload/${photo.fileId}.jpg`);
+
+            let img = angular.element('<img>');
+            img.attr('src', `/api/upload/${photo.thumbnailId}.jpg`);
+            img.attr('alt', '');
+            img.attr('ng-click', `vm.onThumbnailsClick(${photo.index})`);
+            img = $compile(img)($scope);
+            div.append(img);
+
+            angular.element(document.getElementById('masonry-container')).append(div);
+
+            if(i === 0) {
+                this.msnry = new Masonry(this.masonryContainerElement, {
+                    itemSelector: '.brick',
+                    transitionDuration: '0.4s'
+                });
+            } else {
+                this.msnry.appended(document.getElementById(`/api/upload/${photo.fileId}.jpg`));
+                this.msnry.layout();
             }
+
+            this.photos.push(photo);
+            this.pswpPhotos.push(photoToPSWP(photo, this.photos.length - 1));
         };
 
-        if(disableAnimation) {
-            options.hideAnimationDuration = options.showAnimationDuration = 0;
+        $rootScope.$on('$stateChangeStart', () => {
+            if(this.msnry) {
+                this.msnry.destroy();
+            }
+            addPhoto = function() {};
+        });
+
+        $http.get('/api/gallery/' + $stateParams.galleryId)
+            .then(({data: gallery}) => {
+                this.gallery = gallery;
+                $rootScope.title += ' | ' + gallery.name;
+
+                if(this.gallery.photos.length < 1) {
+                    return this.noPhotos = true;
+                }
+                let i = 0;
+
+                $http.get('api/photos/' + gallery.photos[0])
+                    .then(({data}) => addPhoto(data, i++))
+                    .then(() => {
+                        let promises = _(gallery.photos)
+                            .drop(1)
+                            .map(photo => $http.get('api/photos/' + photo))
+                            .value();
+
+                        let daemon = new MiniDaemon(this, () => {
+                            promises.pop().then(res => addPhoto(res.data, i++));
+                        }, 50, promises.length);
+                        daemon.start();
+                    });
+            })
+            .catch((res) => {
+                this.errors.push(res);
+            });
+    }
+
+    onThumbnailsClick(index) {
+        this.openPhotoSwipe(index);
+    }
+
+    parseThumbnailElements(thumbElements) {
+        return _(thumbElements)
+            .filter(el => el.nodeType === 1 && el.localName === 'div' && el.className !== 'grid-sizer')
+            .map(el => {
+                let childElements = el.children[0].children;
+                let size = el.getAttribute('data-size').split('x');
+
+                return {
+                    src: el.getAttribute('id'),
+                    w: parseInt(size[0], 10),
+                    h: parseInt(size[1], 10),
+                    el, // save link to element for getThumbBoundsFn
+                    msrc: childElements.length > 0 ? childElements[0].getAttribute('src') : undefined, // thumbnail url
+                    title: childElements.length > 1 ? childElements[1].innerHTML : undefined    // caption (contents of figure)
+                };
+            })
+            .value();
+    }
+
+    openPhotoSwipe(index, disableAnimation) {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+        let vscroll = document.body.scrollTop;
+
+        if(!this.items || this.items.length === 0) {
+            this.items = this.parseThumbnailElements(this.masonryContainerElement.childNodes);
         }
 
-        gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+        let gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, this.items, {
+            index,
+            getThumbBoundsFn: (index) => {
+                // See Options->getThumbBoundsFn section of docs for more info
+                let thumbnail = this.items[index].el.children[0];
+                let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+                let rect = thumbnail.getBoundingClientRect();
+                return {x: rect.left, y: rect.top + pageYScroll, w: rect.width};
+            },
+            hideAnimationDuration: disableAnimation ? 0 : 300,
+            showAnimationDuration: disableAnimation ? 0 : 300
+        });
         gallery.init();
         gallery.listen('destroy', function() {
             // Temporary workaround for PhotoSwipe scroll-to-top on close bug
@@ -130,51 +162,5 @@ export default function GalleryController($rootScope, $scope, $stateParams, $htt
                 window.scrollTo(null, vscroll);
             }, 5);
         });
-    };
-
-    var parseThumbnailElements = function(el) {
-        var thumbElements = el.childNodes,
-            items = [],
-            childElements,
-            size,
-            item;
-
-        _.forEach(thumbElements, function(el) {
-            if(el.nodeType !== 1 || el.localName !== 'div' || el.className === 'grid-sizer') {
-                return;
-            }
-
-            childElements = el.children[0].children;
-            size = el.getAttribute('data-size').split('x');
-
-            // create slide object
-            item = {
-                src: el.getAttribute('id'),
-                w: parseInt(size[0], 10),
-                h: parseInt(size[1], 10),
-                el: el// save link to element for getThumbBoundsFn
-            };
-
-            if(childElements.length > 0) {
-                item.msrc = childElements[0].getAttribute('src'); // thumbnail url
-                if(childElements.length > 1) {
-                    item.title = childElements[1].innerHTML; // caption (contents of figure)
-                }
-            }
-
-            items.push(item);
-        });
-
-        return items;
-    };
-
-    function photoToPSWP(photo, index) {
-        return {
-            src: 'api/upload/' + photo.fileId,
-            msrc: 'api/upload/' + photo.thumbnailId,
-            w: photo.width,
-            h: photo.height,
-            index: index
-        };
     }
 }
