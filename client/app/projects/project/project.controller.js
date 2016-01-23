@@ -2,19 +2,23 @@
 
 import marked from 'marked';
 
-export default function ProjectController($rootScope, $scope, $http, $stateParams) {
-    'ngInject';
-    $scope.projectId = $stateParams.projectId;
+export default class ProjectController {
+    project = {};
 
-    $http.get('/api/projects/' + $stateParams.projectId)
-        .success(function(project) {
-            $scope.project = project;
+    /*@ngInject*/
+    constructor($rootScope, $http, $stateParams) {
+        this.projectId = $stateParams.projectId;
 
-            $rootScope.title += ' | ' + project.name;
+        $http.get('/api/projects/' + $stateParams.projectId)
+            .then(({data: project}) => {
+                this.project = project;
 
-            $scope.content = marked(project.content);
-        })
-        .error(function(data, status) {
-            $scope.error = status;
-        });
+                $rootScope.title += ' | ' + project.name;
+
+                this.content = marked(project.content);
+            })
+            .then(({data, status}) =>{
+                this.error = status;
+            });
+    }
 }
