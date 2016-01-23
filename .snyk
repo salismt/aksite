@@ -1,3 +1,7 @@
-ignore: {}
+ignore:
+  'npm:hawk:20160119':
+    - 'request > hawk':
+        reason: "I'm not too worried about ReDoS attacks..."
+        expires: '2016-02-22T21:30:17.076Z'
 patch: {}
 version: v1
