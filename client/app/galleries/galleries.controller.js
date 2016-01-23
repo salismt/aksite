@@ -8,7 +8,7 @@ export default class GalleriesController {
         this.galleries = Gallery.query(() => {
             _.forEach(this.galleries, gallery => {
                 $http.get('/api/photos/' + gallery.featuredId)
-                    .success(photo => {
+                    .then(({data: photo}) => {
                         gallery.featuredImgId = photo.thumbnailId;
                     });
             });
