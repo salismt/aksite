@@ -6,11 +6,13 @@ export default function routes($stateProvider) {
         .state('newProject', {
             url: '/admin/projects/project-editor',
             template: require('./projectEditor.html'),
-            controller: 'ProjectEditorController'
+            controller: 'ProjectEditorController',
+            controllerAs: 'vm'
         })
         .state('projectEditor', {
             url: '/admin/projects/project-editor/:projectId',
             template: require('./projectEditor.html'),
-            controller: 'ProjectEditorController'
+            controller: 'ProjectEditorController',
+            controllerAs: 'vm'
         });
 }
