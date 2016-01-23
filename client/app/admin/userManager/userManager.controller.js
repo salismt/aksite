@@ -1,31 +1,42 @@
 'use strict';
 
-export default function($scope, $http, Auth, User, $state, $mdDialog, $mdToast) {
-    'ngInject';
-    $scope.users = User.query();
+export default class {
+    users = [];
 
-    $scope.goToUser = function(id) {
-        $state.go('userEditor', {userId: id});
+    /*@ngInject*/
+    constructor(User, $state, $mdDialog, $mdToast) {
+        this.$state = $state;
+        this.$mdDialog = $mdDialog;
+        this.$mdToast = $mdToast;
+        this.User = User;
+
+        this.users = User.query();
+    }
+
+    goToUser(id) {
+        this.$state.go('userEditor', {userId: id});
     };
 
-    $scope.deleteUser = function(user, ev) {
-        $mdDialog.show($mdDialog.confirm()
+    deleteUser(user, ev) {
+        this.$mdDialog.show(this.$mdDialog.confirm()
             .title('Are you sure you would like to delete this user?')
             .ariaLabel('Delete User?')
             .ok('Delete')
             .cancel('Cancel')
             .targetEvent(ev))
             .then(() => {
-                User.remove({id: user._id}, function() {
-                    $scope.users.splice(this.$index, 1);
-                }.bind(this), function() {
-                    $mdToast.show(
-                        $mdToast.simple()
-                            .content('Deleting user failed')
-                            .position('bottom right')
-                            .hideDelay(10000)
-                    );
-                });
+                this.User.remove({id: user._id}).$promise
+                    .then(() => {
+                        this.users.splice(this.$index, 1);
+                    })
+                    .catch(() => {
+                        this.$mdToast.show(
+                            this.$mdToast.simple()
+                                .content('Deleting user failed')
+                                .position('bottom right')
+                                .hideDelay(10000)
+                        );
+                    });
             });
     };
 }
