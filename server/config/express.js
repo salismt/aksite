@@ -18,10 +18,11 @@ import config from './environment';
 import passport from 'passport';
 import session from 'express-session';
 import mongoose from 'mongoose';
+mongoose.Promise = require('bluebird');
 import connectMongo from 'connect-mongo';
 let MongoStore = connectMongo(session);
 
-module.exports = function(app) {
+export default function(app) {
     var env = app.get('env');
 
     app.set('views', config.root + '/server/views');
