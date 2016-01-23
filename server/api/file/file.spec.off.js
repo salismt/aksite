@@ -10,10 +10,10 @@ describe('GET /api/files', function() {
         request(app)
             .get('/api/files')
             //.expect(200)
-            //.expect('Content-Type', /json/)
+            .expect('Content-Type', /json/)
             .end(function(err, res) {
                 if(err) return done(err);
-                //res.body.should.be.instanceof(Array);
+                res.body.should.be.instanceof(Object);
                 done();
             });
     });
