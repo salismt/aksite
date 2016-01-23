@@ -243,7 +243,7 @@ gulp.task('lint:scripts:clientTest', () => {
 });
 
 gulp.task('lint:scripts:serverTest', () => {
-    return gulp.src(paths.server.test)
+    return gulp.src(_.union(paths.server.test.unit, paths.server.test.integration))
         .pipe(lintServerTestScripts());
 });
 
@@ -285,7 +285,7 @@ gulp.task('watch', () => {
         .pipe(plugins.plumber())
         .pipe(lintServerScripts());
 
-    plugins.watch([paths.server.test.unit, paths.server.test.integration])
+    plugins.watch(_.union(paths.server.test.unit, paths.server.test.integration)])
         .pipe(plugins.plumber())
         .pipe(lintServerTestScripts());
 });
