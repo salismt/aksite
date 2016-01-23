@@ -1,5 +1,6 @@
 'use strict';
 
+import _ from 'lodash';
 import marked from 'marked';
 
 export default class ProjectEditorController {
@@ -61,7 +62,8 @@ export default class ProjectEditorController {
         try {
             return this.$sanitize(marked(this.project.content || ''));
         } catch(e) {
-            return '<h1 class=\"text-danger\">Parsing Error</h1>';
+            return `<h1 class="text-danger">Parsing Error</h1>
+                    <span class="break-word">${_.escape(e)}</span>`;
         }
     };
 

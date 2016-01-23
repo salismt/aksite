@@ -92,6 +92,10 @@ html, body {
     color: $lightTextColor;
 }
 
+.break-word {
+    word-wrap: break-word;
+}
+
 .btn-file {
     position: relative;
     overflow: hidden;
