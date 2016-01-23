@@ -6,6 +6,7 @@ export default function routes($stateProvider) {
         .state('admin.settings', {
             url: '/settings',
             template: require('./siteSettings.html'),
-            controller: 'SiteSettingsController'
+            controller: 'SiteSettingsController',
+            controllerAs: 'vm'
         });
 }

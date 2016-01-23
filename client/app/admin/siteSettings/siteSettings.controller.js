@@ -1,14 +1,18 @@
 'use strict';
 
-export default function($scope, $http) {
-    'ngInject';
-    $scope.cleanOrphans = function() {
-        $http.get('/api/upload/clean')
-            .success(function(data, status/*, headers, config*/) {
+export default class SiteSettings {
+    /*@ngInject*/
+    constructor($http) {
+        this.$http = $http;
+    }
+
+    cleanOrphans() {
+        this.$http.get('/api/upload/clean')
+            .then(({data, status}) => {
                 console.log(status);
                 console.log(data);
             })
-            .error(function(data, status/*, headers, config*/) {
+            .catch(({data, status}) => {
                 console.log(status);
                 console.log(data);
             });
