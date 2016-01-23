@@ -285,7 +285,7 @@ gulp.task('watch', () => {
         .pipe(plugins.plumber())
         .pipe(lintServerScripts());
 
-    plugins.watch(_.union(paths.server.test.unit, paths.server.test.integration)])
+    plugins.watch(_.union(paths.server.test.unit, paths.server.test.integration))
         .pipe(plugins.plumber())
         .pipe(lintServerTestScripts());
 });
