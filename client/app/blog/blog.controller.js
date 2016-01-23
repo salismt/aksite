@@ -26,19 +26,19 @@ export default class BlogController {
 
     pageChanged() {
         this.$http.get(this.getterString())
-            .success(response => {
-                this.currentPage = response.page;
-                this.pages = response.pages;
-                this.numItems = response.numItems;
-                this.posts = response.items;
+            .then(({data}) => {
+                this.currentPage = data.page;
+                this.pages = data.pages;
+                this.numItems = data.numItems;
+                this.posts = data.items;
                 _.forEach(this.posts, post => {
                     post.date = moment(post.date).format('LL');
                     post.subheader = marked(post.subheader);
                 });
-                this.noItems = response.items.length <= 0;
+                this.noItems = data.items.length <= 0;
                 document.body.scrollTop = document.documentElement.scrollTop = 0;
             })
-            .error(function(err) {
+            .catch(function(err) {
                 console.log(err);
             });
     }
