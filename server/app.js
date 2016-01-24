@@ -13,8 +13,7 @@ mongoose.Promise = require('bluebird');
 import config from './config/environment';
 
 if(config.env === 'production') {
-    //require('newrelic');
-    const opbeat = require('opbeat').start({
+    require('opbeat').start({
         organizationId: config.opbeat.orgId,
         appId: config.opbeat.appId,
         secretToken: config.opbeat.secret
@@ -51,4 +50,4 @@ function startServer() {
 setImmediate(startServer);
 
 // Expose app
-module.exports = app;
+export default app;
