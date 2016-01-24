@@ -155,11 +155,9 @@ export function update(req, res) {
  * Get a single user
  */
 export function show(req, res, next) {
-    var userId = req.params.id;
-
     console.log(req.user);
 
-    User.findById(userId, function(err, user) {
+    User.findById(req.params.id, '-salt -hashedPassword', function(err, user) {
         if(err) return next(err);
         if(!user) return res.status(404).end();
 
