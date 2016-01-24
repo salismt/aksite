@@ -6,85 +6,85 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <h1>{{post.title}}</h1>
+            <h1>{{vm.post.title}}</h1>
         </div>
     </div>
     <br/>
 
     <div class="row">
-        <form class="form-horizontal" name="form" ng-submit="savePost(form)">
+        <form class="form-horizontal" name="form" ng-submit="vm.savePost(form)">
 
             <div class="form-group">
                 <label for="title" class="col-sm-2 control-label">Title</label>
                 <div class="col-sm-10">
-                    <input type="text" name="title" id="title" class="form-control" ng-model="post.title" required>
+                    <input type="text" name="title" id="title" class="form-control" ng-model="vm.post.title" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="subheader" class="col-sm-2 control-label">Subheader</label>
                 <div class="col-sm-10">
-                    <input type="text" name="subheader" id="subheader" class="form-control" ng-model="post.subheader" required>
+                    <input type="text" name="subheader" id="subheader" class="form-control" ng-model="vm.post.subheader" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="alias" class="col-sm-2 control-label">Alias</label>
                 <div class="col-sm-10">
-                    <input type="text" name="alias" id="alias" class="form-control" ng-model="post.alias">
+                    <input type="text" name="alias" id="alias" class="form-control" ng-model="vm.post.alias">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="image" class="col-sm-2 control-label">Image</label>
                 <div class="input-group col-sm-10" style="padding-left: 15px; padding-right: 15px;">
-                    <input type="text" id="image" class="form-control file-input-value" ng-model="filename" readonly>
+                    <input type="text" id="image" class="form-control file-input-value" ng-model="vm.filename" readonly>
                     <span class="input-group-btn">
                         <span class="btn btn-primary btn-file">
                             Browse
-                            <input type="file" accept="image/*" id="fileInput" ngf-select="onFileSelect($files)">
+                            <input type="file" accept="image/*" id="fileInput" ngf-select="vm.onFileSelect($files)">
                         </span>
                     </span>
                 </div>
             </div>
-            <uib-progressbar class="progress-striped active" value="progress" ng-show="progress">
-                <b>{{progress}}%</b>
+            <uib-progressbar class="progress-striped active" value="vm.progress" ng-show="progress">
+                <b>{{vm.progress}}%</b>
             </uib-progressbar>
 
             <div class="form-group">
                 <label for="author" class="col-sm-2 control-label">Author</label>
                 <div class="col-sm-10">
-                    <img class="img-circle" ng-src="api/upload/{{post.author.smallImageId}}.jpg" style="display: inline-block; height: 50px; width: 50px;">
-                    <input type="text" name="author" id="author" class="form-control" ng-model="post.author.name" readonly style="width: auto; display: inline-block;">
+                    <img class="img-circle" ng-src="api/upload/{{vm.post.author.smallImageId}}.jpg" style="display: inline-block; height: 50px; width: 50px;">
+                    <input type="text" name="author" id="author" class="form-control" ng-model="vm.post.author.name" readonly style="width: auto; display: inline-block;">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="date" class="col-sm-2 control-label">Date</label>
                 <div class="col-sm-10">
-                    <input type="text" name="date" id="date" class="form-control" ng-model="post.date" required>
+                    <input type="text" name="date" id="date" class="form-control" ng-model="vm.post.date" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="categories" class="col-sm-2 control-label">Categories</label>
                 <div class="col-sm-10">
-                    <input type="text" name="categories" id="categories" class="form-control" ng-model="post.categories">
+                    <input type="text" name="categories" id="categories" class="form-control" ng-model="vm.post.categories">
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-sm-2 control-label">Hidden</label>
-                <md-switch class="col-sm-10" style="width: 65%; position: relative;" ng-model="post.hidden" aria-label="Hidden">
-                    <span ng-show="!post.hidden">Visible</span>
-                    <span ng-show="post.hidden">Hidden</span>
+                <md-switch class="col-sm-10" style="width: 65%; position: relative;" ng-model="vm.post.hidden" aria-label="Hidden">
+                    <span ng-show="!vm.post.hidden">Visible</span>
+                    <span ng-show="vm.post.hidden">Hidden</span>
                 </md-switch>
             </div>
 
             <div class="form-group">
                 <label for="content" class="col-sm-2 control-label">Content</label>
                 <div class="col-sm-10">
-                    <textarea id="content" class="form-control" rows="5" ng-model="post.content" required></textarea>
+                    <textarea id="content" class="form-control" rows="5" ng-model="vm.post.content" required></textarea>
                 </div>
             </div>
 
@@ -92,12 +92,12 @@
                 <button class="btn btn-inverse btn-lg btn-login" type="submit">
                     Save
                 </button>
-                <a class="btn btn-default btn-lg btn-register" ng-click="cancel()">
+                <a class="btn btn-default btn-lg btn-register" ng-click="vm.cancel()">
                     Cancel
                 </a>
             </div>
         </form>
 
-        <div class="lead marked-content" ng-bind-html="markedContent()"></div>
+        <div class="lead marked-content" ng-bind-html="vm.markedContent()"></div>
     </div>
 </div>
