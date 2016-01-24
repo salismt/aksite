@@ -9,6 +9,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 import express from 'express';
 import mongoose from 'mongoose';
+mongoose.Promise = require('bluebird');
 import config from './config/environment';
 
 if(config.env === 'production') {
