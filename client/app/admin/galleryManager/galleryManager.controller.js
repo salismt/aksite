@@ -1,67 +1,70 @@
 'use strict';
 
-export default function GalleryManagerController($scope, $http, $state) {
-    'ngInject';
-    $scope.errors = [];
-    $scope.loadingGalleries = true;
-    $scope.galleries = [];
-    $scope.galleryDeletions = [];
-    $scope.galleryChanges = [];
-    $scope.dirty = false;
+export default class GalleryManagerController {
+    errors = [];
+    loadingGalleries = true;
+    galleries = [];
+    galleryDeletions = [];
+    galleryChanges = [];
+    dirty = false;
 
-    $http.get('/api/gallery')
-        .success(function(res) {
-            $scope.galleries = res;
-            _.forEach($scope.galleries, function(gallery) {
-                $http.get('/api/photos/'+gallery.featuredId)
-                    .success(function(res) {
-                        gallery.featured = res;
-                    })
-                    .error(function(res, status) {
-                        console.log(res);
-                        console.log(status);
-                    });
+    /*@ngInject*/
+    constructor($http, $state) {
+        this.$http = $http;
+        this.$state = $state;
+
+        $http.get('/api/gallery')
+            .then(res => {
+                this.galleries = res.data;
+                _.forEach(this.galleries, gallery => {
+                    $http.get('/api/photos/' + gallery.featuredId)
+                        .then(res => {
+                            gallery.featured = res.data;
+                        })
+                        .catch(res => {
+                            console.log(res);
+                        });
+                });
+            })
+            .catch(({data, status}) => {
+                console.log(data);
+                console.log(status);
+            })
+            .finally(() => {
+                this.loadingGalleries = false;
             });
-        })
-        .error(function(res, status) {
-            console.log(res);
-            console.log(status);
-        })
-        .finally(function() {
-            $scope.loadingGalleries = false;
-        });
+    }
 
-    $scope.goToGallery = function(id/*, event*/) {
-        $state.go('galleryEditor', {galleryId: id});
+    goToGallery(galleryId) {
+        this.$state.go('galleryEditor', {galleryId});
     };
 
-    $scope.toggleGalleryDeletion = function(gallery) {
+    toggleGalleryDeletion(gallery) {
         if(!gallery.deleted) {
             gallery.deleted = true;
-            $scope.dirty = true;
-            $scope.galleryDeletions.push(gallery);
+            this.dirty = true;
+            this.galleryDeletions.push(gallery);
         } else {
             gallery.deleted = false;
-            _.remove($scope.galleryDeletions, (thisGallery) => thisGallery._id === gallery._id);
-            if($scope.galleryDeletions.length === 0) {
-                $scope.dirty = false;
+            _.remove(this.galleryDeletions, {_id: gallery._id});
+            if(this.galleryDeletions.length === 0) {
+                this.dirty = false;
             }
         }
     };
 
-    $scope.saveChanges = function() {
+    saveChanges() {
         // Delete galleries
-        _.forEach($scope.galleryDeletions, function(gallery) {
-            $http.delete('/api/gallery/'+gallery._id)
-                .success(function(res, status) {
-                    _.remove($scope.galleries, gallery);
-                    $scope.dirty = false;
-                    console.log(res);
+        _.forEach(this.galleryDeletions, gallery => {
+            this.$http.delete('/api/gallery/' + gallery._id)
+                .then(({data, status}) => {
+                    _.remove(this.galleries, gallery);
+                    this.dirty = false;
+                    console.log(data);
                     console.log(status);
                 })
-                .error(function(res, status) {
+                .catch(res => {
                     console.log(res);
-                    console.log(status);
                 });
         });
     };
