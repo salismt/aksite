@@ -1,55 +1,56 @@
 'use strict';
 
-export default function($scope, $http) {
-    'ngInject';
-    $scope.errors = [];
-    $scope.loadingProjects = true;
-    $scope.projects = [];
-    $scope.projectDeletions = [];
-    $scope.projectChanges = [];
-    $scope.dirty = false;
+export default class ProjectManagerController {
+    errors = [];
+    loadingProjects = true;
+    projects = [];
+    projectDeletions = [];
+    projectChanges = [];
+    dirty = false;
 
-    $http.get('/api/projects')
-        .success(function(res) {
-            $scope.projects = res;
-        })
-        .error(function(res, status) {
-            console.log(res);
-            console.log(status);
-        })
-        .finally(function() {
-            $scope.loadingProjects = false;
-        });
+    /*@ngInject*/
+    constructor($http) {
+        this.$http = $http;
 
-    $scope.toggleProjectDeletion = function(project) {
+        $http.get('/api/projects')
+            .then(({data}) => {
+                this.projects = data;
+            })
+            .catch((data, status) => {
+                console.log(data);
+                console.log(status);
+            })
+            .finally(() => {
+                this.loadingProjects = false;
+            });
+    }
+
+    toggleProjectDeletion(project) {
         if(!project.deleted) {
             project.deleted = true;
-            $scope.dirty = true;
-            $scope.projectDeletions.push(project);
+            this.dirty = true;
+            this.projectDeletions.push(project);
         } else {
             project.deleted = false;
-            _.remove($scope.projectDeletions, function(thisProject) {
-                return thisProject._id === project._id;
-            });
-            if($scope.projectDeletions.length === 0) {
-                $scope.dirty = false;
+            _.remove(this.projectDeletions, thisProject =>  thisProject._id === project._id);
+            if(this.projectDeletions.length === 0) {
+                this.dirty = false;
             }
         }
     };
 
-    $scope.saveChanges = function() {
+    saveChanges() {
         // Delete projects
-        _.forEach($scope.projectDeletions, function(project) {
-            $http.delete('/api/projects/'+project._id)
-                .success(function(res, status) {
-                    _.remove($scope.projects, project);
-                    $scope.dirty = false;
-                    console.log(res);
+        _.forEach(this.projectDeletions, project => {
+            this.$http.delete('/api/projects/' + project._id)
+                .then(({data, status}) => {
+                    _.remove(this.projects, project);
+                    this.dirty = false;
+                    console.log(data);
                     console.log(status);
                 })
-                .error(function(res, status) {
+                .catch(res => {
                     console.log(res);
-                    console.log(status);
                 });
         });
     };

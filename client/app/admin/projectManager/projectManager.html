@@ -6,7 +6,7 @@
     </div>
     <div class="row">
         <div>
-            <a href="" ng-show="dirty" ng-click="saveChanges()" class="btn btn-primary btn-lg">
+            <a href="" ng-show="vm.dirty" ng-click="vm.saveChanges()" class="btn btn-primary btn-lg">
                 <i class="fa fa-save"></i>
                 Save Changes
             </a>
@@ -19,14 +19,14 @@
 
     <div class="row">
         <ul class="upload-grid">
-            <li class="upload-grid-item" ng-class="{deleted: project.deleted}" ng-repeat="project in projects">
+            <li class="upload-grid-item" ng-class="{deleted: project.deleted}" ng-repeat="project in vm.projects">
                 <div class="upload-grid-figure">
                     <a href="/admin/projects/project-editor/{{::project._id}}">
                         <img ng-src="/api/upload/{{::project.thumbnailId}}"/>
                     </a>
                 </div>
                 <div class="upload-grid-caption">
-                    <a href="#" ng-click="toggleProjectDeletion(project)"><i class="fa fa-trash fa-2x text-danger"></i></a>
+                    <a href="#" ng-click="vm.toggleProjectDeletion(project)"><i class="fa fa-trash fa-2x text-danger"></i></a>
                     <h2>{{::project.name}}</h2>
                 </div>
             </li>

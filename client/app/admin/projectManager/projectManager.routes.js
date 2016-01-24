@@ -6,6 +6,7 @@ export default function routes($stateProvider) {
         .state('admin.projects', {
             url: '/projects',
             template: require('./projectManager.html'),
-            controller: 'ProjectManagerController'
+            controller: 'ProjectManagerController',
+            controllerAs: 'vm'
         });
 }
