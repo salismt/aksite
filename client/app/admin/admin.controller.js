@@ -1,43 +1,45 @@
 'use strict';
 
-function AdminController($scope, $mdSidenav) {
-    'ngInject';
-    $scope.sections = [{
+export default class AdminController {
+    sections = [{
         title: 'Home',
         icon: 'fa-home',
-        link: 'admin.dashboard'
+        sref: 'admin.dashboard'
     }, {
         title: 'Users',
         icon: 'fa-user',
-        link: 'admin.users'
+        sref: 'admin.users'
     }, {
         title: 'Galleries',
         icon: 'fa-photo',
-        link: 'admin.galleries'
+        sref: 'admin.galleries'
     }, {
         title: 'Projects',
         icon: 'fa-briefcase',
-        link: 'admin.projects'
+        sref: 'admin.projects'
     }, {
         title: 'Blog',
         icon: 'fa-newspaper-o',
-        link: 'admin.blog'
+        sref: 'admin.blog'
     }, {
         title: 'Files',
         icon: 'fa-files-o',
-        link: 'admin.files'
+        sref: 'admin.files'
     }, {
         title: 'Settings',
         icon: 'fa-cog',
-        link: 'admin.settings'
+        sref: 'admin.settings'
     }];
 
-    $scope.toggleLeft = function() {
-        $mdSidenav('left').toggle()
+    /*@ngInject*/
+    constructor($mdSidenav) {
+        this.$mdSidenav = $mdSidenav;
+    }
+
+    toggleLeft() {
+        this.$mdSidenav('left').toggle()
             .then(function() {
                 //$log.debug("toggle left is done");
             });
     };
 }
-
-export default AdminController;

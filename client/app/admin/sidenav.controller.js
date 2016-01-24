@@ -1,9 +1,13 @@
 'use strict';
 
-export default function LeftController($scope, $timeout, $mdSidenav) {
-    'ngInject';
-    $scope.close = function() {
-        $mdSidenav('left').close()
+export default class LeftController {
+    /*@ngInject*/
+    constructor($mdSidenav) {
+        this.$mdSidenav = $mdSidenav;
+    }
+
+    close() {
+        this.$mdSidenav('left').close()
             .then(function() {
                 //$log.debug("close LEFT is done");
             });

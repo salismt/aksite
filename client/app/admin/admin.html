@@ -3,15 +3,15 @@
         <md-toolbar class="md-theme-indigo">
             <h1 class="md-toolbar-tools">Admin</h1>
         </md-toolbar>
-        <md-content class="" ng-controller="SidenavController">
-            <md-button ng-click="close()" class="md-primary" hide-gt-md>
+        <md-content class="" ng-controller="SidenavController as sidenav">
+            <md-button ng-click="sidenav.close()" class="md-primary" hide-gt-md>
                 Close Sidenav Left
             </md-button>
             <!--<p hide-md show-gt-md>-->
             <!--</p>-->
             <ul class="sidenav-menu">
-                <li class="" ng-repeat="section in sections">
-                    <md-button ui-sref="{{section.link}}">
+                <li class="" ng-repeat="section in admin.sections">
+                    <md-button ui-sref="{{section.sref}}">
                         <i class="fa fa-fw {{section.icon}}"></i> {{section.title}}
                     </md-button>
                 </li>
@@ -24,17 +24,11 @@
                 <!--The left sidenav will 'lock open' on a medium (>=960px wide) device.-->
             </p>
             <div>
-                <md-button ng-click="toggleLeft()"
+                <md-button ng-click="admin.toggleLeft()"
                            class="md-primary" hide-gt-md>
                     Toggle left
                 </md-button>
             </div>
-            <!--<div>-->
-            <!--<md-button ng-click="toggleRight()"-->
-            <!--class="md-primary">-->
-            <!--Toggle right-->
-            <!--</md-button>-->
-            <!--</div>-->
         </div>
         <div ui-view=""></div>
     </md-content>
