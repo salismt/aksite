@@ -36,7 +36,7 @@ class Navbar {
         this.isLoggedIn = (...args) => Auth.isLoggedIn(...args);
         this.isAdmin = (...args) => Auth.isAdmin(...args);
         this.getCurrentUser = (...args) => Auth.getCurrentUser(...args);
-        this.authLogout = Auth.logout;
+        this.authLogout = (...args) => Auth.logout();
         this.$location = $location;
     }
 
