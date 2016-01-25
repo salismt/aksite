@@ -1,109 +1,102 @@
 'use strict';
 
-export default function UserEditorController($scope, $http, $stateParams, $state, $sanitize, Upload, Auth) {
-    'ngInject';
-    $scope.loadingUser = true;
-    $scope.currentUser = Auth.getCurrentUser();
-    if(!$stateParams.userId) {
-        $scope.user = {
-            name: 'New User',
-            email: 'test@example.com',
-        };
-        $scope.loadingUser = false;
-    } else {
-        $http.get('/api/users/' + $stateParams.userId)
-            .success(function(res) {
-                console.log(res);
-                $scope.user = res;
-                $scope.filename = $scope.user.imageId;
-            })
-            .error(function(res, status) {
-                $scope.error = {status: status, res: res};
-            })
-            .finally(function() {
-                $scope.loadingUser = true;
-            });
-    }
-    console.log($scope.currentUser);
+export default class UserEditorController {
+    loadingUser = true;
+    submitted = false;
 
-    $scope.onFileSelect = function($files) {
+    /*@ngInject*/
+    constructor($http, $stateParams, $state, $sanitize, Upload, Auth) {
+        this.$http = $http;
+        this.$stateParams = $stateParams;
+        this.$state = $state;
+        this.$sanitize = $sanitize;
+        this.Upload = Upload;
+        this.Auth = Auth;
+
+        this.currentUser = Auth.getCurrentUser();
+
+        if(!$stateParams.userId) {
+            this.user = {
+                name: 'New User',
+                email: 'test@example.com'
+            };
+            this.loadingUser = false;
+        } else {
+            $http.get('/api/users/' + $stateParams.userId)
+                .then(({data}) => {
+                    console.log(data);
+                    this.user = data;
+                    this.filename = this.user.imageId;
+                })
+                .catch(res => {
+                    this.error = res;
+                })
+                .finally(() => {
+                    this.loadingUser = true;
+                });
+        }
+    }
+
+    onFileSelect($files) {
         //$files: an array of files selected, each file has name, size, and type.
         var file = $files[0];
 
         if(!file) {
-            $scope.filename = null;
-            $scope.fileToUpload = null;
+            this.filename = null;
+            this.fileToUpload = null;
         } else {
-            $scope.filename = file.name;
-            $scope.fileToUpload = file;
+            this.filename = file.name;
+            this.fileToUpload = file;
         }
     };
 
-    $scope.saveUser = function(form) {
-        $scope.submitted = true;
-        console.log(form);
+    saveUser(form) {
+        if(!form.$valid) { return; }
 
-        if(form.$valid) {
-            if($scope.filename === $scope.user.imageId || $scope.filename === null) {
-                $scope.upload = Upload.upload({
-                        url: 'api/users/' + $scope.user._id,
-                        method: 'PUT',
-                        fields: $scope.user
-                    })
-                    .progress(function(evt) {
-                        $scope.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
-                    })
-                    .success(function(data, status) {
-                        $scope.progress = undefined;
-                        console.log(status);
-                        console.log(data);
-                        $state.go('admin.users');
-                    })
-                    .error(function(response, status) {
-                        $scope.progress = undefined;
-                        console.log(status);
-                        console.log(response);
-                    })
-                    .xhr(function(xhr) {
-                        $scope.abort = function() {
-                            xhr.abort();
-                        };
-                    });
-            } else {
-                var updated = $scope.user;
-                updated.newImage = true;
-                $scope.upload = Upload.upload({
-                        url: 'api/users/' + $scope.user._id,
-                        method: 'PUT',
-                        file: $scope.fileToUpload,
-                        fields: updated
-                    })
-                    .progress(function(evt) {
-                        $scope.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
-                    })
-                    .success(function(data, status) {
-                        $scope.progress = undefined;
-                        console.log(status);
-                        console.log(data);
-                        $state.go('admin.users');
-                    })
-                    .error(function(response, status) {
-                        $scope.progress = undefined;
-                        console.log(status);
-                        console.log(response);
-                    })
-                    .xhr(function(xhr) {
-                        $scope.abort = function() {
-                            xhr.abort();
-                        };
-                    });
-            }
+        this.submitted = true;
+
+        let options = {
+            url: 'api/users/' + this.user._id,
+            method: 'PUT',
+            fields: this.user
+        };
+
+        if(this.filename !== this.user.imageId && this.filename !== null) {
+            options.fields.newImage = true;
+            options.file = this.fileToUpload;
+            options.headers = {
+                'Content-Type': this.fileToUpload.type
+            };
         }
+
+        this.upload = this.Upload.upload(options);
+
+        this.upload
+            .progress((evt) => {
+                this.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
+            })
+            .then(({data, status}) => {
+                this.progress = undefined;
+                console.log(status);
+                console.log(data);
+                this.$state.go('admin.users');
+            })
+            .catch(({data, status}) => {
+                this.progress = undefined;
+                console.log(status);
+                console.log(data);
+            });
+
+        this.upload
+            .xhr((xhr) => {
+                this.abort = function() {
+                    xhr.abort();
+                };
+            });
     };
 
-    $scope.cancel = function() {
-        if($scope.upload)
-            $scope.upload.abort();
-        $state.go('admin.users');
+    cancel() {
+        if(this.upload) { this.upload.abort(); }
+        this.$state.go('admin.users');
     };
 };

@@ -6,6 +6,7 @@ export default function routes($stateProvider) {
         .state('userEditor', {
             url: '/admin/users/:userId',
             template: require('./userEditor.html'),
-            controller: 'UserEditorController'
+            controller: 'UserEditorController',
+            controllerAs: 'vm'
         });
 }
