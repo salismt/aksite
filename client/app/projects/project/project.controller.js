@@ -17,8 +17,8 @@ export default class ProjectController {
 
                 this.content = marked(project.content);
             })
-            .then(({data, status}) =>{
-                this.error = status;
+            .catch((res) => {
+                this.error = res;
             });
     }
 }
