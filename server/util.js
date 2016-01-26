@@ -13,15 +13,9 @@ import gm from 'gm';
 import Grid from 'gridfs-stream';
 import BufferStream from './components/BufferStream';
 
-var gfs = {};
 var conn = mongoose.createConnection(config.mongo.uri);
-
 Grid.mongo = mongoose.mongo;
-
-conn.once('open', function(err) {
-    if(err) console.log(err);
-    else gfs = new Grid(conn.db);
-});
+const gfs = new Grid(conn.db);
 
 /**
  * Creates a thumbnail in GridFS based on the ID passed

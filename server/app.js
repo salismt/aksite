@@ -11,6 +11,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 mongoose.Promise = require('bluebird');
 import config from './config/environment';
+import Grid from 'gridfs-stream';
 
 if(config.env === 'production') {
     require('opbeat').start({
@@ -27,11 +28,6 @@ mongoose.connection.on('error', function(err) {
     process.exit(-1);
 });
 
-// Populate DB with sample data
-if(config.seedDB) {
-    require('./config/seed');
-}
-
 // Setup server
 var app = express();
 var server = require('http').createServer(app);
@@ -42,8 +38,27 @@ require('./routes')(app);
 
 // Start server
 function startServer() {
-    app.angularFullstack = server.listen(config.port, config.ip, function() {
-        console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+    Grid.mongo = mongoose.mongo;
+    var conn = mongoose.createConnection(config.mongo.uri);
+
+    conn.once('open', function(err) {
+        if(err) {
+            throw err;
+        }
+
+        // Populate DB with sample data
+        if(config.seedDB) {
+            // wait for DB seed
+            require('./config/seed')(() => {
+                app.angularFullstack = server.listen(config.port, config.ip, function() {
+                    console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+                });
+            });
+        } else {
+            app.angularFullstack = server.listen(config.port, config.ip, function() {
+                console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+            });
+        }
     });
 }
 
