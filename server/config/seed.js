@@ -25,10 +25,6 @@ import Grid from 'gridfs-stream';
 const Schema = mongoose.Schema;
 const gridSchema = new Schema({}, {strict: false});
 const gridModel1 = mongoose.model("gridModel1", gridSchema, "fs.files");
-const conn = mongoose.createConnection(config.mongo.uri);
-
-Grid.mongo = mongoose.mongo;
-const gfs = new Grid(conn.db);
 
 let cb = _.noop;
 
@@ -68,21 +64,10 @@ function deleteFiles() {
         });
 }
 
-export default function(callback) {
-    if(callback) {
-        cb = callback;
-    }
-
-    deleteThings()
-        .then(() => seedThings());
-
-    deleteFiles();
-}
-
 // Create an orphaned file
 util.saveFileFromFs('data/proj_0_cover.jpg')
-    .catch(console.log.bind(console))
-    .then(({_id}) => console.log(`Created orphaned file: ${_id}`));
+    .catch(console.log)
+    .tap(({_id}) => console.log(`Created orphaned file: ${_id}`));
 
 function deleteUsers() {
     return User.find({}).remove();
@@ -129,7 +114,7 @@ function createPosts(userImageId) {
         subheader: "This is test post number **"+n+"**",
         categories: ["tests"]
     })))
-        .then(() => console.log('finished populating posts'));
+        .tap(() => console.log('finished populating posts'));
 }
 
 function deleteProjects() {
@@ -150,7 +135,7 @@ This project was done as part of Boilermake, Purdue's first hackathon. It won 3r
 <a href=\"http://scottlittle.me/dotsynth\" class=\"btn btn-lg btn-primary\">Demo</a>
 <a href=\"https://github.com/Awk34/dotsynth\" class=\"btn btn-lg btn-default\"><i class=\"fa fa-github\"></i> View on GitHub</a>`
     })
-        .then(() => console.log('Finished creating project0'));
+        .tap(() => console.log('Finished creating project0'));
 }
 
 function deletePhotos() {
@@ -192,12 +177,12 @@ function createGallery(photos) {
         date: new Date(),
         hidden: false
     })
-        .then(({_id}) => console.log('Gallery Created', _id));
+        .tap(({_id}) => console.log('Gallery Created', _id));
 }
 
 deleteUsers().then(function() {
     return util.saveFileFromFs('client/assets/images/default_user.jpg')
-        .catch(console.log.bind(console))
+        .catch(console.log)
         .then(function(userImgFile) {
             let p1 = createUsers(userImgFile._id).then(function(users) {
                 console.log('finished populating users');
@@ -212,65 +197,65 @@ deleteUsers().then(function() {
                     .then(([projectCoverFile, projectThumbFile]) => {
                         return createProject(projectCoverFile._id, projectThumbFile._id);
                     })
-                    .catch(console.log.bind(console));
+                    .catch(console.log);
             });
 
-            let p3 = deletePhotos().then(function() {
-                return createPhotos().then(function(photos) {
-                    console.log('finished populating photos');
-
-                    return deleteGalleries().then(function() {
-                        return createGallery(photos);
-                    });
-                });
-            });
-
-            return Promise.all([p1, p2, p3])
+            return Promise.all([p1, p2])
                 .then(cb);
         });
 });
 
 function createPhoto(photo) {
-    var deferred = Q.defer();
-    var photoModel = {
-        name: photo.name,
-        info: photo.info,
-        hidden: false
-    };
-
-    util.saveFileFromFs(photo.sourceUri)
+    return util.saveFileFromFs(photo.sourceUri)
         .catch(console.log)
         .then(function(file) {
-            console.log(photo.name+' -> '+file._id);
-            photoModel.fileId = file._id;
+            console.log(`${photo.name} -> ${file._id}`);
 
             // Thumbnail generation
-            util.createThumbnail(file._id, {
+            let thumbPromise = util.createThumbnail(file._id, {
                 width: null,
                 height: 400
             })
-                .catch(console.log)
-                .then(function(thumbnail) {
-                    console.log(photo.name+' -> (thumb)'+thumbnail.id);
-                    photoModel.thumbnailId = thumbnail.id;
-                    photoModel.width = thumbnail.originalWidth;
-                    photoModel.height = thumbnail.originalHeight;
+                .tap(thumbnail => console.log(`${photo.name} -> (thumb)${thumbnail.id}`));
 
-                    // Square thumbnail generation
-                    util.createThumbnail(file._id)
-                        .catch(console.log)
-                        .then(function(sqThumbnail) {
-                            console.log(photo.name+' -> (sqThumb)'+sqThumbnail.id);
-                            photoModel.sqThumbnailId = sqThumbnail.id;
+            // Square Thumbnail Generation
+            let squareThumbPromise = util.createThumbnail(file._id)
+                .tap(sqThumbnail => console.log(`${photo.name} -> (sqThumb)${sqThumbnail.id}`));
 
-                            Photo.create(photoModel)
-                                .then(function(result) {
-                                    deferred.resolve(result);
-                                });
-                        });
+            return Promise.all([thumbPromise, squareThumbPromise]).then(([thumbnail, sqThumbnail]) => {
+                return Photo.create({
+                    name: photo.name,
+                    info: photo.info,
+                    hidden: false,
+                    fileId: file._id,
+                    thumbnailId: thumbnail.id,
+                    width: thumbnail.originalWidth,
+                    height: thumbnail.originalHeight,
+                    sqThumbnailId: sqThumbnail.id
                 });
-            //TODO: Run ^these^ two promises at once
+            });
         });
+}
 
-    return deferred.promise;
+export default function(callback) {
+    if(callback) {
+        cb = callback;
+    }
+
+    let p1 = deleteThings()
+        .then(seedThings);
+
+    let p2 = deleteFiles();
+
+    let p3 = deletePhotos().then(function() {
+        return createPhotos().then(function(photos) {
+            console.log('finished populating photos');
+
+            return deleteGalleries().then(function() {
+                return createGallery(photos);
+            });
+        });
+    });
+
+    return Promise.all([p1, p2, p3]);
 }
