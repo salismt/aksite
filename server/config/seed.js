@@ -206,6 +206,10 @@ function createGallery(photos) {
 }
 
 export default function() {
+    let projCoverPromise = util.saveFileFromFs('data/proj_0_cover.jpg');
+    let projCoverThumbPromise = util.saveFileFromFs('data/proj_0_thumb.jpg');
+    let userImagePromise = util.saveFileFromFs('client/assets/images/default_user.jpg');
+
     let p1 = deleteThings()
         .then(seedThings);
 
@@ -223,30 +227,26 @@ export default function() {
 
     // Create an orphaned file
     let p4 = util.saveFileFromFs('data/proj_0_cover.jpg')
-        .catch(console.log)
         .tap(({_id}) => console.log(`Created orphaned file: ${_id}`));
 
     let p5 = deleteUsers().then(function() {
-        return util.saveFileFromFs('client/assets/images/default_user.jpg')
-            .catch(console.log)
+        return userImagePromise
             .then(function(userImgFile) {
-                let p1 = createUsers(userImgFile._id).then(function(users) {
+                let p5_1 = createUsers(userImgFile._id).then(function(users) {
                     console.log('finished populating users');
-                    console.log(users);
 
                     return deletePosts()
                         .then(() => createPosts(userImgFile._id));
                 });
 
-                let p2 = deleteProjects().then(function() {
-                    return Promise.all([util.saveFileFromFs('data/proj_0_cover.jpg'), util.saveFileFromFs('data/proj_0_thumb.jpg')])
+                let p5_2 = deleteProjects().then(function() {
+                    return Promise.all([projCoverPromise, projCoverThumbPromise])
                         .then(([projectCoverFile, projectThumbFile]) => {
                             return createProject(projectCoverFile._id, projectThumbFile._id);
-                        })
-                        .catch(console.log);
+                        });
                 });
 
-                return Promise.all([p1, p2]);
+                return Promise.all([p5_1, p5_2]);
             });
     });
 
