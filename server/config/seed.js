@@ -58,8 +58,8 @@ function seedThings() {
 function deleteFiles() {
     return gridModel1.find({})
         .then(function(gridfiles) {
-            return _.map(gridfiles, file => util.deleteFile({_id: file._id}));
         });
+            return Promise.all(_.map(gridfiles, file => util.deleteFile({_id: file._id})));
 }
 
 function deleteUsers() {
