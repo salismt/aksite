@@ -38,6 +38,12 @@ require('./routes')(app);
 
 // Start server
 function startServer() {
+    app.angularFullstack = server.listen(config.port, config.ip, function() {
+        console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+    });
+}
+
+setImmediate(function() {
     Grid.mongo = mongoose.mongo;
     var conn = mongoose.createConnection(config.mongo.uri);
 
@@ -49,20 +55,13 @@ function startServer() {
         // Populate DB with sample data
         if(config.seedDB) {
             // wait for DB seed
-            require('./config/seed')(() => {
-                app.angularFullstack = server.listen(config.port, config.ip, function() {
-                    console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
-                });
-            });
+            require('./config/seed')()
+                .then(startServer());
         } else {
-            app.angularFullstack = server.listen(config.port, config.ip, function() {
-                console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
-            });
+            startServer();
         }
     });
-}
-
-setImmediate(startServer);
+});
 
 // Expose app
 export default app;

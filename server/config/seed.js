@@ -26,8 +26,6 @@ const Schema = mongoose.Schema;
 const gridSchema = new Schema({}, {strict: false});
 const gridModel1 = mongoose.model("gridModel1", gridSchema, "fs.files");
 
-let cb = _.noop;
-
 function deleteThings() {
     return Thing.find({}).remove();
 }
@@ -63,11 +61,6 @@ function deleteFiles() {
             return _.map(gridfiles, file => util.deleteFile({_id: file._id}));
         });
 }
-
-// Create an orphaned file
-util.saveFileFromFs('data/proj_0_cover.jpg')
-    .catch(console.log)
-    .tap(({_id}) => console.log(`Created orphaned file: ${_id}`));
 
 function deleteUsers() {
     return User.find({}).remove();
@@ -142,6 +135,38 @@ function deletePhotos() {
     return Photo.find({}).remove();
 }
 
+function createPhoto(photo) {
+    return util.saveFileFromFs(photo.sourceUri)
+        .catch(console.log)
+        .then(function(file) {
+            console.log(`${photo.name} -> ${file._id}`);
+
+            // Thumbnail generation
+            let thumbPromise = util.createThumbnail(file._id, {
+                width: null,
+                height: 400
+            })
+                .tap(thumbnail => console.log(`${photo.name} -> (thumb)${thumbnail.id}`));
+
+            // Square Thumbnail Generation
+            let squareThumbPromise = util.createThumbnail(file._id)
+                .tap(sqThumbnail => console.log(`${photo.name} -> (sqThumb)${sqThumbnail.id}`));
+
+            return Promise.all([thumbPromise, squareThumbPromise]).then(([thumbnail, sqThumbnail]) => {
+                return Photo.create({
+                    name: photo.name,
+                    info: photo.info,
+                    hidden: false,
+                    fileId: file._id,
+                    thumbnailId: thumbnail.id,
+                    width: thumbnail.originalWidth,
+                    height: thumbnail.originalHeight,
+                    sqThumbnailId: sqThumbnail.id
+                });
+            });
+        });
+}
+
 const PHOTO_PATHS = [
     'data/IMG_4149.JPG',
     'data/IMG_4150.JPG',
@@ -180,68 +205,7 @@ function createGallery(photos) {
         .tap(({_id}) => console.log('Gallery Created', _id));
 }
 
-deleteUsers().then(function() {
-    return util.saveFileFromFs('client/assets/images/default_user.jpg')
-        .catch(console.log)
-        .then(function(userImgFile) {
-            let p1 = createUsers(userImgFile._id).then(function(users) {
-                console.log('finished populating users');
-                console.log(users);
-
-                return deletePosts()
-                    .then(() => createPosts(userImgFile._id));
-            });
-
-            let p2 = deleteProjects().then(function() {
-                return Promise.all([util.saveFileFromFs('data/proj_0_cover.jpg'), util.saveFileFromFs('data/proj_0_thumb.jpg')])
-                    .then(([projectCoverFile, projectThumbFile]) => {
-                        return createProject(projectCoverFile._id, projectThumbFile._id);
-                    })
-                    .catch(console.log);
-            });
-
-            return Promise.all([p1, p2])
-                .then(cb);
-        });
-});
-
-function createPhoto(photo) {
-    return util.saveFileFromFs(photo.sourceUri)
-        .catch(console.log)
-        .then(function(file) {
-            console.log(`${photo.name} -> ${file._id}`);
-
-            // Thumbnail generation
-            let thumbPromise = util.createThumbnail(file._id, {
-                width: null,
-                height: 400
-            })
-                .tap(thumbnail => console.log(`${photo.name} -> (thumb)${thumbnail.id}`));
-
-            // Square Thumbnail Generation
-            let squareThumbPromise = util.createThumbnail(file._id)
-                .tap(sqThumbnail => console.log(`${photo.name} -> (sqThumb)${sqThumbnail.id}`));
-
-            return Promise.all([thumbPromise, squareThumbPromise]).then(([thumbnail, sqThumbnail]) => {
-                return Photo.create({
-                    name: photo.name,
-                    info: photo.info,
-                    hidden: false,
-                    fileId: file._id,
-                    thumbnailId: thumbnail.id,
-                    width: thumbnail.originalWidth,
-                    height: thumbnail.originalHeight,
-                    sqThumbnailId: sqThumbnail.id
-                });
-            });
-        });
-}
-
-export default function(callback) {
-    if(callback) {
-        cb = callback;
-    }
-
+export default function() {
     let p1 = deleteThings()
         .then(seedThings);
 
@@ -257,5 +221,34 @@ export default function(callback) {
         });
     });
 
-    return Promise.all([p1, p2, p3]);
+    // Create an orphaned file
+    let p4 = util.saveFileFromFs('data/proj_0_cover.jpg')
+        .catch(console.log)
+        .tap(({_id}) => console.log(`Created orphaned file: ${_id}`));
+
+    let p5 = deleteUsers().then(function() {
+        return util.saveFileFromFs('client/assets/images/default_user.jpg')
+            .catch(console.log)
+            .then(function(userImgFile) {
+                let p1 = createUsers(userImgFile._id).then(function(users) {
+                    console.log('finished populating users');
+                    console.log(users);
+
+                    return deletePosts()
+                        .then(() => createPosts(userImgFile._id));
+                });
+
+                let p2 = deleteProjects().then(function() {
+                    return Promise.all([util.saveFileFromFs('data/proj_0_cover.jpg'), util.saveFileFromFs('data/proj_0_thumb.jpg')])
+                        .then(([projectCoverFile, projectThumbFile]) => {
+                            return createProject(projectCoverFile._id, projectThumbFile._id);
+                        })
+                        .catch(console.log);
+                });
+
+                return Promise.all([p1, p2]);
+            });
+    });
+
+    return Promise.all([p1, p2, p3, p4, p5]);
 }
