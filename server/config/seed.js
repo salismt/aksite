@@ -27,7 +27,8 @@ const gridSchema = new Schema({}, {strict: false});
 const gridModel1 = mongoose.model("gridModel1", gridSchema, "fs.files");
 
 function deleteThings() {
-    return Thing.find({}).remove();
+    return Thing.find({}).remove()
+        .then(() => console.log('finished deleting things'));
 }
 
 function seedThings() {
@@ -57,13 +58,16 @@ function seedThings() {
  */
 function deleteFiles() {
     return gridModel1.find({})
-        .then(function(gridfiles) {
-        });
+        .then(gridfiles => {
+            console.log(`${gridfiles.length} files to delete`);
             return Promise.all(_.map(gridfiles, file => util.deleteFile({_id: file._id})));
+        })
+        .tap(() => console.log('finished deleting files'));
 }
 
 function deleteUsers() {
-    return User.find({}).remove();
+    return User.find({}).remove()
+        .then(() => console.log('finished deleting users'));
 }
 
 function createUsers(userImageId) {
@@ -88,7 +92,8 @@ function createUsers(userImageId) {
 }
 
 function deletePosts() {
-    return Post.find({}).remove();
+    return Post.find({}).remove()
+        .then(() => console.log('finished deleting posts'));
 }
 
 function createPosts(userImageId) {
@@ -111,7 +116,8 @@ function createPosts(userImageId) {
 }
 
 function deleteProjects() {
-    return Project.find({}).remove();
+    return Project.find({}).remove()
+        .then(() => console.log('finished deleting projects'));
 }
 
 function createProject(coverId, thumbnailId) {
@@ -132,12 +138,12 @@ This project was done as part of Boilermake, Purdue's first hackathon. It won 3r
 }
 
 function deletePhotos() {
-    return Photo.find({}).remove();
+    return Photo.find({}).remove()
+        .then(() => console.log('finished deleting photos'));
 }
 
 function createPhoto(photo) {
     return util.saveFileFromFs(photo.sourceUri)
-        .catch(console.log)
         .then(function(file) {
             console.log(`${photo.name} -> ${file._id}`);
 
@@ -191,6 +197,7 @@ function createPhotos() {
 
 function deleteGalleries() {
     return Gallery.find({}).remove()
+        .then(() => console.log('finished deleting galleries'));
 }
 
 function createGallery(photos) {
