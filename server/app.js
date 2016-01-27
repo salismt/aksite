@@ -56,7 +56,7 @@ setImmediate(function() {
         if(config.seedDB) {
             // wait for DB seed
             require('./config/seed')()
-                .then(startServer());
+                .then(startServer);
         } else {
             startServer();
         }
