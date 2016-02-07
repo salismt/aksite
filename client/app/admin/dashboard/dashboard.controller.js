@@ -39,7 +39,7 @@ function addChart(chartNum, data, options = {}) {
         React.unmountComponentAtNode(document.getElementById('chart' + chartNum));
         ReactDOM.render(<svg></svg>, document.getElementById('chart' + chartNum));
 
-        d3.select("#chart" + chartNum + " svg").datum(data).transition().duration(350).call(chart);
+        d3.select(`#chart${chartNum} svg`).datum(data).transition().duration(350).call(chart);
 
         return chart;
     });

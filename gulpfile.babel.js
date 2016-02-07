@@ -127,14 +127,6 @@ let transpileServer = lazypipe()
     })
     .pipe(plugins.sourcemaps.write, '.');
 
-let transpileClient = lazypipe()
-    .pipe(plugins.sourcemaps.init)
-    .pipe(plugins.babel, {
-        ignore: paths.client.assets.all,
-        optional: ['es7.classProperties']
-    })
-    .pipe(plugins.sourcemaps.write, '.');
-
 let mocha = lazypipe()
     .pipe(plugins.mocha, {
         reporter: 'spec',
@@ -200,12 +192,6 @@ gulp.task('styles', () => {
     return gulp.src(paths.client.mainStyle)
         .pipe(styles())
         .pipe(gulp.dest('.tmp/app'));
-});
-
-gulp.task('transpile:client', () => {
-    return gulp.src(paths.client.scripts)
-        .pipe(transpileClient())
-        .pipe(gulp.dest('.tmp'));
 });
 
 gulp.task('transpile:server', () => {

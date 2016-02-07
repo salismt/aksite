@@ -26,7 +26,7 @@ class MiniDaemon {
 
     constructor(oOwner, fTask, nRate, nLen) {
         if(!(this && this instanceof MiniDaemon)) { return; }
-        if(arguments.length < 2) { throw new TypeError("MiniDaemon - not enough arguments"); }
+        if(arguments.length < 2) { throw new TypeError('MiniDaemon - not enough arguments'); }
         if(oOwner) { this.owner = oOwner; }
         this.task = fTask;
         if(isFinite(nRate) && nRate > 0) {

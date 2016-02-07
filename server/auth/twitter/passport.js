@@ -1,10 +1,8 @@
 'use strict';
 
-var util = require('../../util'),
-    config = require('../../config/environment'),
-    passport = require('passport'),
-    TwitterStrategy = require('passport-twitter').Strategy,
-    request = require('request');
+import util from '../../util';
+import passport from 'passport';
+import {Strategy as TwitterStrategy} from 'passport-twitter';
 
 exports.setup = function(User, config) {
     passport.use(new TwitterStrategy({
