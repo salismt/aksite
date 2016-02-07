@@ -99,16 +99,20 @@ function whenServerReady(cb) {
  ********************/
 
 let lintClientScripts = lazypipe()
-    .pipe(plugins.jshint, `${clientPath}/.jshintrc`)
-    .pipe(plugins.jshint.reporter, 'jshint-stylish');
+    .pipe(plugins.eslint, `${clientPath}/.eslintrc`)
+    .pipe(plugins.eslint.format);
+
+let lintClientTestScripts = lazypipe()
+    .pipe(plugins.eslint, `${clientPath}/.eslintrc`)
+    .pipe(plugins.eslint.format);
 
 let lintServerScripts = lazypipe()
-    .pipe(plugins.jshint, `${serverPath}/.jshintrc`)
-    .pipe(plugins.jshint.reporter, 'jshint-stylish');
+    .pipe(plugins.eslint, `${serverPath}/.eslintrc`)
+    .pipe(plugins.eslint.format);
 
 let lintServerTestScripts = lazypipe()
-    .pipe(plugins.jshint, `${serverPath}/.jshintrc-spec`)
-    .pipe(plugins.jshint.reporter, 'jshint-stylish');
+    .pipe(plugins.eslint, `${clientPath}/.eslintrc`)
+    .pipe(plugins.eslint.format);
 
 let styles = lazypipe()
     .pipe(plugins.sourcemaps.init)
@@ -228,18 +232,18 @@ gulp.task('webpack:dist', function() {
 gulp.task('lint:scripts', cb => runSequence(['lint:scripts:client', 'lint:scripts:server'], cb));
 
 gulp.task('lint:scripts:client', () => {
-    gulp.src(_.union(paths.client.scripts, _.map(paths.client.test, blob => '!' + blob), ['!client/assets/**/*']))
+    gulp.src(_.union(paths.client.scripts, _.map(paths.client.test, blob => `!${blob}`), ['!client/assets/**/*']))
         .pipe(lintClientScripts());
 });
 
 gulp.task('lint:scripts:server', () => {
-    gulp.src(_.union(paths.server.scripts, ['!' + paths.server.unit, '!' + paths.server.integration]))
+    gulp.src(_.union(paths.server.scripts, [`!${paths.server.unit}`, `!${paths.server.integration}`]))
         .pipe(lintServerScripts());
 });
 
 gulp.task('lint:scripts:clientTest', () => {
     return gulp.src(paths.client.test)
-        .pipe(lintClientScripts());
+        .pipe(lintClientTestScripts());
 });
 
 gulp.task('lint:scripts:serverTest', () => {
