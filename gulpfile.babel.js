@@ -269,7 +269,7 @@ gulp.task('start:server', () => {
 gulp.task('watch', () => {
     plugins.livereload.listen();
 
-    gulp.watch('client/**/!(*.spec|*.mock).{html,js,scss}', ['webpack:dev']);
+    //gulp.watch('client/**/!(*.spec|*.mock).{html,js,scss}', ['webpack:dev']);
 
     plugins.watch(paths.server.scripts)
         .pipe(plugins.plumber())
