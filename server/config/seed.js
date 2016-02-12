@@ -222,15 +222,13 @@ export default function() {
 
     let p2 = deleteFiles();
 
-    let p3 = deletePhotos().then(function() {
-        return createPhotos().then(function(photos) {
-            console.log('finished populating photos');
-
-            return deleteGalleries().then(function() {
-                return createGallery(photos);
-            });
-        });
-    });
+    let p3 = Promise.coroutine(function*() {
+        yield deletePhotos();
+        let photos = yield createPhotos();
+        console.log('finished populating photos');
+        yield deleteGalleries();
+        return createGallery(photos);
+    })();
 
     // Create an orphaned file
     let p4 = util.saveFileFromFs('data/proj_0_cover.jpg')
