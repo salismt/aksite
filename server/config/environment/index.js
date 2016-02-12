@@ -23,6 +23,8 @@ var all = {
 
     server: '/server',
 
+    domain: process.env.DOMAIN || '',
+
     // Server port
     port: process.env.PORT || 9050,
 

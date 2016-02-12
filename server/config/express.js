@@ -3,7 +3,6 @@
  */
 
 'use strict';
-
 import express from 'express';
 import favicon from 'serve-favicon';
 import morgan from 'morgan';
@@ -19,12 +18,12 @@ import passport from 'passport';
 import session from 'express-session';
 import mongoose from 'mongoose';
 import connectMongo from 'connect-mongo';
-let MongoStore = connectMongo(session);
+const MongoStore = connectMongo(session);
 
 export default function(app) {
     var env = app.get('env');
 
-    app.set('views', config.root + '/server/views');
+    app.set('views', `${config.root}/server/views`);
     app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
     app.set('appPath', path.join(config.root, 'client'));
@@ -64,10 +63,10 @@ export default function(app) {
         xssProtection: true
     }));
 
-    if('production' === env) {
+    if(env === 'production') {
         app.use(favicon(path.join(config.root, 'client', 'favicon.ico')));
         app.use(express.static(path.join(config.root, 'client')));
-        app.set('appPath', config.root + '/client');
+        app.set('appPath', `${config.root}/client`);
         app.use(morgan('combined'));
     }
 
@@ -115,10 +114,10 @@ export default function(app) {
         app.use(require('connect-livereload')(livereloadServerConfig));
     }
 
-    if('development' === env || 'test' === env) {
+    if(env === 'development' || env === 'test') {
         app.use(express.static(path.join(config.root, '.tmp')));
         app.use(express.static(app.get('appPath')));
         app.use(morgan('dev'));
         app.use(errorHandler()); // Error handler - has to be last
     }
-};
+}

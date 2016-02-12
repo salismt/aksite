@@ -3,7 +3,7 @@
 
 // Test specific configuration
 // ===========================
-module.exports = {
+export default {
     // MongoDB connection options
     mongo: {
         uri: 'mongodb://localhost/aksite-test'

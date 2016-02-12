@@ -5,7 +5,7 @@
 'use strict';
 
 // Set default node environment to development
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'; // eslint-disable-line no-process-env
 
 import express from 'express';
 import mongoose from 'mongoose';
@@ -24,8 +24,8 @@ if(config.env === 'production') {
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
 mongoose.connection.on('error', function(err) {
-    console.error('MongoDB connection error: ' + err);
-    process.exit(-1);
+    console.error(`MongoDB connection error: ${err}`);
+    process.exit(-1); // eslint-disable-line no-process-exit
 });
 
 // Setup server

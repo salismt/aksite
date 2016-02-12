@@ -5,7 +5,6 @@
  */
 
 import stream from 'stream';
-import nodeUtil from 'util';
 
 /**
  * @class BufferStream
@@ -13,11 +12,11 @@ import nodeUtil from 'util';
 class BufferStream extends stream.Readable {
     /**
      * @constructor
-     * @param source {ArrayBuffer}
+     * @param {ArrayBuffer} source - ArrayBuffer to convert
      */
     constructor(source) {
         if(!Buffer.isBuffer(source)) {
-            throw(new Error('Source must be a buffer.'));
+            throw new Error('Source must be a buffer.');
         }
 
         super();

@@ -1,19 +1,18 @@
 'use strict';
 
 import _ from 'lodash';
-import mongoose from 'mongoose';
-import passport from 'passport';
 import config from '../config/environment';
 import jwt from 'jsonwebtoken';
 import compose from 'composable-middleware';
 import User from '../api/user/user.model';
 import expressJwt from 'express-jwt';
 
-var validateJwt = expressJwt({secret: config.secrets.session});
+const validateJwt = expressJwt({secret: config.secrets.session});
 
 /**
  * Attaches the user object to the request if authenticated
  * Otherwise returns 403
+ * @returns {Function} - express middleware
  */
 export function isAuthenticated() {
     return compose()
@@ -21,10 +20,10 @@ export function isAuthenticated() {
         .use(function(req, res, next) {
             // allow access_token to be passed through query parameter as well
             if(req.query && req.query.hasOwnProperty('access_token')) {
-                req.headers.authorization = 'Bearer ' + req.query.access_token;
+                req.headers.authorization = `Bearer ${req.query.access_token}`;
             }
             if(req.query && req.cookies.hasOwnProperty('token')) {
-                req.headers.authorization = 'Bearer ' + req.cookies.token;
+                req.headers.authorization = `Bearer ${req.cookies.token}`;
             }
             validateJwt(req, res, next);
         })
@@ -42,6 +41,8 @@ export function isAuthenticated() {
 
 /**
  * Checks if the user role meets the minimum requirements of the route
+ * @param {String} roleRequired - the role to check for
+ * @returns {Function} - express middleware
  */
 export function hasRole(roleRequired) {
     if(!roleRequired) throw new Error('Required role needs to be set');
@@ -50,10 +51,9 @@ export function hasRole(roleRequired) {
         .use(isAuthenticated())
         .use(function meetsRequirements(req, res, next) {
             if(config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf(roleRequired)) {
-                next();
-            }
-            else {
-                res.send(403);
+                return next();
+            } else {
+                return res.send(403);
             }
         });
 }
@@ -61,6 +61,7 @@ export function hasRole(roleRequired) {
 /**
  * If there is a user, appends it to the req
  * else req.user would be undefined
+ * @returns {Function} - express middleware
  */
 export function appendUser() {
     return compose()
@@ -72,16 +73,16 @@ export function appendUser() {
                         if(err) {
                             return next(err);
                         } else if(!user) {
-                            req.user = undefined;
+                            req.user = null;
                             return next();
                         } else {
                             req.user = user;
-                            next();
+                            return next();
                         }
                     });
                 } else {
-                    req.user = undefined;
-                    next();
+                    req.user = null;
+                    return next();
                 }
             });
         });
@@ -90,12 +91,13 @@ export function appendUser() {
 /**
  * Takes the token cookie and adds the header
  * for it on the request
+ * @returns {Function} - express middleware
  */
 export function addAuthHeaderFromCookie() {
     return compose()
         .use(function(req, res, next) {
             if(req.cookies.token) {
-                req.headers.authorization = 'Bearer ' + _.trim(req.cookies.token, '\"');
+                req.headers.authorization = `Bearer ${_.trim(req.cookies.token, '"')}`;
             }
             return next();
         });
@@ -103,6 +105,8 @@ export function addAuthHeaderFromCookie() {
 
 /**
  * Returns a jwt token signed by the app secret
+ * @param {String} id - ObjectId of user
+ * @returns {String} - jwt token
  */
 export function signToken(id) {
     return jwt.sign({_id: id}, config.secrets.session, {expiresIn: 60 * 60 * 5});
@@ -110,6 +114,9 @@ export function signToken(id) {
 
 /**
  * Set token cookie directly for oAuth strategies
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {*} - forgetaboutit
  */
 export function setTokenCookie(req, res) {
     if(!req.user) return res.json(404, {message: 'Something went wrong, please try again.'});

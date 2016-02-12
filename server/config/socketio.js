@@ -7,8 +7,7 @@
 var config = require('./environment');
 
 // When the user disconnects.. perform this
-function onDisconnect(socket) {
-}
+function onDisconnect(/*socket*/) {}
 
 // When the user connects.. perform this
 function onConnect(socket) {
@@ -43,9 +42,9 @@ module.exports = function(socketio) {
     // }));
 
     socketio.on('connection', function(socket) {
-        socket.address = socket.handshake.address !== null ?
-        socket.handshake.address.address + ':' + socket.handshake.address.port :
-            process.env.DOMAIN;
+        socket.address = socket.handshake.address !== null
+            ? `${socket.handshake.address.address}:${socket.handshake.address.port}`
+            : config.domain;
 
         socket.connectedAt = new Date();
 

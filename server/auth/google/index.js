@@ -1,10 +1,9 @@
 'use strict';
+import { Router } from 'express';
+import passport from 'passport';
+import * as auth from '../auth.service';
 
-var express = require('express');
-var passport = require('passport');
-var auth = require('../auth.service');
-
-var router = express.Router();
+var router = new Router();
 
 router
     .get('/', passport.authenticate('google', {
@@ -15,10 +14,9 @@ router
         ],
         session: false
     }))
-
     .get('/callback', auth.addAuthHeaderFromCookie(), auth.appendUser(), passport.authenticate('google', {
         failureRedirect: '/signup',
         session: false
     }), auth.setTokenCookie);
 
-module.exports = router;
+export default router;

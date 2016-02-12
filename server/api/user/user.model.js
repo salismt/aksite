@@ -1,9 +1,10 @@
 'use strict';
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
+import crypto from 'crypto';
+const authTypes = ['github', 'twitter', 'facebook', 'google', 'linkedin'];
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var crypto = require('crypto');
-var authTypes = ['github', 'twitter', 'facebook', 'google', 'linkedin'];
+/*eslint no-invalid-this:0*/
 
 var UserSchema = new Schema({
     name: String,
@@ -31,6 +32,10 @@ var UserSchema = new Schema({
     linkedin: {},
     github: {}
 });
+
+function validatePresenceOf(value) {
+    return value && value.length;
+}
 
 /**
  * Virtuals
@@ -63,8 +68,8 @@ UserSchema
     .virtual('token')
     .get(function() {
         return {
-            '_id': this._id,
-            'role': this.role
+            _id: this._id,
+            role: this.role
         };
     });
 
@@ -76,48 +81,42 @@ UserSchema
 UserSchema
     .path('email')
     .validate(function(email) {
-        if(authTypes.indexOf(this.provider) !== -1) return true;
-        return email.length;
+        return authTypes.indexOf(this.provider) !== -1 || email.length;
     }, 'Email cannot be blank');
 
 // Validate empty password
 UserSchema
     .path('hashedPassword')
     .validate(function(hashedPassword) {
-        if(authTypes.indexOf(this.provider) !== -1) return true;
-        return hashedPassword.length;
+        return authTypes.indexOf(this.provider) !== -1 || hashedPassword.length;
     }, 'Password cannot be blank');
 
 // Validate email is not taken
 UserSchema
     .path('email')
     .validate(function(value, respond) {
-        var self = this;
-        this.constructor.findOne({email: value}, function(err, user) {
+        this.constructor.findOne({email: value}, (err, user) => {
             if(err) throw err;
             if(user) {
-                if(self.id === user.id) return respond(true);
+                if(this.id === user.id) return respond(true);
                 return respond(false);
             }
             respond(true);
         });
     }, 'The specified email address is already in use.');
 
-var validatePresenceOf = function(value) {
-    return value && value.length;
-};
-
 /**
  * Pre-save hook
  */
 UserSchema
     .pre('save', function(next) {
-        if(!this.isNew) return next();
-
-        if(!validatePresenceOf(this.hashedPassword) && authTypes.indexOf(this.provider) === -1)
-            next(new Error('Invalid password'));
-        else
-            next();
+        if(!this.isNew) {
+            return next();
+        } else if(!validatePresenceOf(this.hashedPassword) && authTypes.indexOf(this.provider) === -1) {
+            return next(new Error('Invalid password'));
+        } else {
+            return next();
+        }
     });
 
 /**
@@ -126,37 +125,34 @@ UserSchema
 UserSchema.methods = {
     /**
      * Authenticate - check if the passwords are the same
-     *
-     * @param {String} plainText
-     * @return {Boolean}
+     * @param {String} plainText - plaintext password to check
+     * @return {Boolean} - true if the password, hashed & salted, matches the saved hashed password
      * @api public
      */
-    authenticate: function(plainText) {
+    authenticate(plainText) {
         return this.encryptPassword(plainText) === this.hashedPassword;
     },
 
     /**
      * Make salt
-     *
-     * @return {String}
+     * @return {String} - returns a new Adam Vanderwall
      * @api public
      */
-    makeSalt: function() {
+    makeSalt() {
         return crypto.randomBytes(16).toString('base64');
     },
 
     /**
      * Encrypt password
-     *
-     * @param {String} password
-     * @return {String}
+     * @param {String} password - password to encrypt
+     * @return {String} - hashed & salted password
      * @api public
      */
-    encryptPassword: function(password) {
+    encryptPassword(password) {
         if(!password || !this.salt) return '';
         var salt = new Buffer(this.salt, 'base64');
         return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
     }
 };
 
-module.exports = mongoose.model('User', UserSchema);
+export default mongoose.model('User', UserSchema);
