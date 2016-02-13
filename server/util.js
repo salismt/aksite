@@ -4,7 +4,7 @@
  * Server Utility Functions
  */
 import _ from 'lodash';
-import q from 'q';
+import Promise from 'bluebird';
 import request from 'request';
 import fs from 'fs';
 import config from './config/environment';
@@ -26,146 +26,139 @@ const gfs = new Grid(conn.db);
  * @param {number} [options.width=200] - The width of the thumbnail, in pixels
  * @param {number} [options.quality=90] - The quality of the thumbnail
  * @param {string} [options.filename=''] - The filename to use
+ * @returns {Promise} -
  */
 export function createThumbnail(id, options = {}) {
-    var deferred = q.defer(),
-        thumbnail = {};
+    return new Promise((resolve, reject) => {
+        var thumbnail = {};
 
-    _.defaults(options, {
-        height: 200,
-        width: 200,
-        quality: 90
-    });
-
-    var stream = gfs.createReadStream({_id: id});
-    stream.on('error', deferred.reject);
-    gm(stream, id)
-        .size({bufferStream: true}, function(err, size) {
-            if(err) return deferred.reject(err);
-            thumbnail.width = options.width;
-            thumbnail.height = options.height;
-            thumbnail.originalWidth = size.width;
-            thumbnail.originalHeight = size.height;
-            if(options.width === null) {
-                this.resize(options.width, options.height);
-            } else {
-                this.resize(options.width, options.height, "^");
-                this.crop(options.width, options.height, 0, 0);
-            }
-            this.quality(options.quality);
-            this.stream(function(err, outStream) {
-                if(err) return deferred.reject(err);
-                else {
-                    var writestream = gfs.createWriteStream({
-                        filename: options.filename
-                    });
-                    writestream.on('close', function(thumbnailFile) {
-                        thumbnail.file = thumbnailFile;
-                        thumbnail.id = thumbnailFile._id;
-
-                        return deferred.resolve(thumbnail);
-                    });
-                    outStream.pipe(writestream);
-                }
-            });
+        _.defaults(options, {
+            height: 200,
+            width: 200,
+            quality: 90
         });
 
-    return deferred.promise;
+        var stream = gfs.createReadStream({_id: id});
+        stream.on('error', reject);
+        gm(stream, id)
+            .size({bufferStream: true}, function(err, size) {
+                /*eslint no-invalid-this: 0*/
+                if(err) return reject(err);
+                thumbnail.width = options.width;
+                thumbnail.height = options.height;
+                thumbnail.originalWidth = size.width;
+                thumbnail.originalHeight = size.height;
+                if(options.width === null) {
+                    this.resize(options.width, options.height);
+                } else {
+                    this.resize(options.width, options.height, '^');
+                    this.crop(options.width, options.height, 0, 0);
+                }
+                this.quality(options.quality);
+                this.stream(function(err, outStream) {
+                    if(err) return reject(err);
+                    else {
+                        var writestream = gfs.createWriteStream({
+                            filename: options.filename
+                        });
+                        writestream.on('close', function(thumbnailFile) {
+                            thumbnail.file = thumbnailFile;
+                            thumbnail.id = thumbnailFile._id;
+
+                            return resolve(thumbnail);
+                        });
+                        outStream.pipe(writestream);
+                    }
+                });
+            });
+    });
 }
 
 /**
  * Makes a request for a file from a URL, and stores it in GridFS
- * @param {String} url
- * @param {Object} [options]
- * @param {String} [options.filename]
- * @param {String} [options.contentType]
+ * @param {String} url - Internet URL to grab file from
+ * @param {Object} [options={}] - options object
+ * @param {String} [options.filename] - filename to save it with
+ * @param {String} [options.contentType] - Content-Type to save it with
+ * @returns {Promise} -
  */
 export function saveFileFromUrl(url, options = {}) {
-    var deferred = q.defer();
-
-    var writestream = gfs.createWriteStream({
-        filename: options.filename,
-        contentType: options.contentType
+    return new Promise((resolve, reject) => {
+        var writestream = gfs.createWriteStream({
+            filename: options.filename,
+            contentType: options.contentType
+        });
+        writestream.on('error', reject);
+        writestream.on('close', function(file) {
+            resolve(file);
+        });
+        request(url).pipe(writestream);
     });
-    writestream.on('error', deferred.reject);
-    writestream.on('close', function(file) {
-        deferred.resolve(file);
-    });
-    request(url).pipe(writestream);
-
-    return deferred.promise;
 }
 
 /**
  * Stores a file from a filesystem path in GridFS
- * @param {String} uri
- * @param {Object} [options]
- * @param {String} [options.filename]
- * @param {String} [options.contentType]
+ * @param {String} uri - Filesystem URI to grab the file from
+ * @param {Object} [options={}] - options object
+ * @param {String} [options.filename] - filename to save it with
+ * @param {String} [options.contentType] - Content-Type to save it with
+ * @returns {Promise} -
  */
 export function saveFileFromFs(uri, options = {}) {
-    var deferred = q.defer();
-
-    var writestream = gfs.createWriteStream({
-        filename: options.filename,
-        contentType: options.contentType
+    return new Promise((resolve, reject) => {
+        var writestream = gfs.createWriteStream({
+            filename: options.filename,
+            contentType: options.contentType
+        });
+        writestream.on('error', reject);
+        writestream.on('close', function(file) {
+            resolve(file);
+        });
+        fs.createReadStream(uri).pipe(writestream);
     });
-    writestream.on('error', deferred.reject);
-    writestream.on('close', function(file) {
-        deferred.resolve(file);
-    });
-    fs.createReadStream(uri).pipe(writestream);
-
-    return deferred.promise;
 }
 
 /**
  * Stores a file from a filesystem path in GridFS
- * @param buffer {ArrayBuffer}
- * @param {Object} [options]
- * @param {String} [options.filename]
- * @param {String} [options.contentType]
+ * @param {ArrayBuffer} buffer - Buffer to save to GridFS
+ * @param {Object} [options={}] - options object
+ * @param {String} [options.filename] - filename to save it with
+ * @param {String} [options.contentType] - Content-Type to save it with
+ * @returns {Promise} -
  */
 export function saveFileFromBuffer(buffer, options = {}) {
-    var deferred = q.defer();
-
-    var writestream = gfs.createWriteStream({
-        filename: options.filename,
-        contentType: options.contentType
+    return new Promise((resolve, reject) => {
+        var writestream = gfs.createWriteStream({
+            filename: options.filename,
+            contentType: options.contentType
+        });
+        writestream.on('error', reject);
+        writestream.on('close', function(file) {
+            resolve(file);
+        });
+        new BufferStream(buffer).pipe(writestream);
     });
-    writestream.on('error', deferred.reject);
-    writestream.on('close', function(file) {
-        deferred.resolve(file);
-    });
-    new BufferStream(buffer).pipe(writestream);
-
-    return deferred.promise;
 }
-
 /**
  * Removes a file from GridFS
- * @param {Object} options
- * @param {string|ObjectID} options._id
+ * @param {Object} options - options object
+ * @param {string|ObjectId} options._id - guid of the file to remove
+ * @returns {Promise} - Resolves to the document deleted
  */
 export function deleteFile(options = {}) {
-    var deferred = q.defer();
+    return new Promise((resolve, reject) => {
+        if(!options._id) return reject('options._id is required');
 
-    if(!options._id) {
-        return deferred.reject('options._id is required');
-    }
-
-    gfs.remove({_id: options._id}, function(err, document) {
-        if(err) return deferred.reject(err);
-        deferred.resolve(document);
+        gfs.remove({_id: options._id}, function(err, document) {
+            if(err) return reject(err);
+            resolve(document);
+        });
     });
-
-    return deferred.promise;
 }
 
 /**
- * Returns whether or not the given string is a valid ObjectID
- * @param {string} objectId
- * @returns {boolean}
+ * @param {string} objectId - ObjectID string to test
+ * @returns {boolean} - whether or not the given string is a valid ObjectID
  */
 export function isValidObjectId(objectId) {
     return /^[0-9a-fA-F]{24}$/.test(objectId);
@@ -173,8 +166,9 @@ export function isValidObjectId(objectId) {
 
 /**
  * Sends a 500 Internal Server Error
- * @param res
- * @param [err]
+ * @param {Object} res - Express response object
+ * @param {*} [err] - Error
+ * @returns {null} -
  */
 export function handleError(res, err) {
     res.status(500).send(err);

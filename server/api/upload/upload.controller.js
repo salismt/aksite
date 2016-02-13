@@ -1,7 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
-import q from 'q';
+import Promise from 'bluebird';
 import * as util from '../../util';
 import path from 'path';
 import Photo from '../photo/photo.model';
@@ -159,8 +159,8 @@ exports.create = function(req, res) {
                             })
                     ];
 
-                    q.all(promises)
-                        .spread(function() {
+                    Promise.all(promises)
+                        .then(function() {
                             Photo.create(photoModel, function(err, photo) {
                                 if(err) return util.handleError(res, err);
                                 else return res.status(201).json(photo);
@@ -219,13 +219,13 @@ exports.clean = function(req, res) {
      * It then compares that list to a list of all documents
      * in GridFS. If the GridFS document isn't used in the first list, it gets deleted.
      */
-    q.all([
+    Promise.all([
         getIds(gridModel, ['_id']),
         getIds(Photo, ['fileId', 'thumbnailId', 'sqThumbnailId']),
         getIds(Project, ['thumbnailId', 'coverId']),
         getIds(User, ['imageId', 'smallImageId'])
     ])
-        .spread(function(fileIds, photoIds, projectIds, userIds) {
+        .then(function([fileIds, photoIds, projectIds, userIds]) {
             _.forEach(_.difference(_.invoke(fileIds, 'toString'), _.invoke(_.union(photoIds, projectIds, userIds), 'toString')), function(id) {
                 gfs.remove({_id: id}, function(err) {
                     if(err) return console.log(err);
@@ -239,11 +239,11 @@ exports.clean = function(req, res) {
      * in a Gallery, and then deletes those photos, along with the three files
      * in GridFS linked to each of them.
      */
-    q.all([
+    Promise.all([
         getIds(Gallery, ['photos']),
         Photo.find().exec()
     ])
-        .spread(function(photosInGalleries, allPhotos) {
+        .then(function([photosInGalleries, allPhotos]) {
             _.forEach(_.difference(_.invoke(_.pluck(allPhotos, '_id'), 'toString'), _.flatten(photosInGalleries)), function(id) {
                 Photo.findByIdAndRemove(id, function(err, photo) {
                     if(err) return console.log(err);
@@ -262,22 +262,20 @@ exports.clean = function(req, res) {
 /**
  * Takes an image from a GridFS document ID, uses GM to stream it to a buffer,
  * and then uses the exif library to extract its EXIF data and return it
- * @param id    - ID of the GridFS image file to get EXIF data for
- * @returns {deferred.promise|{then, always}}
+ * @param {String} id - ID of the GridFS image file to get EXIF data for
+ * @returns {Promise}
  */
 function getExif(id) {
-    var deferred = q.defer();
-
-    gm(gfs.createReadStream({_id: id}).on('error', console.log), id)
-        .toBuffer('JPG', function(err, buffer) {
-            if(err) return deferred.reject(err);
-            new ExifImage({ image: buffer }, function (error, exifData) {
-                if(error) deferred.reject(error);
-                else deferred.resolve(exifData);
+    return new Promise((resolve, reject) => {
+        gm(gfs.createReadStream({_id: id}).on('error', console.log), id)
+            .toBuffer('JPG', function(err, buffer) {
+                if(err) return reject(err);
+                new ExifImage({ image: buffer }, function(error, exifData) {
+                    if(error) reject(error);
+                    else resolve(exifData);
+                });
             });
-        });
-
-    return deferred.promise;
+    });
 }
 
 /**
@@ -285,15 +283,13 @@ function getExif(id) {
  * of it, and returns them all in one flattened array
  * @param model         - The mongoose model in which to get all of the documents for
  * @param properties    - An array of model property names, as strings
- * @returns {deferred.promise}
+ * @returns {Promise}
  */
 function getIds(model, properties) {
-    var deferred = q.defer();
-
-    model.find({}, function(err, files) {
-        if(err) deferred.reject(err);
-        else deferred.resolve(_.flatten(_.map(properties, _.partial(_.pluck, files))));
+    return new Promise((resolve, reject) => {
+        model.find({}, function(err, files) {
+            if(err) reject(err);
+            else resolve(_.flatten(_.map(properties, _.partial(_.pluck, files))));
+        });
     });
-
-    return deferred.promise;
 }

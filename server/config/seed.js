@@ -6,7 +6,6 @@
 'use strict';
 
 import _ from 'lodash';
-import Q from 'q';
 import Promise from 'bluebird';
 import Thing from '../api/thing/thing.model';
 import User from '../api/user/user.model';
