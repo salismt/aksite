@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 var fs = require('fs');
 var path = require('path');
 
@@ -36,7 +37,42 @@ module.exports = function makeWebpackConfig(options) {
     config.entry = {}
   } else {
     config.entry = {
-      app: './client/app/app.js'
+      app: './client/app/app.js',
+      vendor: [
+        'angular',
+        'angular-animate',
+        'angular-aria',
+        'angular-bootstrap',
+        'angular-cookies',
+        'angular-material',
+        'angular-messages',
+        'angular-resource',
+        'angular-sanitize',
+        'angular-socket-io',
+        'angular-ui-bootstrap',
+        'angular-ui-router',
+        'classie',
+        'desandro-get-style-property',
+        'desandro-matches-selector',
+        'doc-ready',
+        'eventie',
+        'fizzy-ui-utils',
+        'get-size',
+        'imagesloaded',
+        'jquery',
+        'jquery-bridget',
+        'lodash',
+        'marked',
+        'masonry-layout',
+        'moment',
+        'ng-file-upload',
+        'ng-forward',
+        'outlayer',
+        'react',
+        'react-dom',
+        'reflect-metadata',
+        'wolfy87-eventemitter'
+      ]
     }
   }
 
@@ -215,6 +251,17 @@ module.exports = function makeWebpackConfig(options) {
     // Disabled when in test mode or not in build mode
     new ExtractTextPlugin('[name].[hash].css', {
       disable: !BUILD || TEST
+    }),
+
+    new CommonsChunkPlugin({
+      name: 'vendor',
+
+      // filename: "vendor.js"
+      // (Give the chunk a different name)
+
+      minChunks: Infinity,
+      // (with more entries, this ensures that no other module
+      //  goes into the vendor chunk)
     })
   ];
 
