@@ -121,7 +121,7 @@ module.exports = function makeWebpackConfig(options) {
   if(TEST) {
     config.devtool = 'inline-source-map';
   } else if(BUILD || DEV) {
-    config.devtool = 'source-map';
+    config.devtool = 'eval-source-map';
   } else {
     config.devtool = 'eval';
   }
@@ -301,6 +301,8 @@ module.exports = function makeWebpackConfig(options) {
       })
     )
   }
+
+    config.cache = !!DEV;
 
     if(TEST) {
         config.stats = {
