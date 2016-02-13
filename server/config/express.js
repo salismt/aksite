@@ -109,7 +109,13 @@ export default function(app) {
          */
         compiler.plugin('done', triggerLiveReloadChanges);
 
-        app.use(webpackDevMiddleware(compiler));
+        app.use(webpackDevMiddleware(compiler, {
+            stats: {
+                colors: true,
+                timings: true,
+                chunks: false
+            }
+        }));
 
         app.use(require('connect-livereload')(livereloadServerConfig));
     }
