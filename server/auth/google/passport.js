@@ -1,81 +1,73 @@
 'use strict';
+import util from '../../util';
+import passport from 'passport';
+import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 
-var util = require('../../util'),
-    config = require('../../config/environment'),
-    passport = require('passport'),
-    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
-    request = require('request');
-
-exports.setup = function(User, config) {
+export function setup(User, config) {
     passport.use(new GoogleStrategy({
-            clientID: config.google.clientID,
-            clientSecret: config.google.clientSecret,
-            callbackURL: config.google.callbackURL,
-            passReqToCallback: true
-        },
-        function(req, accessToken, refreshToken, profile, done) {
-            // If user is logged in when request is processed
-            if(req.user) {
-                User.findById(req.user._id, function(err, user) {
-                    if(user) {
-                        user.providers.google = true;
-                        user.google = profile._json;
-                        user.save(function(err) {
-                            if(err) done(err);
-                            return done(err, user);
-                        });
-                    } else {
-                        return done(err);
-                    }
+        clientID: config.google.clientID,
+        clientSecret: config.google.clientSecret,
+        callbackURL: config.google.callbackURL,
+        passReqToCallback: true
+    }, function(req, accessToken, refreshToken, profile, done) {
+        // If user is logged in when request is processed
+        if(req.user) {
+            User.findById(req.user._id)
+                .catch(done)
+                .then(function(user) {
+                    if(!user) return done();
+
+                    user.providers.google = true;
+                    user.google = profile._json;
+                    return user.save()
+                        .catch(done)
+                        .then(savedUser => done(null, savedUser));
                 });
-            } else {
-                User.findOne({ 'google.id': profile._json.id })
-                    .exec(function(err, user) {
-                        if(err) return done(err);
+        } else {
+            User.findOne({ 'google.id': profile._json.id }).exec()
+                .catch(done)
+                .then(function(user) {
+                    // User is logging in with this account
+                    if(user) return done(null, user);
 
-                        // User is logging in with this account
-                        if(user) return done(err, user);
+                    // There are no users linked to this account. Make a new one
+                    profile._json.image.url = profile._json.image.url.replace('?sz=50', '');
 
-                        // There are no users linked to this account. Make a new one
-                        else {
-                            profile._json.image.url = profile._json.image.url.replace('?sz=50', '');
+                    var newUser = new User({
+                        name: profile.displayName,
+                        email: profile.emails[0].value,
+                        role: 'user',
+                        provider: 'google',
+                        providers: { google: true },
+                        google: profile._json
+                    });
 
-                            var newUser = new User({
-                                name: profile.displayName,
-                                email: profile.emails[0].value,
-                                role: 'user',
-                                provider: 'google',
-                                providers: { google: true },
-                                google: profile._json
-                            });
+                    var profilePic = profile._json.image.url;
+                    var picName = profilePic.split('/')[profilePic.split('/').length - 1];
 
-                            var profilePic = profile._json.image.url,
-                                picName = profilePic.split('/')[profilePic.split('/').length-1];
+                    return util.saveFileFromUrl(profilePic, {
+                        filename: picName,
+                        contentType: 'image/jpeg'
+                    })
+                        .catch(done)
+                        .then(function(file) {
+                            console.log(file);
+                            newUser.imageId = file._id;
 
-                            util.saveFileFromUrl(profilePic, {
-                                filename: picName,
-                                contentType: 'image/jpeg'
-                            })
+                            return util.createThumbnail(file._id, {filename: picName})
                                 .catch(done)
-                                .then(function(file) {
-                                    console.log(file);
-                                    newUser.imageId = file._id;
+                                .then(function(thumbnail) {
+                                    console.log(thumbnail);
+                                    newUser.smallImageId = thumbnail.id;
 
-                                    util.createThumbnail(file._id, {filename: picName+'_thumbnail'})
+                                    return newUser.save
                                         .catch(done)
-                                        .then(function(thumbnail) {
-                                            console.log(thumbnail);
-                                            newUser.smallImageId = thumbnail.id;
-
-                                            newUser.save(function(err) {
-                                                if(err) return done(err);
-                                                return done(err, newUser);
-                                            });
+                                        .then(savedUser => {
+                                            done(null, savedUser);
                                         });
                                 });
-                        }
-                    });
-            }
+                        });
+                });
         }
-    ));
-};
+    }));
+}
