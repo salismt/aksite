@@ -35,7 +35,7 @@ module.exports = function makeWebpackConfig(options) {
         config.entry = {};
     } else {
         config.entry = {
-            app: './client/app/app.js',
+            app: './client/app/index.js',
             vendor: [
                 'angular',
                 'angular-animate',
@@ -65,6 +65,7 @@ module.exports = function makeWebpackConfig(options) {
                 'moment',
                 'ng-file-upload',
                 'ng-forward',
+                'opbeat-js',
                 'outlayer',
                 'react',
                 'react-dom',
