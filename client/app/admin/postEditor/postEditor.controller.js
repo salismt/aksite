@@ -102,7 +102,7 @@ export default class PostEditorController {
         };
 
         // Uploading image
-        if(!(this.filename === this.post.imageId || this.filename === null)) {
+        if(this.fileToUpload && !(this.filename === this.post.imageId || this.filename === null)) {
             if(!this.newPost) {
                 options.fields.newImage = true;
             }

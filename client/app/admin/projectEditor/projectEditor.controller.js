@@ -95,7 +95,7 @@ export default class ProjectEditorController {
         };
 
         // Uploading image
-        if(!(this.filename === this.project.coverId || this.filename === null)) {
+        if(this.fileToUpload && !(this.filename === this.project.coverId || this.filename === null)) {
             if(!this.newProject) {
                 options.fields.newImage = true;
             }
