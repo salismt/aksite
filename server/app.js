@@ -13,13 +13,12 @@ mongoose.Promise = require('bluebird');
 import config from './config/environment';
 import Grid from 'gridfs-stream';
 
-if(config.env === 'production') {
-    require('opbeat').start({
-        organizationId: config.opbeat.orgId,
-        appId: config.opbeat.appId,
-        secretToken: config.opbeat.secret
-    });
-}
+require('opbeat').start({
+    organizationId: config.opbeat.orgId,
+    appId: config.opbeat.appId,
+    secretToken: config.opbeat.secret,
+    active: config.env === 'production'
+});
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
