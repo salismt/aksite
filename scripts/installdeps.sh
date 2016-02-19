@@ -7,4 +7,4 @@ source ~/.bash_profile
 source ~/.bashrc
 nvm install 4.3.0
 
-npm install -g forever gulp
+npm install -g forever gulp-cli
