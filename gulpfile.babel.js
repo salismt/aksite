@@ -317,7 +317,7 @@ gulp.task('test:server', cb => {
         'env:test',
         'mocha:unit',
         //'mocha:integration',
-        'mocha:coverage',
+        // 'mocha:coverage',
         cb);
 });
 
