@@ -107,7 +107,12 @@ exports.create = function(req, res) {
         var postModel = _.pick(fields, ['title', 'subheader', 'alias', 'content']);
 
         postModel.date = !_.isEmpty(fields.date) ? new Date(fields.date) : new Date();
-        postModel.author = JSON.parse(fields.author);
+        postModel.author = {
+            name: fields['author[name]'],
+            id: fields['author[id]'],
+            imageId: fields['author[imageId]'],
+            smallImageId: fields['author[smallImageId]']
+        };
         postModel.hidden = !_.isEmpty(fields.hidden) ? !!JSON.parse(fields.hidden) : false;
         postModel.categories = !_.isEmpty(fields.categories) ? JSON.parse(fields.categories) : [];
 
