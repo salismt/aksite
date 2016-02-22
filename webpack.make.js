@@ -250,9 +250,11 @@ module.exports = function makeWebpackConfig(options) {
         // Disabled when in test mode or not in build mode
         new ExtractTextPlugin('[name].[hash].css', {
             disable: !BUILD || TEST
-        }),
+        })
+    ];
 
-        new CommonsChunkPlugin({
+    if(!TEST) {
+        config.plugins.push(new CommonsChunkPlugin({
             name: 'vendor',
 
             // filename: "vendor.js"
@@ -261,8 +263,8 @@ module.exports = function makeWebpackConfig(options) {
             minChunks: Infinity
             // (with more entries, this ensures that no other module
             //  goes into the vendor chunk)
-        })
-    ];
+        }));
+    }
 
     // Skip rendering index.html in test mode
     if(!TEST && !DEV) {
