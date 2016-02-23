@@ -7,7 +7,6 @@ export NVM_DIR="/root/.nvm"
 
 nvm use 4.3.1
 
-aws s3 cp s3://aksite-deploy/aksite_env.sh /root/
-/root/aksite_env.sh
+aws s3 cp s3://aksite-deploy/env /root/
 
-NODE_ENV=production forever start --minUptime 1000ms --spinSleepTime 1000ms /home/ubuntu/aksite/dist/server
+NODE_ENV=production $(/root/env) forever start --minUptime 1000ms --spinSleepTime 1000ms /home/ubuntu/aksite/dist/server
