@@ -4,6 +4,17 @@
 var path = require('path');
 var _ = require('lodash');
 
+let localEnv;
+try {
+    localEnv = require('../local.env');
+} catch(e) {
+    localEnv = {};
+}
+
+_.forEach(localEnv, (value, key) => {
+    process.env[key] = value;
+});
+
 //function requiredProcessEnv(name) {
 //    if(!process.env[name]) {
 //        throw new Error('You must set the ' + name + ' environment variable');
