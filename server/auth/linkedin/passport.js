@@ -1,5 +1,8 @@
 'use strict';
-import util from '../../util';
+import {
+    saveFileFromUrl,
+    createThumbnail
+} from '../../util';
 import passport from 'passport';
 import { Strategy as LinkedInStrategy } from 'passport-linkedin-oauth2';
 
@@ -61,7 +64,7 @@ export function setup(User, config) {
                         var profilePic = profile._json.pictureUrls._total < 1 ? profile._json.pictureUrl : profile._json.pictureUrls.values[0];
                         var picName = profilePic.split('/')[profilePic.split('/').length - 1];
 
-                        return util.saveFileFromUrl(profilePic, {
+                        return saveFileFromUrl(profilePic, {
                             filename: picName,
                             contentType: 'image/jpeg'
                         })
@@ -70,13 +73,13 @@ export function setup(User, config) {
                                 console.log(file);
                                 newUser.imageId = file._id;
 
-                                return util.createThumbnail(file._id, {filename: `${picName}_thumbnail`})
+                                return createThumbnail(file._id, {filename: `${picName}_thumbnail`})
                                     .catch(done)
                                     .then(function(thumbnail) {
                                         console.log(thumbnail);
                                         newUser.smallImageId = thumbnail.id;
 
-                                        return newUser.save
+                                        return newUser.save()
                                             .catch(done)
                                             .then(savedUser => {
                                                 done(null, savedUser);
