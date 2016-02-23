@@ -37,7 +37,7 @@ export default class PostEditorController {
             this.loadingPost = false;
             this.newPost = true;
         } else {
-            $http.get('/api/posts/' + $stateParams.postId)
+            $http.get(`/api/posts/${$stateParams.postId}`)
                 .then(({data}) => {
                     this.post = data;
                     this.post.categories = this.post.categories.join(', ');
