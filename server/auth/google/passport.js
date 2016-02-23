@@ -1,7 +1,7 @@
 'use strict';
 import util from '../../util';
 import passport from 'passport';
-import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 export function setup(User, config) {
     passport.use(new GoogleStrategy({
