@@ -2,9 +2,7 @@
  * Populate DB with sample data on server start
  * to disable, edit config/environment/index.js, and set `seedDB: false`
  */
-
 'use strict';
-
 import _ from 'lodash';
 import Promise from 'bluebird';
 import Thing from '../api/thing/thing.model';
@@ -203,7 +201,7 @@ function createGallery(photos) {
     return Gallery.create({
         name: 'testGallery',
         info: 'Test gallery',
-        photos: _.pluck(photos, '_id'),
+        photos: _.map(photos, '_id'),
         featuredId: photos[0]._id,
         date: new Date(),
         hidden: false

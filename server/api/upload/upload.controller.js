@@ -244,7 +244,7 @@ exports.clean = function(req, res) {
         Photo.find().exec()
     ])
         .then(function([photosInGalleries, allPhotos]) {
-            _.forEach(_.difference(_.invoke(_.pluck(allPhotos, '_id'), 'toString'), _.flatten(photosInGalleries)), function(id) {
+            _.forEach(_.difference(_.invoke(_.map(allPhotos, '_id'), 'toString'), _.flatten(photosInGalleries)), function(id) {
                 Photo.findByIdAndRemove(id, function(err, photo) {
                     if(err) return console.log(err);
 
@@ -289,7 +289,7 @@ function getIds(model, properties) {
     return new Promise((resolve, reject) => {
         model.find({}, function(err, files) {
             if(err) reject(err);
-            else resolve(_.flatten(_.map(properties, _.partial(_.pluck, files))));
+            else resolve(_.flatten(_.map(properties, _.partial(_.map, files))));
         });
     });
 }
