@@ -226,7 +226,7 @@ exports.clean = function(req, res) {
         getIds(User, ['imageId', 'smallImageId'])
     ])
         .then(function([fileIds, photoIds, projectIds, userIds]) {
-            _.forEach(_.difference(_.invoke(fileIds, 'toString'), _.invoke(_.union(photoIds, projectIds, userIds), 'toString')), function(id) {
+            _.forEach(_.difference(_.invokeMap(fileIds, 'toString'), _.invokeMap(_.union(photoIds, projectIds, userIds), 'toString')), function(id) {
                 gfs.remove({_id: id}, function(err) {
                     if(err) return console.log(err);
                     console.log('Delete file', id);
@@ -244,7 +244,7 @@ exports.clean = function(req, res) {
         Photo.find().exec()
     ])
         .then(function([photosInGalleries, allPhotos]) {
-            _.forEach(_.difference(_.invoke(_.map(allPhotos, '_id'), 'toString'), _.flatten(photosInGalleries)), function(id) {
+            _.forEach(_.difference(_.invokeMap(_.map(allPhotos, '_id'), 'toString'), _.flatten(photosInGalleries)), function(id) {
                 Photo.findByIdAndRemove(id, function(err, photo) {
                     if(err) return console.log(err);
 
