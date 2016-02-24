@@ -205,7 +205,7 @@
     "webpack-stream": "^3.1.0"
   },
   "engines": {
-    "node": "^4.2.3",
+    "node": "^4.3.1",
     "npm": "^2.14.2"
   },
   "scripts": {
