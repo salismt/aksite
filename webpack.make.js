@@ -152,7 +152,14 @@ module.exports = function makeWebpackConfig(options) {
                     'runtime',
                     'es7.classProperties',
                     'es7.decorators'
-                ]
+                ],
+                resolveModuleSource(originalSource) {
+                    if(originalSource === 'lodash') {
+                        return 'lodash-es';
+                    } else {
+                        return originalSource;
+                    }
+                }
             },
             exclude: /node_modules/
         }, {
