@@ -1,5 +1,6 @@
 // Karma configuration
 // http://karma-runner.github.io/0.13/config/configuration-file.html
+/*eslint-env node*/
 
 import makeWebpackConfig from './webpack.make';
 
@@ -9,7 +10,7 @@ module.exports = function(config) {
         basePath: '',
 
         // testing framework to use (jasmine/mocha/qunit/...)
-        frameworks: ['mocha', 'chai', 'sinon-chai', 'chai-as-promised', 'chai-things', 'phantomjs-shim'],
+        frameworks: ['mocha', 'chai', 'sinon-chai', 'chai-as-promised', 'chai-things'],
         reporters: ['mocha', 'coverage'],
 
         files: [
@@ -48,7 +49,6 @@ module.exports = function(config) {
             require('karma-mocha'),
             require('karma-mocha-reporter'),
             require('karma-phantomjs-launcher'),
-            require('karma-phantomjs-shim'),
             require('karma-script-launcher'),
             require('karma-webpack'),
         ],
