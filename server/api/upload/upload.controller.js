@@ -270,7 +270,7 @@ function getExif(id) {
         gm(gfs.createReadStream({_id: id}).on('error', console.log), id)
             .toBuffer('JPG', function(err, buffer) {
                 if(err) return reject(err);
-                new ExifImage({ image: buffer }, function(error, exifData) {
+                ExifImage({ image: buffer }, function(error, exifData) {
                     if(error) reject(error);
                     else resolve(exifData);
                 });
@@ -286,10 +286,8 @@ function getExif(id) {
  * @returns {Promise}
  */
 function getIds(model, properties) {
-    return new Promise((resolve, reject) => {
-        model.find({}, function(err, files) {
-            if(err) reject(err);
-            else resolve(_.flatten(_.map(properties, _.partial(_.map, files))));
+    return model.find({}).exec()
+        .then(function(files) {
+            return _.flatten(_.map(properties, _.partial(_.map, files)));
         });
-    });
 }

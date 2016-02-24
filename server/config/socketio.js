@@ -1,10 +1,8 @@
 /**
  * Socket.io configuration
  */
-
 'use strict';
-
-var config = require('./environment');
+import config from './environment';
 
 // When the user disconnects.. perform this
 function onDisconnect(/*socket*/) {}
@@ -13,7 +11,7 @@ function onDisconnect(/*socket*/) {}
 function onConnect(socket) {
     // When the client emits 'info', this listens and executes
     socket.on('info', function(data) {
-        console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
+        console.info(`[${socket.address}] ${JSON.stringify(data, null, 2)}`);
     });
 
     // Insert sockets below
@@ -25,7 +23,7 @@ function onConnect(socket) {
     require('../api/thing/thing.socket').register(socket);
 }
 
-module.exports = function(socketio) {
+export default function(socketio) {
     // socket.io (v1.x.x) is powered by debug.
     // In order to see all the debug output, set DEBUG (in server/config/local.env.js) to including the desired scope.
     //
@@ -51,11 +49,11 @@ module.exports = function(socketio) {
         // Call onDisconnect.
         socket.on('disconnect', function() {
             onDisconnect(socket);
-            console.info('[%s] DISCONNECTED', socket.address);
+            console.info(`[${socket.address}] DISCONNECTED`);
         });
 
         // Call onConnect.
         onConnect(socket);
-        console.info('[%s] CONNECTED', socket.address);
+        console.info(`[${socket.address}] CONNECTED`);
     });
-};
+}
