@@ -481,7 +481,9 @@ gulp.task('copy:fonts:dist', function(cb) {
 gulp.task('copy:server', function() {
     return gulp.src([
         'package.json',
-        'server/**/*'
+        'server/**/*',
+        'appspec.yml',
+        'scripts/*'
     ], {cwdbase: true})
         .pipe(gulp.dest(paths.dist));
 });
