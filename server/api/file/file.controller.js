@@ -1,5 +1,4 @@
 'use strict';
-
 import _ from 'lodash';
 import * as util from '../../util';
 import config from '../../config/environment';
@@ -7,10 +6,7 @@ import mongoose from 'mongoose';
 import gridform from 'gridform';
 import File from './file.model';
 import Grid from 'gridfs-stream';
-import gm from 'gm';
-import * as auth from '../../auth/auth.service';
-
-let Schema = mongoose.Schema;
+// import * as auth from '../../auth/auth.service';
 
 const DEFAULT_PAGESIZE = 25;
 const MAX_PAGESIZE = 100;

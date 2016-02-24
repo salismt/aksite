@@ -89,7 +89,7 @@ export default function(app) {
                 }
             });
         };
-        if (livereloadServerConfig.port) {
+        if(livereloadServerConfig.port) {
             livereloadServer.listen(livereloadServerConfig.port, triggerLiveReloadChanges);
         } else {
             /**
