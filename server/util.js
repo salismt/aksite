@@ -1,8 +1,7 @@
-'use strict';
-
 /**
  * Server Utility Functions
  */
+'use strict';
 import _ from 'lodash';
 import Promise from 'bluebird';
 import request from 'request';

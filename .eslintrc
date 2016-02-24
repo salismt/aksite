@@ -32,11 +32,12 @@
         "no-unexpected-multiline": 2,                               //Avoid code that looks like two expressions but is actually one
         "no-unreachable": 2,                                        //disallow unreachable statements after a return, throw, continue, or break statement
         "use-isnan": 2,                                             //disallow comparisons with the value NaN
-        "valid-jsdoc": 2,                                           //Ensure JSDoc comments are valid
+        "valid-jsdoc": 0,                                           //Ensure JSDoc comments are valid
         "valid-typeof": 2,                                          //Ensure that the results of typeof are compared against a valid string
 
         //Best Practices
         "accessor-pairs": 0,                                        //Enforces getter/setter pairs in objects
+        "array-callback-return": 2,                                 //Enforces return statements in callbacks of array's methods
         "block-scoped-var": 0,                                      //treat var statements as if they were block scoped
         "complexity": 0,                                            //specify the maximum cyclomatic complexity allowed in a program
         "consistent-return": 0,                                     //require return statements to either always or never specify values
@@ -51,15 +52,17 @@
         "no-case-declarations": 0,                                  //disallow lexical declarations in case clauses
         "no-div-regex": 2,                                          //disallow division operators explicitly at beginning of regular expression
         "no-else-return": 0,                                        //disallow else after a return in an if
-        "no-empty-label": 2,                                        //disallow use of labels for anything other than loops and switches
+        "no-empty-function": 0,                                     //disallow use of empty functions
         "no-empty-pattern": 2,                                      //disallow use of empty destructuring patterns
         "no-eq-null": 2,                                            //disallow comparisons to null without a type-checking operator
         "no-eval": 2,                                               //disallow use of eval()
         "no-extend-native": 0,                                      //disallow adding to native types
         "no-extra-bind": 1,                                         //disallow unnecessary function binding
+        "no-extra-label": 2,                                        //disallow unnecessary labels
         "no-fallthrough": 0,                                        //disallow fallthrough of case statements
         "no-floating-decimal": 2,                                   //disallow the use of leading or trailing decimal points in numeric literals
         "no-implicit-coercion": 0,                                  //disallow the type conversions with shorter notations
+        "no-implicit-globals": 0,                                   //disallow var and named functions in global scope
         "no-implied-eval": 2,                                       //disallow use of eval()-like methods
         "no-invalid-this": 1,                                       //disallow this keywords outside of classes or class-like objects
         "no-iterator": 2,                                           //disallow usage of __iterator__ property
@@ -81,10 +84,13 @@
         "no-redeclare": 2,                                          //disallow declaring the same variable more than once
         "no-return-assign": 2,                                      //disallow use of assignment in return statement
         "no-script-url": 2,                                         //disallow use of javascript: urls.
+        "no-self-assign": 2,                                        //disallow assignments where both sides are exactly the same
         "no-self-compare": 2,                                       //disallow comparisons where both sides are exactly the same
         "no-sequences": 2,                                          //disallow use of the comma operator
         "no-throw-literal": 2,                                      //restrict what can be thrown as an exception
+        "no-unmodified-loop-condition": 0,                          //disallow unmodified conditions of loops
         "no-unused-expressions": 0,                                 //disallow usage of expressions in statement position
+        "no-unused-labels": 2,                                      //disallow unused labels
         "no-useless-call": 2,                                       //disallow unnecessary .call() and .apply()
         "no-useless-concat": 2,                                     //disallow unnecessary concatenation of literals or template literals
         "no-void": 0,                                               //disallow use of the void operator
@@ -119,6 +125,7 @@
         "no-new-require": 2,                                        //disallow use of new operator with the require function
         "no-path-concat": 2,                                        //disallow string concatenation with __dirname and __filename
         "no-process-exit": 2,                                       //disallow process.exit()
+        "no-restricted-imports": 0,                                 //restrict usage of specified node imports
         "no-restricted-modules": 0,                                 //restrict usage of specified node modules
         "no-sync": 1,                                               //disallow use of synchronous methods
 
@@ -134,11 +141,21 @@
         "eol-last": 2,                                              //enforce newline at the end of file, with no multiple empty lines
         "func-names": 0,                                            //require function expressions to have a name
         "func-style": 0,                                            //enforce use of function declarations or expressions
+        "id-blacklist": 0,                                          //blacklist certain identifiers to prevent them being used
         "id-length": 0,                                             //this option enforces minimum and maximum identifier lengths (variable names, property names etc.)
         "id-match": 0,                                              //require identifiers to match the provided regular expression
         "indent": 2,                                                //specify tab or space width for your code
         "jsx-quotes": 0,                                            //specify whether double or single quotes should be used in JSX attributes
         "key-spacing": 2,                                           //enforce spacing between keys and values in object literal properties
+        "keyword-spacing": [2, {
+            "before": true,
+            "after": true,
+            "overrides": {
+                "if": {"after": false},
+                "for": {"after": false},
+                "while": {"after": false}
+            }
+        }],                                                         //enforce spacing before and after keywords
         "linebreak-style": 2,                                       //disallow mixed 'LF' and 'CRLF' as linebreaks
         "lines-around-comment": 0,                                  //enforce empty lines around comments
         "max-depth": 1,                                             //specify the maximum depth that blocks can be nested
@@ -149,6 +166,7 @@
         "new-cap": 2,                                               //require a capital letter for constructors
         "new-parens": 2,                                            //disallow the omission of parentheses when invoking a constructor with no arguments
         "newline-after-var": 0,                                     //require or disallow an empty newline after variable declarations
+        "newline-per-chained-call": 0,                              //enforce newline after each call when chaining the calls
         "no-array-constructor": 2,                                  //disallow use of the Array constructor
         "no-bitwise": 0,                                            //disallow use of bitwise operators
         "no-continue": 0,                                           //disallow use of the continue statement
@@ -166,8 +184,10 @@
         "no-trailing-spaces": 2,                                    //disallow trailing whitespace at the end of lines
         "no-underscore-dangle": 0,                                  //disallow dangling underscores in identifiers
         "no-unneeded-ternary": 2,                                   //disallow the use of ternary operators when a simpler alternative exists
+        "no-whitespace-before-property": 2,                         //disallow whitespace before properties
         "object-curly-spacing": 0,                                  //require or disallow padding inside curly braces
         "one-var": [2, "never"],                                    //require or disallow one variable declaration per function
+        "one-var-declaration-per-line": 2,                          //require or disallow an newline around variable declarations
         "operator-assignment": 0,                                   //require assignment operator shorthand where possible or prohibit it entirely
         "operator-linebreak": [1, "before"],                        //enforce operators to be placed before or after line breaks
         "padded-blocks": [2, "never"],                              //enforce padding within blocks
@@ -175,15 +195,13 @@
         "quotes": [2, "single"],                                    //specify whether backticks, double or single quotes should be used
         "require-jsdoc": 0,                                         //Require JSDoc comment
         "semi-spacing": 2,                                          //enforce spacing before and after semicolons
+        "sort-imports": 0,                                          //sort import declarations within module
         "semi": 2,                                                  //require or disallow use of semicolons instead of ASI
         "sort-vars": 0,                                             //sort variables within the same declaration block
-        "space-after-keywords": 0,                                  //require a space after certain keywords
         "space-before-blocks": 2,                                   //require or disallow a space before blocks
         "space-before-function-paren": [2, "never"],                //require or disallow a space before function opening parenthesis
-        "space-before-keywords": 2,                                 //require a space before certain keywords
         "space-in-parens": 2,                                       //require or disallow spaces inside parentheses
         "space-infix-ops": 2,                                       //require spaces around operators
-        "space-return-throw-case": 2,                               //require a space after return, throw, and case
         "space-unary-ops": 2,                                       //require or disallow spaces before/after unary operators
         "spaced-comment": 0,                                        //require or disallow a space immediately following the // or /* in a comment
         "wrap-regex": 0,                                            //require regex literals to be wrapped in parentheses
@@ -194,18 +212,23 @@
         "arrow-spacing": 2,                                         //require space before/after arrow function's arrow
         "constructor-super": 2,                                     //verify calls of super() in constructors
         "generator-star-spacing": 0,                                //enforce spacing around the * in generator functions
-        "no-arrow-condition": 2,                                    //disallow arrow functions where a condition is expected
         "no-class-assign": 2,                                       //disallow modifying variables of class declarations
+        "no-confusing-arrow": 2,                                    //disallow arrow functions where they could be confused with comparisons
         "no-const-assign": 2,                                       //disallow modifying variables that are declared using const
         "no-dupe-class-members": 2,                                 //disallow duplicate name in class members
+        "no-new-symbol": 2,                                         //disallow use of the new operator with the Symbol object
         "no-this-before-super": 2,                                  //disallow use of this/super before calling super() in constructors.
+        "no-useless-constructor": 2,                                //disallow unnecessary constructor
         "no-var": 0,                                                //require let or const instead of var
         "object-shorthand": 1,                                      //require method and property shorthand syntax for object literals
         "prefer-arrow-callback": 0,                                 //suggest using arrow functions as callbacks
         "prefer-const": 0,                                          //suggest using const declaration for variables that are never modified after declared
         "prefer-reflect": 1,                                        //suggest using Reflect methods where applicable
+        "prefer-rest-params": 1,                                    //suggest using the rest parameters instead of arguments
         "prefer-spread": 1,                                         //suggest using the spread operator instead of .apply().
         "prefer-template": 1,                                       //suggest using template literals instead of strings concatenation
-        "require-yield": 2                                          //disallow generator functions that do not have yield
+        "require-yield": 2,                                         //disallow generator functions that do not have yield
+        "template-curly-spacing": 2,                                //enforce spacing around embedded expressions of template strings
+        "yield-star-spacing": [2, "after"]                          //enforce spacing around the * in yield* expressions
     }
 }

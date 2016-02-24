@@ -54,13 +54,13 @@ export function create(req, res, next) {
     newUser.providers.local = true;
     newUser.role = 'user';
 
-    util.saveFileFromFs(config.root + '/server/components/images/default_user.jpg', { filename: 'default_user.jpg' })
+    util.saveFileFromFs(`${config.root}/server/components/images/default_user.jpg`, { filename: 'default_user.jpg' })
         .then(userImgFile => {
             newUser.imageId = userImgFile._id;
             newUser.save(function(err, user) {
                 if(err) return util.handleError(res, err);
                 var token = jwt.sign({_id: user._id}, config.secrets.session, {expiresInMinutes: 60 * 5});
-                res.json({token: token});
+                res.json({token});
             });
         });
 }

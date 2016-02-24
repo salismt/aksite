@@ -226,7 +226,7 @@ exports.clean = function(req, res) {
         getIds(User, ['imageId', 'smallImageId'])
     ])
         .then(function([fileIds, photoIds, projectIds, userIds]) {
-            _.forEach(_.difference(_.invoke(fileIds, 'toString'), _.invoke(_.union(photoIds, projectIds, userIds), 'toString')), function(id) {
+            _.forEach(_.difference(_.invokeMap(fileIds, 'toString'), _.invokeMap(_.union(photoIds, projectIds, userIds), 'toString')), function(id) {
                 gfs.remove({_id: id}, function(err) {
                     if(err) return console.log(err);
                     console.log('Delete file', id);
@@ -244,7 +244,7 @@ exports.clean = function(req, res) {
         Photo.find().exec()
     ])
         .then(function([photosInGalleries, allPhotos]) {
-            _.forEach(_.difference(_.invoke(_.map(allPhotos, '_id'), 'toString'), _.flatten(photosInGalleries)), function(id) {
+            _.forEach(_.difference(_.invokeMap(_.map(allPhotos, '_id'), 'toString'), _.flatten(photosInGalleries)), function(id) {
                 Photo.findByIdAndRemove(id, function(err, photo) {
                     if(err) return console.log(err);
 
@@ -270,7 +270,7 @@ function getExif(id) {
         gm(gfs.createReadStream({_id: id}).on('error', console.log), id)
             .toBuffer('JPG', function(err, buffer) {
                 if(err) return reject(err);
-                new ExifImage({ image: buffer }, function(error, exifData) {
+                ExifImage({ image: buffer }, function(error, exifData) {
                     if(error) reject(error);
                     else resolve(exifData);
                 });
@@ -286,10 +286,8 @@ function getExif(id) {
  * @returns {Promise}
  */
 function getIds(model, properties) {
-    return new Promise((resolve, reject) => {
-        model.find({}, function(err, files) {
-            if(err) reject(err);
-            else resolve(_.flatten(_.map(properties, _.partial(_.map, files))));
+    return model.find({}).exec()
+        .then(function(files) {
+            return _.flatten(_.map(properties, _.partial(_.map, files)));
         });
-    });
 }
