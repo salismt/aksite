@@ -131,6 +131,9 @@ const transpileServer = lazypipe()
             } else {
                 return originalSource;
             }
+        },
+        ignore(filename) {
+            return !(filename.indexOf('lodash-es') !== -1) && filename.indexOf('node_modules') !== -1;
         }
     })
     .pipe(plugins.sourcemaps.write, '.');
