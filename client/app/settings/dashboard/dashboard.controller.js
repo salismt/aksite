@@ -34,7 +34,7 @@ export default class SettingsDashboardController {
     showSimpleToast(text) {
         this.$mdToast.show(
             this.$mdToast.simple()
-                .content(text)
+                .textContent(text)
                 .position('bottom right')
                 .hideDelay(3000)
         );

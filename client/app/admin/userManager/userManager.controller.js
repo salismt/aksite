@@ -32,7 +32,7 @@ export default class {
                     .catch(() => {
                         this.$mdToast.show(
                             this.$mdToast.simple()
-                                .content('Deleting user failed')
+                                .textContent('Deleting user failed')
                                 .position('bottom right')
                                 .hideDelay(10000)
                         );
