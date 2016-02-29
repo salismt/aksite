@@ -1,7 +1,7 @@
 'use strict';
-
 import moment from 'moment';
-import marked from 'marked';
+import { Converter } from 'showdown';
+const converter = new Converter();
 
 export default class BlogController {
     loadingItems = true;
@@ -33,7 +33,7 @@ export default class BlogController {
                 this.posts = data.items;
                 _.forEach(this.posts, post => {
                     post.date = moment(post.date).format('LL');
-                    post.subheader = marked(post.subheader);
+                    post.subheader = converter.makeHtml(post.subheader);
                 });
                 this.noItems = data.items.length <= 0;
                 document.body.scrollTop = document.documentElement.scrollTop = 0;

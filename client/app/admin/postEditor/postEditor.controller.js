@@ -1,6 +1,6 @@
 'use strict';
-
-import marked from 'marked';
+import { Converter } from 'showdown';
+const converter = new Converter();
 
 export default class PostEditorController {
     loadingPost = true;
@@ -57,7 +57,7 @@ export default class PostEditorController {
 
     markedContent() {
         try {
-            return this.$sce.trustAsHtml(marked(this.post.content || ''));
+            return this.$sce.trustAsHtml(converter.makeHtml(this.post.content || ''));
         } catch(e) {
             return '<h1 class=\"text-danger\">Parsing Error</h1>';
         }

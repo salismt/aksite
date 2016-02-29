@@ -1,7 +1,7 @@
 'use strict';
-
 import _ from 'lodash';
-import marked from 'marked';
+import { Converter } from 'showdown';
+const converter = new Converter();
 
 export default class ProjectEditorController {
     loadingProject = true;
@@ -60,7 +60,7 @@ export default class ProjectEditorController {
 
     markedContent() {
         try {
-            return this.$sanitize(marked(this.project.content || ''));
+            return this.$sanitize(converter.makeHtml(this.project.content || ''));
         } catch(e) {
             return `<h1 class="text-danger">Parsing Error</h1>
                     <span class="break-word">${_.escape(e)}</span>`;
