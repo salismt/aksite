@@ -1,5 +1,5 @@
 'use strict';
-
+import * as _ from 'lodash-es';
 import moment from 'moment';
 import marked from 'marked';
 
