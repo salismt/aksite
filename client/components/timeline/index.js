@@ -8,7 +8,7 @@ export default angular.module('directives.timeline', [])
         },
         template: require('./timeline.html'),
         restrict: 'EA',
-        link: function(scope/*, element, attrs*/) {
+        link(scope/*, element, attrs*/) {
             let openedCard = null;
 
             scope.toggleCardOpen = function(card) {

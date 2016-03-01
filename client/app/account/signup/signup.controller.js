@@ -24,9 +24,9 @@ export default class SignupController {
         }).catch(err => {
             this.errors = err;
         });
-    };
+    }
 
     loginOauth(provider) {
         this.$window.location.href = '/auth/' + provider;
-    };
+    }
 }

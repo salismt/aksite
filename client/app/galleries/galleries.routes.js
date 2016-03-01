@@ -8,8 +8,8 @@ export default function routes($stateProvider) {
             template: require('./galleries.html'),
             controller: 'GalleriesController',
             controllerAs: 'vm',
-            onEnter: function($rootScope) {
-                $rootScope.title = $rootScope.titleRoot + ' | Galleries';
+            onEnter($rootScope) {
+                $rootScope.title = `${$rootScope.titleRoot} | Galleries`;
             }
         })
         .state('galleries.gallery', {

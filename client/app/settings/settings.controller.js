@@ -17,7 +17,7 @@ export default class SettingsController {
 
         this.currentUser = Auth.getCurrentUser();
         this.heightStyle = {
-            height: (window.innerHeight - 70 - 66)
+            height: window.innerHeight - 70 - 66
         };
     }
 
@@ -26,5 +26,5 @@ export default class SettingsController {
             .then(function() {
                 //$log.debug("toggle left is done");
             });
-    };
+    }
 }

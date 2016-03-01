@@ -41,5 +41,5 @@ export default class AdminController {
             .then(function() {
                 //$log.debug("toggle left is done");
             });
-    };
+    }
 }

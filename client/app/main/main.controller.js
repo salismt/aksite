@@ -1,20 +1,19 @@
 'use strict';
 import _ from 'lodash';
-import angular from 'angular';
 
-import jquery from 'jquery';
-import jqueryBridget from 'jquery-bridget';
-import getStyleProperty from 'desandro-get-style-property/get-style-property';
-import getSize from 'get-size/get-size';
-import EventEmitter from 'wolfy87-eventemitter/EventEmitter';
-import eventie from 'eventie/eventie';
-import docReady from 'doc-ready/doc-ready';
-import matchesSelector from 'desandro-matches-selector/matches-selector';
-import utils from 'fizzy-ui-utils/utils';
-import item from 'outlayer/item'
-import outlayer from 'outlayer/outlayer';
+import 'jquery';
+import 'jquery-bridget';
+import 'desandro-get-style-property/get-style-property';
+import 'get-size/get-size';
+import 'wolfy87-eventemitter/EventEmitter';
+import 'eventie/eventie';
+import 'doc-ready/doc-ready';
+import 'desandro-matches-selector/matches-selector';
+import 'fizzy-ui-utils/utils';
+import 'outlayer/item';
+import 'outlayer/outlayer';
 import Masonry from 'masonry-layout';
-import imagesLoaded from 'imagesloaded/imagesloaded';
+import 'imagesloaded/imagesloaded';
 
 import MiniDaemon from '../../components/minidaemon';
 
@@ -119,7 +118,6 @@ export default class MainController {
         var masonryContainerElement = document.getElementById('masonry-container');
         var msnry;
 
-        let i = 0;
         let addPhoto = function(photo, i) {
             let div = document.createElement('div');
             div.setAttribute('class', `masonry-brick${photo.wide ? ' w2' : ''}`);
@@ -145,7 +143,7 @@ export default class MainController {
                     transitionDuration: '0.4s',
                     gutter: 20,
                     containerStyle: {
-                        'margin': 'auto',
+                        margin: 'auto',
                         'margin-bottom': '100px'
                     },
                     isFitWidth: true
@@ -163,6 +161,7 @@ export default class MainController {
             addPhoto = function() {};
         });
 
+        let i = 0;
         let daemon = new MiniDaemon(this, () => {
             addPhoto(vendorImages[i], i++);
         }, 50, vendorImages.length);

@@ -5,7 +5,7 @@
 
             <md-content class="md-padding">
                 <form name="loginForm" ng-submit="vm.login()">
-                    <md-input-container>
+                    <md-input-container class="md-block">
                         <label>Email</label>
                         <input md-maxlength="60" required name="email" type="email" ng-model="vm.user.email">
                         <div ng-messages="loginForm.email.$error">
@@ -13,7 +13,7 @@
                             <div ng-message="md-maxlength">The email can be at most 60 characters long.</div>
                         </div>
                     </md-input-container>
-                    <md-input-container>
+                    <md-input-container class="md-block">
                         <label>Password</label>
                         <input type="password" required name="password" ng-model="vm.user.password">
                         <div ng-messages="loginForm.password.$error">

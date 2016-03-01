@@ -1,4 +1,5 @@
 'use strict';
+import _ from 'lodash-es';
 
 export default class GalleryEditorController {
     photos = [];
@@ -21,12 +22,12 @@ export default class GalleryEditorController {
             this.loadingGallery = false;
             this.newGallery = true;
         } else {
-            $http.get('/api/gallery/' + $stateParams.galleryId)
+            $http.get(`/api/gallery/${$stateParams.galleryId}`)
                 .then(({data}) => {
                     this.gallery = data;
                     this.nextPhoto = this.gallery.photos.length;
                     _.forEach(this.gallery.photos, photoId => {
-                        $http.get('/api/photos/' + photoId)
+                        $http.get(`/api/photos/${photoId}`)
                             .then(res => {
                                 this.photos.push(res.data);
                             })
@@ -49,7 +50,7 @@ export default class GalleryEditorController {
             this.upload.abort();
         }
         this.$state.go('admin.galleries');
-    };
+    }
 
     toggleSelect(photo) {
         photo.selected = !photo.selected;
@@ -64,7 +65,7 @@ export default class GalleryEditorController {
                 name: file.name,
                 filename: file.name,
                 info: '',
-                file: file,
+                file,
                 progress: 0
             });
         });
@@ -82,7 +83,7 @@ export default class GalleryEditorController {
                 }
             }
         }
-    };
+    }
 
     uploadPhoto(photo) {
         this.upload = this.Upload.upload({
@@ -110,7 +111,7 @@ export default class GalleryEditorController {
                 this.gallery.photos.push(data._id);
             })
             .error((response, status) => {
-                photo.err = {status: status, response: response};
+                photo.err = {status, response};
                 //TODO: retry, show error
             })
             .xhr(xhr => {
@@ -118,7 +119,7 @@ export default class GalleryEditorController {
                     xhr.abort();
                 };
             });
-    };
+    }
 
     saveGallery() {
         //TODO: also send requests to save $dirty photo names, info
@@ -134,7 +135,7 @@ export default class GalleryEditorController {
                     console.log(data);
                 });
         } else {
-            this.$http.put('/api/gallery/' + this.$stateParams.galleryId, this.gallery)
+            this.$http.put(`/api/gallery/${this.$stateParams.galleryId}`, this.gallery)
                 .then(({data, status}) => {
                     console.log(status);
                     console.log(data);
@@ -145,5 +146,5 @@ export default class GalleryEditorController {
                     console.log(data);
                 });
         }
-    };
-};
+    }
+}

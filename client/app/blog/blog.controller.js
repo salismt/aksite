@@ -1,7 +1,8 @@
 'use strict';
-import * as _ from 'lodash-es';
+import _ from 'lodash-es';
 import moment from 'moment';
-import marked from 'marked';
+import { Converter } from 'showdown';
+const converter = new Converter();
 
 export default class BlogController {
     loadingItems = true;
@@ -33,7 +34,7 @@ export default class BlogController {
                 this.posts = data.items;
                 _.forEach(this.posts, post => {
                     post.date = moment(post.date).format('LL');
-                    post.subheader = marked(post.subheader);
+                    post.subheader = converter.makeHtml(post.subheader);
                 });
                 this.noItems = data.items.length <= 0;
                 document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -47,16 +48,16 @@ export default class BlogController {
         var str = 'api/posts';
         var queryParams = [];
         if(this.page) {
-            queryParams.push('page=' + this.page);
+            queryParams.push(`page=${this.page}`);
         }
         if(this.$stateParams.pagesize) {
-            queryParams.push('pagesize=' + this.$stateParams.pagesize);
+            queryParams.push(`pagesize=${this.$stateParams.pagesize}`);
         }
         if(queryParams.length > 0) {
             str += '?';
             _.forEach(queryParams, function(param, index) {
                 str += param;
-                if(index < queryParams.length-1) {
+                if(index < queryParams.length - 1) {
                     str += '&';
                 }
             });

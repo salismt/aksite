@@ -1,4 +1,5 @@
 'use strict';
+import _ from 'lodash-es';
 
 export default class BlogManagerController {
     errors = [];
@@ -32,7 +33,7 @@ export default class BlogManagerController {
 
     goToPost(id/*, event*/) {
         this.$state.go('postEditor', {postId: id});
-    };
+    }
 
     //TODO: remove strange toggling, change to immediately delete, but show a 'Post Deleted' toast with an 'UNDO' button
     togglePostDeletion(post) {
@@ -49,7 +50,7 @@ export default class BlogManagerController {
                 this.dirty = false;
             }
         }
-    };
+    }
 
     saveChanges() {
         // Delete posts
@@ -66,5 +67,5 @@ export default class BlogManagerController {
                     console.log(status);
                 });
         });
-    };
+    }
 }

@@ -1,6 +1,6 @@
 'use strict';
-
-import _ from 'lodash';
+import _ from 'lodash-es';
+import {noop} from 'lodash-es';
 import angular from 'angular';
 import ngCookies from 'angular-cookies';
 
@@ -13,7 +13,7 @@ import _User from './user.service';
  * @return {Function}
  */
 function safeCb(cb) {
-    return _.isFunction(cb) ? cb : _.noop;
+    return _.isFunction(cb) ? cb : noop;
 }
 
 /*@ngInject*/
@@ -37,10 +37,10 @@ class Auth {
      * @param  {Function} callback - optional, function(error, user)
      * @return {Promise}
      */
-    login(user, callback) {
+    login({email, password}, callback) {
         return this.$http.post('/auth/local', {
-            email: user.email,
-            password: user.password
+            email,
+            password
         }).then(res => {
             this.$cookies.put('token', res.data.token);
             this.currentUser = this.User.get();
@@ -94,8 +94,8 @@ class Auth {
      */
     changePassword(oldPassword, newPassword, callback) {
         return this.User.changePassword({ id: this.currentUser._id }, {
-            oldPassword: oldPassword,
-            newPassword: newPassword
+            oldPassword,
+            newPassword
         }, function() {
             return safeCb(callback)(null);
         }, function(err) {
@@ -107,16 +107,18 @@ class Auth {
      * Gets all available info on a user
      *   (synchronous|asynchronous)
      *
-     * @param  {Function|*} callback - optional, funciton(user)
+     * @param  {Function|*} [callback] - optional, function(user)
      * @return {Object|Promise}
      */
     getCurrentUser(callback) {
-        if (arguments.length === 0) {
+        if(!callback) {
             return this.currentUser;
         }
 
-        var value = (this.currentUser.hasOwnProperty('$promise')) ? this.currentUser.$promise : this.currentUser;
-        return $q.when(value)
+        var promise = this.currentUser.hasOwnProperty('$promise')
+            ? this.currentUser.$promise
+            : Promise.resolve(this.currentUser);
+        return promise
             .then(function(user) {
                 safeCb(callback)(user);
                 return user;
@@ -130,11 +132,11 @@ class Auth {
      * Check if a user is logged in
      *   (synchronous|asynchronous)
      *
-     * @param  {Function|*} callback - optional, function(is)
+     * @param  {Function|*} [callback] - optional, function(is)
      * @return {Boolean|Promise}
      */
     isLoggedIn(callback) {
-        if (arguments.length === 0) {
+        if(!callback) {
             return this.currentUser.hasOwnProperty('role');
         }
 
@@ -157,9 +159,9 @@ class Auth {
                 cb(false);
             });
         } else if(this.currentUser.hasOwnProperty('role')) {
-            cb(true);
+            return cb(true);
         } else {
-            cb(false);
+            return cb(false);
         }
     }
 

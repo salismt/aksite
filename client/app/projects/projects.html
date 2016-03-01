@@ -6,7 +6,7 @@
 
 <div class="container">
     <div ng-if="vm.loadingProjects" class="spinner">
-        <i class="fa fa-spinner fa-spin"></i>
+        <preloader></preloader>
     </div>
     <alert ng-if="!vm.loadingProjects && vm.projects.length === 0" type="info">No Projects</alert>
     <div ng-if="vm.projects.length > 0" class="row masonry-cards-container">
@@ -17,15 +17,16 @@
                 "containerStyle": {"margin": "auto"},
                 "isFitWidth": true
             }'
-             id="masonry-container" style="position: relative;">
-            <a masonry-tile class="brick" ng-repeat="project in vm.projects" ng-href="/projects/{{project._id}}">
-                <md-card>
-                    <img ng-src="api/upload/{{project.coverId}}" class="md-card-image" alt="">
-                    <md-card-content>
-                        <h2 class="md-title">{{project.name}}</h2>
-                        <p>{{project.info}}</p>
-                    </md-card-content>
-                </md-card>
+            id="masonry-container" style="position: relative;">
+            <a masonry-tile class="brick card md-whiteframe-z1" ng-repeat="project in vm.projects" ng-href="/projects/{{project._id}}">
+                <div class="item">
+                    <img ng-src="api/upload/{{project.coverId}}" class="" alt="">
+                </div>
+                <!--<md-button class="md-fab pull-right md-fab-offset">X</md-button>-->
+                <div class="card-content">
+                    <h2 class="md-title">{{project.name}}</h2>
+                    <p>{{project.info}}</p>
+                </div>
             </a>
         </div>
     </div>

@@ -9,8 +9,8 @@ export default function routes($stateProvider) {
             template: require('./settings.html'),
             controller: 'SettingsController',
             controllerAs: 'settings',
-            onEnter: function($rootScope) {
-                $rootScope.title = $rootScope.titleRoot + ' | Settings';
+            onEnter($rootScope) {
+                $rootScope.title = `${$rootScope.titleRoot} | Settings`;
             }
         });
 }

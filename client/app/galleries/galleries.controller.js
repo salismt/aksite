@@ -1,4 +1,5 @@
 'use strict';
+import _ from 'lodash-es';
 
 export default class GalleriesController {
     /*@ngInject*/
@@ -7,7 +8,7 @@ export default class GalleriesController {
 
         this.galleries = Gallery.query(() => {
             _.forEach(this.galleries, gallery => {
-                $http.get('/api/photos/' + gallery.featuredId)
+                $http.get(`/api/photos/${gallery.featuredId}`)
                     .then(({data: photo}) => {
                         gallery.featuredImgId = photo.thumbnailId;
                     });

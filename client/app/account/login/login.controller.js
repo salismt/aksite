@@ -26,9 +26,9 @@ export default class LoginController {
             .catch(err => {
                 this.errors.other = err.message;
             });
-    };
+    }
 
     loginOauth(provider) {
         this.$window.location.href = '/auth/' + provider;
-    };
+    }
 }

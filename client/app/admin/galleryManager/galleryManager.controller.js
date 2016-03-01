@@ -1,4 +1,5 @@
 'use strict';
+import _ from 'lodash-es';
 
 export default class GalleryManagerController {
     errors = [];
@@ -17,13 +18,11 @@ export default class GalleryManagerController {
             .then(res => {
                 this.galleries = res.data;
                 _.forEach(this.galleries, gallery => {
-                    $http.get('/api/photos/' + gallery.featuredId)
-                        .then(res => {
-                            gallery.featured = res.data;
+                    $http.get(`/api/photos/${gallery.featuredId}`)
+                        .then(({data: featured}) => {
+                            gallery.featured = featured;
                         })
-                        .catch(res => {
-                            console.log(res);
-                        });
+                        .catch(console.log.bind(console));
                 });
             })
             .catch(({data, status}) => {
@@ -37,7 +36,7 @@ export default class GalleryManagerController {
 
     goToGallery(galleryId) {
         this.$state.go('galleryEditor', {galleryId});
-    };
+    }
 
     toggleGalleryDeletion(gallery) {
         if(!gallery.deleted) {
@@ -51,12 +50,12 @@ export default class GalleryManagerController {
                 this.dirty = false;
             }
         }
-    };
+    }
 
     saveChanges() {
         // Delete galleries
         _.forEach(this.galleryDeletions, gallery => {
-            this.$http.delete('/api/gallery/' + gallery._id)
+            this.$http.delete(`/api/gallery/${gallery._id}`)
                 .then(({data, status}) => {
                     _.remove(this.galleries, gallery);
                     this.dirty = false;
@@ -67,5 +66,5 @@ export default class GalleryManagerController {
                     console.log(res);
                 });
         });
-    };
+    }
 }

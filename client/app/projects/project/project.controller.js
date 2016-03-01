@@ -1,6 +1,6 @@
 'use strict';
-
-import marked from 'marked';
+import { Converter } from 'showdown';
+const converter = new Converter();
 
 export default class ProjectController {
     project = {};
@@ -9,15 +9,15 @@ export default class ProjectController {
     constructor($rootScope, $http, $stateParams) {
         this.projectId = $stateParams.projectId;
 
-        $http.get('/api/projects/' + $stateParams.projectId)
+        $http.get(`/api/projects/${$stateParams.projectId}`)
             .then(({data: project}) => {
                 this.project = project;
 
-                $rootScope.title += ' | ' + project.name;
+                $rootScope.title += ` | ${project.name}`;
 
-                this.content = marked(project.content);
+                this.content = converter.makeHtml(project.content);
             })
-            .catch((res) => {
+            .catch(res => {
                 this.error = res;
             });
     }

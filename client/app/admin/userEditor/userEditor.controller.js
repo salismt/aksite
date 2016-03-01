@@ -22,7 +22,7 @@ export default class UserEditorController {
             };
             this.loadingUser = false;
         } else {
-            $http.get('/api/users/' + $stateParams.userId)
+            $http.get(`/api/users/${$stateParams.userId}`)
                 .then(({data}) => {
                     console.log(data);
                     this.user = data;
@@ -48,15 +48,15 @@ export default class UserEditorController {
             this.filename = file.name;
             this.fileToUpload = file;
         }
-    };
+    }
 
     saveUser(form) {
-        if(!form.$valid) { return; }
+        if(!form.$valid) return;
 
         this.submitted = true;
 
         let options = {
-            url: 'api/users/' + this.user._id,
+            url: `api/users/${this.user._id}`,
             method: 'PUT',
             fields: this.user
         };
@@ -72,7 +72,7 @@ export default class UserEditorController {
         this.upload = this.Upload.upload(options);
 
         this.upload
-            .progress((evt) => {
+            .progress(evt => {
                 this.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
             })
             .then(({data, status}) => {
@@ -88,15 +88,17 @@ export default class UserEditorController {
             });
 
         this.upload
-            .xhr((xhr) => {
+            .xhr(xhr => {
                 this.abort = function() {
                     xhr.abort();
                 };
             });
-    };
+    }
 
     cancel() {
-        if(this.upload) { this.upload.abort(); }
+        if(this.upload) {
+            this.upload.abort();
+        }
         this.$state.go('admin.users');
-    };
-};
+    }
+}

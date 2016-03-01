@@ -1,5 +1,5 @@
 import angular from 'angular';
-import ngFileUpload from 'ng-file-upload'
+import ngFileUpload from 'ng-file-upload';
 
 import routing from './galleryEditor.routes';
 import GalleryEditorController from './galleryEditor.controller';

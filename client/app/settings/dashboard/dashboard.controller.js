@@ -15,7 +15,7 @@ export default class SettingsDashboardController {
         // un-mark password as wrong when changed
         $scope.$watch(() => this.userForm.oldPassword.$modelValue, () => {
             this.userForm.oldPassword.$setValidity('wrongPassword', true);
-        })
+        });
     }
 
     changePassword(form) {
@@ -29,14 +29,14 @@ export default class SettingsDashboardController {
                     this.userForm.oldPassword.$setValidity('wrongPassword', false);
                 });
         }
-    };
+    }
 
     showSimpleToast(text) {
         this.$mdToast.show(
             this.$mdToast.simple()
-                .content(text)
+                .textContent(text)
                 .position('bottom right')
                 .hideDelay(3000)
         );
-    };
+    }
 }

@@ -60,7 +60,6 @@ module.exports = function makeWebpackConfig(options) {
                 'jquery',
                 'jquery-bridget',
                 'lodash',
-                'marked',
                 'masonry-layout',
                 'moment',
                 'ng-file-upload',
@@ -70,6 +69,7 @@ module.exports = function makeWebpackConfig(options) {
                 'react',
                 'react-dom',
                 'reflect-metadata',
+                'showdown',
                 'wolfy87-eventemitter'
             ]
         };

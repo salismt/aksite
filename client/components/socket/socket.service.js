@@ -1,9 +1,10 @@
 /* global io */
 'use strict';
+import angular from 'angular';
+import {noop, find, remove} from 'lodash-es';
 
 angular.module('aksiteApp')
     .factory('socket', function(socketFactory) {
-
         // socket.io now auto-configures its connection when we ommit a connection url
         var ioSocket = io('', {
             // Send auth token on connection, you will need to DI the Auth service above
@@ -11,11 +12,11 @@ angular.module('aksiteApp')
         });
 
         var socket = socketFactory({
-            ioSocket: ioSocket
+            ioSocket
         });
 
         return {
-            socket: socket,
+            socket,
 
             /**
              * Register listeners to sync an array with updates on a model
@@ -27,14 +28,12 @@ angular.module('aksiteApp')
              * @param {Array} array
              * @param {Function} cb
              */
-            syncUpdates: function(modelName, array, cb) {
-                cb = cb || angular.noop;
-
+            syncUpdates(modelName, array, cb = noop) {
                 /**
                  * Syncs item creation/updates on 'model:save'
                  */
-                socket.on(modelName + ':save', function(item) {
-                    var oldItem = _.find(array, {_id: item._id});
+                socket.on(`${modelName}:save`, function(item) {
+                    var oldItem = find(array, {_id: item._id});
                     var index = array.indexOf(oldItem);
                     var event = 'created';
 
@@ -53,9 +52,9 @@ angular.module('aksiteApp')
                 /**
                  * Syncs removed items on 'model:remove'
                  */
-                socket.on(modelName + ':remove', function(item) {
+                socket.on(`${modelName}:remove`, function(item) {
                     var event = 'deleted';
-                    _.remove(array, {_id: item._id});
+                    remove(array, {_id: item._id});
                     cb(event, item, array);
                 });
             },
@@ -65,9 +64,9 @@ angular.module('aksiteApp')
              *
              * @param modelName
              */
-            unsyncUpdates: function(modelName) {
-                socket.removeAllListeners(modelName + ':save');
-                socket.removeAllListeners(modelName + ':remove');
+            unsyncUpdates(modelName) {
+                socket.removeAllListeners(`${modelName}:save`);
+                socket.removeAllListeners(`${modelName}:remove`);
             }
         };
     });
