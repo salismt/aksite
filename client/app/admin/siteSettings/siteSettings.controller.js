@@ -16,5 +16,5 @@ export default class SiteSettings {
                 console.log(status);
                 console.log(data);
             });
-    };
+    }
 }

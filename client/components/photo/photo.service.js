@@ -1,4 +1,5 @@
 'use strict';
+import angular from 'angular';
 
 angular.module('aksiteApp')
     .factory('Photo', function Auth($resource) {

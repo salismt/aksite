@@ -1,7 +1,9 @@
 'use strict';
-
-//import d3 from 'd3/d3.min';
+import _ from 'lodash-es';
+//import d3 from 'd3';
 //import nv from 'nvd3';
+const d3 = {};
+const nv = {};
 import React from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
@@ -22,7 +24,7 @@ const apiItems = [{
     path: 'projects', title: 'Projects'
 }];
 
-const convertGAPItoD3 = _.partialRight(_.map, (item) => ({label: item[0], value: item[1]}));
+const convertGAPItoD3 = _.partialRight(_.map, item => ({label: item[0], value: item[1]}));
 
 function addChart(chartNum, data, options = {}) {
     nv.addGraph(function() {
@@ -36,8 +38,8 @@ function addChart(chartNum, data, options = {}) {
         chart.donut(options.donut || false);
         if(options.donut) chart.donutRatio(options.donutRatio || .35);
 
-        React.unmountComponentAtNode(document.getElementById('chart' + chartNum));
-        ReactDOM.render(<svg></svg>, document.getElementById('chart' + chartNum));
+        React.unmountComponentAtNode(document.getElementById(`chart${chartNum}`));
+        ReactDOM.render(<svg></svg>, document.getElementById(`chart${chartNum}`));
 
         d3.select(`#chart${chartNum} svg`).datum(data).transition().duration(350).call(chart);
 
@@ -104,27 +106,30 @@ export default class DashboardController {
 
             // Create the timeline chart.
             var timeline = new gapi.analytics.googleCharts.DataChart({
-                reportType: 'ga', query: {
-                    'dimensions': 'ga:date',
-                    'metrics': 'ga:sessions',
+                reportType: 'ga',
+                query: {
+                    dimensions: 'ga:date',
+                    metrics: 'ga:sessions',
                     'start-date': '30daysAgo',
                     'end-date': 'yesterday'
-                }, chart: {
+                },
+                chart: {
                     type: 'LINE', container: 'timeline'
                 }
             });
 
             // Hook up the components to work together.
-            gapi.analytics.auth.on('success', (response) => viewSelector.execute());
+            gapi.analytics.auth.on('success', () => viewSelector.execute());
 
             viewSelector.on('change', function(ids) {
-                var now = moment(), monthAgo = moment(now).subtract(1, 'month');
+                var now = moment();
+                var monthAgo = moment(now).subtract(1, 'month');
 
                 query({
-                    'ids': ids,
-                    'dimensions': 'ga:browser',
-                    'metrics': 'ga:pageviews',
-                    'sort': '-ga:pageviews',
+                    ids,
+                    dimensions: 'ga:browser',
+                    metrics: 'ga:pageviews',
+                    sort: '-ga:pageviews',
                     'start-date': monthAgo.format('YYYY-MM-DD'),
                     'end-date': now.format('YYYY-MM-DD')
                 }).then(function(results) {
@@ -138,10 +143,10 @@ export default class DashboardController {
                 });
 
                 query({
-                    'ids': ids,
-                    'dimensions': 'ga:operatingSystem',
-                    'metrics': 'ga:users',
-                    'sort': '-ga:users',
+                    ids,
+                    dimensions: 'ga:operatingSystem',
+                    metrics: 'ga:users',
+                    sort: '-ga:users',
                     'start-date': monthAgo.format('YYYY-MM-DD'),
                     'end-date': now.format('YYYY-MM-DD')
                 }).then(function(results) {
@@ -151,10 +156,10 @@ export default class DashboardController {
                 });
 
                 query({
-                    'ids': ids,
-                    'dimensions': 'ga:country',
-                    'metrics': 'ga:users',
-                    'sort': '-ga:users',
+                    ids,
+                    dimensions: 'ga:country',
+                    metrics: 'ga:users',
+                    sort: '-ga:users',
                     'start-date': monthAgo.format('YYYY-MM-DD'),
                     'end-date': now.format('YYYY-MM-DD')
                 }).then(function(results) {
@@ -164,10 +169,10 @@ export default class DashboardController {
                 });
 
                 query({
-                    'ids': ids,
-                    'dimensions': 'ga:userType',
-                    'metrics': 'ga:users',
-                    'sort': '-ga:users',
+                    ids,
+                    dimensions: 'ga:userType',
+                    metrics: 'ga:users',
+                    sort: '-ga:users',
                     'start-date': monthAgo.format('YYYY-MM-DD'),
                     'end-date': now.format('YYYY-MM-DD')
                 }).then(function(results) {
@@ -178,7 +183,7 @@ export default class DashboardController {
 
                 var newIds = {
                     query: {
-                        ids: ids
+                        ids
                     }
                 };
                 timeline.set(newIds).execute();

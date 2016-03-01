@@ -2,19 +2,19 @@
 import _ from 'lodash';
 import angular from 'angular';
 
-import jquery from 'jquery';
-import jqueryBridget from 'jquery-bridget';
-import getStyleProperty from 'desandro-get-style-property/get-style-property';
-import getSize from 'get-size/get-size';
-import EventEmitter from 'wolfy87-eventemitter/EventEmitter';
-import eventie from 'eventie/eventie';
-import docReady from 'doc-ready/doc-ready';
-import matchesSelector from 'desandro-matches-selector/matches-selector';
-import utils from 'fizzy-ui-utils/utils';
-import item from 'outlayer/item'
-import outlayer from 'outlayer/outlayer';
+import 'jquery';
+import 'jquery-bridget';
+import 'desandro-get-style-property/get-style-property';
+import 'get-size/get-size';
+import 'wolfy87-eventemitter/EventEmitter';
+import 'eventie/eventie';
+import 'doc-ready/doc-ready';
+import 'desandro-matches-selector/matches-selector';
+import 'fizzy-ui-utils/utils';
+import 'outlayer/item';
+import 'outlayer/outlayer';
 import Masonry from 'masonry-layout';
-import imagesLoaded from 'imagesloaded/imagesloaded';
+import 'imagesloaded/imagesloaded';
 
 import PhotoSwipe from 'photoswipe';
 import PhotoSwipeUI_Default from 'photoswipe/dist/photoswipe-ui-default';
@@ -23,8 +23,8 @@ import MiniDaemon from '../../../components/minidaemon';
 
 function photoToPSWP(photo, index) {
     return {
-        src: 'api/upload/' + photo.fileId,
-        msrc: 'api/upload/' + photo.thumbnailId,
+        src: `api/upload/${photo.fileId}`,
+        msrc: `api/upload/${photo.thumbnailId}`,
         w: photo.width,
         h: photo.height,
         index
@@ -89,16 +89,17 @@ export default class GalleryController {
                 $rootScope.title += ' | ' + gallery.name;
 
                 if(this.gallery.photos.length < 1) {
-                    return this.noPhotos = true;
+                    this.noPhotos = true;
+                    return;
                 }
                 let i = 0;
 
-                $http.get('api/photos/' + gallery.photos[0])
+                $http.get(`api/photos/${gallery.photos[0]}`)
                     .then(({data}) => addPhoto(data, i++))
                     .then(() => {
                         let promises = _(gallery.photos)
                             .drop(1)
-                            .map(photo => $http.get('api/photos/' + photo))
+                            .map(photo => $http.get(`api/photos/${photo}`))
                             .value();
 
                         let daemon = new MiniDaemon(this, () => {
@@ -107,7 +108,7 @@ export default class GalleryController {
                         daemon.start();
                     });
             })
-            .catch((res) => {
+            .catch(res => {
                 this.errors.push(res);
             });
     }
@@ -145,9 +146,9 @@ export default class GalleryController {
 
         let gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, this.items, {
             index,
-            getThumbBoundsFn: (index) => {
+            getThumbBoundsFn: i => {
                 // See Options->getThumbBoundsFn section of docs for more info
-                let thumbnail = this.items[index].el.children[0];
+                let thumbnail = this.items[i].el.children[0];
                 let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
                 let rect = thumbnail.getBoundingClientRect();
                 return {x: rect.left, y: rect.top + pageYScroll, w: rect.width};

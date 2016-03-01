@@ -1,4 +1,5 @@
 'use strict';
+import _ from 'lodash-es';
 import moment from 'moment';
 import { Converter } from 'showdown';
 const converter = new Converter();
@@ -47,16 +48,16 @@ export default class BlogController {
         var str = 'api/posts';
         var queryParams = [];
         if(this.page) {
-            queryParams.push('page=' + this.page);
+            queryParams.push(`page=${this.page}`);
         }
         if(this.$stateParams.pagesize) {
-            queryParams.push('pagesize=' + this.$stateParams.pagesize);
+            queryParams.push(`pagesize=${this.$stateParams.pagesize}`);
         }
         if(queryParams.length > 0) {
             str += '?';
             _.forEach(queryParams, function(param, index) {
                 str += param;
-                if(index < queryParams.length-1) {
+                if(index < queryParams.length - 1) {
                     str += '&';
                 }
             });

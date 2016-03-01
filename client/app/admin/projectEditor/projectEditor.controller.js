@@ -34,14 +34,14 @@ export default class ProjectEditorController {
             this.newProject = true;
         } else {
             $http.get('/api/projects/' + $stateParams.projectId)
-                .then((res) => {
+                .then(res => {
                     this.project = res.data;
                     this.filename = this.project.coverId;
                     if(this.project.hidden !== true && this.project.hidden !== false) {
                         this.project.hidden = false;
                     }
                 })
-                .catch((res) => {
+                .catch(res => {
                     this.error = res;
                 })
                 .finally(() => {
@@ -56,7 +56,7 @@ export default class ProjectEditorController {
             this.submitted = false;
         }
         this.$state.go('admin.projects');
-    };
+    }
 
     markedContent() {
         try {
@@ -65,7 +65,7 @@ export default class ProjectEditorController {
             return `<h1 class="text-danger">Parsing Error</h1>
                     <span class="break-word">${_.escape(e)}</span>`;
         }
-    };
+    }
 
     onFileSelect($files) {
         //$files: an array of files selected, each file has name, size, and type.
@@ -78,7 +78,7 @@ export default class ProjectEditorController {
             this.filename = file.name;
             this.fileToUpload = file;
         }
-    };
+    }
 
     saveProject() {
         this.submitted = true;
@@ -109,7 +109,7 @@ export default class ProjectEditorController {
         this.upload = this.Upload.upload(options);
 
         this.upload
-            .progress((evt) => {
+            .progress(evt => {
                 this.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
             })
             .then(({data, status}) => {
@@ -125,10 +125,10 @@ export default class ProjectEditorController {
             });
 
         this.upload
-            .xhr((xhr) => {
+            .xhr(xhr => {
                 this.abort = function() {
                     xhr.abort();
                 };
             });
-    };
-};
+    }
+}

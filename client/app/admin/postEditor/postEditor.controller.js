@@ -1,10 +1,12 @@
 'use strict';
+import _ from 'lodash';
 import { Converter } from 'showdown';
 const converter = new Converter();
 
 export default class PostEditorController {
     loadingPost = true;
     submitted = false;
+    post = {};
 
     /*@ngInject*/
     constructor($http, $stateParams, $state, $sce, Upload, Auth) {
@@ -61,12 +63,12 @@ export default class PostEditorController {
         } catch(e) {
             return '<h1 class=\"text-danger\">Parsing Error</h1>';
         }
-    };
+    }
 
     cancel() {
         if(this.upload) this.upload.abort();
         this.$state.go('admin.blog');
-    };
+    }
 
     onFileSelect($files) {
         //$files: an array of files selected, each file has name, size, and type.
@@ -79,10 +81,10 @@ export default class PostEditorController {
             this.filename = file.name;
             this.fileToUpload = file;
         }
-    };
+    }
 
     savePost(form) {
-        if(!form.$valid) { return; }
+        if(!form.$valid) return;
 
         this.submitted = true;
 
@@ -121,7 +123,7 @@ export default class PostEditorController {
         this.upload = this.Upload.upload(options);
 
         this.upload
-            .progress((evt) => {
+            .progress(evt => {
                 this.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
             })
             .then(({data, status}) => {
@@ -137,10 +139,10 @@ export default class PostEditorController {
             });
 
         this.upload
-            .xhr((xhr) => {
+            .xhr(xhr => {
                 this.abort = function() {
                     xhr.abort();
                 };
             });
-    };
+    }
 }

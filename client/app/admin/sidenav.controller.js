@@ -11,5 +11,5 @@ export default class LeftController {
             .then(function() {
                 //$log.debug("close LEFT is done");
             });
-    };
+    }
 }

@@ -1,5 +1,7 @@
 'use strict';
 
+import _ from 'lodash-es';
+
 export default class ProjectManagerController {
     errors = [];
     loadingProjects = true;
@@ -32,17 +34,17 @@ export default class ProjectManagerController {
             this.projectDeletions.push(project);
         } else {
             project.deleted = false;
-            _.remove(this.projectDeletions, thisProject =>  thisProject._id === project._id);
+            _.remove(this.projectDeletions, thisProject => thisProject._id === project._id);
             if(this.projectDeletions.length === 0) {
                 this.dirty = false;
             }
         }
-    };
+    }
 
     saveChanges() {
         // Delete projects
         _.forEach(this.projectDeletions, project => {
-            this.$http.delete('/api/projects/' + project._id)
+            this.$http.delete(`/api/projects/${project._id}`)
                 .then(({data, status}) => {
                     _.remove(this.projects, project);
                     this.dirty = false;
@@ -53,5 +55,5 @@ export default class ProjectManagerController {
                     console.log(res);
                 });
         });
-    };
+    }
 }

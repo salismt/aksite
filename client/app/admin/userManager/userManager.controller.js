@@ -15,7 +15,7 @@ export default class {
 
     goToUser(id) {
         this.$state.go('userEditor', {userId: id});
-    };
+    }
 
     deleteUser(user, ev) {
         this.$mdDialog.show(this.$mdDialog.confirm()
@@ -38,5 +38,5 @@ export default class {
                         );
                     });
             });
-    };
+    }
 }

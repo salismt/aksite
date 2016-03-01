@@ -8,11 +8,11 @@ export default class PostController {
     constructor($rootScope, $stateParams, $http, $sce) {
         this.postId = $stateParams.postId;
 
-        $http.get('api/posts/' + this.postId)
+        $http.get(`api/posts/${this.postId}`)
             .success(post => {
                 this.post = post;
 
-                $rootScope.title += ' | ' + post.title;
+                $rootScope.title += ` | ${post.title}`;
 
                 this.post.content = $sce.trustAsHtml(converter.makeHtml(this.post.content));
                 this.post.date = moment(this.post.date).format('LL');
