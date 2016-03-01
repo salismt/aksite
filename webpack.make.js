@@ -134,7 +134,7 @@ module.exports = function makeWebpackConfig(options) {
 
     config.sassLoader = {
         includePaths: require('bourbon').includePaths
-    }
+    };
 
     // Initialize module
     config.module = {
@@ -152,19 +152,12 @@ module.exports = function makeWebpackConfig(options) {
                     'runtime',
                     'es7.classProperties',
                     'es7.decorators'
-                ],
-                resolveModuleSource(originalSource) {
-                    if(originalSource === 'lodash') {
-                        return 'lodash-es';
-                    } else {
-                        return originalSource;
-                    }
-                },
-                ignore(filename) {
-                    return !(filename.indexOf('lodash-es') !== -1) && filename.indexOf('node_modules') !== -1;
-                }
+                ]
             },
-            exclude: /node_modules/
+            include: [
+                path.resolve(__dirname, 'client/'),
+                path.resolve(__dirname, 'node_modules/lodash-es/')
+            ]
         }, {
             // ASSET LOADER
             // Reference: https://github.com/webpack/file-loader

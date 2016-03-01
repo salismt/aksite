@@ -124,17 +124,7 @@ const styles = lazypipe()
 const transpileServer = lazypipe()
     .pipe(plugins.sourcemaps.init)
     .pipe(plugins.babel, {
-        optional: ['runtime'],
-        resolveModuleSource(originalSource) {
-            if(originalSource === 'lodash') {
-                return 'lodash-es';
-            } else {
-                return originalSource;
-            }
-        },
-        ignore(filename) {
-            return !(filename.indexOf('lodash-es') !== -1) && filename.indexOf('node_modules') !== -1;
-        }
+        optional: ['runtime']
     })
     .pipe(plugins.sourcemaps.write, '.');
 
