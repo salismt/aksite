@@ -1,10 +1,10 @@
 'use strict';
+/*eslint no-invalid-this:0*/
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 import crypto from 'crypto';
 const authTypes = ['github', 'twitter', 'facebook', 'google', 'linkedin'];
 
-/*eslint no-invalid-this:0*/
 
 var UserSchema = new Schema({
     name: String,
