@@ -165,7 +165,9 @@ exports.create = function(req, res) {
                                 if(err) return util.handleError(res, err);
                                 else return res.status(201).json(photo);
                             });
-                        }, res.status(400).send);
+                        }, function(err) {
+                            res.status(400).send(err);
+                        });
                 }
             }
         } else {
@@ -271,8 +273,15 @@ function getExif(id) {
             .toBuffer('JPG', function(err, buffer) {
                 if(err) return reject(err);
                 ExifImage({ image: buffer }, function(error, exifData) {
-                    if(error) reject(error);
-                    else resolve(exifData);
+                    if(error) {
+                        if(error.code === 'NO_EXIF_SEGMENT') {
+                            resolve();
+                        } else {
+                            reject(error);
+                        }
+                    } else {
+                        resolve(exifData);
+                    }
                 });
             });
     });
