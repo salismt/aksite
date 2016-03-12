@@ -101,4 +101,4 @@ var all = {
 
 // Export the config object based on the NODE_ENV
 // ==============================================
-export default _.merge(all, require(`./${process.env.NODE_ENV || 'production'}.js`) || {});
+export default _.merge(all, require(`./${process.env.NODE_ENV || 'production'}.js`).default || {});

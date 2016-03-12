@@ -148,11 +148,11 @@ module.exports = function makeWebpackConfig(options) {
             loader: 'babel',
             query: {
                 //presets: ['es2015'],
-                optional: [
-                    'runtime',
-                    'es7.classProperties',
-                    'es7.decorators'
-                ]
+                // optional: [
+                //     'runtime',
+                //     'es7.classProperties',
+                //     'es7.decorators'
+                // ]
             },
             include: [
                 path.resolve(__dirname, 'client/'),
@@ -199,7 +199,7 @@ module.exports = function makeWebpackConfig(options) {
             //delays coverage til after tests are run, fixing transpiled source coverage error
             test: /\.js$/, exclude: /(node_modules|spec\.js|mock\.js)/, loader: 'isparta-instrumenter', query: {
                 babel: {
-                    optional: ['runtime', 'es7.classProperties', 'es7.decorators']
+                    // optional: ['runtime', 'es7.classProperties', 'es7.decorators']
                 }
             }
         });

@@ -1,7 +1,8 @@
+'use strict';
+/*eslint-env node*/
 var testsContext;
 
-var _ = require('lodash');
-require('babel-core/polyfill');
+require('babel-polyfill');
 require('angular');
 require('angular-mocks');
 

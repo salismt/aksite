@@ -1,7 +1,7 @@
 'use strict';
 
 // Register the Babel require hook
-require('babel-core/register')({
+require('babel-register')({
     ignore(filename) {
         return filename.indexOf('lodash-es') === -1
             && filename.indexOf('node_modules') !== -1;

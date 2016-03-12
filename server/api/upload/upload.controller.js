@@ -3,14 +3,12 @@
 import _ from 'lodash';
 import Promise from 'bluebird';
 import * as util from '../../util';
-import path from 'path';
 import Photo from '../photo/photo.model';
 import Gallery from '../gallery/gallery.model';
 import Project from '../project/project.model';
 import User from '../user/user.model';
 import config from '../../config/environment';
 import mongoose from 'mongoose';
-import fs from 'fs';
 import gridform from 'gridform';
 import {ExifImage} from 'exif';
 import gm from 'gm';
@@ -41,7 +39,7 @@ exports.index = function(req, res) {
     if(req.query.page && req.query.page < 1) return res.status(400).send('Invalid page');
 
     var pageSize = (req.query.pagesize && req.query.pagesize <= MAX_PAGESIZE && req.query.pagesize > MIN_PAGESIZE) ? req.query.pagesize : DEFAULT_PAGESIZE;
-    var page = parseInt(req.query.page) || 0;
+    var page = parseInt(req.query.page, 10) || 0;
 
     gridModel.count({}, function(err, count) {
         if(err) return util.handleError(res, err);
@@ -49,7 +47,7 @@ exports.index = function(req, res) {
         gridModel.find()
             .limit(pageSize)
             .sort('date')
-            .skip((req.query.page-1) * pageSize || 0)//doesn't scale well, I'll worry about it later
+            .skip((req.query.page - 1) * pageSize || 0)//doesn't scale well, I'll worry about it later
             .exec(function(err, files) {
                 if(err) return util.handleError(res, err);
 
@@ -115,16 +113,18 @@ exports.create = function(req, res) {
          */
         var file = files.file;
 
-        if(_.isNull(file) || _.isUndefined(file))
+        if(_.isNull(file) || _.isUndefined(file)) {
             return res.status(400).send(new Error('No file'));
+        }
 
-        console.log(file.name+' -> '+file.id);
+        console.log(`${file.name} -> ${file.id}`);
         //console.log(fields);
 
         if(!_.isEmpty(fields)) {
             if(fields.name && typeof fields.name === 'string') {
                 file.name = fields.name;
             }
+
             if(fields.purpose && typeof fields.purpose === 'string') {
                 file.purpose = fields.purpose;
 
@@ -133,28 +133,33 @@ exports.create = function(req, res) {
                         name: file.name,
                         fileId: file.id
                     };
-                    if(fields.info && typeof fields.purpose === 'string')
+                    if(fields.info && typeof fields.purpose === 'string') {
                         photoModel.info = fields.info;
+                    }
 
                     var promises = [
                         getExif(file.id)
                             .then(function(exifData) {
-                                photoModel.metadata = { exif: exifData.exif, image: exifData.image, gps: exifData.gps };
-                                console.log(exifData);
+                                if(!exifData) {
+                                    photoModel.metadata = {};
+                                } else {
+                                    photoModel.metadata = { exif: exifData.exif, image: exifData.image, gps: exifData.gps };
+                                    console.log(exifData);
+                                }
                             }),
                         util.createThumbnail(file.id, {
                             width: null,
                             height: 400
                         })
                             .then(function(thumbnail) {
-                                console.log(file.name+' -> (thumb)'+thumbnail.id);
+                                console.log(`${file.name} -> (thumb)${thumbnail.id}`);
                                 photoModel.thumbnailId = thumbnail.id;
                                 photoModel.width = thumbnail.originalWidth;
                                 photoModel.height = thumbnail.originalHeight;
                             }),
                         util.createThumbnail(file.id)
                             .then(function(squareThumbnail) {
-                                console.log(file.name+' -> (sqThumb)'+squareThumbnail.id);
+                                console.log(`${file.name} -> (sqThumb)${squareThumbnail.id}`);
                                 photoModel.sqThumbnailId = squareThumbnail.id;
                             })
                     ];
@@ -203,15 +208,16 @@ exports.create = function(req, res) {
 
 // Deletes a file from the DB.
 exports.destroy = function(req, res) {
-    if(!util.isValidObjectId(req.params.id))
+    if(!util.isValidObjectId(req.params.id)) {
         return res.status(400).send('Invalid ID');
-    if(!req.params.id)
+    } else if(!req.params.id) {
         return res.status(404).send(new ReferenceError('File not found.'));
-    else
+    } else {
         gfs.remove({_id: req.params.id}, function(err) {
             if(err) return util.handleError(err);
             res.status(200).end();
         });
+    }
 };
 
 // Finds and cleans orphaned GridFS files

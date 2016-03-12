@@ -1,10 +1,10 @@
 'use strict';
 
+import config from '../../config/environment';
 var _ = require('lodash'),
     util = require('../../util'),
     Post = require('./post.model'),
     auth = require('../../auth/auth.service'),
-    config = require('../../config/environment'),
     mongoose = require('mongoose'),
     gridform = require('gridform'),
     conn = mongoose.createConnection(config.mongo.uri);

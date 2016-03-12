@@ -3,13 +3,10 @@
 import _ from 'lodash';
 import * as util from '../../util';
 import User from './user.model';
-import passport from 'passport';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
-import fs from 'fs';
 import gridform from 'gridform';
-import gm from 'gm';
 import Grid from 'gridfs-stream';
 
 var gfs;

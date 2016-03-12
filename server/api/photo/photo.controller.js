@@ -1,9 +1,8 @@
 'use strict';
 
-var _ = require('lodash'),
-    Photo = require('./photo.model'),
-    auth = require('../../auth/auth.service'),
-    config = require('../../config/environment');
+import config from '../../config/environment';
+import _ from 'lodash';
+import Photo from './photo.model';
 
 function handleError(res, err) {
     return res.status(500).send(err);

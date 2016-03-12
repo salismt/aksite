@@ -1,9 +1,9 @@
 'use strict';
 
 import * as util from '../../util';
+import config from '../../config/environment';
 var _ = require('lodash'),
     Project = require('./project.model'),
-    config = require('../../config/environment'),
     mongoose = require('mongoose'),
     fs = require('fs'),
     gridform = require('gridform'),
