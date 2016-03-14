@@ -1,24 +1,7 @@
 <div class="container">
-    <div ng-if="vm.galleries.length > 0" class="row masonry-cards-container">
+    <div class="row masonry-cards-container">
         <h1 class="page-header">Galleries</h1>
 
-        <div masonry='{
-                "transitionDuration" : "0.4s" ,
-                "itemSelector" : ".brick",
-                "gutter": 10,
-                "containerStyle": {"margin": "auto"},
-                "isFitWidth": true
-            }' id="masonry-container" style="position: relative;">
-            <div masonry-tile class="brick card md-whiteframe-z1" ng-repeat="gallery in vm.galleries" md-ink-ripple ng-click="vm.goToGallery(gallery._id)">
-                <div class="item">
-                    <img ng-src="api/upload/{{::gallery.featuredImgId}}" class="" alt="{{::gallery.name}}">
-                </div>
-                <!--<md-button class="md-fab pull-right md-fab-offset">X</md-button>-->
-                <div class="card-content">
-                    <h3>{{::gallery.name}}</h3>
-                    <p>{{::gallery.info}}</p>
-                </div>
-            </div>
-        </div>
+        <div class="masonry gallery" id="masonry-container" style="min-height: 400px"></div>
     </div>
 </div>
