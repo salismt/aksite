@@ -22,18 +22,17 @@ export default class ProjectsController {
     msnry;
 
     /*@ngInject*/
-    constructor(Project, $rootScope, $scope, $stateParams, $http, $compile, $state) {
+    constructor(Project, $rootScope, $scope, $http, $compile, $state) {
         this.masonryContainerElement = document.getElementById('masonry-container');
         this.$state = $state;
 
         let addProject = (project, i) => {
-            let container = angular.element(`<a class="brick card md-whiteframe-z1" ng-click="vm.goToProject(${project._id})"></a>`);
-            container.attr('href', `/projects/${project._id}`);
+            let container = angular.element(`<a class="brick card md-whiteframe-z1" ng-click="vm.goToProject('${project._id}')"></a>`);
             container.attr('id', project._id);
+            container = $compile(container)($scope);
 
             let item = angular.element('<div class="item"></div>');
             let img = angular.element(`<img src="/api/upload/${project.thumbnailId}.jpg" alt="">`);
-            img = $compile(img)($scope);
             item.append(img);
             container.append(item);
 
@@ -56,8 +55,6 @@ export default class ProjectsController {
                 this.msnry.appended(document.getElementById(project._id));
                 this.msnry.layout();
             }
-
-            // this.projects.push(project);
         };
 
         $rootScope.$on('$stateChangeStart', () => {
