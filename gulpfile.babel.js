@@ -112,7 +112,7 @@ const lintServerScripts = lazypipe()
     .pipe(plugins.eslint.format);
 
 const lintServerTestScripts = lazypipe()
-    .pipe(plugins.eslint, `${clientPath}/.eslintrc`)
+    .pipe(plugins.eslint, `${serverPath}/.eslintrc`)
     .pipe(plugins.eslint.format);
 
 const styles = lazypipe()
