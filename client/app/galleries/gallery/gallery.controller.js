@@ -1,5 +1,5 @@
 'use strict';
-import _ from 'lodash';
+import _ from 'lodash-es';
 import angular from 'angular';
 
 import 'jquery';
@@ -80,7 +80,7 @@ export default class GalleryController {
             if(this.msnry) {
                 this.msnry.destroy();
             }
-            addPhoto = function() {};
+            addPhoto = _.noop;
         });
 
         $http.get('/api/gallery/' + $stateParams.galleryId)
