@@ -1,6 +1,6 @@
 'use strict';
 import angular from 'angular';
-import {UpgradeAdapter} from 'angular2/upgrade';
+import {upgradeAdapter} from './upgrade_adapter';
 import 'reflect-metadata';
 // import {bootstrap} from 'ng-forward';
 import ngAnimate from 'angular-animate';
@@ -108,8 +108,6 @@ angular.module('aksiteApp', [
         $rootScope.title = 'Andrew Koroluk';
     })
     .directive('preloader', Preloader);
-
-const upgradeAdapter = new UpgradeAdapter();
 
 angular
     .element(document)
