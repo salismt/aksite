@@ -120,7 +120,7 @@
     "connect-livereload": "~0.5.3",
     "css-loader": "^0.21.0",
     "del": "^2.0.2",
-    "eslint": "^2.2.0",
+    "eslint": "^2.4.0",
     "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.8.4",
     "gulp": "^3.9.1",
