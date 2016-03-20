@@ -104,7 +104,14 @@ const lintClientScripts = lazypipe()
     .pipe(plugins.eslint.format);
 
 const lintClientTestScripts = lazypipe()
-    .pipe(plugins.eslint, `${clientPath}/.eslintrc`)
+    .pipe(plugins.eslint, {
+        configFile: `${clientPath}/.eslintrc`,
+        envs: [
+            'browser',
+            'es6',
+            'mocha'
+        ]
+    })
     .pipe(plugins.eslint.format);
 
 const lintServerScripts = lazypipe()
@@ -112,7 +119,14 @@ const lintServerScripts = lazypipe()
     .pipe(plugins.eslint.format);
 
 const lintServerTestScripts = lazypipe()
-    .pipe(plugins.eslint, `${serverPath}/.eslintrc`)
+    .pipe(plugins.eslint, {
+        configFile: `${serverPath}/.eslintrc`,
+        envs: [
+            'node',
+            'es6',
+            'mocha'
+        ]
+    })
     .pipe(plugins.eslint.format);
 
 const styles = lazypipe()
