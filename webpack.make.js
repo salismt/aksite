@@ -36,6 +36,7 @@ module.exports = function makeWebpackConfig(options) {
     } else {
         config.entry = {
             app: './client/app/index.js',
+            polyfills: './client/polyfills.js',
             vendor: [
                 'angular',
                 'angular-animate',
@@ -138,6 +139,10 @@ module.exports = function makeWebpackConfig(options) {
 
     // Initialize module
     config.module = {
+        noParse: [
+            path.join(__dirname, 'node_modules', 'zone.js', 'dist'),
+            path.join(__dirname, 'node_modules', 'angular2', 'bundles')
+        ],
         preLoaders: [],
         loaders: [{
             // JS LOADER
@@ -331,6 +336,14 @@ module.exports = function makeWebpackConfig(options) {
             colors: true,
             chunk: false
         }
+    };
+
+    config.node = {
+        global: 'window',
+        process: true,
+        crypto: 'empty',
+        clearImmediate: false,
+        setImmediate: false
     };
 
     return config;

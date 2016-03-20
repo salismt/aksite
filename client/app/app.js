@@ -1,5 +1,6 @@
 'use strict';
 import angular from 'angular';
+import {UpgradeAdapter} from 'angular2/upgrade';
 import 'reflect-metadata';
 // import {bootstrap} from 'ng-forward';
 import ngAnimate from 'angular-animate';
@@ -108,10 +109,12 @@ angular.module('aksiteApp', [
     })
     .directive('preloader', Preloader);
 
+const upgradeAdapter = new UpgradeAdapter();
+
 angular
     .element(document)
     .ready(() => {
-        angular.bootstrap(document, ['aksiteApp'], {
+        upgradeAdapter.bootstrap(document, ['aksiteApp'], {
             strictDi: true
         });
     });
