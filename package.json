@@ -203,7 +203,7 @@
     "supertest": "^1.1.0",
     "tiny-lr": "^0.2.1",
     "utile": "~0.3.0",
-    "webpack": "^1.12.2",
+    "webpack": "^1.12.14",
     "webpack-config": "^3.0.0",
     "webpack-config-stream": "^4.0.0",
     "webpack-dev-middleware": "^1.5.1",
