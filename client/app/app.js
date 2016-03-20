@@ -20,7 +20,7 @@ import User from '../components/auth/user.service';
 import Project from '../components/Project/Project.service';
 import Gallery from '../components/gallery/gallery.service';
 import navbar from '../components/navbar';
-import footer from '../components/footer';
+import footer from '../components/footer/footer.component';
 import Preloader from '../components/preloader/preloader.directive';
 
 import routing from './app.config';
