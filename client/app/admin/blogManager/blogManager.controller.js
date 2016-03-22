@@ -1,5 +1,13 @@
 'use strict';
-import _ from 'lodash-es';
+import {wrapperLodash as _, mixin} from 'lodash-es';
+import {
+    forEach,
+    remove
+} from 'lodash-es';
+mixin(_, {
+    forEach,
+    remove
+});
 
 export default class BlogManagerController {
     errors = [];

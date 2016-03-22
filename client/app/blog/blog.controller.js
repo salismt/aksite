@@ -1,5 +1,11 @@
 'use strict';
-import _ from 'lodash-es';
+import {wrapperLodash as _, mixin} from 'lodash-es';
+import {
+    forEach
+} from 'lodash-es';
+mixin(_, {
+    forEach
+});
 import moment from 'moment';
 import { Converter } from 'showdown';
 const converter = new Converter();

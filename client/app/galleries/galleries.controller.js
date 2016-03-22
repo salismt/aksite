@@ -1,6 +1,14 @@
 'use strict';
 import angular from 'angular';
-import _ from 'lodash-es';
+import {wrapperLodash as _, mixin} from 'lodash-es';
+import {
+    noop,
+    forEach
+} from 'lodash-es';
+mixin(_, {
+    noop,
+    forEach
+});
 import Promise from 'bluebird';
 
 import 'jquery';

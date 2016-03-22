@@ -1,5 +1,11 @@
 'use strict';
-import _ from 'lodash-es';
+import {wrapperLodash as _, mixin} from 'lodash-es';
+import {
+    isFunction
+} from 'lodash-es';
+mixin(_, {
+    isFunction
+});
 import {noop} from 'lodash-es';
 import angular from 'angular';
 import ngCookies from 'angular-cookies';

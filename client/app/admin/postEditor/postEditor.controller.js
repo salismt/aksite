@@ -1,5 +1,13 @@
 'use strict';
-import _ from 'lodash';
+import {wrapperLodash as _, mixin} from 'lodash-es';
+import {
+    map,
+    trim
+} from 'lodash-es';
+mixin(_, {
+    map,
+    trim
+});
 import { Converter } from 'showdown';
 const converter = new Converter();
 

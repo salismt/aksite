@@ -1,5 +1,17 @@
 'use strict';
-import _ from 'lodash-es';
+import {wrapperLodash as _, mixin} from 'lodash-es';
+import {
+    partialRight,
+    map,
+    has,
+    forEach
+} from 'lodash-es';
+mixin(_, {
+    partialRight,
+    map,
+    has,
+    forEach
+});
 //import d3 from 'd3';
 //import nv from 'nvd3';
 const d3 = {};
