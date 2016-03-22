@@ -4,7 +4,8 @@ import {upgradeAdapter} from '../../app/upgrade_adapter';
 
 @Component({
     selector: 'footer',
-    template: require('./footer.html')
+    template: require('./footer.html'),
+    styles: [require('./footer.scss')]
 })
 export class FooterComponent {}
 

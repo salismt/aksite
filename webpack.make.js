@@ -134,7 +134,10 @@ module.exports = function makeWebpackConfig(options) {
      */
 
     config.sassLoader = {
-        includePaths: require('bourbon').includePaths
+        includePaths: require('bourbon').includePaths,
+        outputStyle: 'compressed',
+        precision: 10,
+        sourceComments: false
     };
 
     // Initialize module
@@ -182,7 +185,18 @@ module.exports = function makeWebpackConfig(options) {
             // SASS LOADER
             // Reference: https://github.com/jtangelder/sass-loader
             test: /\.scss$/,
-            loaders: ['style', 'css', 'sass']
+            loaders: ['style', 'css', 'sass'],
+            include: [
+                path.resolve(__dirname, 'node_modules/angular-material/angular-material.scss'),
+                path.resolve(__dirname, 'client/app/app.scss')
+            ]
+        }, {
+            // SASS LOADER
+            // Reference: https://github.com/jtangelder/sass-loader
+            test: /\.scss$/,
+            loaders: ['raw', 'sass'],
+            include: [path.resolve(__dirname, 'client')],
+            exclude: [/app\.scss$/]
         }, {
             test: /(jquery|jquery-bridget|desandro-get-style-property|get-size|wolfy87-eventemitter|eventie|doc-ready|desandro-matches-selector|fizzy-ui-utils|outlayer|masonry-layout|imagesloaded|photoswipe)/,
             loader: 'imports?define=>false&this=>window'
