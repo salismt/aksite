@@ -66,6 +66,10 @@ html, body {
     padding: 0.2em 0;
 }
 
+[hidden] {
+    display: none !important;
+}
+
 .facebook-color { color: $facebookColor }
 .google-plus-color { color: $googlePlusColor }
 .twitter-color { color: $twitterColor }

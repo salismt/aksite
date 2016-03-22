@@ -19,7 +19,7 @@ import _Auth from '../components/auth/auth.service';
 import User from '../components/auth/user.service';
 import Project from '../components/Project/Project.service';
 import Gallery from '../components/gallery/gallery.service';
-import navbar from '../components/navbar';
+import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
 import Preloader from '../components/preloader/preloader.directive';
 
@@ -116,3 +116,7 @@ angular
             strictDi: true
         });
     });
+
+upgradeAdapter.upgradeNg1Provider('$location');
+upgradeAdapter.upgradeNg1Provider('$state');
+upgradeAdapter.upgradeNg1Provider('Auth');

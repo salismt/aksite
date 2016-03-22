@@ -1,36 +1,38 @@
 <div class="navbar navbar-default navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <button class="navbar-toggle fa fa-bars" type="button" ng-click="nav.isCollapsed = !nav.isCollapsed">
+            <button class="navbar-toggle fa fa-bars" type="button" (click)="isCollapsed = !isCollapsed">
                 <span class="sr-only">Toggle navigation</span>
             </button>
             <a class="logo-portrait" href="/">
                 <img class="img-circle" src="assets/images/portrait_2014.jpg" alt="AK"/>
             </a>
         </div>
-        <div uib-collapse="nav.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+        <div [ngbCollapse]="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
-                <li ng-repeat="item in nav.menu" ng-class="{active: nav.isActive(item.link)}">
-                    <md-button ng-href="{{::item.link}}" aria-label="{{::item.title}}">{{::item.title}}</md-button>
+                <li *ngFor="#item of menu" [ngClass]="{active: isActive(item.link)}">
+                    <a [href]="item.link" [attr.aria-label]="item.title">{{item.title}}</a>
                 </li>
-                <li ng-show="nav.isAdmin()" ng-class="{active: nav.isActive('/admin')}">
-                    <md-button ui-sref="admin.dashboard" aria-label="Admin">Admin</md-button>
+                <li [hidden]="!isAdmin()" [ngClass]="{active: isActive('/admin')}">
+                    <a (click)="sref('admin.dashboard')" aria-label="Admin">Admin</a>
                 </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <!--<li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup">Sign up</a></li>-->
-                <li ng-hide="nav.isLoggedIn()" ng-class="{active: isActive('/login')}">
-                    <md-button ui-sref="login" aria-label="Login">Login</md-button>
+                <!--<li [hidden]="!isLoggedIn()" [ngClass]="{active: isActive('/signup')}"><a href="/signup">Sign up</a></li>-->
+                <li [hidden]="isLoggedIn()" [ngClass]="{active: isActive('/login')}">
+                    <a (click)="sref('login')" aria-label="Login">Login</a>
                 </li>
-                <li ng-if="nav.isLoggedIn()" style="margin-left: 5px; margin-right: 5px;">
-                    <a ng-href="/user/{{nav.getCurrentUser()._id}}" style="padding: 0"><span class="user-image" ng-style="{'background-image':'url(/api/upload/{{nav.getCurrentUser().imageId}}.jpg)'}"></span></a>
+                <li *ngIf="isLoggedIn()" style="margin-left: 5px; margin-right: 5px;">
+                    <a href="/user/{{getCurrentUser()._id}}" style="padding: 0">
+                        <span class="user-image" style.background-image="url(/api/upload/{{getCurrentUser().imageId}}.jpg)"></span>
+                    </a>
                 </li>
-                <li ng-show="nav.isLoggedIn()" ng-class="{active: nav.isActive('/settings')}">
-                    <md-button ui-sref="settings.dashboard" aria-label="Settings"><i class="fa fa-cog"></i></md-button>
+                <li [hidden]="!isLoggedIn()" [ngClass]="{active: isActive('/settings')}">
+                    <a (click)="sref('settings.dashboard')" aria-label="Settings"><i class="fa fa-cog"></i></a>
                 </li>
-                <li ng-show="nav.isLoggedIn()" ng-class="{active: nav.isActive('/logout')}">
-                    <md-button href="" ng-click="nav.logout()" aria-label="Logout">Logout</md-button>
+                <li [hidden]="!isLoggedIn()" [ngClass]="{active: isActive('/logout')}">
+                    <a href="" (click)="logout()" aria-label="Logout">Logout</a>
                 </li>
             </ul>
         </div>

@@ -1,7 +1,5 @@
 .navbar {
     border-bottom: none;
-//    background-color: $ak-base-color;
-//    color: white;
     padding: 10px 30px;
     margin-bottom: 0;
 
@@ -27,12 +25,13 @@
             border: none;
             box-shadow: none;
             .nav {
-//                color: white;
                 li {
+                    a {
+                        cursor: pointer;
+                    }
                     .navbar-text {
                         text-align: center;
                         margin: 12px;
-//                        color: white;
                     }
                     .md-button {
                         position: relative;
@@ -45,14 +44,10 @@
                             display: block;
                         }
                     }
-                    .md-button.md-default-theme:not([disabled]):hover, .md-button.md-default-theme:not([disabled]).focus {
-//                        background-color: $ak-base-color-dark;
-                    }
                     &.active {
                         .md-button.md-default-theme:not([disabled]),
                         .md-button.md-default-theme:not([disabled]):hover,
                         .md-button.md-default-theme:not([disabled]).focus {
-//                            background-color: $ak-base-color-darker;
                             color: white;
                         }
                     }
