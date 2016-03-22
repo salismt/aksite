@@ -21,7 +21,7 @@ import Project from '../components/Project/Project.service';
 import Gallery from '../components/gallery/gallery.service';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
-import Preloader from '../components/preloader/preloader.directive';
+import Preloader from '../components/preloader/preloader.component';
 
 import routing from './app.config';
 
@@ -56,6 +56,7 @@ angular.module('aksiteApp', [
     Gallery,
     navbar,
     footer,
+    Preloader,
     account,
     resume,
     blog,
@@ -106,8 +107,7 @@ angular.module('aksiteApp', [
 
         $rootScope.titleRoot = 'AK';
         $rootScope.title = 'Andrew Koroluk';
-    })
-    .directive('preloader', Preloader);
+    });
 
 angular
     .element(document)
