@@ -28,7 +28,7 @@ import routing from './app.config';
 import main from './main';
 import account from './account';
 import resume from './resume';
-import blog from './blog';
+import blog from './blog/blog.component';
 import projects from './projects';
 import galleries from './galleries';
 import admin from './admin';
@@ -117,6 +117,8 @@ angular
         });
     });
 
+upgradeAdapter.upgradeNg1Provider('$http');
 upgradeAdapter.upgradeNg1Provider('$location');
 upgradeAdapter.upgradeNg1Provider('$state');
+upgradeAdapter.upgradeNg1Provider('$stateParams');
 upgradeAdapter.upgradeNg1Provider('Auth');

@@ -1,3 +1,14 @@
+@import '../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables';
+@import '../variables';
+
+@mixin clearfix {
+    &::after {
+        clear: both;
+        content: "";
+        display: table;
+    }
+}
+
 .post-block {
     border-bottom: 1px solid rgba(0,0,0,0.15);
     padding: 25px 0 32px;

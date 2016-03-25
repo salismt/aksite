@@ -1,4 +1,8 @@
 'use strict';
+import {Component} from 'angular2/core';
+import {upgradeAdapter} from '../../app/upgrade_adapter';
+import {NgbPagination} from 'angular-ng-bootstrap';
+
 import {wrapperLodash as _, mixin} from 'lodash-es';
 import {
     forEach
@@ -10,14 +14,21 @@ import moment from 'moment';
 import { Converter } from 'showdown';
 const converter = new Converter();
 
-export default class BlogController {
+@Component({
+    selector: 'blog',
+    template: require('./blog.html'),
+    styles: [require('./blog.scss')],
+    directives: [NgbPagination]
+})
+export class BlogComponent {
     loadingItems = true;
     noItems = false;
-    page = 1;
+    page = 0;
     pagesize = 10;
+    collectionSize = 0;
     posts = [];
 
-    /*@ngInject*/
+    static parameters = ['$http', '$stateParams', '$state'];
     constructor($http, $stateParams, $state) {
         this.$http = $http;
         this.$stateParams = $stateParams;
@@ -27,14 +38,18 @@ export default class BlogController {
 
         this.page = $stateParams.page || 1;
         this.pagesize = $stateParams.pagesize || 10;
-
-        this.pageChanged();
     }
 
-    pageChanged() {
-        this.$http.get(this.getterString())
+    ngOnInit() {
+        this.pageChanged(this.page);
+    }
+
+    pageChanged(page) {
+        this.page = page;
+        this.$state.transitionTo('blog', {page: this.page, pagesize: this.pagesize}, { notify: false });
+
+        return this.$http.get(`api/posts?page=${this.page}&pagesize=${this.pagesize}`)
             .then(({data}) => {
-                this.currentPage = data.page;
                 this.pages = data.pages;
                 this.collectionSize = data.numItems;
                 this.posts = data.items;
@@ -49,25 +64,16 @@ export default class BlogController {
                 console.log(err);
             });
     }
-
-    getterString() {
-        var str = 'api/posts';
-        var queryParams = [];
-        if(this.page) {
-            queryParams.push(`page=${this.page}`);
-        }
-        if(this.$stateParams.pagesize) {
-            queryParams.push(`pagesize=${this.$stateParams.pagesize}`);
-        }
-        if(queryParams.length > 0) {
-            str += '?';
-            _.forEach(queryParams, function(param, index) {
-                str += param;
-                if(index < queryParams.length - 1) {
-                    str += '&';
-                }
-            });
-        }
-        return str;
-    }
 }
+
+import angular from 'angular';
+import uirouter from 'angular-ui-router';
+
+import post from './post';
+
+import routing from './blog.routes';
+
+export default angular.module('aksiteApp.blog', [uirouter, post])
+    .config(routing)
+    .directive('blog', upgradeAdapter.downgradeNg2Component(BlogComponent))
+    .name;
