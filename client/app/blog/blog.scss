@@ -44,6 +44,10 @@
         margin: 2px 0 10px 0;
         line-height: 1.4;
     }
+
+    &:last-child {
+        border-bottom: none;
+    }
 }
 
 .block-author {
