@@ -54,7 +54,7 @@ export default class ResumeController {
                 }, {
                     date: moment('05-18-2015', 'MM-DD-YYYY'),
                     dateLine1: moment('05-18-2015', 'MM-DD-YYYY').format('MMM YYYY'),
-                    dateLine2: 'to current',
+                    dateLine2: moment('02-19-2016', 'MM-DD-YYYY').format('MMM YYYY'),
                     image: 'assets/images/inin.svg',
                     heading: 'Interactive Intelligence',
                     content: 'Software Engineer. Indianapolis, IN. Front-end web application development using AngularJS/KnockoutJS for Caas and PureCloud products.',
