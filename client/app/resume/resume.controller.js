@@ -5,9 +5,14 @@ import moment from 'moment';
 export default class ResumeController {
     profile = {};
     jobs = [];
+    isOpen = false;
 
     /*@ngInject*/
-    constructor($http) {
+    constructor($http, $mdSidenav, $mdMedia) {
+        this.$mdSidenav = $mdSidenav;
+
+        this.isOpen = $mdMedia('gt-sm');
+
         $http.get('/assets/linkedin_profile.json')
             .then(({data}) => {
                 this.profile = data;

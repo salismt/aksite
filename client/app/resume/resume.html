@@ -1,6 +1,9 @@
 <section layout="row" flex class="resume">
-    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="resume" md-is-locked-open="$mdMedia('gt-md')">
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="resume" md-is-locked-open="vm.isOpen">
         <md-toolbar class="md-theme-indigo" style="text-align: center;">
+            <md-button ng-click="vm.isOpen = false;" class="md-primary" aria-label="close side nav">
+                <md-icon class="fa fa-2x" md-font-icon="fa-bars" style="color: white; left: 0;"></md-icon>
+            </md-button>
             <h1 style="font-size: 30px; margin-bottom: 0;">Andrew Koroluk</h1>
             <h4>Full-Stack Developer</h4>
             <div style="padding: 10px;">
@@ -15,13 +18,12 @@
     </md-sidenav>
 
     <md-content>
-        <div class="md-whiteframe-z1" style="background-color: rgb(63, 81, 181);">
-            <div class="text-white md-padding" style="display: inline-block;">
-            </div>
-        </div>
         <div class="md-whiteframe-z1">
             <md-toolbar>
                 <div class="md-toolbar-tools">
+                    <md-button ng-click="vm.isOpen = true;" class="md-icon-button" aria-label="close side nav" ng-style="{'opacity': vm.isOpen ? 0 : 1}">
+                        <md-icon class="fa fa-2x" md-font-icon="fa-bars" style="color: white; left: 0;"></md-icon>
+                    </md-button>
                     <h2>
                         <span>Skills</span>
                     </h2>
