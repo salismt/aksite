@@ -7,59 +7,14 @@
             <h1 style="font-size: 30px; margin-bottom: 0;">Andrew Koroluk</h1>
             <h4>Full-Stack Developer</h4>
             <div style="padding: 10px;">
-                <img src="assets/images/portrait_2014.jpg" style="border-radius: 50%; width: 100%;;" alt="">
+                <img src="assets/images/portrait_2014.jpg" style="border-radius: 50%; width: 100%;" alt="">
             </div>
         </md-toolbar>
-        <md-content flex role="navigation">
-            <md-button style="width: 100%; margin: 0; padding: 3px;">Cover Letter</md-button>
-            <md-button style="width: 100%; margin: 0; padding: 3px;">Skills</md-button>
-            <md-button style="width: 100%; margin: 0; padding: 3px;">Experience</md-button>
+        <md-content role="navigation" ng-repeat="link in vm.links">
+            <md-button style="width: 100%; margin: 0; padding: 3px;" ui-sref="{{link.sref}}">{{::link.name}}</md-button>
         </md-content>
     </md-sidenav>
-
     <md-content>
-        <div class="md-whiteframe-z1">
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    <md-button ng-click="vm.isOpen = true;" class="md-icon-button" aria-label="close side nav" ng-style="{'opacity': vm.isOpen ? 0 : 1}">
-                        <md-icon class="fa fa-2x" md-font-icon="fa-bars" style="color: white; left: 0;"></md-icon>
-                    </md-button>
-                    <h2>
-                        <span>Skills</span>
-                    </h2>
-                </div>
-            </md-toolbar>
-            <md-content class="md-padding">
-                <md-chips class="md-chips-noline"
-                          ng-model="vm.profile.skills.values"
-                          readonly="true"
-                          placeholder="Skill">
-                    <md-chip-template>
-                        <strong>{{$chip.skill.name}}</strong>
-                    </md-chip-template>
-                </md-chips>
-            </md-content>
-        </div>
-        <div class="md-whiteframe-z1">
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    <h2>
-                        <span>Certifications</span>
-                    </h2>
-                </div>
-            </md-toolbar>
-            <md-content class="md-padding">
-                <md-list class="md-default-theme">
-                    <md-list-item class="md-clickable" ng-repeat="cert in vm.profile.certifications.values">
-                        <img class="md-avatar" src="assets/images/codeschool_avatar.svg" alt="">
-                        <div class="md-list-item-text" layout="column">
-                            <h4 style="color: black;">{{cert.name}}</h4>
-                            <p style="color: black;">{{cert.authority.name}}</p>
-                        </div>
-                    </md-list-item>
-                </md-list>
-            </md-content>
-        </div>
-        <timeline items="vm.jobs"></timeline>
+        <div ui-view=""></div>
     </md-content>
 </section>
