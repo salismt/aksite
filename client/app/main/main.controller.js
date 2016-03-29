@@ -1,5 +1,20 @@
 'use strict';
-import _ from 'lodash';
+import {
+    wrapperLodash as _,
+    sample,
+    mixin,
+    shuffle,
+    remove,
+    partial,
+    isEqual
+} from 'lodash-es';
+mixin(_, {
+    sample,
+    shuffle,
+    remove,
+    partial,
+    isEqual
+});
 
 import 'jquery';
 import 'jquery-bridget';

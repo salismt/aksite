@@ -1,6 +1,13 @@
 'use strict';
-
-import _ from 'lodash-es';
+import {wrapperLodash as _, mixin} from 'lodash-es';
+import {
+    remove,
+    forEach
+} from 'lodash-es';
+mixin(_, {
+    remove,
+    forEach
+});
 
 export default class ProjectManagerController {
     errors = [];

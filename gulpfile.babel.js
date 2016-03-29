@@ -2,6 +2,7 @@
 /*eslint-env node*/
 /*eslint no-process-env:2*/
 import _ from 'lodash';
+import fs from 'fs';
 import del from 'del';
 import gulp from 'gulp';
 import gulpLoadPlugins from 'gulp-load-plugins';
@@ -20,6 +21,7 @@ const plugins = gulpLoadPlugins();
 var config;
 const webpackDevConfig = makeWebpackConfig({ DEV: true });
 const webpackDistConfig = makeWebpackConfig({ BUILD: true });
+const FAVICON_DATA_FILE = 'faviconData.json';
 
 const clientPath = 'client';
 const serverPath = 'server';
@@ -104,7 +106,14 @@ const lintClientScripts = lazypipe()
     .pipe(plugins.eslint.format);
 
 const lintClientTestScripts = lazypipe()
-    .pipe(plugins.eslint, `${clientPath}/.eslintrc`)
+    .pipe(plugins.eslint, {
+        configFile: `${clientPath}/.eslintrc`,
+        envs: [
+            'browser',
+            'es6',
+            'mocha'
+        ]
+    })
     .pipe(plugins.eslint.format);
 
 const lintServerScripts = lazypipe()
@@ -112,7 +121,14 @@ const lintServerScripts = lazypipe()
     .pipe(plugins.eslint.format);
 
 const lintServerTestScripts = lazypipe()
-    .pipe(plugins.eslint, `${clientPath}/.eslintrc`)
+    .pipe(plugins.eslint, {
+        configFile: `${serverPath}/.eslintrc`,
+        envs: [
+            'node',
+            'es6',
+            'mocha'
+        ]
+    })
     .pipe(plugins.eslint.format);
 
 const styles = lazypipe()
@@ -124,7 +140,7 @@ const styles = lazypipe()
 const transpileServer = lazypipe()
     .pipe(plugins.sourcemaps.init)
     .pipe(plugins.babel, {
-        optional: ['runtime']
+        // optional: ['runtime']
     })
     .pipe(plugins.sourcemaps.write, '.');
 
@@ -235,12 +251,6 @@ gulp.task('lint:scripts:clientTest', function() {
 gulp.task('lint:scripts:serverTest', function() {
     return gulp.src(_.union(paths.server.test.unit, paths.server.test.integration))
         .pipe(lintServerTestScripts());
-});
-
-gulp.task('jscs', function() {
-    return gulp.src(_.union(paths.client.scripts, paths.server.scripts))
-        .pipe(plugins.jscs())
-        .pipe(plugins.jscs.reporter());
 });
 
 gulp.task('clean:tmp', () => del(['.tmp/**/*'], {dot: true}));
@@ -405,7 +415,10 @@ gulp.task('build', cb => {
             'clean:dist',
             'clean:tmp'
         ],
-        'build:images',
+        [
+            'build:images',
+            'generate-favicon'
+        ],
         [
             'copy:extras',
             'copy:assets',
@@ -413,7 +426,10 @@ gulp.task('build', cb => {
             'copy:server',
             'webpack:dist'
         ],
-        'revReplaceWebpack',
+        [
+            'revReplaceWebpack',
+            'inject-favicon-markups'
+        ],
         cb);
 });
 
@@ -486,4 +502,78 @@ gulp.task('copy:server', function() {
         'scripts/*'
     ], {cwdbase: true})
         .pipe(gulp.dest(paths.dist));
+});
+
+/**
+ * Generate the icons. This task takes a few seconds to complete.
+ * You should run it at least once to create the icons. Then,
+ * you should run it whenever RealFaviconGenerator updates its
+ * package (see the check-for-favicon-update task below).
+ */
+gulp.task('generate-favicon', function(done) {
+    plugins.realFavicon.generateFavicon({
+        masterPicture: `${clientPath}/assets/images/favicon.png`,
+        dest: 'dist/client/',
+        iconsPath: '/',
+        design: {
+            ios: {
+                pictureAspect: 'backgroundAndMargin',
+                backgroundColor: '#ffffff',
+                margin: '14%'
+            },
+            desktopBrowser: {},
+            windows: {
+                pictureAspect: 'whiteSilhouette',
+                backgroundColor: '#2d89ef',
+                onConflict: 'override'
+            },
+            androidChrome: {
+                pictureAspect: 'shadow',
+                themeColor: '#5eaffa',
+                manifest: {
+                    name: 'aksite',
+                    display: 'browser',
+                    orientation: 'notSet',
+                    onConflict: 'override',
+                    declared: true
+                }
+            },
+            safariPinnedTab: {
+                pictureAspect: 'silhouette',
+                themeColor: '#5bbad5'
+            }
+        },
+        settings: {
+            compression: 2,
+            scalingAlgorithm: 'Mitchell',
+            errorOnImageTooSmall: false
+        },
+        versioning: {
+            paramName: 'v',
+            paramValue: '1'
+        },
+        markupFile: FAVICON_DATA_FILE
+    }, () => done());
+});
+
+// Inject the favicon markups in your HTML pages. You should run
+// this task whenever you modify a page. You can keep this task
+// as is or refactor your existing HTML pipeline.
+gulp.task('inject-favicon-markups', function() {
+    gulp.src(['dist/client/index.html'])
+        .pipe(plugins.realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code))
+        .pipe(gulp.dest('dist/client/'));
+});
+
+// Check for updates on RealFaviconGenerator (think: Apple has just
+// released a new Touch icon along with the latest version of iOS).
+// Run this task from time to time. Ideally, make it part of your
+// continuous integration system.
+gulp.task('check-for-favicon-update', function() {
+    var currentVersion = JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).version;
+    plugins.realFavicon.checkForUpdates(currentVersion, function(err) {
+        if(err) {
+            throw err;
+        }
+    });
 });

@@ -1,29 +1,31 @@
 <div class="container">
-    <uib-alert ng-if="vm.noItems">No Items</uib-alert>
+    <uib-alert *ngIf="noItems">No Items</uib-alert>
 
     <div class="container post-list">
-        <div class="post-block" ng-repeat="post in vm.posts">
-            <a ng-if="::post.imageId" ng-href="/blog/post/{{::post._id}}" class="block-image" ng-style="{'background-image':'url(/api/upload/{{::post.imageId}})'}"></a>
+        <div class="post-block" *ngFor="#post of posts">
+            <a *ngIf="post.imageId" href="/blog/post/{{post._id}}"
+               class="block-image"
+               style.background-image="url(/api/upload/{{post.imageId}})"></a>
 
-            <a ng-href="/blog/post/{{::post._id}}">
-                <h2 class="block-header">{{post.title}} <small ng-show="post.hidden">Hidden</small></h2>
+            <a href="/blog/post/{{post._id}}">
+                <h2 class="block-header">{{post.title}} <small [hidden]="!post.hidden">Hidden</small></h2>
             </a>
 
-            <a ng-href="/blog/post/{{::post._id}}">
-                <p class="block-snippet" ng-bind-html="post.subheader"></p>
+            <a href="/blog/post/{{post._id}}">
+                <p class="block-snippet" [innerHTML]="post.subheader"></p>
             </a>
 
             <div class="block-author">
                 <div class="block-meta">
                     <div class="meta-avatar">
-                        <a ng-href="/users/{{::post.author.id}}" class="avatar avatar--small" title="Go to {{::post.author.name}}'s profile">
-                            <img ng-src="/api/upload/{{::post.author.imageId}}" class="img-circle" title="{{::post.author.name}}">
+                        <a href="/users/{{post.author.id}}" class="avatar avatar--small" title="Go to {{post.author.name}}'s profile">
+                            <img src="/api/upload/{{post.author.imageId}}" class="img-circle" title="{{post.author.name}}">
                         </a>
                     </div>
                     <div class="meta-summary">
                         by
-                        <a ng-href="/users/{{::post.author.id}}" title="Go to {{::post.author.name}}'s profile" class="link">
-                            {{::post.author.name}}
+                        <a href="/users/{{post.author.id}}" title="Go to {{post.author.name}}'s profile" class="link">
+                            {{post.author.name}}
                         </a>
                         <span class="metaInline metaInline--supplemental">
                             {{post.date}}
@@ -34,17 +36,12 @@
         </div>
     </div>
 
-    <uib-pagination
-        ng-change="vm.pageChanged()"
-        items-per-page="vm.pagesize"
-        boundary-links="true"
-        total-items="vm.numItems"
-        ng-model="vm.page"
+    <ngb-pagination
+        (pageChange)="pageChanged($event)"
+        [pageSize]="pagesize"
+        [collectionSize]="collectionSize"
+        [page]="page"
         class="center-block"
-        style="margin-bottom: 100px;"
-        previous-text="&lsaquo;"
-        next-text="&rsaquo;"
-        first-text="&laquo;"
-        last-text="&raquo;">
-    </uib-pagination>
+        style="margin-bottom: 100px;">
+    </ngb-pagination>
 </div>

@@ -36,6 +36,7 @@ module.exports = function makeWebpackConfig(options) {
     } else {
         config.entry = {
             app: './client/app/index.js',
+            polyfills: './client/polyfills.js',
             vendor: [
                 'angular',
                 'angular-animate',
@@ -120,7 +121,7 @@ module.exports = function makeWebpackConfig(options) {
     if(TEST) {
         config.devtool = 'inline-source-map';
     } else if(BUILD || DEV) {
-        config.devtool = 'eval-source-map';
+        config.devtool = 'source-map';
     } else {
         config.devtool = 'eval';
     }
@@ -133,11 +134,18 @@ module.exports = function makeWebpackConfig(options) {
      */
 
     config.sassLoader = {
-        includePaths: require('bourbon').includePaths
+        includePaths: require('bourbon').includePaths,
+        outputStyle: 'compressed',
+        precision: 10,
+        sourceComments: false
     };
 
     // Initialize module
     config.module = {
+        noParse: [
+            path.join(__dirname, 'node_modules', 'zone.js', 'dist'),
+            path.join(__dirname, 'node_modules', 'angular2', 'bundles')
+        ],
         preLoaders: [],
         loaders: [{
             // JS LOADER
@@ -148,11 +156,11 @@ module.exports = function makeWebpackConfig(options) {
             loader: 'babel',
             query: {
                 //presets: ['es2015'],
-                optional: [
-                    'runtime',
-                    'es7.classProperties',
-                    'es7.decorators'
-                ]
+                // optional: [
+                //     'runtime',
+                //     'es7.classProperties',
+                //     'es7.decorators'
+                // ]
             },
             include: [
                 path.resolve(__dirname, 'client/'),
@@ -177,7 +185,18 @@ module.exports = function makeWebpackConfig(options) {
             // SASS LOADER
             // Reference: https://github.com/jtangelder/sass-loader
             test: /\.scss$/,
-            loaders: ['style', 'css', 'sass']
+            loaders: ['style', 'css', 'sass'],
+            include: [
+                path.resolve(__dirname, 'node_modules/angular-material/angular-material.scss'),
+                path.resolve(__dirname, 'client/app/app.scss')
+            ]
+        }, {
+            // SASS LOADER
+            // Reference: https://github.com/jtangelder/sass-loader
+            test: /\.scss$/,
+            loaders: ['raw', 'sass'],
+            include: [path.resolve(__dirname, 'client')],
+            exclude: [/app\.scss$/]
         }, {
             test: /(jquery|jquery-bridget|desandro-get-style-property|get-size|wolfy87-eventemitter|eventie|doc-ready|desandro-matches-selector|fizzy-ui-utils|outlayer|masonry-layout|imagesloaded|photoswipe)/,
             loader: 'imports?define=>false&this=>window'
@@ -199,7 +218,7 @@ module.exports = function makeWebpackConfig(options) {
             //delays coverage til after tests are run, fixing transpiled source coverage error
             test: /\.js$/, exclude: /(node_modules|spec\.js|mock\.js)/, loader: 'isparta-instrumenter', query: {
                 babel: {
-                    optional: ['runtime', 'es7.classProperties', 'es7.decorators']
+                    // optional: ['runtime', 'es7.classProperties', 'es7.decorators']
                 }
             }
         });
@@ -331,6 +350,14 @@ module.exports = function makeWebpackConfig(options) {
             colors: true,
             chunk: false
         }
+    };
+
+    config.node = {
+        global: 'window',
+        process: true,
+        crypto: 'empty',
+        clearImmediate: false,
+        setImmediate: false
     };
 
     return config;

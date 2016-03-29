@@ -39,7 +39,7 @@ $fa-font-path: "/assets/fonts/font-awesome/";
 @import 'settings/profile/profile';
 @import 'settings/settings';
 @import 'user/user';
-@import '../components/footer/footer';
+//@import '../components/footer/footer';
 @import '../components/navbar/navbar';
 @import '../components/preloader/preloader';
 @import '../components/timeline/timeline';
@@ -64,6 +64,10 @@ html, body {
     background: #ccc;
     color: #000;
     padding: 0.2em 0;
+}
+
+[hidden] {
+    display: none !important;
 }
 
 .facebook-color { color: $facebookColor }

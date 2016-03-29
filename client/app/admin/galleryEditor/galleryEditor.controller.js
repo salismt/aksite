@@ -1,5 +1,11 @@
 'use strict';
-import _ from 'lodash-es';
+import {wrapperLodash as _, mixin} from 'lodash-es';
+import {
+    forEach
+} from 'lodash-es';
+mixin(_, {
+    forEach
+});
 
 export default class GalleryEditorController {
     photos = [];

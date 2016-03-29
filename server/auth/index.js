@@ -14,11 +14,11 @@ require('./linkedin/passport').setup(User, config);
 
 var router = new Router();
 
-router.use('/local', require('./local'));
-router.use('/facebook', require('./facebook'));
-router.use('/google', require('./google'));
-router.use('/twitter', require('./twitter'));
-router.use('/github', require('./github'));
-router.use('/linkedin', require('./linkedin'));
+router.use('/local', require('./local').default);
+router.use('/facebook', require('./facebook').default);
+router.use('/google', require('./google').default);
+router.use('/twitter', require('./twitter').default);
+router.use('/github', require('./github').default);
+router.use('/linkedin', require('./linkedin').default);
 
 module.exports = router;

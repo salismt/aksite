@@ -1,15 +1,18 @@
 'use strict';
-import { Component, Inject, bundle } from 'ng-forward';
+import angular from 'angular';
+import {Component} from 'angular2/core';
+import {upgradeAdapter} from '../../app/upgrade_adapter';
+import {NgbCollapse} from 'angular-ng-bootstrap';
 
 //import './navbar.scss';
 
 @Component({
     selector: 'navbar',
     template: require('./navbar.html'),
-    controllerAs: 'nav'
+    directives: [NgbCollapse]
 })
-@Inject('$location', 'Auth')
-class Navbar {
+export class NavbarComponent {
+    isCollapsed = true;
     menu = [{
         title: 'Home',
         link: '/'
@@ -28,14 +31,14 @@ class Navbar {
         link: '/blog'
     }];
 
-    /*@ngInject*/
-    constructor($location, Auth) {
-        this.isCollapsed = true;
+    static parameters = ['$location', '$state', 'Auth'];
+    constructor($location, $state, Auth) {
+        this.$location = $location;
+        this.$state = $state;
         this.isLoggedIn = (...args) => Auth.isLoggedIn(...args);
         this.isAdmin = (...args) => Auth.isAdmin(...args);
         this.getCurrentUser = (...args) => Auth.getCurrentUser(...args);
         this.authLogout = () => Auth.logout();
-        this.$location = $location;
     }
 
     logout() {
@@ -46,6 +49,12 @@ class Navbar {
     isActive(route) {
         return route === this.$location.path();
     }
+
+    sref(id) {
+        this.$state.go(id);
+    }
 }
 
-export default bundle('directives.navbar', Navbar).name;
+export default angular.module('directives.navbar', [])
+    .directive('navbar', upgradeAdapter.downgradeNg2Component(NavbarComponent))
+    .name;

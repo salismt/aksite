@@ -1,5 +1,19 @@
 'use strict';
-import _ from 'lodash';
+import {wrapperLodash as _, mixin} from 'lodash-es';
+import {
+    chain,
+    drop,
+    filter,
+    map,
+    noop
+} from 'lodash-es';
+mixin(_, {
+    chain,
+    drop,
+    filter,
+    map,
+    noop
+});
 import angular from 'angular';
 
 import 'jquery';
@@ -80,7 +94,7 @@ export default class GalleryController {
             if(this.msnry) {
                 this.msnry.destroy();
             }
-            addPhoto = function() {};
+            addPhoto = _.noop;
         });
 
         $http.get('/api/gallery/' + $stateParams.galleryId)
@@ -97,7 +111,7 @@ export default class GalleryController {
                 $http.get(`api/photos/${gallery.photos[0]}`)
                     .then(({data}) => addPhoto(data, i++))
                     .then(() => {
-                        let promises = _(gallery.photos)
+                        let promises = _.chain(gallery.photos)
                             .drop(1)
                             .map(photo => $http.get(`api/photos/${photo}`))
                             .value();
@@ -118,7 +132,7 @@ export default class GalleryController {
     }
 
     parseThumbnailElements(thumbElements) {
-        return _(thumbElements)
+        return _.chain(thumbElements)
             .filter(el => el.nodeType === 1 && el.localName === 'div' && el.className !== 'grid-sizer')
             .map(el => {
                 let childElements = el.children[0].children;

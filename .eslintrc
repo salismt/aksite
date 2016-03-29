@@ -4,7 +4,44 @@
         "es6": true
     },
     "globals": {},
+    "plugins": ["lodash"],
     "rules": {
+        // Lodash
+        "lodash/callback-binding": 2,                               // Use or avoid thisArg for Lodash method callbacks, depending on major version.
+        "lodash/chain-style": [2, "as-needed"],                     // Enforce a specific chain style: explicit, implicit, or explicit only when necessary.
+        "lodash/collection-return": 2,                              // Always return a value in iteratees of Lodash collection methods that aren't forEach.
+        "lodash/identity-shorthand": [2, "always"],                 // Prefer identity shorthand syntax
+        "lodash/matches-prop-shorthand": [2, "always"],             // Prefer matches property shorthand syntax
+        "lodash/matches-shorthand": [2, "always", 3],               // Prefer matches shorthand syntax
+        "lodash/no-commit": 2,                                      // Do not use .commit() on chains that should end with .value()
+        "lodash/no-double-unwrap": 2,                               // Do not use .value() on chains that have already ended (e.g. with max() or reduce()) (fixable)
+        "lodash/no-extra-args": 2,                                  // Do not use superfluous arguments on Lodash methods with a specified arity.
+        "lodash/no-single-chain": 2,                                // Prevent chaining syntax for single method, e.g. _(x).map().value()
+        "lodash/path-style": [2, "as-needed"],                      // Enforce a specific path style for methods like get and property: array, string, or arrays only for d
+        "lodash/prefer-chain": [2, 3],                              // Prefer a Lodash chain over nested Lodash calls
+        "lodash/prefer-compact": 2,                                 // Prefer _.compact over _.filter for only truthy values.
+        "lodash/prefer-constant": 2,                                // Prefer _.constant over functions returning literals.
+        "lodash/prefer-filter": [2, 3],                             // Prefer _.filter over _.forEach with an if statement inside.
+        "lodash/prefer-flat-map": 2,                                // Prefer _.flatMap over consecutive map and flatten.
+        "lodash/prefer-get": [2, 3],                                // Prefer using _.get or _.has over expression chains like a && a.b && a.b.c.
+        "lodash/prefer-invoke-map": 2,                              // Prefer using _.invoke over _.map with a method call inside.
+        "lodash/prefer-is-nil": 2,                                  // Prefer _.isNil over checks for both null and undefined.
+        "lodash/prefer-lodash-chain": 2,                            // Prefer using Lodash chains (e.g. _.map) over native and mixed chains.
+        "lodash/prefer-lodash-method": 0,                           // Prefer using Lodash collection methods (e.g. _.map) over native array methods.
+        "lodash/prefer-lodash-typecheck": 2,                        // Prefer using _.is* methods over typeof and instanceof checks when applicable.
+        "lodash/prefer-map": 2,                                     // Prefer _.map over _.forEach with a push inside.
+        "lodash/prefer-matches": [2, 3],                            // Prefer _.matches over conditions like a.foo === 1 && a.bar === 2 && a.baz === 3.
+        "lodash/prefer-noop": 2,                                    // Prefer _.noop over empty functions.
+        "lodash/prefer-over-quantifier": 2,                         // Prefer _.overSome and _.overEvery instead of checks with && and || for methods that have a boolean c
+        "lodash/prefer-reject": [2, 3],                             // Prefer _.reject over filter with !(expression) or x.prop1 !== value
+        "lodash/prefer-startswith": 2,                              // Prefer _.startsWith over a.indexOf(b) === 0.
+        "lodash/prefer-thru": 2,                                    // Prefer using _.prototype.thru in the chain and not call functions in the initial value, e.g. _(x).th
+        "lodash/prefer-times": 2,                                   // Prefer _.times over _.map without using the iteratee's arguments.
+        "lodash/prefer-wrapper-method": 2,                          // Prefer using array and string methods in the chain and not the initial value, e.g. _(str).split(' ')
+        "lodash/preferred-alias": 2,                                // Prefer using main method names instead of aliases. (fixable)
+        "lodash/prop-shorthand": [2, "always"],                     // Use/forbid property shorthand syntax.
+        "lodash/unwrap": 2,                                         // Prevent chaining without evaluation via value() or non-chainable methods like max().,
+
         //Possible Errors
         "comma-dangle": 0,                                          //disallow or enforce trailing commas
         "no-cond-assign": 2,                                        //disallow assignment in conditional expressions
@@ -109,6 +146,7 @@
         "no-catch-shadow": 2,                                       //disallow the catch clause parameter name being the same as a variable in the outer scope
         "no-delete-var": 2,                                         //disallow deletion of variables
         "no-label-var": 2,                                          //disallow labels that share a name with a variable
+        "no-restricted-globals": 0,                                 //restrict usage of specified global variables
         "no-shadow-restricted-names": 2,                            //disallow shadowing of names such as arguments
         "no-shadow": [2, {"allow": ["err"]}],                       //disallow declaration of variables already declared in the outer scope
         "no-undef-init": 2,                                         //disallow use of undefined when initializing variables
@@ -167,6 +205,7 @@
         "new-cap": 0,                                               //require a capital letter for constructors
         "new-parens": 2,                                            //disallow the omission of parentheses when invoking a constructor with no arguments
         "newline-after-var": 0,                                     //require or disallow an empty newline after variable declarations
+        "newline-before-return": 0,                                 //require newline before return statement
         "newline-per-chained-call": 0,                              //enforce newline after each call when chaining the calls
         "no-array-constructor": 2,                                  //disallow use of the Array constructor
         "no-bitwise": 0,                                            //disallow use of bitwise operators

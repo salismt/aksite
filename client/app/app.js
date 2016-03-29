@@ -1,5 +1,6 @@
 'use strict';
 import angular from 'angular';
+import {upgradeAdapter} from './upgrade_adapter';
 import 'reflect-metadata';
 // import {bootstrap} from 'ng-forward';
 import ngAnimate from 'angular-animate';
@@ -18,16 +19,16 @@ import _Auth from '../components/auth/auth.service';
 import User from '../components/auth/user.service';
 import Project from '../components/Project/Project.service';
 import Gallery from '../components/gallery/gallery.service';
-import navbar from '../components/navbar';
-import footer from '../components/footer';
-import Preloader from '../components/preloader/preloader.directive';
+import navbar from '../components/navbar/navbar.component';
+import footer from '../components/footer/footer.component';
+import Preloader from '../components/preloader/preloader.component';
 
 import routing from './app.config';
 
 import main from './main';
 import account from './account';
 import resume from './resume';
-import blog from './blog';
+import blog from './blog/blog.component';
 import projects from './projects';
 import galleries from './galleries';
 import admin from './admin';
@@ -55,6 +56,7 @@ angular.module('aksiteApp', [
     Gallery,
     navbar,
     footer,
+    Preloader,
     account,
     resume,
     blog,
@@ -105,13 +107,18 @@ angular.module('aksiteApp', [
 
         $rootScope.titleRoot = 'AK';
         $rootScope.title = 'Andrew Koroluk';
-    })
-    .directive('preloader', Preloader);
+    });
 
 angular
     .element(document)
     .ready(() => {
-        angular.bootstrap(document, ['aksiteApp'], {
+        upgradeAdapter.bootstrap(document, ['aksiteApp'], {
             strictDi: true
         });
     });
+
+upgradeAdapter.upgradeNg1Provider('$http');
+upgradeAdapter.upgradeNg1Provider('$location');
+upgradeAdapter.upgradeNg1Provider('$state');
+upgradeAdapter.upgradeNg1Provider('$stateParams');
+upgradeAdapter.upgradeNg1Provider('Auth');

@@ -31,9 +31,9 @@ mongoose.connection.on('error', function(err) {
 var app = express();
 var server = require('http').createServer(app);
 var socketio = require('socket.io').listen(server);
-require('./config/socketio')(socketio);
-require('./config/express')(app);
-require('./routes')(app);
+require('./config/socketio').default(socketio);
+require('./config/express').default(app);
+require('./routes').default(app);
 
 // Start server
 function startServer() {
@@ -54,7 +54,7 @@ setImmediate(function() {
         // Populate DB with sample data
         if(config.seedDB) {
             // wait for DB seed
-            require('./config/seed')()
+            require('./config/seed').default()
                 .then(startServer);
         } else {
             startServer();

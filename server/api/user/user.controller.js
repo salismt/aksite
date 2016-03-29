@@ -3,18 +3,14 @@
 import _ from 'lodash';
 import * as util from '../../util';
 import User from './user.model';
-import passport from 'passport';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
-import fs from 'fs';
 import gridform from 'gridform';
-import gm from 'gm';
 import Grid from 'gridfs-stream';
 
-var gfs,
-    Schema = mongoose.Schema,
-    conn = mongoose.createConnection(config.mongo.uri);
+var gfs;
+var conn = mongoose.createConnection(config.mongo.uri);
 
 gridform.mongo = mongoose.mongo;
 Grid.mongo = mongoose.mongo;
@@ -67,21 +63,19 @@ export function create(req, res, next) {
 
 /** Update a user */
 export function update(req, res) {
-    if(!util.isValidObjectId(req.params.id))
-        return res.status(400).send('Invalid ID');
+    if(!util.isValidObjectId(req.params.id)) return res.status(400).send('Invalid ID');
     var form = gridform({db: conn.db, mongo: mongoose.mongo});
 
-    User.findById(req.params.id, function(err, user) {
-        if(err) {
-            return util.handleError(res, err);
-        } else if(!user) {
-            return res.status(404).end();
-        } else {
+    User.findById(req.params.id).exec()
+        .catch(err => util.handleError(res, err))
+        .then(user => {
+            if(!user) return res.status(404).end();
+
             form.parse(req, function(err, fields, files) {
                 if(err) return util.handleError(res, err);
 
                 if(fields._id) {
-                    delete fields._id;
+                    Reflect.deleteProperty(fields, '_id');
                 }
 
                 /**
@@ -96,8 +90,9 @@ export function update(req, res) {
                  */
                 var file = files.file;
 
-                if((fields.newImage || !user.imageId) && (_.isNull(file) || _.isUndefined(file)) )
+                if((fields.newImage || !user.imageId) && (_.isNull(file) || _.isUndefined(file))) {
                     return res.status(400).send(new Error('No file'));
+                }
 
                 console.log(file);
                 console.log(fields);
@@ -147,8 +142,7 @@ export function update(req, res) {
                     });
                 }
             });
-        }
-    });
+        });
 }
 
 /**

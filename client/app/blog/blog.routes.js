@@ -5,11 +5,9 @@ export default function routes($stateProvider) {
     $stateProvider
         .state('blog', {
             url: '/blog?page&pagesize',
-            template: require('./blog.html'),
-            controller: 'BlogController',
-            controllerAs: 'vm',
-            onEnter: function($rootScope) {
-                $rootScope.title = $rootScope.titleRoot + ' | Blog';
+            template: '<blog></blog>',
+            onEnter($rootScope) {
+                $rootScope.title = `${$rootScope.titleRoot} | Blog`;
             }
         })
         .state('blog.post', {

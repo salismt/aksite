@@ -1,7 +1,0 @@
-{
-    "jasmine": true,
-    "indent": 4,
-    "globals": {
-        "browser": true
-    }
-}
