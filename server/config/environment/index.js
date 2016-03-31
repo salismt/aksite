@@ -6,7 +6,7 @@ var _ = require('lodash');
 
 let localEnv;
 try {
-    localEnv = require('../local.env');
+    localEnv = require('../local.env').default;
 } catch(e) {
     localEnv = {};
 }
