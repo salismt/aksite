@@ -499,7 +499,8 @@ gulp.task('copy:server', function() {
         'package.json',
         'server/**/*',
         'appspec.yml',
-        'scripts/*'
+        'scripts/*',
+        '.babelrc'
     ], {cwdbase: true})
         .pipe(gulp.dest(paths.dist));
 });
