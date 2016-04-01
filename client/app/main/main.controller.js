@@ -85,11 +85,6 @@ let vendorImages = [{
     alt: 'mongodb'
 }, {
     wide: true,
-    href: 'https://newrelic.com/',
-    src: 'assets/images/newrelic.svg',
-    alt: 'newrelic'
-}, {
-    wide: true,
     href: 'https://opbeat.com',
     src: 'assets/images/opbeat.png',
     alt: 'opbeat'
