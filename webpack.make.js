@@ -289,19 +289,14 @@ module.exports = function makeWebpackConfig(options) {
     }
 
     // Skip rendering index.html in test mode
-    if(!TEST && !DEV) {
-        // Reference: https://github.com/ampedandwired/html-webpack-plugin
-        // Render index.html
-        config.plugins.push(
-            new HtmlWebpackPlugin({
-                templateContent: fs.readFileSync('./client/index.html').toString()
-                    .replace('<script src="app.bundle.js"></script>', '')
-                    .replace('<script src="polyfills.bundle.js"></script>', '')
-                    .replace('<script src="vendor.bundle.js"></script>', ''),
-                inject: 'body'
-            })
-        );
-    }
+    // Reference: https://github.com/ampedandwired/html-webpack-plugin
+    // Render index.html
+    config.plugins.push(
+        new HtmlWebpackPlugin({
+            templateContent: fs.readFileSync('./client/index.html').toString(),
+            inject: 'body'
+        })
+    );
 
     // Add build specific plugins
     if(BUILD) {
