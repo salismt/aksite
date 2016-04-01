@@ -296,6 +296,7 @@ module.exports = function makeWebpackConfig(options) {
             new HtmlWebpackPlugin({
                 templateContent: fs.readFileSync('./client/index.html').toString()
                     .replace('<script src="app.bundle.js"></script>', '')
+                    .replace('<script src="polyfills.bundle.js"></script>', '')
                     .replace('<script src="vendor.bundle.js"></script>', ''),
                 inject: 'body'
             })
