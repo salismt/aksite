@@ -15,7 +15,7 @@ import userEditor from './userEditor';
 import userManager from './userManager';
 import siteSettings from './siteSettings';
 
-import routing from './admin.routes';
+// import routing from './admin.routes';
 import AdminController from './admin.controller';
 
 //import '!raw!sass!./admin.scss'
@@ -33,8 +33,7 @@ export default angular.module('aksiteApp.admin', [
     userEditor,
     userManager,
     siteSettings,
-    routing.name
+    // routing.name
 ])
     .controller('SidenavController', SidenavController)
-    .controller('AdminController', AdminController)
-    .name;
+    .controller('AdminController', AdminController);
