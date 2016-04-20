@@ -293,7 +293,8 @@ module.exports = function makeWebpackConfig(options) {
     // Render index.html
     config.plugins.push(
         new HtmlWebpackPlugin({
-            templateContent: fs.readFileSync('./client/index.html').toString(),
+            filename: '../client/index.html',
+            template: './client/index.html',
             inject: 'body'
         })
     );
