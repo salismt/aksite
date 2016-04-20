@@ -7,121 +7,20 @@
 // import 'es7-reflect-metadata';
 
 // Prefer CoreJS over the polyfills above
-import 'core-js';
-// import 'zone.js/lib/browser/browser'; //  beta.10 and beta.11 problem
-// see workaround below
-const ENV = 'development';
-if('production' === ENV) {
+import 'core-js/es6';
+import 'core-js/es7/reflect';
+require('zone.js/dist/zone');
+
+if(!ENV) {
+    var ENV = 'development';
+}
+
+if(ENV === 'production') {
     // Production
-
-
 } else {
     // Development
 
     Error.stackTraceLimit = Infinity;
 
-    //
-    // require('zone.js/dist/long-stack-trace-zone');
-
+    require('zone.js/dist/long-stack-trace-zone');
 }
-
-
-// ZONE.js workaround
-
-import '../zone.js/lib/zone';
-import {eventTargetPatch} from '../zone.js/lib/browser/event-target';
-import {propertyPatch} from '../zone.js/lib/browser/define-property';
-import {registerElementPatch} from '../zone.js/lib/browser/register-element';
-import {propertyDescriptorPatch} from '../zone.js/lib/browser/property-descriptor';
-import {patchMethod, patchPrototype, patchClass} from '../zone.js/lib/browser/utils';
-
-const set = 'set';
-const clear = 'clear';
-const blockingMethods = ['alert', 'prompt', 'confirm'];
-
-patchTimer(global, set, clear, 'Timeout');
-patchTimer(global, set, clear, 'Interval');
-patchTimer(global, set, clear, 'Immediate');
-patchTimer(global, 'request', 'cancelMacroTask', 'AnimationFrame');
-patchTimer(global, 'mozRequest', 'mozCancel', 'AnimationFrame');
-patchTimer(global, 'webkitRequest', 'webkitCancel', 'AnimationFrame')
-
-for(var i = 0; i < blockingMethods.length; i++) {
-    var name = blockingMethods[i];
-    patchMethod(global, name, (delegate, symbol, name) => {
-        return function(s:any, args:any[]) {
-            return Zone.current.run(delegate, global, args, name)
-        }
-    });
-}
-
-eventTargetPatch(global);
-propertyDescriptorPatch(global);
-patchClass('MutationObserver');
-patchClass('WebKitMutationObserver');
-patchClass('FileReader');
-propertyPatch();
-registerElementPatch(global);
-
-/// GEO_LOCATION
-if(global['navigator'] && global['navigator'].geolocation) {
-    patchPrototype(global['navigator'].geolocation, [
-        'getCurrentPosition',
-        'watchPosition'
-    ]);
-}
-
-interface TimerOptions extends TaskData {
-    handleId: number,
-    args: any[]
-}
-
-function patchTimer(window,
-                    setName,
-                    cancelName,
-                    nameSuffix) {
-    setName += nameSuffix;
-    cancelName += nameSuffix;
-
-    function scheduleTask(task) {
-        var data = task.data;
-        data.args[0] = task.invoke;
-        data.handleId = setNative.apply(window, data.args);
-        return task;
-    }
-
-    function clearTask(task) {
-        return clearNative((task.data).handleId);
-    }
-
-    var setNative = patchMethod(
-        window,
-        setName,
-        (delegate) => function(self, args) {
-            if(typeof args[0] === 'function') {
-                var zone = Zone.current;
-                var options:TimerOptions = {
-                    handleId: null,
-                    isPeriodic: nameSuffix == 'Interval',
-                    delay: (nameSuffix == 'Timeout' || nameSuffix == 'Interval') ? args[1] || 0 : null,
-                    args: args
-                };
-                return zone.scheduleMacroTask(setName, args[0], options, scheduleTask, clearTask);
-            } else {
-                // cause an error by calling it directly.
-                return delegate.apply(window, args);
-            }
-        });
-
-    var clearNative = patchMethod(window, cancelName, (delegate) => function(self, args) {
-        var task = args[0];
-        if(task && typeof task.type == 'string') {
-            task.zone.cancelTask(task);
-        } else {
-            // cause an error by calling it directly.
-            delegate.apply(window, args);
-        }
-    });
-}
-
-require('zone.js/dist/long-stack-trace-zone');
