@@ -276,6 +276,19 @@ gulp.task('start:server', () => {
         .on('log', onServerLog);
 });
 
+gulp.task('start:inspector', function() {
+    gulp.src([])
+        .pipe(plugins.nodeInspector());
+});
+
+gulp.task('start:server:debug', () => {
+    process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+    config = require(`./${serverPath}/config/environment`);
+
+    return nodemon(`-w ${serverPath} --debug ${serverPath}`)
+        .on('log', onServerLog);
+});
+
 gulp.task('watch', () => {
     plugins.livereload.listen();
 
@@ -300,6 +313,22 @@ gulp.task('serve', cb => {
         ],
         'webpack:dev',
         ['start:server', 'start:client'],
+        'watch',
+        cb
+    );
+});
+
+gulp.task('serve:debug', cb => {
+    runSequence(
+        [
+            'clean:tmp',
+            'lint:scripts',
+            'env:all',
+            'copy:fonts:dev'
+        ],
+        'webpack:dev',
+        'start:inspector',
+        ['start:server:debug', 'start:client'],
         'watch',
         cb
     );
