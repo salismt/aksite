@@ -12,5 +12,4 @@ class Project {
 }
 
 export default angular.module('services.Project', [ngResource])
-    .service('Project', Project)
-    .name;
+    .service('Project', Project);
