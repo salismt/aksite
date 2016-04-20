@@ -274,3 +274,17 @@ md-list md-list-item.md-with-secondary button md-icon.fa {
     margin-top: -28px;
     margin-bottom: -28px;
 }
+
+.masonry-brick {
+    width: 200px;
+    margin-bottom: 10px;
+    &.w2 {
+        width: 400px;
+    }
+}
+
+@media screen and (max-width: 24em) {
+    .masonry-brick.w2 {
+        width: 100%;
+    }
+}
