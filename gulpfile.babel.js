@@ -1,6 +1,6 @@
 'use strict';
 /*eslint-env node*/
-/*eslint no-process-env:2*/
+/*eslint no-process-env:0, no-process-exit:0*/
 import _ from 'lodash';
 import fs from 'fs';
 import del from 'del';
@@ -345,7 +345,7 @@ gulp.task('serve:dist', cb => {
 
 gulp.task('test', function(cb) {
     return runSequence('test:server', 'test:client', function() {
-        cb(arguments['0']);
+        cb(arguments['0']); //eslint-disable-line
         process.exit(arguments['0']);
     });
 });
@@ -397,14 +397,14 @@ gulp.task('coverage:pre', function() {
         .pipe(plugins.istanbul.hookRequire());
 });
 
-gulp.task('coverage:unit', function(cb) {
+gulp.task('coverage:unit', function() {
     return gulp.src(paths.server.test.unit)
         .pipe(mocha())
         .pipe(istanbul());
     // Creating the reports after tests ran
 });
 
-gulp.task('coverage:integration', function(cb) {
+gulp.task('coverage:integration', function() {
     return gulp.src(paths.server.test.integration)
         .pipe(mocha())
         .pipe(istanbul());
@@ -423,7 +423,7 @@ gulp.task('mocha:coverage', cb => {
 // Downloads the selenium webdriver
 gulp.task('webdriverUpdate', webdriverUpdate);
 
-gulp.task('test:e2e', ['env:all', 'env:test', 'start:server', 'webdriverUpdate'], cb => {
+gulp.task('test:e2e', ['env:all', 'env:test', 'start:server', 'webdriverUpdate'], () => {
     gulp.src(paths.client.e2e)
         .pipe(protractor({
             configFile: 'protractor.conf.js'
