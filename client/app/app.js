@@ -1,5 +1,6 @@
 'use strict';
 import angular from 'angular';
+import oclazyload from 'oclazyload';
 import {upgradeAdapter} from './upgrade_adapter';
 import 'reflect-metadata';
 // import {bootstrap} from 'ng-forward';
@@ -45,6 +46,7 @@ angular.module('aksiteApp', [
     ngSanitize,
     'btford.socket-io',
     uiRouter,
+    oclazyload,
     uiBootstrap,
     ngFileUpload,
     ngMaterial,
