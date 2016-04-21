@@ -80,7 +80,6 @@ UserSchema
 UserSchema
     .path('email')
     .validate(function(email) {
-        console.log(email);
         if(authTypes.indexOf(this.provider) !== -1) {
             return true;
         }
