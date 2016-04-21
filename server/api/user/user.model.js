@@ -5,10 +5,9 @@ const Schema = mongoose.Schema;
 import crypto from 'crypto';
 const authTypes = ['github', 'twitter', 'facebook', 'google', 'linkedin'];
 
-
 var UserSchema = new Schema({
     name: String,
-    email: {type: String, lowercase: true},
+    email: {type: String, lowercase: true, required: true},
     role: {
         type: String,
         default: 'user'
@@ -81,7 +80,14 @@ UserSchema
 UserSchema
     .path('email')
     .validate(function(email) {
-        return authTypes.indexOf(this.provider) !== -1 || email.length;
+        console.log(email);
+        if(authTypes.indexOf(this.provider) !== -1) {
+            return true;
+        }
+        if(!email) {
+            return false;
+        }
+        return email.length;
     }, 'Email cannot be blank');
 
 // Validate empty password
@@ -95,14 +101,19 @@ UserSchema
 UserSchema
     .path('email')
     .validate(function(value, respond) {
-        this.constructor.findOne({email: value}, (err, user) => {
-            if(err) throw err;
-            if(user) {
-                if(this.id === user.id) return respond(true);
-                return respond(false);
-            }
-            respond(true);
-        });
+        return this.constructor.findOne({email: value}).exec()
+            .then(user => {
+                if(user) {
+                    if(this.id === user.id) {
+                        return respond(true);
+                    }
+                    return respond(false);
+                }
+                return respond(true);
+            })
+            .catch(function(err) {
+                throw err;
+            });
     }, 'The specified email address is already in use.');
 
 /**
