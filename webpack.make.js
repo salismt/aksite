@@ -65,7 +65,7 @@ module.exports = function makeWebpackConfig(options) {
                 'moment',
                 'ng-file-upload',
                 'ng-forward',
-                'opbeat-js',
+                'opbeat-js/dist/opbeat.js',
                 'outlayer',
                 'react',
                 'react-dom',
