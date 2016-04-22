@@ -215,7 +215,7 @@
     "webpack": "^1.12.14",
     "webpack-dev-middleware": "^1.5.1",
     "webpack-dev-server": "~1.14.0",
-    "webpack-stream": "^3.1.0"
+    "webpack-stream": "^3.2.0"
   },
   "engines": {
     "node": "^5.10.1",
