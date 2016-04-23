@@ -2,7 +2,10 @@
     <div class="md-whiteframe-z1">
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <md-button ng-click="vm.openSidenav()" class="md-icon-button" aria-label="close side nav" ng-style="{'opacity': $parent.vm.isOpen ? 0 : 1}">
+                <md-button class="md-icon-button" aria-label="close side nav"
+                           ng-click="vm.openSidenav()"
+                           ng-style="{'opacity': $parent.vm.isOpen ? 0 : 1}"
+                           style="transition: opacity 0.3s ease,visibility 0.3s step-end;">
                     <md-icon class="fa fa-2x" md-font-icon="fa-bars" style="color: white; left: 0;"></md-icon>
                 </md-button>
                 <h2>

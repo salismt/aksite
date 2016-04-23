@@ -1,17 +1,30 @@
 <section layout="row" flex class="resume">
-    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="resume" md-is-locked-open="vm.isOpen">
-        <md-toolbar class="md-theme-indigo" style="text-align: center;">
-            <md-button ng-click="vm.isOpen = false;" class="md-primary" aria-label="close side nav">
-                <md-icon class="fa fa-2x" md-font-icon="fa-bars" style="color: white; left: 0;"></md-icon>
-            </md-button>
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="resume" md-is-locked-open="vm.isOpen" style="background-color: rgb(63,81,181);">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="close side nav"
+                           ng-click="vm.openSidenav()"
+                           ng-style="{'opacity': $parent.vm.isOpen ? 0 : 1}"
+                           style="transition: opacity 0.3s ease,visibility 0.3s step-end;">
+                    <md-icon class="fa fa-2x" md-font-icon="fa-bars" style="color: white; left: 0;"></md-icon>
+                </md-button>
+                <h2>
+                    <span>Résumé</span>
+                </h2>
+            </div>
+        </md-toolbar>
+        <header class="md-theme-indigo" style="text-align: center; background-color: rgb(77, 94, 187); color: white;">
+            <!--<md-button ng-click="vm.isOpen = false;" class="md-primary" aria-label="close side nav">-->
+                <!--<md-icon class="fa fa-2x" md-font-icon="fa-bars" style="color: white; left: 0;"></md-icon>-->
+            <!--</md-button>-->
             <h1 style="font-size: 30px; margin-bottom: 0;">Andrew Koroluk</h1>
             <h4>Full-Stack Developer</h4>
             <div style="padding: 10px;">
                 <img src="assets/images/portrait_2014.jpg" style="border-radius: 50%; width: 100%;" alt="">
             </div>
-        </md-toolbar>
-        <md-content role="navigation" ng-repeat="link in vm.links">
-            <md-button style="width: 100%; margin: 0; padding: 3px;" ui-sref="{{link.sref}}">{{::link.name}}</md-button>
+        </header>
+        <md-content role="navigation" ng-repeat="link in vm.links" style="background: transparent; color: white;">
+            <md-button style="width: 100%; margin: 0; padding: 3px; background: transparent;" ui-sref="{{link.sref}}">{{::link.name}}</md-button>
         </md-content>
     </md-sidenav>
     <md-content>

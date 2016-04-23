@@ -1,0 +1,13 @@
+<md-content>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <md-button ng-click="vm.openSidenav()" class="md-icon-button" aria-label="close side nav" ng-style="{'opacity': $parent.vm.isOpen ? 0 : 1}">
+                <md-icon class="fa fa-2x" md-font-icon="fa-bars" style="color: white; left: 0;"></md-icon>
+            </md-button>
+            <h2>
+                <span>Cover Letter</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    {{::vm.text}}
+</md-content>
