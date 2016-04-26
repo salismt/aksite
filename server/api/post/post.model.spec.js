@@ -26,7 +26,7 @@ var genPost = function() {
     return post;
 };
 
-describe.only('Post Model', function() {
+describe('Post Model', function() {
     before(function() {
         // Clear users before testing
         return Post.remove();
