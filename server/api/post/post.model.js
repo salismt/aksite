@@ -21,4 +21,18 @@ var PostSchema = new Schema({
     categories: [String]
 });
 
+/**
+ * Validations
+ */
+
+// Validate empty email
+PostSchema
+    .path('title')
+    .validate(function(title) {
+        if(!title) {
+            return false;
+        }
+        return title.length;
+    }, 'Title cannot be blank');
+
 module.exports = mongoose.model('Post', PostSchema);
