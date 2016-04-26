@@ -1,11 +1,10 @@
 'use strict';
+/*eslint-env mocha*/
 
-var should = require('should');
 var app = require('../../app').default;
 var request = require('supertest');
 
 describe('GET /api/posts', function() {
-
     it('should respond with JSON array', function(done) {
         request(app)
             .get('/api/posts')
