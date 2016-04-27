@@ -19,7 +19,7 @@ export class NavbarComponent {
     }, {
         title: 'Résumé',
         //link: '/resume'
-        link: 'https://www.linkedin.com/profile/view?id=168041753'
+        link: 'https://www.linkedin.com/in/koroluka'
     }, {
         title: 'Projects',
         link: '/projects'
