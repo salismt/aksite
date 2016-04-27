@@ -6,6 +6,7 @@ import fs from 'fs';
 import del from 'del';
 import gulp from 'gulp';
 import gulpLoadPlugins from 'gulp-load-plugins';
+import gulpif from 'gulp-if';
 import http from 'http';
 import open from 'open';
 import lazypipe from 'lazypipe';
@@ -60,6 +61,7 @@ const paths = {
     dist: 'dist',
     temp: '.tmp'
 };
+let coverage = false;
 
 /********************
  * Helper functions
@@ -355,19 +357,39 @@ gulp.task('test:server', cb => {
         'env:all',
         'env:test',
         'mocha:unit',
-        //'mocha:integration',
-        'mocha:coverage',
+        'mocha:integration',
         cb);
+});
+gulp.task('test:server:coverage', cb => {
+    coverage = true;
+    runSequence(
+        'coverage:pre',
+        'test:server',
+        cb
+    );
+});
+
+gulp.task('coverage:pre', function() {
+    return gulp.src(paths.server.scripts)
+        // Covering files
+        .pipe(plugins.istanbul({
+            instrumenter: Instrumenter, // Use the isparta instrumenter (code coverage for ES6)
+            includeUntested: true
+        }))
+        // Force `require` to return covered files
+        .pipe(plugins.istanbul.hookRequire());
 });
 
 gulp.task('mocha:unit', function() {
     return gulp.src(paths.server.test.unit)
-        .pipe(mocha());
+        .pipe(mocha())
+        .pipe(gulpif(coverage, istanbul()));
 });
 
 gulp.task('mocha:integration', function() {
     return gulp.src(paths.server.test.integration)
-        .pipe(mocha());
+        .pipe(mocha())
+        .pipe(gulpif(coverage, istanbul()));
 });
 
 gulp.task('test:client', done => {
@@ -384,40 +406,6 @@ gulp.task('test:client', done => {
             done();
         }
     }).start();
-});
-
-gulp.task('coverage:pre', function() {
-    return gulp.src(paths.server.scripts)
-        // Covering files
-        .pipe(plugins.istanbul({
-            instrumenter: Instrumenter, // Use the isparta instrumenter (code coverage for ES6)
-            includeUntested: true
-        }))
-        // Force `require` to return covered files
-        .pipe(plugins.istanbul.hookRequire());
-});
-
-gulp.task('coverage:unit', function() {
-    return gulp.src(paths.server.test.unit)
-        .pipe(mocha())
-        .pipe(istanbul());
-    // Creating the reports after tests ran
-});
-
-gulp.task('coverage:integration', function() {
-    return gulp.src(paths.server.test.integration)
-        .pipe(mocha())
-        .pipe(istanbul());
-    // Creating the reports after tests ran
-});
-
-gulp.task('mocha:coverage', cb => {
-    runSequence('coverage:pre',
-        'env:all',
-        'env:test',
-        'coverage:unit',
-        'coverage:integration',
-        cb);
 });
 
 // Downloads the selenium webdriver
