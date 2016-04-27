@@ -2,6 +2,7 @@
 
 import _ from 'lodash';
 import * as util from '../../util';
+import {signToken} from '../../auth/auth.service';
 import User from './user.model';
 import config from '../../config/environment';
 import jwt from 'jsonwebtoken';
@@ -55,8 +56,12 @@ export function create(req, res, next) {
             newUser.imageId = userImgFile._id;
             newUser.save(function(err, user) {
                 if(err) return util.handleError(res, err);
-                var token = jwt.sign({_id: user._id}, config.secrets.session, {expiresInMinutes: 60 * 5});
-                res.json({token});
+
+                return signToken(user._id).then(token => {
+                    res.json({token});
+                }).catch(err => {
+                    res.status(500).send(err);
+                });
             });
         });
 }

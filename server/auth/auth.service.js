@@ -106,10 +106,15 @@ export function addAuthHeaderFromCookie() {
 /**
  * Returns a jwt token signed by the app secret
  * @param {String} id - ObjectId of user
- * @returns {String} - jwt token
+ * @returns {Promise} - resolves to the signed token
  */
 export function signToken(id) {
-    return jwt.sign({_id: id}, config.secrets.session, {expiresIn: 60 * 60 * 5});
+    return new Promise((resolve, reject) => {
+        jwt.sign({_id: id}, config.secrets.session, {expiresIn: 60 * 60 * 5}, (err, token) => {
+            if(err) return reject(err);
+            else return resolve(token);
+        });
+    });
 }
 
 /**
