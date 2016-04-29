@@ -28,7 +28,6 @@ const clientPath = 'client';
 const serverPath = 'server';
 const paths = {
     client: {
-        appPath: 'client',
         scripts: [
             `${clientPath}/**/!(*.spec|*.mock).js`
         ],
