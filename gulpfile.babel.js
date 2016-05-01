@@ -140,9 +140,7 @@ const styles = lazypipe()
 
 const transpileServer = lazypipe()
     .pipe(plugins.sourcemaps.init)
-    .pipe(plugins.babel, {
-        // optional: ['runtime']
-    })
+    .pipe(plugins.babel)
     .pipe(plugins.sourcemaps.write, '.');
 
 const mocha = lazypipe()
