@@ -181,7 +181,7 @@
     "karma-chrome-launcher": "~1.0.1",
     "karma-coverage": "^0.5.3",
     "karma-firefox-launcher": "~0.1.6",
-    "karma-html2js-preprocessor": "~0.1.0",
+    "karma-html2js-preprocessor": "~1.0.0",
     "karma-jasmine": "~0.3.6",
     "karma-mocha": "^1.0.1",
     "karma-mocha-reporter": "^2.0.1",
