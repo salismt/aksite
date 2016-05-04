@@ -180,7 +180,7 @@
     "karma-chai-plugins": "^0.7.0",
     "karma-chrome-launcher": "~1.0.1",
     "karma-coverage": "^1.0.0",
-    "karma-firefox-launcher": "~0.1.6",
+    "karma-firefox-launcher": "~1.0.0",
     "karma-html2js-preprocessor": "~1.0.0",
     "karma-jasmine": "~1.0.2",
     "karma-mocha": "^1.0.1",
