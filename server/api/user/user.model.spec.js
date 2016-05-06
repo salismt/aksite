@@ -64,7 +64,7 @@ describe('User Model', function() {
 
             it('should succeed when saving without an email', function() {
                 user.email = null;
-                return user.save().should.be.fulfilled;
+                return user.save().should.be.fulfilled();
             });
         });
 
@@ -75,7 +75,7 @@ describe('User Model', function() {
 
             it('should succeed when saving without an email', function() {
                 user.email = null;
-                return user.save().should.be.fulfilled;
+                return user.save().should.be.fulfilled();
             });
         });
 
@@ -86,7 +86,7 @@ describe('User Model', function() {
 
             it('should succeed when saving without an email', function() {
                 user.email = null;
-                return user.save().should.be.fulfilled;
+                return user.save().should.be.fulfilled();
             });
         });
 
@@ -97,7 +97,7 @@ describe('User Model', function() {
 
             it('should succeed when saving without an email', function() {
                 user.email = null;
-                return user.save().should.be.fulfilled;
+                return user.save().should.be.fulfilled();
             });
         });
     });
