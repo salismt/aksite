@@ -10,7 +10,7 @@
         </div>
         <div [ngbCollapse]="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
-                <li *ngFor="#item of menu" [ngClass]="{active: isActive(item.link)}">
+                <li *ngFor="let item of menu" [ngClass]="{active: isActive(item.link)}">
                     <a [href]="item.link" [attr.aria-label]="item.title">{{item.title}}</a>
                 </li>
                 <li [hidden]="!isAdmin()" [ngClass]="{active: isActive('/admin')}">

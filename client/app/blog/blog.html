@@ -2,7 +2,7 @@
     <uib-alert *ngIf="noItems">No Items</uib-alert>
 
     <div class="container post-list">
-        <div class="post-block" *ngFor="#post of posts">
+        <div class="post-block" *ngFor="let post of posts">
             <a *ngIf="post.imageId" href="/blog/post/{{post._id}}"
                class="block-image"
                style.background-image="url(/api/upload/{{post.imageId}})"></a>
