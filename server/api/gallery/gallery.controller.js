@@ -1,10 +1,10 @@
 'use strict';
 
 import config from '../../config/environment';
-var _ = require('lodash'),
-    Gallery = require('./gallery.model'),
-    Photo = require('../photo/photo.model'),
-    auth = require('../../auth/auth.service');
+import _ from 'lodash';
+import Gallery from './gallery.model';
+// import Photo from '../photo/photo.model';
+// import auth from '../../auth/auth.service';
 
 // Get list of galleries
 exports.index = function(req, res) {
