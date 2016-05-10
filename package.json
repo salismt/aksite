@@ -85,7 +85,7 @@
     "method-override": "~2.3.3",
     "moment": "^2.11.2",
     "mongodb": "^2.0.36",
-    "mongoose": "^4.4.13",
+    "mongoose": "^4.4.16",
     "morgan": "~1.7.0",
     "multer": "^1.0.3",
     "newrelic": "^1.20.2",
