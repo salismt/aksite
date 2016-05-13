@@ -29,10 +29,11 @@ exports.index = function(req, res) {
         if(err) return util.handleError(res, err);
 
         let query;
-        if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin'))
+        if(!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) {
             query = Post.find({ hidden: false });
-        else
+        } else {
             query = Post.find();
+        }
 
         query
             .limit(pageSize)
