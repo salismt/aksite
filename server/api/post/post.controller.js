@@ -1,22 +1,22 @@
 'use strict';
 
 import config from '../../config/environment';
-var _ = require('lodash'),
-    util = require('../../util'),
-    Post = require('./post.model'),
-    auth = require('../../auth/auth.service'),
-    mongoose = require('mongoose'),
-    gridform = require('gridform'),
-    conn = mongoose.createConnection(config.mongo.uri);
+import _ from 'lodash';
+import util from '../../util';
+import Post from './post.model';
+// import auth from '../../auth/auth.service';
+import mongoose from 'mongoose';
+import gridform from 'gridform';
+let conn = mongoose.createConnection(config.mongo.uri);
 
 conn.once('open', function(err) {
     if(err) console.log(err);
     else gridform.db = conn.db;
 });
 
-const DEFAULT_PAGESIZE = 10,
-    MIN_PAGESIZE = 5,
-    MAX_PAGESIZE = 25;
+const DEFAULT_PAGESIZE = 10;
+const MIN_PAGESIZE = 5;
+const MAX_PAGESIZE = 25;
 
 // Get list of posts
 exports.index = function(req, res) {
