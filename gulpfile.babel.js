@@ -313,7 +313,6 @@ gulp.task('serve', cb => {
             'env:all',
             'copy:fonts:dev'
         ],
-        'webpack:dev',
         ['start:server', 'start:client'],
         'watch',
         cb
