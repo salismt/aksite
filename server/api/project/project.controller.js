@@ -2,17 +2,15 @@
 
 import * as util from '../../util';
 import config from '../../config/environment';
-var _ = require('lodash'),
-    Project = require('./project.model'),
-    mongoose = require('mongoose'),
-    fs = require('fs'),
-    gridform = require('gridform'),
-    gm = require('gm'),
-    Schema = mongoose.Schema,
-    Grid = require('gridfs-stream'),
-    gfs,
-    conn = mongoose.createConnection(config.mongo.uri),
-    auth = require('../../auth/auth.service');
+import _ from 'lodash';
+import Project from './project.model';
+import mongoose from 'mongoose';
+import gridform from 'gridform';
+import gm from 'gm';
+const Schema = mongoose.Schema;
+import Grid from 'gridfs-stream';
+var gfs;
+var conn = mongoose.createConnection(config.mongo.uri);
 
 gridform.mongo = mongoose.mongo;
 Grid.mongo = mongoose.mongo;
