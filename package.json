@@ -50,7 +50,7 @@
     "composable-middleware": "^0.3.0",
     "compression": "~1.6.1",
     "connect-mongo": "^1.1.0",
-    "cookie-parser": "~1.4.1",
+    "cookie-parser": "~1.4.2",
     "core-decorators": "^0.12.0",
     "core-js": "^2.4.0",
     "d3": "^3.5.12",
