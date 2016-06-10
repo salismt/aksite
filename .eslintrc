@@ -202,6 +202,7 @@
         "lines-around-comment": 0,                                  //enforce empty lines around comments
         "max-depth": 1,                                             //specify the maximum depth that blocks can be nested
         "max-len": [1, 200],                                        //specify the maximum length of a line in your program
+        "max-lines": 0,                                             //enforce a maximum file length
         "max-nested-callbacks": 2,                                  //specify the maximum depth callbacks can be nested
         "max-params": 0,                                            //limits the number of parameters that can be used in the function declaration.
         "max-statements": 0,                                        //specify the maximum number of statement allowed in a function
@@ -216,6 +217,7 @@
         "no-continue": 0,                                           //disallow use of the continue statement
         "no-inline-comments": 0,                                    //disallow comments inline after code
         "no-lonely-if": 2,                                          //disallow if as the only statement in an else block
+        "no-mixed-operators": 0,                                    //disallow mixes of different operators
         "no-mixed-spaces-and-tabs": 2,                              //disallow mixed spaces and tabs for indentation
         "no-multiple-empty-lines": 2,                               //disallow multiple empty lines
         "no-negated-condition": 0,                                  //disallow negated conditions
@@ -229,6 +231,7 @@
         "no-underscore-dangle": 0,                                  //disallow dangling underscores in identifiers
         "no-unneeded-ternary": 2,                                   //disallow the use of ternary operators when a simpler alternative exists
         "no-whitespace-before-property": 2,                         //disallow whitespace before properties
+        "object-curly-newline": 0,                                  //enforce consistent line breaks inside braces
         "object-curly-spacing": 0,                                  //require or disallow padding inside curly braces
         "object-property-newline": 0,                               //enforce placing object properties on separate lines
         "one-var": [2, "never"],                                    //require or disallow one variable declaration per function
@@ -277,6 +280,7 @@
         "prefer-spread": 1,                                         //suggest using the spread operator instead of .apply().
         "prefer-template": 1,                                       //suggest using template literals instead of strings concatenation
         "require-yield": 2,                                         //disallow generator functions that do not have yield
+        "rest-spread-spacing": ["error", "never"],                  //enforce spacing between rest and spread operators and their expressions
         "template-curly-spacing": 2,                                //enforce spacing around embedded expressions of template strings
         "yield-star-spacing": [2, "after"]                          //enforce spacing around the * in yield* expressions
     }
