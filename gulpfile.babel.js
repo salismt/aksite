@@ -133,12 +133,6 @@ const lintServerTestScripts = lazypipe()
     })
     .pipe(plugins.eslint.format);
 
-const styles = lazypipe()
-    .pipe(plugins.sourcemaps.init)
-    .pipe(plugins.sass)
-    .pipe(plugins.autoprefixer, {browsers: ['last 1 version']})
-    .pipe(plugins.sourcemaps.write, '.');
-
 const transpileServer = lazypipe()
     .pipe(plugins.sourcemaps.init)
     .pipe(plugins.babel, {
@@ -206,12 +200,6 @@ gulp.task('env:prod', () => {
 /********************
  * Tasks
  ********************/
-
-gulp.task('styles', function() {
-    return gulp.src(paths.client.mainStyle)
-        .pipe(styles())
-        .pipe(gulp.dest('.tmp/app'));
-});
 
 gulp.task('transpile:server', function() {
     return gulp.src(_.union(paths.server.scripts, paths.server.json))
