@@ -50,7 +50,7 @@ module.exports = function(config) {
             require('karma-mocha-reporter'),
             require('karma-phantomjs-launcher'),
             require('karma-script-launcher'),
-            require('karma-webpack'),
+            require('karma-webpack')
         ],
 
         // list of files / patterns to exclude
@@ -58,6 +58,10 @@ module.exports = function(config) {
 
         // web server port
         port: 8080,
+
+        // Concurrency level
+        // how many browser should be started simultaneous
+        concurrency: Infinity,
 
         // level of logging
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
