@@ -64,10 +64,12 @@
         "no-irregular-whitespace": 2,                               //disallow irregular whitespace outside of strings and comments
         "no-negated-in-lhs": 2,                                     //disallow negation of the left operand of an in expression
         "no-obj-calls": 2,                                          //disallow the use of object properties of the global object (Math and JSON) as functions
+        "no-prototype-builtins": 0,                                 //Disallow use of Object.prototypes builtins directly
         "no-regex-spaces": 2,                                       //disallow multiple spaces in a regular expression literal
         "no-sparse-arrays": 1,                                      //disallow sparse arrays
         "no-unexpected-multiline": 2,                               //Avoid code that looks like two expressions but is actually one
         "no-unreachable": 2,                                        //disallow unreachable statements after a return, throw, continue, or break statement
+        "no-unsafe-finally": 2,                                     //disallow control flow statements in finally blocks
         "use-isnan": 2,                                             //disallow comparisons with the value NaN
         "valid-jsdoc": 0,                                           //Ensure JSDoc comments are valid
         "valid-typeof": 2,                                          //Ensure that the results of typeof are compared against a valid string
@@ -130,6 +132,7 @@
         "no-unused-labels": 2,                                      //disallow unused labels
         "no-useless-call": 2,                                       //disallow unnecessary .call() and .apply()
         "no-useless-concat": 2,                                     //disallow unnecessary concatenation of literals or template literals
+        "no-useless-escape": 2,                                     //disallow unnecessary escape characters
         "no-void": 0,                                               //disallow use of the void operator
         "no-warning-comments": 1,                                   //disallow usage of configurable warning terms in comments (e.g. TODO or FIXME)
         "no-with": 2,                                               //disallow use of the with statement
@@ -202,6 +205,7 @@
         "max-nested-callbacks": 2,                                  //specify the maximum depth callbacks can be nested
         "max-params": 0,                                            //limits the number of parameters that can be used in the function declaration.
         "max-statements": 0,                                        //specify the maximum number of statement allowed in a function
+        "max-statements-per-line": 0,                               //enforce a maximum number of statements allowed per line
         "new-cap": 0,                                               //require a capital letter for constructors
         "new-parens": 2,                                            //disallow the omission of parentheses when invoking a constructor with no arguments
         "newline-after-var": 0,                                     //require or disallow an empty newline after variable declarations
@@ -226,6 +230,7 @@
         "no-unneeded-ternary": 2,                                   //disallow the use of ternary operators when a simpler alternative exists
         "no-whitespace-before-property": 2,                         //disallow whitespace before properties
         "object-curly-spacing": 0,                                  //require or disallow padding inside curly braces
+        "object-property-newline": 0,                               //enforce placing object properties on separate lines
         "one-var": [2, "never"],                                    //require or disallow one variable declaration per function
         "one-var-declaration-per-line": 2,                          //require or disallow an newline around variable declarations
         "operator-assignment": 0,                                   //require assignment operator shorthand where possible or prohibit it entirely
@@ -244,6 +249,7 @@
         "space-infix-ops": 2,                                       //require spaces around operators
         "space-unary-ops": 2,                                       //require or disallow spaces before/after unary operators
         "spaced-comment": 0,                                        //require or disallow a space immediately following the // or /* in a comment
+        "unicode-bom": 0,                                           //require or disallow the Unicode BOM
         "wrap-regex": 0,                                            //require regex literals to be wrapped in parentheses
 
         //ECMAScript 6
@@ -256,9 +262,12 @@
         "no-confusing-arrow": 2,                                    //disallow arrow functions where they could be confused with comparisons
         "no-const-assign": 2,                                       //disallow modifying variables that are declared using const
         "no-dupe-class-members": 2,                                 //disallow duplicate name in class members
+        "no-duplicate-imports": 2,                                  //disallow duplicate module imports
         "no-new-symbol": 2,                                         //disallow use of the new operator with the Symbol object
         "no-this-before-super": 2,                                  //disallow use of this/super before calling super() in constructors.
+        "no-useless-computed-key": 2,                               //disallow unnecessary computed property keys in object literals
         "no-useless-constructor": 2,                                //disallow unnecessary constructor
+        "no-useless-rename": 2,                                     //disallow renaming import, export, and destructured assignments to the same name
         "no-var": 0,                                                //require let or const instead of var
         "object-shorthand": 1,                                      //require method and property shorthand syntax for object literals
         "prefer-arrow-callback": 0,                                 //suggest using arrow functions as callbacks
