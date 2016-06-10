@@ -294,7 +294,7 @@ module.exports = function makeWebpackConfig(options) {
     config.plugins.push(
         new HtmlWebpackPlugin({
             filename: '../client/index.html',
-            template: './client/index.html',
+            template: './client/_index.html',
             inject: 'body'
         })
     );
