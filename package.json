@@ -167,7 +167,7 @@
     "gulp-useref": "^3.0.3",
     "gulp-util": "^3.0.5",
     "gulp-watch": "^4.3.5",
-    "html-webpack-plugin": "^2.16.0",
+    "html-webpack-plugin": "^2.20.0",
     "imports-loader": "^0.6.5",
     "isparta": "^4.0.0",
     "isparta-instrumenter-loader": "^1.0.0",
