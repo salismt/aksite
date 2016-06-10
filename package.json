@@ -184,7 +184,7 @@
     "karma-html2js-preprocessor": "~1.0.0",
     "karma-jasmine": "~1.0.2",
     "karma-mocha": "^1.0.1",
-    "karma-mocha-reporter": "^2.0.1",
+    "karma-mocha-reporter": "^2.0.4",
     "karma-ng-html2js-preprocessor": "~1.0.0",
     "karma-phantomjs-launcher": "~1.0.0",
     "karma-script-launcher": "~1.0.0",
