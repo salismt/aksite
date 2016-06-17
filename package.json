@@ -63,7 +63,7 @@
     "es6-shim": "^0.35.0",
     "eventie": "^1.0.6",
     "exif": "~0.6.0",
-    "express": "~4.13.3",
+    "express": "~4.14.0",
     "express-jwt": "^3.0.1",
     "express-session": "~1.13.0",
     "fizzy-ui-utils": "^2.0.1",
