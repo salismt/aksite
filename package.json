@@ -173,7 +173,7 @@
     "isparta": "^4.0.0",
     "isparta-instrumenter-loader": "^1.0.1",
     "isparta-loader": "^2.0.0",
-    "istanbul": "~0.4.1",
+    "istanbul": "~0.4.4",
     "istanbul-instrumenter-loader": "^0.2.0",
     "jasmine-core": "^2.3.4",
     "karma": "~0.13.19",
