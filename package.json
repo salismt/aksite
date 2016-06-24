@@ -121,7 +121,7 @@
   "devDependencies": {
     "angular-mocks": "~1.5.0",
     "autoprefixer": "^6.0.3",
-    "babel-eslint": "^6.0.0-beta.2",
+    "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.1.0",
