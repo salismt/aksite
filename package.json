@@ -171,7 +171,7 @@
     "html-webpack-plugin": "^2.21.0",
     "imports-loader": "^0.6.5",
     "isparta": "^4.0.0",
-    "isparta-instrumenter-loader": "^1.0.0",
+    "isparta-instrumenter-loader": "^1.0.1",
     "isparta-loader": "^2.0.0",
     "istanbul": "~0.4.1",
     "istanbul-instrumenter-loader": "^0.2.0",
