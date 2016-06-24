@@ -94,7 +94,7 @@
     "ng-forward": "0.0.1-alpha.12",
     "nvd3": "^1.8.1",
     "opbeat": "^3.6.14",
-    "opbeat-js": "^2.1.5",
+    "opbeat-js": "^3.0.1",
     "outlayer": "^2.0.1",
     "passport": "~0.3.0",
     "passport-facebook": "^2.1.0",
