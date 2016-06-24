@@ -1,17 +1,30 @@
 ignore:
   'npm:hawk:20160119':
-    - 'request > hawk':
-        reason: "I'm not too worried about ReDoS attacks..."
+    - request > hawk:
+        reason: I'm not too worried about ReDoS attacks...
         expires: '2016-02-22T21:30:17.076Z'
   'npm:negotiator:20160616':
-    - 'socket.io > engine.io > accepts > negotiator':
+    - socket.io > engine.io > accepts > negotiator:
         reason: None given
         expires: '2016-07-19T17:30:15.108Z'
-      'compression > accepts > negotiator':
-        reason: None given
-        expires: '2016-07-19T17:53:47.266Z'
-    - 'gulp-node-inspector > node-inspector > express > accepts > negotiator':
+    - gulp-node-inspector > node-inspector > express > accepts > negotiator:
         reason: None given
         expires: '2016-07-19T17:53:47.270Z'
+    - compression > accepts > negotiator:
+        reason: None given
+        expires: '2016-07-19T17:53:47.266Z'
+  'npm:minimatch:20160620':
+    - bourbon-neat > node-sass > node-gyp > glob > minimatch:
+        reason: None given
+        expires: '2016-07-24T14:52:27.500Z'
+    - bourbon-neat > node-sass > node-gyp > minimatch:
+        reason: None given
+        expires: '2016-07-24T14:52:27.501Z'
+    - bourbon-neat > node-sass > gaze > globule > minimatch:
+        reason: None given
+        expires: '2016-07-24T14:52:27.501Z'
+    - bourbon-neat > node-sass > gaze > globule > glob > minimatch:
+        reason: None given
+        expires: '2016-07-24T14:52:27.502Z'
 patch: {}
-version: v1
+version: v1.5.0
