@@ -1,8 +1,7 @@
 'use strict';
-
 import config from '../../config/environment';
 import _ from 'lodash';
-import util from '../../util';
+import * as util from '../../util';
 import Post from './post.model';
 // import auth from '../../auth/auth.service';
 import mongoose from 'mongoose';
