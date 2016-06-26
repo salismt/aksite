@@ -3,6 +3,7 @@
 var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 var fs = require('fs');
@@ -287,8 +288,10 @@ module.exports = function makeWebpackConfig(options) {
         new HtmlWebpackPlugin({
             filename: '../client/index.html',
             template: './client/_index.html',
-            inject: 'body'
-        })
+            inject: 'body',
+            alwaysWriteToDisk: true
+        }),
+        new HtmlWebpackHarddiskPlugin()
     );
 
     // Add build specific plugins
