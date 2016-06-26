@@ -1,12 +1,12 @@
 'use strict';
 /*eslint-env node*/
+const _ = require('lodash');
 var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
-var fs = require('fs');
 var path = require('path');
 
 module.exports = function makeWebpackConfig(options) {
@@ -165,6 +165,7 @@ module.exports = function makeWebpackConfig(options) {
             query: {},
             include: [
                 path.resolve(__dirname, 'client/'),
+                path.resolve(__dirname, 'server/config/environment/shared.js'),
                 path.resolve(__dirname, 'node_modules/lodash-es/')
             ]
         }, {
@@ -312,6 +313,26 @@ module.exports = function makeWebpackConfig(options) {
         new HtmlWebpackHarddiskPlugin()
     );
 
+    let localEnv;
+    try {
+        localEnv = require('./server/config/local.env').default;
+    } catch(e) {
+        localEnv = {};
+    }
+    localEnv = _.mapValues(localEnv, value => `"${value}"`);
+    localEnv = _.mapKeys(localEnv, (value, key) => `process.env.${key}`);
+
+    let env = _.merge({
+        'process.env.NODE_ENV': DEV ? '"development"'
+            : BUILD ? '"production"'
+            : TEST ? '"test"'
+            : '"development"'
+    }, localEnv);
+
+    // Reference: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
+    // Define free global variables
+    config.plugins.push(new webpack.DefinePlugin(env));
+
     // Add build specific plugins
     if(BUILD) {
         config.plugins.push(
@@ -332,14 +353,6 @@ module.exports = function makeWebpackConfig(options) {
                 },
                 compress: {
                     warnings: false
-                }
-            }),
-
-            // Reference: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
-            // Define free global variables
-            new webpack.DefinePlugin({
-                'process.env': {
-                    NODE_ENV: '"production"'
                 }
             })
         );

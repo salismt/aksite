@@ -3,6 +3,7 @@
 
 var path = require('path');
 var _ = require('lodash');
+import shared from './shared';
 
 let localEnv;
 try {
@@ -50,9 +51,6 @@ var all = {
         session: 'aksite-secret'
     },
 
-    // List of user roles
-    userRoles: ['guest', 'user', 'admin'],
-
     // MongoDB connection options
     mongo: {
         options: {
@@ -96,9 +94,14 @@ var all = {
         orgId: process.env.OPBEAT_ORGANIZATION_ID || '',
         appId: process.env.OPBEAT_APP_ID || '',
         secret: process.env.OPBEAT_SECRET_TOKEN || ''
+    },
+
+    sentry: {
+        dsn: process.env.SENTRY_DSN || '',
+        publicDsn: process.env.SENTRY_PUBLIC_DSN || ''
     }
 };
 
 // Export the config object based on the NODE_ENV
 // ==============================================
-export default _.merge(all, require(`./${process.env.NODE_ENV || 'production'}.js`).default || {});
+export default _.merge(all, shared, require(`./${process.env.NODE_ENV || 'production'}.js`).default || {});
