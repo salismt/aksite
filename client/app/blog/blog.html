@@ -36,12 +36,11 @@
         </div>
     </div>
 
-    <ngb-pagination
-        (pageChange)="pageChanged($event)"
-        [pageSize]="pagesize"
-        [collectionSize]="collectionSize"
-        [page]="page"
+    <pagination
+        (pageChanged)="pageChanged($event)"
+        [totalItems]="collectionSize"
+        [(ngModel)]="currentPage"
         class="center-block"
         style="margin-bottom: 100px;">
-    </ngb-pagination>
+    </pagination>
 </div>

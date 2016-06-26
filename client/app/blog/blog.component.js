@@ -1,7 +1,8 @@
-'use strict';
+
 import {Component} from '@angular/core';
 import {upgradeAdapter} from '../../app/upgrade_adapter';
-import {NgbPagination} from 'ng2-bootstrap';
+import {CORE_DIRECTIVES, FORM_DIRECTIVES} from '@angular/common';
+import {PAGINATION_DIRECTIVES} from 'ng2-bootstrap';
 
 import {wrapperLodash as _, mixin} from 'lodash-es';
 import {
@@ -18,12 +19,12 @@ const converter = new Converter();
     selector: 'blog',
     template: require('./blog.html'),
     styles: [require('./blog.scss')],
-    directives: [NgbPagination]
+    directives: [PAGINATION_DIRECTIVES, CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class BlogComponent {
     loadingItems = true;
     noItems = false;
-    page = 0;
+    currentPage;
     pagesize = 10;
     collectionSize = 0;
     posts = [];
@@ -36,19 +37,23 @@ export class BlogComponent {
 
         $state.reloadOnSearch = false;
 
-        this.page = $stateParams.page || 1;
+        this.currentPage = parseInt($stateParams.page, 10) || 1;
         this.pagesize = $stateParams.pagesize || 10;
     }
 
     ngOnInit() {
-        this.pageChanged(this.page);
+        return this.getPageData();
     }
 
-    pageChanged(page) {
-        this.page = page;
-        this.$state.transitionTo('blog', {page: this.page, pagesize: this.pagesize}, { notify: false });
+    pageChanged({page}) {
+        this.currentPage = page;
+        this.$state.transitionTo('blog', {page, pagesize: this.pagesize}, { notify: false, reload: false });
 
-        return this.$http.get(`api/posts?page=${this.page}&pagesize=${this.pagesize}`)
+        return this.getPageData();
+    }
+
+    getPageData() {
+        return this.$http.get(`api/posts?page=${this.currentPage}&pagesize=${this.pagesize}`)
             .then(({data}) => {
                 this.pages = data.pages;
                 this.collectionSize = data.numItems;
