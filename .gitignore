@@ -6,5 +6,6 @@ public
 .idea
 dist
 client/index.html
+client/assets/fonts/
 /server/config/local.env.js
 coverage
