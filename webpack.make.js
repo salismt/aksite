@@ -141,6 +141,17 @@ module.exports = function makeWebpackConfig(options) {
         sourceComments: false
     };
 
+    config.babel = {
+        shouldPrintComment(commentContents) {
+            let regex = DEV
+                // keep `// @flow`, `/*@ngInject*/`, & flow type comments in dev
+                ? /(@flow|@ngInject|^:)/
+                // keep `/*@ngInject*/`
+                : /@ngInject/;
+                return regex.test(commentContents);
+        }
+    };
+
     // Initialize module
     config.module = {
         noParse: [
