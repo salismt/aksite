@@ -144,7 +144,7 @@ module.exports = function makeWebpackConfig(options) {
     config.module = {
         noParse: [
             path.join(__dirname, 'node_modules', 'zone.js', 'dist'),
-            path.join(__dirname, 'node_modules', 'angular2', 'bundles')
+            path.join(__dirname, 'node_modules', '@angular', 'bundles')
         ],
         preLoaders: [],
         loaders: [{

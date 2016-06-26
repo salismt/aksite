@@ -1,7 +1,7 @@
 'use strict';
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {upgradeAdapter} from '../../app/upgrade_adapter';
-import {NgbPagination} from 'angular-ng-bootstrap';
+import {NgbPagination} from 'ng2-bootstrap';
 
 import {wrapperLodash as _, mixin} from 'lodash-es';
 import {

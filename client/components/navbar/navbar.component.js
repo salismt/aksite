@@ -1,8 +1,8 @@
 'use strict';
 import angular from 'angular';
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {upgradeAdapter} from '../../app/upgrade_adapter';
-import {NgbCollapse} from 'angular-ng-bootstrap';
+import {NgbCollapse} from 'ng2-bootstrap';
 
 //import './navbar.scss';
 

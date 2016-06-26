@@ -1,5 +1,5 @@
 import angular from 'angular';
-import {Component} from 'angular2/core';
+import {Component} from '@angular/core';
 import {upgradeAdapter} from '../../app/upgrade_adapter';
 
 @Component({
