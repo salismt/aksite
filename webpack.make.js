@@ -105,14 +105,10 @@ module.exports = function makeWebpackConfig(options) {
         };
     }
 
-    if(TEST) {
-        config.resolve = {
-            modulesDirectories: [
-                'node_modules'
-            ],
-            extensions: ['', '.js']
-        };
-    }
+    config.resolve = {
+        modulesDirectories: ['node_modules'],
+        extensions: ['', '.js', '.ts']
+    };
 
     /**
      * Devtool
@@ -170,6 +166,18 @@ module.exports = function makeWebpackConfig(options) {
             include: [
                 path.resolve(__dirname, 'client/'),
                 path.resolve(__dirname, 'node_modules/lodash-es/')
+            ]
+        }, {
+            // TS LOADER
+            // Reference: https://github.com/s-panferov/awesome-typescript-loader
+            // Transpile .ts files using awesome-typescript-loader
+            test: /\.ts$/,
+            loader: 'awesome-typescript-loader',
+            query: {
+                tsconfig: path.resolve(__dirname, 'tsconfig.client.json')
+            },
+            include: [
+                path.resolve(__dirname, 'client/')
             ]
         }, {
             // ASSET LOADER
