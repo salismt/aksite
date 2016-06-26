@@ -1,5 +1,6 @@
 'use strict';
 import angular from 'angular';
+import oclazyload from 'oclazyload';
 import {upgradeAdapter} from './upgrade_adapter';
 import 'reflect-metadata';
 // import {bootstrap} from 'ng-forward';
@@ -17,7 +18,6 @@ import ngMessages from 'angular-messages';
 
 import _Auth from '../components/auth/auth.service';
 import User from '../components/auth/user.service';
-import Project from '../components/Project/Project.service';
 import Gallery from '../components/gallery/gallery.service';
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
@@ -31,7 +31,7 @@ import resume from './resume';
 import blog from './blog/blog.component';
 import projects from './projects';
 import galleries from './galleries';
-import admin from './admin';
+import adminRoutes from './admin/admin.routes';
 import user from './user';
 import settings from './settings';
 
@@ -45,6 +45,7 @@ angular.module('aksiteApp', [
     ngSanitize,
     'btford.socket-io',
     uiRouter,
+    oclazyload,
     uiBootstrap,
     ngFileUpload,
     ngMaterial,
@@ -52,7 +53,6 @@ angular.module('aksiteApp', [
     main,
     _Auth,
     User,
-    Project,
     Gallery,
     navbar,
     footer,
@@ -62,7 +62,7 @@ angular.module('aksiteApp', [
     blog,
     projects,
     galleries,
-    admin,
+    adminRoutes.name,
     user,
     settings
 ])

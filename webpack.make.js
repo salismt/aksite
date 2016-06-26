@@ -154,14 +154,7 @@ module.exports = function makeWebpackConfig(options) {
             // Compiles ES6 and ES7 into ES5 code
             test: /\.js$/,
             loader: 'babel',
-            query: {
-                //presets: ['es2015'],
-                // optional: [
-                //     'runtime',
-                //     'es7.classProperties',
-                //     'es7.decorators'
-                // ]
-            },
+            query: {},
             include: [
                 path.resolve(__dirname, 'client/'),
                 path.resolve(__dirname, 'node_modules/lodash-es/')
@@ -212,7 +205,6 @@ module.exports = function makeWebpackConfig(options) {
     // Reference: https://github.com/ColCh/isparta-instrumenter-loader
     // Instrument JS files with Isparta for subsequent code coverage reporting
     // Skips node_modules and spec files
-    // Using version 0.2.1, since 0.2.2 uses Isparta 4, which in turn uses Babel 6
     if(TEST) {
         config.module.preLoaders.push({
             //delays coverage til after tests are run, fixing transpiled source coverage error
@@ -289,19 +281,15 @@ module.exports = function makeWebpackConfig(options) {
     }
 
     // Skip rendering index.html in test mode
-    if(!TEST && !DEV) {
-        // Reference: https://github.com/ampedandwired/html-webpack-plugin
-        // Render index.html
-        config.plugins.push(
-            new HtmlWebpackPlugin({
-                templateContent: fs.readFileSync('./client/index.html').toString()
-                    .replace('<script src="app.bundle.js"></script>', '')
-                    .replace('<script src="polyfills.bundle.js"></script>', '')
-                    .replace('<script src="vendor.bundle.js"></script>', ''),
-                inject: 'body'
-            })
-        );
-    }
+    // Reference: https://github.com/ampedandwired/html-webpack-plugin
+    // Render index.html
+    config.plugins.push(
+        new HtmlWebpackPlugin({
+            filename: '../client/index.html',
+            template: './client/_index.html',
+            inject: 'body'
+        })
+    );
 
     // Add build specific plugins
     if(BUILD) {

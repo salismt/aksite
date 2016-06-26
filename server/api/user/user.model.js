@@ -7,14 +7,25 @@ const authTypes = ['github', 'twitter', 'facebook', 'google', 'linkedin'];
 
 var UserSchema = new Schema({
     name: String,
-    email: {type: String, lowercase: true, required: true},
+    email: {
+        type: String,
+        lowercase: true,
+        required() {
+            return authTypes.indexOf(this.provider) === -1;
+        }
+    },
     role: {
         type: String,
         default: 'user'
     },
     imageId: Schema.ObjectId,
     smallImageId: Schema.ObjectId,
-    hashedPassword: String,
+    hashedPassword: {
+        type: String,
+        required() {
+            return authTypes.indexOf(this.provider) === -1;
+        }
+    },
     provider: String,
     providers: {type: Object, default: {
         local: false,
@@ -100,6 +111,9 @@ UserSchema
 UserSchema
     .path('email')
     .validate(function(value, respond) {
+        if(authTypes.indexOf(this.provider) !== -1) {
+            return respond(true);
+        }
         return this.constructor.findOne({email: value}).exec()
             .then(user => {
                 if(user) {

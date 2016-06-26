@@ -115,17 +115,3 @@ $time-step: $time/$max;
     stroke-opacity: .2;
     stroke-width: 5;
 }
-
-.masonry-brick {
-    width: 200px;
-    margin-bottom: 10px;
-    &.w2 {
-        width: 400px;
-    }
-}
-
-@media screen and (max-width: 24em) {
-    .masonry-brick.w2 {
-        width: 100%;
-    }
-}

@@ -4,7 +4,7 @@ import uirouter from 'angular-ui-router';
 import routing from './gallery.routes';
 import GalleryController from './gallery.controller';
 
-//import '!raw!sass!./project.scss';
+//import '!raw!sass!./gallery.scss';
 
 export default angular.module('aksiteApp.galleries.gallery', [uirouter])
     .config(routing)
