@@ -213,13 +213,12 @@ module.exports = function makeWebpackConfig(options) {
         }, {
             test: /(jquery|jquery-bridget|desandro-get-style-property|get-size|wolfy87-eventemitter|eventie|doc-ready|desandro-matches-selector|fizzy-ui-utils|outlayer|masonry-layout|imagesloaded|photoswipe)/,
             loader: 'imports?define=>false&this=>window'
+        }],
+        postLoaders: [{
+            test: /\.(js|ts)$/,
+            loader: 'ng-annotate?single_quotes'
         }]
     };
-
-    config.module.postLoaders = [{
-        test: /\.js$/,
-        loader: 'ng-annotate?single_quotes'
-    }];
 
     // ISPARTA INSTRUMENTER LOADER
     // Reference: https://github.com/ColCh/isparta-instrumenter-loader
