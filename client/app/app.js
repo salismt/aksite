@@ -2,13 +2,14 @@
 import angular from 'angular';
 import oclazyload from 'oclazyload';
 import {upgradeAdapter} from './upgrade_adapter';
+import Raven from 'raven-js';
+import RavenAngular from 'raven-js/plugins/angular.js';
 import 'reflect-metadata';
-// import {bootstrap} from 'ng-forward';
+
 import ngAnimate from 'angular-animate';
 import ngCookies from 'angular-cookies';
 import ngResource from 'angular-resource';
 import ngSanitize from 'angular-sanitize';
-// import ngSocketio from 'angular-socket-io';
 import 'angular-socket-io';
 import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
@@ -24,6 +25,8 @@ import footer from '../components/footer/footer.component';
 import Preloader from '../components/preloader/preloader.component';
 
 import routing from './app.config';
+import Constants from './app.constants';
+upgradeAdapter.addProvider(Constants);
 
 import main from './main';
 import account from './account';
@@ -37,6 +40,12 @@ import settings from './settings';
 
 import '../../node_modules/angular-material/angular-material.scss';
 import './app.scss';
+
+// class RavenExceptionHandler {
+//     call(err) {
+//         Raven.captureException(err.originalException);
+//     }
+// }
 
 angular.module('aksiteApp', [
     ngAnimate,
@@ -93,8 +102,15 @@ angular.module('aksiteApp', [
             }
         };
     })
-    .run(function($rootScope, $location, Auth) {
+    .factory('constants', upgradeAdapter.downgradeNg2Provider(Constants))
+    .run(function($rootScope, $location, Auth, constants) {
         'ngInject';
+
+        Raven
+            .config(constants.default.sentry.publicDsn)
+            .addPlugin(RavenAngular, angular)
+            .install();
+
         // Redirect to login if route requires auth and you're not logged in
         $rootScope.$on('$stateChangeStart', function(event, next) {
             $rootScope.title = 'Andrew Koroluk';
@@ -112,7 +128,10 @@ angular.module('aksiteApp', [
 angular
     .element(document)
     .ready(() => {
-        upgradeAdapter.bootstrap(document, ['aksiteApp'], {
+        upgradeAdapter.bootstrap(document, [
+            'aksiteApp',
+            // {provide: ExceptionHandler, useClass: RavenExceptionHandler}
+        ], {
             strictDi: true
         });
     });
