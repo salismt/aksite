@@ -1,4 +1,3 @@
-
 import {Component} from '@angular/core';
 import {upgradeAdapter} from '../../app/upgrade_adapter';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES} from '@angular/common';
@@ -14,6 +13,8 @@ mixin(_, {
 import moment from 'moment';
 import { Converter } from 'showdown';
 const converter = new Converter();
+
+import PostComponent from './post/post.component';
 
 @Component({
     selector: 'blog',
@@ -74,11 +75,9 @@ export class BlogComponent {
 import angular from 'angular';
 import uirouter from 'angular-ui-router';
 
-import post from './post';
-
 import routing from './blog.routes';
 
-export default angular.module('aksiteApp.blog', [uirouter, post])
+export default angular.module('aksiteApp.blog', [uirouter, PostComponent])
     .config(routing)
     .directive('blog', upgradeAdapter.downgradeNg2Component(BlogComponent))
     .name;
