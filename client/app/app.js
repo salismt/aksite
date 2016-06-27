@@ -71,7 +71,7 @@ angular.module('aksiteApp', [
     blog,
     projects,
     galleries,
-    adminRoutes.name,
+    adminRoutes,
     user,
     settings
 ])

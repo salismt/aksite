@@ -53,4 +53,5 @@ export default angular.module('aksiteApp.admin.routing', [])
     .config(siteSettingsRoutes)
     .config(userEditorRoutes)
     .config(userManagerRoutes)
-    .config(adminRoutes);
+    .config(adminRoutes)
+    .name;
