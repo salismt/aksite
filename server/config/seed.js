@@ -11,17 +11,13 @@ import Post from '../api/post/post.model';
 import Photo from '../api/photo/photo.model';
 import Project from '../api/project/project.model';
 import Gallery from '../api/gallery/gallery.model.js';
-import config from './environment';
 import * as util from '../util';
-import gm from 'gm';
 import moment from 'moment';
 import mongoose from 'mongoose';
-import fs from 'fs';
-import Grid from 'gridfs-stream';
 
 const Schema = mongoose.Schema;
 const gridSchema = new Schema({}, {strict: false});
-const gridModel1 = mongoose.model("gridModel1", gridSchema, "fs.files");
+const gridModel1 = mongoose.model('gridModel1', gridSchema, 'fs.files');
 
 function deleteThings() {
     return Thing.find({}).remove()
@@ -53,13 +49,13 @@ function seedThings() {
 /**
  * Delete all files in GridFS
  */
-function deleteFiles() {
-    return gridModel1.find({})
-        .then(gridfiles => {
-            console.log(`${gridfiles.length} files to delete`);
-            return Promise.all(_.map(gridfiles, file => util.deleteFile({_id: file._id})));
-        })
-        .tap(() => console.log('finished deleting files'));
+async function deleteFiles() {
+    let gridfiles = await gridModel1.find({});
+
+    console.log('finished deleting files');
+    console.log(`${gridfiles.length} files to delete`);
+
+    return Promise.all(_.map(gridfiles, file => util.deleteFile({_id: file._id})));
 }
 
 function deleteUsers() {
@@ -95,19 +91,19 @@ function deletePosts() {
 
 function createPosts(userImageId) {
     return Post.create(_.map(_.range(20), n => ({
-        title: "Test Post " + n,
-        alias: "test-post-" + n,
+        title: `Test Post ${n}`,
+        alias: `test-post-${n}`,
         hidden: false,
         author: {
-            name: "Andrew Koroluk",
+            name: 'Andrew Koroluk',
             imageId: userImageId,
             smallImageId: userImageId
         },
         date: moment().add(n, 'days').format(),
         imageId: null,
-        content: "This is test post number **"+n+"**",
-        subheader: "This is test post number **"+n+"**",
-        categories: ["tests"]
+        content: `This is test post number **${n}**`,
+        subheader: `This is test post number **${n}**`,
+        categories: ['tests']
     })))
         .tap(() => console.log('finished populating posts'));
 }
@@ -139,35 +135,34 @@ function deletePhotos() {
         .then(() => console.log('finished deleting photos'));
 }
 
-function createPhoto(photo) {
-    return util.saveFileFromFs(photo.sourceUri)
-        .then(function(file) {
-            console.log(`${photo.name} -> ${file._id}`);
+async function createPhoto(photo) {
+    let file = await util.saveFileFromFs(photo.sourceUri);
 
-            // Thumbnail generation
-            let thumbPromise = util.createThumbnail(file._id, {
-                width: null,
-                height: 400
-            })
-                .tap(thumbnail => console.log(`${photo.name} -> (thumb)${thumbnail.id}`));
+    console.log(`${photo.name} -> ${file._id}`);
 
-            // Square Thumbnail Generation
-            let squareThumbPromise = util.createThumbnail(file._id)
-                .tap(sqThumbnail => console.log(`${photo.name} -> (sqThumb)${sqThumbnail.id}`));
+    // Thumbnail generation
+    let thumbPromise = util.createThumbnail(file._id, {
+        width: null,
+        height: 400
+    })
+        .tap(thumbnail => console.log(`${photo.name} -> (thumb)${thumbnail.id}`));
 
-            return Promise.all([thumbPromise, squareThumbPromise]).then(([thumbnail, sqThumbnail]) => {
-                return Photo.create({
-                    name: photo.name,
-                    info: photo.info,
-                    hidden: false,
-                    fileId: file._id,
-                    thumbnailId: thumbnail.id,
-                    width: thumbnail.originalWidth,
-                    height: thumbnail.originalHeight,
-                    sqThumbnailId: sqThumbnail.id
-                });
-            });
-        });
+    // Square Thumbnail Generation
+    let squareThumbPromise = util.createThumbnail(file._id)
+        .tap(sqThumbnail => console.log(`${photo.name} -> (sqThumb)${sqThumbnail.id}`));
+
+    let [thumbnail, sqThumbnail] = await Promise.all([thumbPromise, squareThumbPromise]);
+
+    return Photo.create({
+        name: photo.name,
+        info: photo.info,
+        hidden: false,
+        fileId: file._id,
+        thumbnailId: thumbnail.id,
+        width: thumbnail.originalWidth,
+        height: thumbnail.originalHeight,
+        sqThumbnailId: sqThumbnail.id
+    });
 }
 
 const PHOTO_PATHS = [
@@ -186,8 +181,8 @@ const PHOTO_PATHS = [
 ];
 function createPhotos() {
     return Promise.all(_.map(PHOTO_PATHS, (path, index) => createPhoto({
-        name: 'test' + index,
-        info: 'testInfo' + index,
+        name: `test${index}`,
+        info: `testInfo${index}`,
         sourceUri: path
     })));
 }
@@ -210,6 +205,9 @@ function createGallery(photos) {
 }
 
 export default function() {
+    let start = Date.now();
+    console.log('Seed started');
+
     let projCoverPromise = util.saveFileFromFs('data/proj_0_cover.jpg');
     let projCoverThumbPromise = util.saveFileFromFs('data/proj_0_thumb.jpg');
     let userImagePromise = util.saveFileFromFs('client/assets/images/default_user.jpg');
@@ -219,38 +217,41 @@ export default function() {
 
     let p2 = deleteFiles();
 
-    let p3 = Promise.coroutine(function*() {
-        yield deletePhotos();
-        let photos = yield createPhotos();
+    let p3 = (async function() {
+        await deletePhotos();
+        let photos = await createPhotos();
         console.log('finished populating photos');
-        yield deleteGalleries();
-        return createGallery(photos);
-    })();
+        await deleteGalleries();
+        return await createGallery(photos);
+    }());
 
     // Create an orphaned file
     let p4 = util.saveFileFromFs('data/proj_0_cover.jpg')
         .tap(({_id}) => console.log(`Created orphaned file: ${_id}`));
 
-    let p5 = deleteUsers().then(function() {
-        return userImagePromise
-            .then(function(userImgFile) {
-                let p5_1 = createUsers(userImgFile._id).then(function(users) {
-                    console.log('finished populating users');
+    let p5 = (async function() {
+        await deleteUsers();
 
-                    return deletePosts()
-                        .then(() => createPosts(userImgFile._id));
-                });
+        let userImgFile = await userImagePromise;
 
-                let p5_2 = deleteProjects().then(function() {
-                    return Promise.all([projCoverPromise, projCoverThumbPromise])
-                        .then(([projectCoverFile, projectThumbFile]) => {
-                            return createProject(projectCoverFile._id, projectThumbFile._id);
-                        });
-                });
+        let createUsersAndPosts = (async function() {
+            await createUsers(userImgFile._id);
+            console.log('finished populating users');
+            await deletePosts();
+            return createPosts(userImgFile._id);
+        }());
 
-                return Promise.all([p5_1, p5_2]);
-            });
-    });
+        let createProjects = (async function() {
+            await deleteProjects();
 
-    return Promise.all([p1, p2, p3, p4, p5]);
+            let [projectCoverFile, projectThumbFile] = await Promise.all([projCoverPromise, projCoverThumbPromise]);
+
+            return createProject(projectCoverFile._id, projectThumbFile._id);
+        }());
+
+        return await Promise.all([createUsersAndPosts, createProjects]);
+    }());
+
+    return Promise.all([p1, p2, p3, p4, p5])
+        .then(() => console.log(`Seed finished after ${(Date.now() - start) / 1000}s`));
 }
