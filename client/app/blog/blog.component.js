@@ -19,7 +19,7 @@ import PostComponent from './post/post.component';
 @Component({
     selector: 'blog',
     template: require('./blog.html'),
-    styles: [require('./blog.scss')],
+    styles: [require('!!raw!sass!./blog.scss')],
     directives: [PAGINATION_DIRECTIVES, CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class BlogComponent {
