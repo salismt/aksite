@@ -2,6 +2,7 @@ import angular from 'angular';
 import uirouter from 'angular-ui-router';
 import {Component} from '@angular/core';
 import {upgradeAdapter} from '../../../app/upgrade_adapter';
+import Raven from 'raven-js';
 
 import routes from './post.routes';
 
@@ -38,6 +39,7 @@ export class PostComponent {
                 this.post.date = moment(this.post.date).format('LL');
             })
             .catch(err => {
+                Raven.captureException(new Error(JSON.stringify(err)));
                 console.log(err);
                 this.error = err;
             });
