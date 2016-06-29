@@ -12,7 +12,7 @@ const converter = new Converter();
 @Component({
     selector: 'post',
     template: require('./post.html'),
-    styles: [require('./post.scss')]
+    styles: [require('!!raw!sass!./post.scss'), require('!!raw!sass!../blog.scss')]
 })
 export class PostComponent {
     error;
