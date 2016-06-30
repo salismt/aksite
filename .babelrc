@@ -6,7 +6,6 @@
     ],
     "plugins": [
         "transform-runtime",
-        "transform-decorators-legacy",
-        "lodash"
+        "transform-decorators-legacy"
     ]
 }
