@@ -187,7 +187,7 @@
     "istanbul": "~0.4.4",
     "istanbul-instrumenter-loader": "^0.2.0",
     "jasmine-core": "^2.3.4",
-    "karma": "~1.0.0",
+    "karma": "~1.1.0",
     "karma-babel-preprocessor": "^6.0.1",
     "karma-chai-plugins": "^0.7.0",
     "karma-chrome-launcher": "~1.0.1",
