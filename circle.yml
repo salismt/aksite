@@ -1,0 +1,42 @@
+## Customize the test machine
+machine:
+  node:
+    version: 5.11.1
+  post:
+    - npm install -g gulp-cli
+
+## Custom notifications
+#notify:
+notify:
+  webhooks:
+    # A list of hook hashes, containing the url field
+    # gitter hook
+    # - url: https://example.com/asdf
+
+# deployment:
+#   production:
+#     pre:
+#       - gulp build
+#       - mv ./node_modules ./node_modules_dev
+#       - npm install --production
+#       - cp -vr ./node_modules ./dist/node_modules
+#     branch: master
+#     codedeploy:
+#       my-app:
+#         application_root: /dist
+#         revision_location:
+#           revision_type: S3
+#           s3_location:
+#             bucket: aksite-deploy
+#             key_pattern: aksite-{SHORT_COMMIT}-{BUILD_NUM}
+#         region: us-east-1
+#         deployment_group: aksite
+#         deployment_config: CodeDeployDefault.AllAtOnce
+
+#     post:
+#       - curl $OPBEAT_RELEASES_URL -H "Authorization: $OPBEAT_TOKEN" -d rev=`git log -n 1 --pretty=format:%H` -d branch=`git rev-parse --abbrev-ref HEAD` -d status=completed
+      # - git config --global user.email "builds@circleci.com"
+      # - git config --global user.name "Circle"
+      # - GIT_TAG=build/$CIRCLE_BUILD_NUM
+      # - git tag $GIT_TAG $CIRCLE_SHA1 -a -m $CIRCLE_BUILD_URL
+      # - git push git@github.com:Awk34/aksite.git $GIT_TAG
