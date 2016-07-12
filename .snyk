@@ -7,6 +7,9 @@ ignore:
     - socket.io > engine.io > accepts > negotiator:
         reason: None given
         expires: '2016-07-19T17:30:15.108Z'
+      karma > socket.io > engine.io > accepts > negotiator:
+        reason: None given
+        expires: '2016-08-11T15:34:09.588Z'
     - gulp-node-inspector > node-inspector > express > accepts > negotiator:
         reason: None given
         expires: '2016-07-19T17:53:47.270Z'
@@ -26,5 +29,14 @@ ignore:
     - bourbon-neat > node-sass > gaze > globule > glob > minimatch:
         reason: None given
         expires: '2016-07-24T14:52:27.502Z'
-patch: {}
-version: v1.5.0
+patch:
+  'npm:ws:20160624':
+    - socket.io > socket.io-client > engine.io-client > ws:
+        patched: '2016-07-12T15:31:42.541Z'
+    - karma > socket.io > socket.io-client > engine.io-client > ws:
+        patched: '2016-07-12T15:31:42.541Z'
+    - karma > socket.io > engine.io > ws:
+        patched: '2016-07-12T15:31:42.541Z'
+    - socket.io > engine.io > ws:
+        patched: '2016-07-12T15:31:42.541Z'
+version: v1.5.2
