@@ -1,7 +1,7 @@
 import angular from 'angular';
 import uirouter from 'angular-ui-router';
 
-import project from './project';
+import project from './project/project.component';
 import Project from '../../components/Project/Project.service';
 
 import routing from './projects.routes';

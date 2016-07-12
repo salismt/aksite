@@ -5,9 +5,7 @@ export default function routes($stateProvider) {
     $stateProvider
         .state('project', {
             url: '/projects/:projectId',
-            template: require('./project.html'),
-            controller: 'ProjectController',
-            controllerAs: 'vm',
+            template: '<project></project>',
             onEnter($rootScope) {
                 $rootScope.title = `${$rootScope.titleRoot} | Projects`;
             }

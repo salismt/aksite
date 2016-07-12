@@ -1,16 +1,16 @@
 <div class="container">
-    <div ng-if="error" class="row">
-        <alert type="danger">Error: {{vm.error}}</alert>
+    <div *ngIf="error" class="row">
+        <alert type="danger">Error: {{error | json}}</alert>
     </div>
 
-    <div ng-if="!error">
+    <div *ngIf="!error">
         <div class="cover-image">
-            <img ng-src="/api/upload/{{vm.project.coverId}}" alt=""/>
+            <img src="/api/upload/{{project.coverId}}" alt=""/>
         </div>
 
-        <h1 class="page-header">{{vm.project.name}} <small>{{vm.project.info}}</small></h1>
+        <h1 class="page-header">{{project.name}} <small>{{project.info}}</small></h1>
 
-        <div class="lead" ng-bind-html="vm.content"></div>
+        <div class="lead" [innerHtml]="content"></div>
     </div>
 
     <div class="row">
