@@ -23,8 +23,6 @@ export class ProjectComponent {
         this.$stateParams = $stateParams;
 
         this.projectId = $stateParams.projectId;
-
-        console.log(this.projectId);
     }
 
     ngOnInit() {
