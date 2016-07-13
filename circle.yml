@@ -2,8 +2,18 @@
 machine:
   node:
     version: 5.11.1
+  services:
+    - docker
   post:
     - npm install -g gulp-cli
+
+dependencies:
+  pre:
+    - ./ensure-kubernetes-installed.sh
+    - docker build -t $EXTERNAL_REGISTRY_ENDPOINT/hello:$CIRCLE_SHA1 .
+
+cache_directories:
+  - ~/kubernetes
 
 ## Custom notifications
 #notify:
