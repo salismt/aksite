@@ -110,7 +110,7 @@
     "photoswipe": "^4.1.1",
     "raven": "^0.11.0",
     "raven-js": "^3.2.0",
-    "react": "^15.2.0",
+    "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-stonecutter": "^0.3.0",
     "reflect-metadata": "0.1.2",
