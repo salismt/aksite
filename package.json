@@ -58,7 +58,7 @@
     "cookie-parser": "~1.4.2",
     "core-decorators": "^0.12.3",
     "core-js": "^2.4.0",
-    "d3": "^4.1.0",
+    "d3": "^4.1.1",
     "desandro-get-style-property": "^1.0.4",
     "desandro-matches-selector": "^2.0.0",
     "doc-ready": "^1.0.3",
