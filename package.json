@@ -96,7 +96,7 @@
     "multer": "^1.0.3",
     "ng-file-upload": "^12.0.4",
     "ng-forward": "0.0.1-alpha.12",
-    "ng2-bootstrap": "^1.0.17",
+    "ng2-bootstrap": "^1.0.23",
     "oclazyload": "^1.0.9",
     "opbeat": "^3.6.14",
     "outlayer": "^2.0.1",
