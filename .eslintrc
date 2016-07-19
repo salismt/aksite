@@ -207,6 +207,7 @@
         "max-params": 0,                                            //limits the number of parameters that can be used in the function declaration.
         "max-statements": 0,                                        //specify the maximum number of statement allowed in a function
         "max-statements-per-line": 0,                               //enforce a maximum number of statements allowed per line
+        "multiline-ternary": 0,                                     //enforce newlines between operands of ternary expressions
         "new-cap": 0,                                               //require a capital letter for constructors
         "new-parens": 2,                                            //disallow the omission of parentheses when invoking a constructor with no arguments
         "newline-after-var": 0,                                     //require or disallow an empty newline after variable declarations
