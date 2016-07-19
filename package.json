@@ -90,7 +90,7 @@
     "masonry-layout": "^4.0.0",
     "method-override": "~2.3.6",
     "moment": "^2.11.2",
-    "mongodb": "^2.2.1",
+    "mongodb": "^2.2.4",
     "mongoose": "^4.5.2",
     "morgan": "~1.7.0",
     "multer": "^1.0.3",
