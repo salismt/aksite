@@ -152,7 +152,7 @@
     "gulp-eslint": "^3.0.1",
     "gulp-filter": "^4.0.0",
     "gulp-if": "^2.0.0",
-    "gulp-imagemin": "^3.0.0",
+    "gulp-imagemin": "^3.0.2",
     "gulp-inject": "^4.0.0",
     "gulp-istanbul": "~1.0.0",
     "gulp-istanbul-enforcer": "^1.0.3",
