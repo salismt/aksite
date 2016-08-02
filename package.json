@@ -218,7 +218,7 @@
     "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0",
     "style-loader": "^0.13.0",
-    "supertest": "^1.1.0",
+    "supertest": "^2.0.0",
     "through2": "^2.0.1",
     "tiny-lr": "^0.2.1",
     "utile": "~0.3.0",
