@@ -75,7 +75,7 @@
     "font-awesome": "^4.5.0",
     "formidable": "^1.0.17",
     "get-size": "^2.0.2",
-    "gm": "~1.22.0",
+    "gm": "~1.23.0",
     "gridform": "https://github.com/Awk34/gridform.git",
     "gridfs-stream": "^1.1.1",
     "gulp-node-inspector": "^0.1.0",
