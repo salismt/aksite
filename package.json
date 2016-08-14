@@ -215,7 +215,7 @@
     "raw-loader": "^0.5.1",
     "run-sequence": "^1.1.0",
     "sass-loader": "^4.0.0",
-    "should": "~11.0.0",
+    "should": "~11.1.0",
     "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0",
     "style-loader": "^0.13.0",
