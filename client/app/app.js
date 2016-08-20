@@ -126,14 +126,12 @@ angular.module('aksiteApp', [
     });
 
 angular
-    .element(document)
+    .element(document.body)
     .ready(() => {
-        upgradeAdapter.bootstrap(document, [
+        upgradeAdapter.bootstrap(document.body, [
             'aksiteApp',
             // {provide: ExceptionHandler, useClass: RavenExceptionHandler}
-        ], {
-            strictDi: true
-        });
+        ], {strictDi: true});
     });
 
 upgradeAdapter.upgradeNg1Provider('$rootScope');

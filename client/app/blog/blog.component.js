@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {NgModel} from '@angular/forms';
 import {upgradeAdapter} from '../../app/upgrade_adapter';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES} from '@angular/common';
 import {PAGINATION_DIRECTIVES} from 'ng2-bootstrap';
@@ -20,7 +21,7 @@ import PostComponent from './post/post.component';
     selector: 'blog',
     template: require('./blog.html'),
     styles: [require('!!raw!sass!./blog.scss')],
-    directives: [PAGINATION_DIRECTIVES, CORE_DIRECTIVES, FORM_DIRECTIVES]
+    directives: [PAGINATION_DIRECTIVES, CORE_DIRECTIVES, FORM_DIRECTIVES, NgModel]
 })
 export class BlogComponent {
     loadingItems = true;
