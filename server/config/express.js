@@ -35,16 +35,16 @@ export default function(app) {
     app.use(passport.initialize());
 
     // Persist sessions with mongoStore
-    // We need to enable sessions for passport twitter because its an oauth 1.0 strategy
-    // app.use(session({
-    //     secret: config.secrets.session,
-    //     resave: true,
-    //     saveUninitialized: true,
-    //     store: new MongoStore({
-    //         mongooseConnection: mongoose.connection,
-    //         db: 'aksite'
-    //     })
-    // }));
+    // We need to enable sessions for Lusca
+    app.use(session({
+        secret: config.secrets.session,
+        resave: true,
+        saveUninitialized: true,
+        store: new MongoStore({
+            mongooseConnection: mongoose.connection,
+            db: 'aksite'
+        })
+    }));
 
     /**
      * Lusca - express server security
