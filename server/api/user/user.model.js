@@ -3,7 +3,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 import crypto from 'crypto';
-const authTypes = ['github', 'twitter', 'facebook', 'google', 'linkedin'];
+const authTypes = ['github', 'google', 'linkedin'];
 
 var UserSchema = new Schema({
     name: String,
@@ -29,15 +29,11 @@ var UserSchema = new Schema({
     provider: String,
     providers: {type: Object, default: {
         local: false,
-        facebook: false,
-        twitter: false,
         google: false,
         linkedin: false,
         github: false
     }},
     salt: String,
-    facebook: {},
-    twitter: {},
     google: {},
     linkedin: {},
     github: {}
