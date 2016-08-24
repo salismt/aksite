@@ -95,7 +95,7 @@
     "mongoose": "^4.5.7",
     "morgan": "~1.7.0",
     "multer": "^1.0.3",
-    "ng-file-upload": "^12.0.4",
+    "ng-file-upload": "^12.2.0",
     "ng-forward": "0.0.1-alpha.12",
     "ng2-bootstrap": "^1.0.23",
     "oclazyload": "^1.0.9",
